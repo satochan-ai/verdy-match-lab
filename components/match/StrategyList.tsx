@@ -13,7 +13,7 @@ export function StrategyList({
 }) {
   return (
     <section>
-      <SectionHeader title={title} eyebrow="MATCH PLAN" accent />
+      <SectionHeader title={title} eyebrow="MATCH PLAN" variant="emphasis" />
       <ul className="divide-y divide-border border-y border-border">
         {strategies.map((s) => (
           <StrategyItem key={s.orderNo} strategy={s} showResult={showResult} />

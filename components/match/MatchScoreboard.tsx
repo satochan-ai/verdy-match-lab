@@ -14,8 +14,8 @@ export function MatchScoreboard({ match }: { match: Match }) {
   const hasScore = match.status !== "scheduled";
 
   return (
-    <div className="border border-border bg-surface p-4">
-      <div className="mb-2 flex items-center justify-center gap-2">
+    <div className="border border-border bg-surface p-4 lg:p-6">
+      <div className="mb-3 flex items-center justify-center gap-2 border-b border-border pb-3 lg:mb-4 lg:pb-4">
         {match.status === "live" && <StatusBadge variant="live" />}
         {match.status === "half_time" && <StatusBadge variant="half_time" />}
         {match.status === "finished" && <StatusBadge variant="finished" />}
@@ -27,18 +27,22 @@ export function MatchScoreboard({ match }: { match: Match }) {
         )}
       </div>
 
-      <div className="flex items-center justify-center gap-4">
-        <div className="flex-1 text-right">
-          <p className="text-[16px] font-bold text-text-primary">{match.homeTeam.name}</p>
+      <div className="flex items-center justify-center gap-4 lg:gap-8">
+        <div className="flex-1 text-right lg:flex-none">
+          <p className="text-[16px] font-extrabold leading-tight text-text-primary lg:text-[22px]">
+            {match.homeTeam.name}
+          </p>
           <p className="text-[11px] text-text-secondary">HOME</p>
         </div>
 
-        <div className="tabular-nums text-center text-[32px] font-bold text-text-primary">
+        <div className="tabular-nums text-center text-[32px] font-extrabold text-text-primary lg:text-[44px]">
           {hasScore ? `${match.homeScore} - ${match.awayScore}` : "vs"}
         </div>
 
-        <div className="flex-1 text-left">
-          <p className="text-[16px] font-bold text-text-primary">{match.awayTeam.name}</p>
+        <div className="flex-1 text-left lg:flex-none">
+          <p className="text-[16px] font-extrabold leading-tight text-text-primary lg:text-[22px]">
+            {match.awayTeam.name}
+          </p>
           <p className="text-[11px] text-text-secondary">AWAY</p>
         </div>
       </div>
