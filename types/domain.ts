@@ -120,4 +120,10 @@ export interface Match {
   matchNotes: string[];
   focusPoints: string[];
   strategies: Strategy[];
+  /**
+   * mock運用専用のoptional field。trueの場合、Top/Archiveなど公開一覧からは除外する
+   * （URL直接アクセスでの開発回帰確認は維持）。DBマッパー（lib/data/mappers.ts）は
+   * この値を設定しないため、DB由来のMatchは常にundefined＝公開扱いとなる。
+   */
+  isDemo?: boolean;
 }

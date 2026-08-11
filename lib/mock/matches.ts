@@ -139,10 +139,40 @@ export const matches: Match[] = [
     ],
   },
   {
+    id: "match-0",
+    homeTeam: verdy,
+    awayTeam: opponent("kawasaki-frontale", "川崎フロンターレ"),
+    isVerdyHome: true,
+    kickoffAt: "2026-08-09T18:00:00+09:00",
+    venue: "味の素スタジアム",
+    status: "finished",
+    homeScore: 1,
+    awayScore: 1,
+    timeSegment: null,
+    verdyProfile: {
+      formation: "情報準備中",
+      characteristics: { attack: "情報準備中", defense: "情報準備中" },
+      keyPlayers: [],
+      recentTrend: "情報準備中",
+    },
+    opponentProfile: {
+      formation: "情報準備中",
+      characteristics: { attack: "情報準備中", defense: "情報準備中" },
+      keyPlayers: [],
+      recentTrend: "情報準備中",
+    },
+    matchNotes: [
+      "46分に溝口修平、90+6分に川崎のラザル ロマニッチがそれぞれ得点し、1-1で終了。",
+    ],
+    focusPoints: [],
+    strategies: [],
+  },
+  {
     id: "match-2",
     homeTeam: verdy,
     awayTeam: opponent("yokohama-blue", "YOKOHAMA BLUE FC"),
     isVerdyHome: true,
+    isDemo: true,
     kickoffAt: "2026-08-08T14:00:00+09:00",
     venue: "味の素スタジアム",
     status: "live",
@@ -195,6 +225,7 @@ export const matches: Match[] = [
     homeTeam: opponent("chiba-united", "CHIBA UNITED"),
     awayTeam: verdy,
     isVerdyHome: false,
+    isDemo: true,
     kickoffAt: "2026-08-01T15:00:00+09:00",
     venue: "フクダ電子アリーナ",
     status: "half_time",
@@ -247,6 +278,7 @@ export const matches: Match[] = [
     homeTeam: verdy,
     awayTeam: opponent("saitama-fc", "SAITAMA FC"),
     isVerdyHome: true,
+    isDemo: true,
     kickoffAt: "2026-07-25T18:00:00+09:00",
     venue: "味の素スタジアム",
     status: "finished",
@@ -302,6 +334,7 @@ export const matches: Match[] = [
     homeTeam: opponent("kanagawa-athletic", "KANAGAWA ATHLETIC"),
     awayTeam: verdy,
     isVerdyHome: false,
+    isDemo: true,
     kickoffAt: "2026-07-18T19:00:00+09:00",
     venue: "三ツ沢公園球技場",
     status: "finished",
@@ -351,6 +384,7 @@ export const matches: Match[] = [
     homeTeam: verdy,
     awayTeam: opponent("shonan-united", "SHONAN UNITED"),
     isVerdyHome: true,
+    isDemo: true,
     kickoffAt: "2026-07-11T18:00:00+09:00",
     venue: "味の素スタジアム",
     status: "finished",
@@ -397,18 +431,30 @@ export const matches: Match[] = [
   },
 ];
 
+// Top/Archiveなど公開一覧向け。isDemoなmatchはここでは除外するが、
+// getMatchByIdはURL直接アクセスでの開発回帰確認用にmatches全体を対象のまま残す。
+const publicMatches = matches.filter((m) => !m.isDemo);
+
 export function getMatchById(id: string): Match | undefined {
   return matches.find((m) => m.id === id);
 }
 
 export function getNextMatch(): Match {
-  return matches.find((m) => m.status === "scheduled") ?? matches[0];
+  const upcoming = publicMatches
+    .filter((m) => m.status === "scheduled")
+    .sort((a, b) => new Date(a.kickoffAt).getTime() - new Date(b.kickoffAt).getTime());
+  return upcoming[0] ?? matches[0];
 }
 
 export function getRecentFinishedMatch(): Match {
-  return matches.find((m) => m.status === "finished")!;
+  const finished = publicMatches
+    .filter((m) => m.status === "finished")
+    .sort((a, b) => new Date(b.kickoffAt).getTime() - new Date(a.kickoffAt).getTime());
+  return finished[0] ?? matches[0];
 }
 
 export function getArchiveMatches(): Match[] {
-  return matches.filter((m) => m.status === "finished");
+  return publicMatches
+    .filter((m) => m.status === "finished")
+    .sort((a, b) => new Date(b.kickoffAt).getTime() - new Date(a.kickoffAt).getTime());
 }
