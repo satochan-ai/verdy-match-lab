@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /*
+   * Tokyo Verdyブランド4色（VERDY GREEN / PIONEER GOLD / SHINE WHITE / FUSION BLACK）。
+   * 注意：本プロジェクト内および現在参照できる資料に公式HEX値は存在しないため、
+   * 以下は「公式カラーコード」ではなく、既存配色とユーザー提示イメージを参考にした暫定値。
+   * 公式ブランドガイドラインが入手できた場合は、この4値のみを差し替えれば全体に反映される。
+   */
+  /* 白文字ボタンでのコントラスト比を確保するため約5.8:1を確保した値に調整済み。 */
+  --color-verdy-green: #06753a;
+  /* リンク・hover・押下時などの濃い緑。Verdy Greenと同一色相の濃淡違いであり、独立した2本目の緑ではない。 */
+  --color-verdy-green-strong: #044f27;
+  /* 装飾用ゴールド（罫線・大きめの太字ラベル等）。小さな本文文字には使わない。 */
+  --color-pioneer-gold: #b08d2b;
+  /* 小さな文字でもコントラスト比を確保できる、テキスト用の濃いゴールド。 */
+  --color-pioneer-gold-deep: #8c6f1e;
+  --color-shine-white: #ffffff;
+  --color-fusion-black: #14140f;
+
+  /* Semantic tokens：コンポーネント側のクラス名（bg-primary-green等）は変更せず、参照先のみ更新する。 */
+  --color-background: #f8f7f3;
+  --color-surface: var(--color-shine-white);
+  --color-primary-green: var(--color-verdy-green);
+  --color-deep-green: var(--color-verdy-green-strong);
+  --color-text-primary: var(--color-fusion-black);
+  --color-text-secondary: #5c5c57;
+  --color-border: #e3e2dc;
+  --color-warning: #b8860b;
+  --color-error: #b23b3b;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-primary-green: var(--color-primary-green);
+  --color-deep-green: var(--color-deep-green);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-border: var(--color-border);
+  --color-warning: var(--color-warning);
+  --color-error: var(--color-error);
+  --color-verdy-green: var(--color-verdy-green);
+  --color-verdy-green-strong: var(--color-verdy-green-strong);
+  --color-pioneer-gold: var(--color-pioneer-gold);
+  --color-pioneer-gold-deep: var(--color-pioneer-gold-deep);
+  --color-shine-white: var(--color-shine-white);
+  --color-fusion-black: var(--color-fusion-black);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
 }

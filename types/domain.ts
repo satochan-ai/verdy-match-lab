@@ -1,0 +1,89 @@
+export type MatchStatus = "scheduled" | "live" | "half_time" | "finished";
+
+export type HomeAway = "home" | "away";
+
+export interface Team {
+  id: string;
+  name: string;
+  isVerdy: boolean;
+}
+
+export interface KeyPlayer {
+  name: string;
+  note: string;
+}
+
+export interface TeamProfile {
+  formation: string;
+  characteristics: {
+    attack: string;
+    defense: string;
+  };
+  keyPlayers: KeyPlayer[];
+  recentTrend: string;
+}
+
+export interface PredictedStarter {
+  number?: number;
+  name: string;
+  position: string;
+}
+
+export interface PredictedLineup {
+  formation: string;
+  starters: PredictedStarter[];
+}
+
+export type StrategyResult = "pending" | "hit" | "partial" | "miss";
+
+export interface Strategy {
+  orderNo: 1 | 2 | 3;
+  title: string;
+  description: string;
+  result: StrategyResult;
+  resultComment?: string;
+}
+
+export type TimeSegment =
+  | "first_early"
+  | "first_mid"
+  | "first_late"
+  | "second_early"
+  | "second_mid"
+  | "second_late";
+
+export type ScoreSituation =
+  | "even"
+  | "lead_1"
+  | "behind_1"
+  | "lead_2plus"
+  | "behind_2plus";
+
+export type SpecialSituation =
+  | "red_card_own"
+  | "red_card_opponent"
+  | "under_pressure"
+  | "attacking_no_goal"
+  | "cannot_keep_possession";
+
+export interface Match {
+  id: string;
+  homeTeam: Team;
+  awayTeam: Team;
+  isVerdyHome: boolean;
+  kickoffAt: string;
+  venue: string;
+  status: MatchStatus;
+  homeScore: number | null;
+  awayScore: number | null;
+  timeSegment: TimeSegment | null;
+  verdyProfile: TeamProfile;
+  opponentProfile: TeamProfile;
+  predictedLineups?: {
+    home: PredictedLineup;
+    away: PredictedLineup;
+  };
+  matchNotes: string[];
+  focusPoints: string[];
+  strategies: Strategy[];
+}

@@ -1,0 +1,69 @@
+import type { PredictedLineup, Team } from "@/types/domain";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+
+function TeamLineup({ team, lineup }: { team: Team; lineup: PredictedLineup }) {
+  return (
+    <section aria-labelledby={`predicted-lineup-${team.id}`}>
+      <div className="flex items-baseline justify-between gap-3 border-b border-border pb-2">
+        <h3
+          id={`predicted-lineup-${team.id}`}
+          className={`min-w-0 text-[13px] font-bold ${
+            team.isVerdy ? "text-primary-green" : "text-text-primary"
+          }`}
+        >
+          {team.name}
+        </h3>
+        <p className="shrink-0 text-[12px] font-bold tabular-nums text-text-secondary">
+          {lineup.formation}
+        </p>
+      </div>
+
+      <ul className="mt-1 grid grid-cols-2 gap-x-3">
+        {lineup.starters.map((starter, index) => (
+          <li
+            key={`${starter.position}-${starter.number ?? "tbd"}-${starter.name}-${index}`}
+            className="grid min-w-0 grid-cols-[1.5rem_1.5rem_minmax(0,1fr)] items-center border-b border-border py-1.5 text-[12px]"
+          >
+            <span className="text-[10px] font-bold text-text-secondary">
+              {starter.position}
+            </span>
+            <span className="tabular-nums text-right text-text-secondary">
+              {starter.number ?? "—"}
+            </span>
+            <span className="min-w-0 whitespace-nowrap pl-1 font-bold text-text-primary">
+              {starter.name}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+export function PredictedLineups({
+  homeTeam,
+  awayTeam,
+  lineups,
+}: {
+  homeTeam: Team;
+  awayTeam: Team;
+  lineups: { home: PredictedLineup; away: PredictedLineup };
+}) {
+  return (
+    <section>
+      <SectionHeader title="予想スタメン" eyebrow="PREDICTED LINEUP" />
+      <details open className="border-y border-border bg-surface">
+        <summary className="cursor-pointer px-3 py-2 text-[12px] font-bold text-text-secondary">
+          両チームの予想を見る
+        </summary>
+        <div className="space-y-5 border-t border-border px-3 py-3">
+          <TeamLineup team={homeTeam} lineup={lineups.home} />
+          <TeamLineup team={awayTeam} lineup={lineups.away} />
+        </div>
+      </details>
+      <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
+        試合前の予想です。実際の先発メンバーとは異なる場合があります。
+      </p>
+    </section>
+  );
+}
