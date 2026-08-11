@@ -2,10 +2,18 @@ import type { Match } from "@/types/domain";
 
 function formatDate(iso: string) {
   const d = new Date(iso);
-  const weekday = ["日", "月", "火", "水", "木", "金", "土"][d.getDay()];
-  return `${d.getMonth() + 1}/${d.getDate()}(${weekday}) ${String(d.getHours()).padStart(2, "0")}:${String(
-    d.getMinutes()
-  ).padStart(2, "0")} KO`;
+  const parts = new Intl.DateTimeFormat("ja-JP", {
+    timeZone: "Asia/Tokyo",
+    month: "numeric",
+    day: "numeric",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(d);
+  const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((item) => item.type === type)?.value ?? "";
+
+  return `${part("month")}/${part("day")}(${part("weekday")}) ${part("hour")}:${part("minute")} KO`;
 }
 
 function daysUntil(iso: string) {
