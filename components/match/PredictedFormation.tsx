@@ -22,6 +22,11 @@ export function PredictedFormation({
   }
 
   const [goalkeeper, ...outfieldPlayers] = lineup.starters;
+  const outfieldRows = rows.map((count, rowIndex) => {
+    const startIndex = rows.slice(0, rowIndex).reduce((total, rowCount) => total + rowCount, 0);
+
+    return outfieldPlayers.slice(startIndex, startIndex + count);
+  });
 
   return (
     <section aria-labelledby={`predicted-formation-${team.id}`}>
@@ -44,12 +49,9 @@ export function PredictedFormation({
         <div className="pointer-events-none absolute inset-x-[18%] bottom-0 h-6 border-x border-t border-border" />
 
         <div className="relative z-10 flex min-h-56 flex-col justify-between gap-2">
-          {rows.map((count, rowIndex) => {
-            const startIndex = rows.slice(0, rowIndex).reduce((total, rowCount) => total + rowCount, 0);
-            const players = outfieldPlayers.slice(startIndex, startIndex + count);
-
+          {[...outfieldRows].reverse().map((players, rowIndex) => {
             return (
-              <div key={`${lineup.formation}-${rowIndex}`} className="grid" style={{ gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))` }}>
+              <div key={`${lineup.formation}-${rowIndex}`} className="grid" style={{ gridTemplateColumns: `repeat(${players.length}, minmax(0, 1fr))` }}>
                 {players.map((player) => (
                   <PlayerMarker key={`${player.number ?? "tbd"}-${player.name}`} player={player} team={team} />
                 ))}
