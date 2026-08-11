@@ -12,8 +12,15 @@ import { getLiveAnalysis } from "@/features/ai-guide/mockResponses";
 import { SituationSelector } from "@/features/ai-guide/ui/SituationSelector";
 import { AnalysisReportView } from "@/features/ai-guide/ui/AnalysisReportView";
 import { StickyCta } from "@/components/ui/StickyCta";
+import type { ReactNode } from "react";
 
-export function LiveGuidePanel({ match }: { match: Match }) {
+export function LiveGuidePanel({
+  match,
+  scoreboard,
+}: {
+  match: Match;
+  scoreboard?: ReactNode;
+}) {
   const [scoreSituation, setScoreSituation] = useState<ScoreSituation | null>(null);
   const [timeSegment, setTimeSegment] = useState<TimeSegment | null>(match.timeSegment);
   const [specials, setSpecials] = useState<SpecialSituation[]>([]);
@@ -38,25 +45,38 @@ export function LiveGuidePanel({ match }: { match: Match }) {
   }
 
   return (
-    <>
-      <section className="border border-border bg-surface p-4 pb-2">
-        <h2 className="text-[15px] font-bold text-text-primary">状況を入力</h2>
-        <div className="mt-3">
-          <SituationSelector
-            scoreSituation={scoreSituation}
-            timeSegment={timeSegment}
-            specials={specials}
-            onScoreChange={setScoreSituation}
-            onTimeChange={setTimeSegment}
-            onSpecialToggle={toggleSpecial}
-          />
-        </div>
+    <div className="space-y-6 md:grid md:grid-cols-2 md:items-start md:gap-6 md:space-y-0">
+      <div className="space-y-6">
+        {scoreboard}
+        <section className="border border-border bg-surface p-4 pb-2">
+          <h2 className="text-[15px] font-bold text-text-primary">状況を入力</h2>
+          <div className="mt-3">
+            <SituationSelector
+              scoreSituation={scoreSituation}
+              timeSegment={timeSegment}
+              specials={specials}
+              onScoreChange={setScoreSituation}
+              onTimeChange={setTimeSegment}
+              onSpecialToggle={toggleSpecial}
+            />
+          </div>
+        </section>
+      </div>
 
-        <AnalysisReportView
-          state={state}
-          report={report}
-          onRetry={handleSubmit}
-        />
+      <section
+        className={
+          state === "idle"
+            ? "hidden border border-border bg-surface p-4 md:block"
+            : "md:border md:border-border md:bg-surface md:p-4"
+        }
+      >
+        {state === "idle" ? (
+          <p className="text-[13px] leading-relaxed text-text-secondary">
+            状況を選ぶと、ここに戦術軍師 βの分析が表示されます。
+          </p>
+        ) : (
+          <AnalysisReportView state={state} report={report} onRetry={handleSubmit} />
+        )}
       </section>
 
       <StickyCta
@@ -65,6 +85,6 @@ export function LiveGuidePanel({ match }: { match: Match }) {
         hint="スコア状況と時間帯を選んでください"
         onClick={handleSubmit}
       />
-    </>
+    </div>
   );
 }

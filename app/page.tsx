@@ -20,7 +20,7 @@ export default async function Home() {
       : "loss";
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
       <section className="border border-border bg-surface p-4">
         <p className="text-[12px] font-bold tracking-wide text-text-secondary">
           NEXT MATCH
@@ -53,9 +53,14 @@ export default async function Home() {
         </Link>
       </section>
 
-      <StrategyList strategies={nextMatch.strategies} />
+      <div>
+        <StrategyList strategies={nextMatch.strategies} />
+        <p className="mt-4 border-l-2 border-primary-green pl-3 text-[13px] leading-relaxed text-text-secondary">
+          MATCH DAY TOOLとして、試合前の注目点を整理し、観戦中の戦術の変化を追います。
+        </p>
+      </div>
 
-      <section>
+      <section className="md:col-span-2">
         <p className="mb-2 text-[13px] font-bold text-text-primary">直近の試合</p>
         <Link
           href={`/matches/${recent.id}`}
@@ -68,7 +73,7 @@ export default async function Home() {
         </Link>
       </section>
 
-      <Link href="/archive" className="block text-center text-[13px] font-bold text-deep-green">
+      <Link href="/archive" className="block text-center text-[13px] font-bold text-deep-green md:col-span-2">
         アーカイブを見る →
       </Link>
     </div>

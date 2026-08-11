@@ -56,7 +56,7 @@ export function PredictedLineups({
         <summary className="cursor-pointer px-3 py-2 text-[12px] font-bold text-text-secondary">
           両チームの予想を見る
         </summary>
-        <div className="space-y-5 border-t border-border px-3 py-3">
+        <div className="space-y-5 border-t border-border px-3 py-3 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
           <TeamLineup team={homeTeam} lineup={lineups.home} />
           <TeamLineup team={awayTeam} lineup={lineups.away} />
         </div>
