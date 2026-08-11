@@ -20,7 +20,7 @@ export default async function Home() {
       : "loss";
 
   return (
-    <div className="space-y-6 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
+    <div className="space-y-6 lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
       <section className="border border-border bg-surface p-4">
         <p className="text-[12px] font-bold tracking-wide text-text-secondary">
           NEXT MATCH
@@ -60,7 +60,7 @@ export default async function Home() {
         </p>
       </div>
 
-      <section className="md:col-span-2">
+      <section className="lg:col-span-2">
         <p className="mb-2 text-[13px] font-bold text-text-primary">直近の試合</p>
         <Link
           href={`/matches/${recent.id}`}
@@ -73,7 +73,7 @@ export default async function Home() {
         </Link>
       </section>
 
-      <Link href="/archive" className="block text-center text-[13px] font-bold text-deep-green md:col-span-2">
+      <Link href="/archive" className="block text-center text-[13px] font-bold text-deep-green lg:col-span-2">
         アーカイブを見る →
       </Link>
     </div>

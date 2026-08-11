@@ -19,7 +19,7 @@ function TeamLineup({ team, lineup }: { team: Team; lineup: PredictedLineup }) {
         </p>
       </div>
 
-      <ul className="mt-1 grid grid-cols-2 gap-x-3">
+      <ul className="mt-1 grid grid-cols-2 gap-x-3 md:grid-cols-1 lg:grid-cols-2">
         {lineup.starters.map((starter, index) => (
           <li
             key={`${starter.position}-${starter.number ?? "tbd"}-${starter.name}-${index}`}
@@ -70,7 +70,7 @@ export function PredictedLineups({
           <p className="text-[11px] font-bold tracking-[0.08em] text-text-secondary">
             PREDICTED FORMATION / 予想フォーメーション
           </p>
-          <div className="space-y-5 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
+          <div className="space-y-5 lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
             <PredictedFormation team={homeTeam} lineup={lineups.home} />
             <PredictedFormation team={awayTeam} lineup={lineups.away} />
           </div>

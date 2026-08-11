@@ -45,7 +45,7 @@ export function LiveGuidePanel({
   }
 
   return (
-    <div className="space-y-6 md:grid md:grid-cols-2 md:items-start md:gap-6 md:space-y-0">
+    <div className="space-y-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
       <div className="space-y-6">
         {scoreboard}
         <section className="border border-border bg-surface p-4 pb-2">
@@ -66,8 +66,8 @@ export function LiveGuidePanel({
       <section
         className={
           state === "idle"
-            ? "hidden border border-border bg-surface p-4 md:block"
-            : "md:border md:border-border md:bg-surface md:p-4"
+            ? "hidden border border-border bg-surface p-4 lg:block"
+            : "lg:border lg:border-border lg:bg-surface lg:p-4"
         }
       >
         {state === "idle" ? (

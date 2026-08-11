@@ -49,7 +49,7 @@ export default async function MatchDetailPage({
       </div>
 
       {displayStatus === "scheduled" && (
-        <div className="space-y-6 md:grid md:grid-cols-2 md:items-start md:gap-6 md:space-y-0">
+        <div className="space-y-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
           <div className="space-y-6">
             <MatchScoreboard match={displayMatch} />
             <MatchMeta match={displayMatch} showCountdown />
@@ -112,7 +112,7 @@ export default async function MatchDetailPage({
       )}
 
       {displayStatus === "half_time" && (
-        <div className="space-y-6 md:grid md:grid-cols-2 md:items-start md:gap-6 md:space-y-0">
+        <div className="space-y-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
           <MatchScoreboard match={displayMatch} />
           <section className="border border-border bg-surface p-4">
             <h2 className="text-[15px] font-bold text-text-primary">戦術軍師 β</h2>
@@ -122,7 +122,7 @@ export default async function MatchDetailPage({
       )}
 
       {displayStatus === "finished" && (
-        <div className="space-y-6 md:grid md:grid-cols-2 md:items-start md:gap-6 md:space-y-0">
+        <div className="space-y-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
           <div className="space-y-6">
             <MatchScoreboard match={displayMatch} />
             <section className="border border-border bg-surface p-4">

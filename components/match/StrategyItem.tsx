@@ -29,7 +29,7 @@ export function StrategyItem({
             <StatusBadge variant={strategy.result} />
           )}
         </div>
-        <p className="mt-0.5 line-clamp-2 text-[13px] text-text-secondary">
+        <p className="mt-0.5 text-[13px] text-text-secondary">
           {strategy.description}
         </p>
         {showResult && strategy.resultComment && (
