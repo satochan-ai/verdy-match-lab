@@ -5,7 +5,7 @@ import { Footer } from "@/components/ui/Footer";
 
 export const metadata: Metadata = {
   title: "Verdy Match Lab",
-  description: "東京ヴェルディの試合をAI軍師と楽しむ非公式ファンサイト",
+  description: "東京ヴェルディの試合を戦術軍師と楽しむβ版の非公式ファンサイト",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

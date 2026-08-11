@@ -30,7 +30,7 @@ export function AiGuidePanel({ match }: { match: Match }) {
 
   return (
     <section className="border border-border bg-surface p-4">
-      <h2 className="text-[15px] font-bold text-text-primary">AI軍師</h2>
+      <h2 className="text-[15px] font-bold text-text-primary">戦術軍師 β</h2>
       <p className="mt-0.5 text-[12px] text-text-secondary">
         今日の試合を軍師が分析します
       </p>
@@ -81,7 +81,7 @@ export function AiGuidePanel({ match }: { match: Match }) {
             </div>
             {freeSubmitted && (
               <p className="mt-2 text-[12px] text-text-secondary">
-                UIモックのため現在AI接続はありません。
+                β版のため現在、外部AI接続はありません。
               </p>
             )}
           </div>

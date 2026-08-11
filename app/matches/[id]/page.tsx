@@ -100,7 +100,7 @@ export default async function MatchDetailPage({
 
       {match.status === "half_time" && (
         <section className="border border-border bg-surface p-4">
-          <h2 className="text-[15px] font-bold text-text-primary">AI軍師</h2>
+          <h2 className="text-[15px] font-bold text-text-primary">戦術軍師 β</h2>
           <AnalysisReportView state="ready" report={getHalfTimeAnalysis(match)} />
         </section>
       )}
@@ -108,7 +108,7 @@ export default async function MatchDetailPage({
       {match.status === "finished" && (
         <>
           <section className="border border-border bg-surface p-4">
-            <h2 className="text-[15px] font-bold text-text-primary">AI軍師 試合総括</h2>
+            <h2 className="text-[15px] font-bold text-text-primary">戦術軍師 β 試合総括</h2>
             <AnalysisReportView state="ready" report={getPostMatchAnalysis(match)} />
           </section>
           <StrategyList
