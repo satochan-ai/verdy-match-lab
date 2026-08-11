@@ -28,6 +28,14 @@
   --color-border: #e3e2dc;
   --color-warning: #b8860b;
   --color-error: #b23b3b;
+
+  /*
+   * 対戦相手識別用のプレゼンテーション専用トークン。特定クラブ名は含めない。
+   * 現時点ではmatch-1（柏レイソル想定）の背番号マーカーのみに使用する暫定値で、
+   * 対戦相手ごとの正式なクラブカラー管理はdomain側の設計課題として別途検討する。
+   * marker文字色は十分なコントラストを確保するためFusion Black系を使う。
+   */
+  --team-opponent-accent: #f2c94c;
 }
 
 @theme inline {
@@ -46,6 +54,7 @@
   --color-pioneer-gold-deep: var(--color-pioneer-gold-deep);
   --color-shine-white: var(--color-shine-white);
   --color-fusion-black: var(--color-fusion-black);
+  --color-team-opponent-accent: var(--team-opponent-accent);
   --font-sans: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif;
 }
 

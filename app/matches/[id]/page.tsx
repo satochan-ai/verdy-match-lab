@@ -49,24 +49,43 @@ export default async function MatchDetailPage({
       </div>
 
       {displayStatus === "scheduled" && (
-        <div className="space-y-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
-          <div className="space-y-6">
+        <div className="lg:grid lg:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
+          <div className="lg:col-start-1">
             <MatchScoreboard match={displayMatch} />
-            <MatchMeta match={displayMatch} showCountdown />
-            {match.availability && <AvailabilityInfo availability={match.availability} />}
-            {match.previousMatch && <PreviousMatchSummary previousMatch={match.previousMatch} />}
-            {match.predictedLineups && (
+            <div className="mt-4">
+              <MatchMeta match={displayMatch} showCountdown />
+            </div>
+          </div>
+
+          <div className="mt-10 lg:col-start-2 lg:mt-0">
+            <StrategyList strategies={match.strategies} />
+          </div>
+
+          {match.predictedLineups && (
+            <div className="mt-10 lg:col-start-1 lg:mt-8">
               <PredictedLineups
                 homeTeam={match.homeTeam}
                 awayTeam={match.awayTeam}
                 lineups={match.predictedLineups}
               />
-            )}
-          </div>
-          <div className="space-y-6">
-            <StrategyList strategies={match.strategies} />
+            </div>
+          )}
+
+          {match.availability && (
+            <div className="mt-8 lg:col-start-1 lg:mt-8">
+              <AvailabilityInfo availability={match.availability} />
+            </div>
+          )}
+
+          {match.previousMatch && (
+            <div className="mt-8 lg:col-start-1 lg:mt-8">
+              <PreviousMatchSummary previousMatch={match.previousMatch} />
+            </div>
+          )}
+
+          <div className="mt-8 lg:col-start-2 lg:mt-8">
             <AiGuidePanel match={displayMatch} />
-            <details className="border border-border bg-surface p-4">
+            <details className="mt-4 border border-border bg-surface p-4">
               <summary className="cursor-pointer text-[13px] font-bold text-text-primary">
                 もっと見る
               </summary>

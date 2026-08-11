@@ -8,7 +8,7 @@ function TeamLineup({ team, lineup }: { team: Team; lineup: PredictedLineup }) {
       <div className="flex items-baseline justify-between gap-3 border-b border-border pb-2">
         <h3
           id={`predicted-lineup-${team.id}`}
-          className={`min-w-0 text-[13px] font-bold ${
+          className={`min-w-0 text-[13px] font-bold lg:text-[14px] ${
             team.isVerdy ? "text-primary-green" : "text-text-primary"
           }`}
         >
@@ -19,13 +19,13 @@ function TeamLineup({ team, lineup }: { team: Team; lineup: PredictedLineup }) {
         </p>
       </div>
 
-      <ul className="mt-1 grid grid-cols-2 gap-x-3 md:grid-cols-1 lg:grid-cols-2">
+      <ul className="mt-1 grid grid-cols-2 gap-x-3 md:grid-cols-1">
         {lineup.starters.map((starter, index) => (
           <li
             key={`${starter.position}-${starter.number ?? "tbd"}-${starter.name}-${index}`}
-            className="grid min-w-0 grid-cols-[1.5rem_1.5rem_minmax(0,1fr)] items-start border-b border-border py-1.5 text-[12px]"
+            className="grid min-w-0 grid-cols-[1.5rem_1.5rem_minmax(0,1fr)] items-start gap-x-1 border-b border-border py-1.5 text-[12px] lg:grid-cols-[2rem_2rem_minmax(0,1fr)] lg:py-2 lg:text-[13px]"
           >
-            <span className="text-[10px] font-bold text-text-secondary">
+            <span className="text-[10px] font-bold text-text-secondary lg:text-[11px]">
               {starter.position}
             </span>
             <span className="tabular-nums text-right text-text-secondary">
@@ -34,7 +34,7 @@ function TeamLineup({ team, lineup }: { team: Team; lineup: PredictedLineup }) {
             <span className="min-w-0 pl-1">
               <span className="block truncate font-bold text-text-primary">{starter.name}</span>
               {starter.alternative && (
-                <span className="block truncate text-[10px] font-normal text-text-secondary">
+                <span className="block truncate text-[10px] font-normal text-text-secondary lg:text-[11px]">
                   別候補：{starter.alternative}
                 </span>
               )}
