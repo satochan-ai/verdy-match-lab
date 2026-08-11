@@ -34,6 +34,30 @@ export interface PredictedLineup {
   starters: PredictedStarter[];
 }
 
+export interface PositionPlayerGroups {
+  GK: string[];
+  DF: string[];
+  MF: string[];
+  FW: string[];
+}
+
+export interface PreviousMatch {
+  label: string;
+  opponent: string;
+  score: string;
+  starters: PositionPlayerGroups;
+  bench: PositionPlayerGroups;
+}
+
+export interface AvailabilityInfo {
+  likelyUnavailable: {
+    team: string;
+    players: string[];
+  }[];
+  suspensionNote: string;
+  ineligibleNote: string;
+}
+
 export type StrategyResult = "pending" | "hit" | "partial" | "miss";
 
 export interface Strategy {
@@ -83,6 +107,8 @@ export interface Match {
     home: PredictedLineup;
     away: PredictedLineup;
   };
+  previousMatch?: PreviousMatch;
+  availability?: AvailabilityInfo;
   matchNotes: string[];
   focusPoints: string[];
   strategies: Strategy[];

@@ -76,6 +76,31 @@ export const matches: Match[] = [
         ],
       },
     },
+    availability: {
+      likelyUnavailable: [
+        { team: "東京V", players: ["森田晃樹", "田邉秀斗", "吉田泰授", "山見大登"] },
+        { team: "柏", players: ["大久保智明"] },
+      ],
+      suspensionNote: "現時点入力情報なし",
+      ineligibleNote: "現時点入力情報なし",
+    },
+    previousMatch: {
+      label: "第1節",
+      opponent: "東京ヴェルディ vs 川崎フロンターレ",
+      score: "1-1",
+      starters: {
+        GK: ["マテウス"],
+        DF: ["鈴木", "林", "宮原"],
+        MF: ["内田", "食野", "平川", "溝口"],
+        FW: ["松橋", "福田", "染野"],
+      },
+      bench: {
+        GK: ["長澤"],
+        DF: ["井上", "佐古"],
+        MF: ["仲山", "山本", "新井"],
+        FW: ["熊取谷", "白井", "寺沼"],
+      },
+    },
     matchNotes: [
       "予想スタメン・formationは8月11日時点の公開情報を基準にした編集部予想。",
       "直近公式戦：東京Vは8/9川崎F戦1-1、柏は8/8水戸戦2-1（ユーザー確認情報）。",

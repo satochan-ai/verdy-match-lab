@@ -5,6 +5,8 @@ import { MatchScoreboard } from "@/components/match/MatchScoreboard";
 import { MatchMeta } from "@/components/match/MatchMeta";
 import { StrategyList } from "@/components/match/StrategyList";
 import { PredictedLineups } from "@/components/match/PredictedLineups";
+import { AvailabilityInfo } from "@/components/match/AvailabilityInfo";
+import { PreviousMatchSummary } from "@/components/match/PreviousMatchSummary";
 import { AiGuidePanel } from "@/features/ai-guide/ui/AiGuidePanel";
 import { LiveGuidePanel } from "@/features/ai-guide/ui/LiveGuidePanel";
 import { AnalysisReportView } from "@/features/ai-guide/ui/AnalysisReportView";
@@ -47,6 +49,8 @@ export default async function MatchDetailPage({
           <div className="space-y-6">
             <MatchScoreboard match={match} />
             <MatchMeta match={match} showCountdown />
+            {match.availability && <AvailabilityInfo availability={match.availability} />}
+            {match.previousMatch && <PreviousMatchSummary previousMatch={match.previousMatch} />}
             {match.predictedLineups && (
               <PredictedLineups
                 homeTeam={match.homeTeam}
