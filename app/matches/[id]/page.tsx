@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMatchDetail } from "@/lib/data/matches";
+import { resolveMatchStatus } from "@/lib/match/status";
 import { MatchScoreboard } from "@/components/match/MatchScoreboard";
 import { MatchMeta } from "@/components/match/MatchMeta";
 import { StrategyList } from "@/components/match/StrategyList";
@@ -27,12 +28,15 @@ export default async function MatchDetailPage({
     notFound();
   }
 
+  const displayStatus = resolveMatchStatus(match, new Date());
+  const displayMatch = displayStatus === match.status ? match : { ...match, status: displayStatus };
+
   const statusLabel = {
     scheduled: "試合前",
     live: "LIVE",
     half_time: "ハーフタイム",
     finished: "試合終了",
-  }[match.status];
+  }[displayStatus];
 
   return (
     <div className="space-y-6 pb-4">
@@ -44,11 +48,11 @@ export default async function MatchDetailPage({
         <span className="w-8" />
       </div>
 
-      {match.status === "scheduled" && (
+      {displayStatus === "scheduled" && (
         <div className="space-y-6 md:grid md:grid-cols-2 md:items-start md:gap-6 md:space-y-0">
           <div className="space-y-6">
-            <MatchScoreboard match={match} />
-            <MatchMeta match={match} showCountdown />
+            <MatchScoreboard match={displayMatch} />
+            <MatchMeta match={displayMatch} showCountdown />
             {match.availability && <AvailabilityInfo availability={match.availability} />}
             {match.previousMatch && <PreviousMatchSummary previousMatch={match.previousMatch} />}
             {match.predictedLineups && (
@@ -61,7 +65,7 @@ export default async function MatchDetailPage({
           </div>
           <div className="space-y-6">
             <StrategyList strategies={match.strategies} />
-            <AiGuidePanel match={match} />
+            <AiGuidePanel match={displayMatch} />
             <details className="border border-border bg-surface p-4">
               <summary className="cursor-pointer text-[13px] font-bold text-text-primary">
                 もっと見る
@@ -103,13 +107,13 @@ export default async function MatchDetailPage({
         </div>
       )}
 
-      {match.status === "live" && (
-        <LiveGuidePanel match={match} scoreboard={<MatchScoreboard match={match} />} />
+      {displayStatus === "live" && (
+        <LiveGuidePanel match={displayMatch} scoreboard={<MatchScoreboard match={displayMatch} />} />
       )}
 
-      {match.status === "half_time" && (
+      {displayStatus === "half_time" && (
         <div className="space-y-6 md:grid md:grid-cols-2 md:items-start md:gap-6 md:space-y-0">
-          <MatchScoreboard match={match} />
+          <MatchScoreboard match={displayMatch} />
           <section className="border border-border bg-surface p-4">
             <h2 className="text-[15px] font-bold text-text-primary">戦術軍師 β</h2>
             <AnalysisReportView state="ready" report={getHalfTimeAnalysis(match)} />
@@ -117,10 +121,10 @@ export default async function MatchDetailPage({
         </div>
       )}
 
-      {match.status === "finished" && (
+      {displayStatus === "finished" && (
         <div className="space-y-6 md:grid md:grid-cols-2 md:items-start md:gap-6 md:space-y-0">
           <div className="space-y-6">
-            <MatchScoreboard match={match} />
+            <MatchScoreboard match={displayMatch} />
             <section className="border border-border bg-surface p-4">
               <h2 className="text-[15px] font-bold text-text-primary">戦術軍師 β 試合総括</h2>
               <AnalysisReportView state="ready" report={getPostMatchAnalysis(match)} />
