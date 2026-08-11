@@ -1,5 +1,6 @@
 import type { PredictedLineup, Team } from "@/types/domain";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { PredictedFormation } from "@/components/match/PredictedFormation";
 
 function TeamLineup({ team, lineup }: { team: Team; lineup: PredictedLineup }) {
   return (
@@ -59,6 +60,15 @@ export function PredictedLineups({
         <div className="space-y-5 border-t border-border px-3 py-3 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
           <TeamLineup team={homeTeam} lineup={lineups.home} />
           <TeamLineup team={awayTeam} lineup={lineups.away} />
+        </div>
+        <div className="space-y-5 border-t border-border px-3 py-3">
+          <p className="text-[11px] font-bold tracking-[0.08em] text-text-secondary">
+            PREDICTED FORMATION / 予想フォーメーション
+          </p>
+          <div className="space-y-5 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
+            <PredictedFormation team={homeTeam} lineup={lineups.home} />
+            <PredictedFormation team={awayTeam} lineup={lineups.away} />
+          </div>
         </div>
       </details>
       <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
