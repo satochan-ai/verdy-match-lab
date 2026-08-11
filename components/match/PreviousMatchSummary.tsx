@@ -30,6 +30,21 @@ export function PreviousMatchSummary({ previousMatch }: { previousMatch: Previou
           </div>
           <p className="shrink-0 text-[15px] font-bold tabular-nums text-text-primary">{previousMatch.score}</p>
         </div>
+        {previousMatch.goals && previousMatch.goals.length > 0 && (
+          <div className="border-b border-border py-3">
+            <p className="mb-1.5 text-[11px] font-bold tracking-[0.08em] text-text-secondary">
+              GOALS / 得点
+            </p>
+            <ul className="space-y-1 text-[12px] text-text-secondary">
+              {previousMatch.goals.map((goal) => (
+                <li key={`${goal.minute}-${goal.scorer}`}>
+                  <span className="font-bold tabular-nums text-text-primary">{goal.minute}</span>{" "}
+                  {goal.scorer}（{goal.team}）
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div className="pt-3">
           <p className="mb-2 text-[11px] font-bold tracking-[0.08em] text-text-secondary">STARTERS / 前節スタメン</p>
           <PlayerGroups groups={previousMatch.starters} />

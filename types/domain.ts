@@ -45,8 +45,15 @@ export interface PreviousMatch {
   label: string;
   opponent: string;
   score: string;
+  goals?: PreviousMatchGoal[];
   starters: PositionPlayerGroups;
   bench: PositionPlayerGroups;
+}
+
+export interface PreviousMatchGoal {
+  minute: string;
+  scorer: string;
+  team: string;
 }
 
 export interface AvailabilityInfo {
