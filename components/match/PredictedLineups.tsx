@@ -23,7 +23,7 @@ function TeamLineup({ team, lineup }: { team: Team; lineup: PredictedLineup }) {
         {lineup.starters.map((starter, index) => (
           <li
             key={`${starter.position}-${starter.number ?? "tbd"}-${starter.name}-${index}`}
-            className="grid min-w-0 grid-cols-[1.5rem_1.5rem_minmax(0,1fr)] items-center border-b border-border py-1.5 text-[12px]"
+            className="grid min-w-0 grid-cols-[1.5rem_1.5rem_minmax(0,1fr)] items-start border-b border-border py-1.5 text-[12px]"
           >
             <span className="text-[10px] font-bold text-text-secondary">
               {starter.position}
@@ -31,8 +31,13 @@ function TeamLineup({ team, lineup }: { team: Team; lineup: PredictedLineup }) {
             <span className="tabular-nums text-right text-text-secondary">
               {starter.number ?? "—"}
             </span>
-            <span className="min-w-0 whitespace-nowrap pl-1 font-bold text-text-primary">
-              {starter.name}
+            <span className="min-w-0 pl-1">
+              <span className="block truncate font-bold text-text-primary">{starter.name}</span>
+              {starter.alternative && (
+                <span className="block truncate text-[10px] font-normal text-text-secondary">
+                  別候補：{starter.alternative}
+                </span>
+              )}
             </span>
           </li>
         ))}

@@ -27,6 +27,7 @@ export interface PredictedStarter {
   number?: number;
   name: string;
   position: string;
+  alternative?: string;
 }
 
 export interface PredictedLineup {
