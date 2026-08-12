@@ -16,11 +16,8 @@ export function AnalysisReportView({
   if (state === "loading") {
     return (
       <div className="mt-4 border-t border-border pt-4" aria-live="polite">
-        <p className="text-[13px] text-text-secondary">軍師が戦況を読んでいます…</p>
-        <div className="mt-2 space-y-2">
-          <div className="h-3 w-3/4 animate-pulse rounded bg-border" />
-          <div className="h-3 w-1/2 animate-pulse rounded bg-border" />
-        </div>
+        <p className="text-[13px] font-bold text-text-secondary">分析中</p>
+        <p className="mt-1 text-[13px] text-text-secondary">軍師が戦況を読んでいます…</p>
       </div>
     );
   }
@@ -33,7 +30,7 @@ export function AnalysisReportView({
           <button
             type="button"
             onClick={onRetry}
-            className="mt-2 h-9 rounded-md border border-border px-4 text-[13px] font-bold text-text-primary"
+            className="mt-2 border-b border-border pb-0.5 text-[13px] font-bold text-text-primary"
           >
             再試行
           </button>
