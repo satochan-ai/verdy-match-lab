@@ -3,12 +3,12 @@ import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches"
 import { StrategyList } from "@/components/match/StrategyList";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 
-function formatFixture(iso: string) {
+function formatMatchday(iso: string) {
   const d = new Date(iso);
-  const parts = new Intl.DateTimeFormat("ja-JP", {
+  const parts = new Intl.DateTimeFormat("en-US", {
     timeZone: "Asia/Tokyo",
-    month: "numeric",
-    day: "numeric",
+    month: "2-digit",
+    day: "2-digit",
     weekday: "short",
     hour: "2-digit",
     minute: "2-digit",
@@ -18,8 +18,9 @@ function formatFixture(iso: string) {
     parts.find((item) => item.type === type)?.value ?? "";
 
   return {
-    date: `${part("month")}/${part("day")}(${part("weekday")})`,
-    time: `${part("hour")}:${part("minute")} KICK OFF`,
+    mmdd: `${part("month")}.${part("day")}`,
+    weekday: part("weekday").toUpperCase(),
+    time: `${part("hour")}:${part("minute")}`,
   };
 }
 
@@ -47,13 +48,13 @@ export default async function Home() {
       ? "win"
       : "loss";
 
-  const fixture = formatFixture(nextMatch.kickoffAt);
+  const fixture = formatMatchday(nextMatch.kickoffAt);
   const days = daysUntil(nextMatch.kickoffAt);
 
   return (
     <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
       <div className="space-y-8 lg:space-y-10">
-        <section className="section-reveal border-t-2 border-fusion-black pt-4 lg:pt-5">
+        <section className="section-reveal border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
           <div className="flex items-baseline justify-between gap-3">
             <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
               NEXT MATCH
@@ -65,41 +66,43 @@ export default async function Home() {
             )}
           </div>
 
-          <div className="mt-3 lg:flex lg:items-end lg:justify-between lg:gap-10">
-            <div className="flex items-center justify-center gap-3 lg:justify-start lg:gap-6">
-              <div className="flex-1 text-right lg:flex-none">
-                <p className="text-[18px] font-extrabold leading-tight text-text-primary lg:text-[28px]">
-                  東京ヴェルディ
-                </p>
-                <p className="text-[10px] text-text-secondary lg:text-[11px]">
-                  {nextMatch.isVerdyHome ? "HOME" : "AWAY"}
-                </p>
-              </div>
-              <div className="text-[12px] font-bold text-text-secondary lg:text-[14px]">
-                VS
-              </div>
-              <div className="flex-1 text-left lg:flex-none">
-                <p className="text-[18px] font-extrabold leading-tight text-text-primary lg:text-[28px]">
-                  {opponent.name}
-                </p>
-                <p className="text-[10px] text-text-secondary lg:text-[11px]">
-                  {nextMatch.isVerdyHome ? "AWAY" : "HOME"}
-                </p>
-              </div>
-            </div>
+          <p className="mt-2 tabular-nums text-[15px] font-extrabold tracking-wide text-text-secondary lg:text-[17px]">
+            {fixture.mmdd} <span className="ml-1">{fixture.weekday}</span>
+          </p>
 
-            <div className="mt-4 border-t border-border pt-3 text-center lg:mt-0 lg:shrink-0 lg:border-t-0 lg:pt-0 lg:text-right">
-              <p className="tabular-nums text-[14px] font-bold text-text-primary lg:text-[15px]">
-                {fixture.date} {fixture.time}
+          <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2 lg:mt-5 lg:gap-6">
+            <div className="min-w-0 text-right">
+              <p className="truncate text-[15px] font-extrabold leading-[1.15] text-text-primary lg:text-[36px]">
+                東京ヴェルディ
               </p>
-              <p className="mt-0.5 text-[12px] text-text-secondary">{nextMatch.venue}</p>
-              <Link
-                href={`/matches/${nextMatch.id}`}
-                className="mt-3 flex h-12 w-full items-center justify-center bg-primary-green text-[14px] font-bold text-white lg:mt-4 lg:inline-flex lg:h-10 lg:w-auto lg:px-5"
-              >
-                試合詳細を見る
-              </Link>
+              <p className="mt-0.5 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
+                {nextMatch.isVerdyHome ? "HOME" : "AWAY"}
+              </p>
             </div>
+            <div className="px-1.5 text-[13px] font-extrabold text-fusion-black lg:px-4 lg:text-[18px]">
+              VS
+            </div>
+            <div className="min-w-0 text-left">
+              <p className="truncate text-[15px] font-extrabold leading-[1.15] text-text-primary lg:text-[36px]">
+                {opponent.name}
+              </p>
+              <p className="mt-0.5 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
+                {nextMatch.isVerdyHome ? "AWAY" : "HOME"}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-4 flex flex-col items-center gap-1 border-t border-border pt-3 text-center lg:mt-6 lg:flex-row lg:items-baseline lg:justify-between lg:border-t-0 lg:pt-0 lg:text-left">
+            <p className="tabular-nums text-[15px] font-bold text-text-primary lg:text-[16px]">
+              {fixture.time} <span className="text-[11px] font-bold text-text-secondary lg:text-[12px]">KICK OFF</span>
+            </p>
+            <p className="text-[12px] text-text-secondary">{nextMatch.venue}</p>
+            <Link
+              href={`/matches/${nextMatch.id}`}
+              className="mt-3 flex h-12 w-full items-center justify-center bg-primary-green text-[14px] font-bold text-white lg:mt-0 lg:inline-flex lg:h-10 lg:w-auto lg:px-5"
+            >
+              試合詳細を見る
+            </Link>
           </div>
         </section>
 

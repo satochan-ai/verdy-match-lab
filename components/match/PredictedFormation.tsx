@@ -41,8 +41,8 @@ export function PredictedFormation({
 
   return (
     <section aria-labelledby={`predicted-formation-${team.id}`}>
-      <div className="flex items-baseline justify-between gap-3 border-b border-border pb-2">
-        <h3 id={`predicted-formation-${team.id}`} className="min-w-0 text-[13px] font-bold text-text-primary lg:text-[14px]">
+      <div className="flex items-baseline justify-between gap-3">
+        <h3 id={`predicted-formation-${team.id}`} className="min-w-0 text-[14px] font-extrabold text-text-primary lg:text-[16px]">
           {team.name}
         </h3>
         <p className="shrink-0 text-[12px] font-bold tabular-nums text-text-secondary">
@@ -52,14 +52,14 @@ export function PredictedFormation({
 
       <div
         aria-hidden="true"
-        className="relative mt-2 overflow-hidden border border-border bg-surface px-2 py-3 lg:px-4 lg:py-6"
+        className="relative mt-1.5 overflow-hidden border-2 border-fusion-black bg-surface-tint px-2 py-3 lg:mx-auto lg:max-w-[440px] lg:px-4 lg:py-7"
       >
-        <div className="pointer-events-none absolute inset-x-2 top-1/2 border-t border-border" />
-        <div className="pointer-events-none absolute left-1/2 top-1/2 size-11 -translate-x-1/2 -translate-y-1/2 rounded-full border border-border lg:size-16" />
-        <div className="pointer-events-none absolute inset-x-[18%] top-0 h-6 border-x border-b border-border lg:h-10" />
-        <div className="pointer-events-none absolute inset-x-[18%] bottom-0 h-6 border-x border-t border-border lg:h-10" />
+        <div className="pointer-events-none absolute inset-x-2 top-1/2 border-t border-fusion-black/15" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 size-12 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-fusion-black/15 lg:size-20" />
+        <div className="pointer-events-none absolute inset-x-[18%] top-0 h-6 border-x border-b border-fusion-black/15 lg:h-11" />
+        <div className="pointer-events-none absolute inset-x-[18%] bottom-0 h-6 border-x border-t border-fusion-black/15 lg:h-11" />
 
-        <div className="relative z-10 flex min-h-56 flex-col justify-between gap-2 lg:min-h-[22rem] lg:gap-3">
+        <div className="relative z-10 flex min-h-56 flex-col justify-between gap-2 lg:min-h-[25rem] lg:gap-3">
           {[...outfieldRows].reverse().map((players, rowIndex) => {
             return (
               <div key={`${lineup.formation}-${rowIndex}`} className="grid" style={{ gridTemplateColumns: `repeat(${players.length}, minmax(0, 1fr))` }}>
@@ -86,18 +86,21 @@ function PlayerMarker({
   team: Team;
 }) {
   const opponentAccent = !team.isVerdy ? OPPONENT_MARKER_ACCENT[team.id] : undefined;
+  // 東京Vを主役に保つため、opponent markerには最小限の調整（Fusion Black枠）のみを加える。
   const markerClass = team.isVerdy
-    ? "bg-primary-green text-white"
-    : opponentAccent ?? "border border-text-secondary bg-surface text-text-primary";
+    ? "bg-primary-green text-white lg:size-10"
+    : opponentAccent
+      ? `${opponentAccent} border-2 border-fusion-black lg:size-9`
+      : "border border-text-secondary bg-surface text-text-primary lg:size-9";
 
   return (
     <div className="min-w-0 text-center">
       <span
-        className={`mx-auto flex size-5 items-center justify-center rounded-full text-[10px] font-bold tabular-nums lg:size-8 lg:text-[13px] ${markerClass}`}
+        className={`mx-auto flex size-5 items-center justify-center rounded-full text-[10px] font-bold tabular-nums lg:text-[13px] ${markerClass}`}
       >
         {player.number ?? "—"}
       </span>
-      <p className="mx-auto mt-0.5 max-w-[5.5rem] truncate text-[10px] font-bold leading-tight text-text-primary lg:max-w-[7rem] lg:text-[12px]">
+      <p className="mx-auto mt-0.5 max-w-[5.5rem] truncate text-[10px] font-bold leading-tight text-text-primary lg:max-w-[7.5rem] lg:text-[13px]">
         {player.name}
       </p>
     </div>

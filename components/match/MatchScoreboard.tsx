@@ -14,8 +14,8 @@ export function MatchScoreboard({ match }: { match: Match }) {
   const hasScore = match.status !== "scheduled";
 
   return (
-    <div className="section-reveal border border-border bg-surface p-4 lg:p-6">
-      <div className="mb-3 flex items-center justify-center gap-2 border-b border-border pb-3 lg:mb-4 lg:pb-4">
+    <div className="section-reveal border-2 border-fusion-black bg-surface">
+      <div className="flex items-center justify-center gap-2 border-b border-border bg-background px-4 py-2">
         {match.status === "live" && <StatusBadge variant="live" />}
         {match.status === "half_time" && <StatusBadge variant="half_time" />}
         {match.status === "finished" && <StatusBadge variant="finished" />}
@@ -27,23 +27,29 @@ export function MatchScoreboard({ match }: { match: Match }) {
         )}
       </div>
 
-      <div className="flex items-center justify-center gap-4 lg:gap-8">
-        <div className="flex-1 text-right lg:flex-none">
-          <p className="text-[16px] font-extrabold leading-tight text-text-primary lg:text-[22px]">
+      <div className="flex flex-col items-center gap-3 px-4 py-5 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:items-center lg:gap-6 lg:px-8 lg:py-8">
+        <div className="text-center lg:min-w-0 lg:text-right">
+          <p className="text-[19px] font-extrabold leading-tight text-text-primary lg:truncate lg:text-[26px]">
             {match.homeTeam.name}
           </p>
-          <p className="text-[11px] text-text-secondary">HOME</p>
+          <p className="mt-1 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">HOME</p>
         </div>
 
-        <div className="tabular-nums text-center text-[32px] font-extrabold text-text-primary lg:text-[44px]">
-          {hasScore ? `${match.homeScore} - ${match.awayScore}` : "vs"}
+        <div className="flex flex-col items-center lg:border-x lg:border-border lg:px-6">
+          {hasScore ? (
+            <p className="tabular-nums text-[34px] font-extrabold leading-none text-text-primary lg:text-[54px]">
+              {match.homeScore} - {match.awayScore}
+            </p>
+          ) : (
+            <p className="text-[15px] font-extrabold text-fusion-black lg:text-[20px]">VS</p>
+          )}
         </div>
 
-        <div className="flex-1 text-left lg:flex-none">
-          <p className="text-[16px] font-extrabold leading-tight text-text-primary lg:text-[22px]">
+        <div className="text-center lg:min-w-0 lg:text-left">
+          <p className="text-[19px] font-extrabold leading-tight text-text-primary lg:truncate lg:text-[26px]">
             {match.awayTeam.name}
           </p>
-          <p className="text-[11px] text-text-secondary">AWAY</p>
+          <p className="mt-1 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">AWAY</p>
         </div>
       </div>
     </div>

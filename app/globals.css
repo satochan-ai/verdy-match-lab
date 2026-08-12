@@ -37,6 +37,12 @@
    */
   --team-opponent-accent: #f2c94c;
 
+  /*
+   * Matchday graphic / pitch用の極薄グリーンティント面。gradientやHEX直書きを避け、
+   * 既存トークンのcolor-mixのみで構成する。NEXT MATCH・Scoreboard・Formation pitch兼用。
+   */
+  --color-surface-tint: color-mix(in srgb, var(--color-verdy-green) 5%, var(--color-surface));
+
   /* Motion tokens：控えめな編集的Motion専用。派手な演出には使わない。 */
   --motion-fast: 160ms;
   --motion-base: 200ms;
@@ -61,6 +67,7 @@
   --color-shine-white: var(--color-shine-white);
   --color-fusion-black: var(--color-fusion-black);
   --color-team-opponent-accent: var(--team-opponent-accent);
+  --color-surface-tint: var(--color-surface-tint);
   --font-sans: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif;
 }
 

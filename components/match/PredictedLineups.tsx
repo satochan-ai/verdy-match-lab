@@ -70,7 +70,7 @@ export function PredictedLineups({
           <p className="text-[11px] font-bold tracking-[0.08em] text-text-secondary">
             PREDICTED FORMATION / 予想フォーメーション
           </p>
-          <div className="space-y-5 lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
+          <div className="space-y-6 lg:space-y-8">
             <PredictedFormation team={homeTeam} lineup={lineups.home} />
             <PredictedFormation team={awayTeam} lineup={lineups.away} />
           </div>
