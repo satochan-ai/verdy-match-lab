@@ -36,6 +36,12 @@
    * marker文字色は十分なコントラストを確保するためFusion Black系を使う。
    */
   --team-opponent-accent: #f2c94c;
+
+  /* Motion tokens：控えめな編集的Motion専用。派手な演出には使わない。 */
+  --motion-fast: 160ms;
+  --motion-base: 200ms;
+  --motion-slow: 220ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
@@ -66,6 +72,109 @@ body {
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Football editorial motion：状態理解・視線誘導のための最小限のMotionのみ。
+ * 装飾目的のbounce/scale overshoot/spring/glow/shimmer等は使用しない。
+ */
+@keyframes match-page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes section-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes strategy-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes formation-line-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes answer-reveal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* LIVE状態のみに限定した極小pulse。opacityとscaleのみ、ゆっくり、明滅なし。 */
+@keyframes live-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.05);
+  }
+}
+
+.match-page-enter {
+  animation: match-page-enter var(--motion-base) var(--ease-out) both;
+}
+
+.section-reveal {
+  animation: section-reveal var(--motion-slow) var(--ease-out) both;
+}
+
+.strategy-reveal-list > li {
+  animation: strategy-reveal var(--motion-base) var(--ease-out) both;
+}
+.strategy-reveal-list > li:nth-child(1) {
+  animation-delay: 0ms;
+}
+.strategy-reveal-list > li:nth-child(2) {
+  animation-delay: 50ms;
+}
+.strategy-reveal-list > li:nth-child(3) {
+  animation-delay: 100ms;
+}
+
+.formation-line-reveal {
+  animation: formation-line-reveal var(--motion-fast) var(--ease-out) both;
+}
+
+.answer-reveal {
+  animation: answer-reveal var(--motion-fast) var(--ease-out) both;
+}
+
+.live-pulse {
+  animation: live-pulse 2.2s ease-in-out infinite;
 }
 
 /*

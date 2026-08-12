@@ -14,7 +14,7 @@ export function MatchScoreboard({ match }: { match: Match }) {
   const hasScore = match.status !== "scheduled";
 
   return (
-    <div className="border border-border bg-surface p-4 lg:p-6">
+    <div className="section-reveal border border-border bg-surface p-4 lg:p-6">
       <div className="mb-3 flex items-center justify-center gap-2 border-b border-border pb-3 lg:mb-4 lg:pb-4">
         {match.status === "live" && <StatusBadge variant="live" />}
         {match.status === "half_time" && <StatusBadge variant="half_time" />}

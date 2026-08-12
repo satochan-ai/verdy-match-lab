@@ -66,7 +66,7 @@ export function PredictedLineups({
           <TeamLineup team={homeTeam} lineup={lineups.home} />
           <TeamLineup team={awayTeam} lineup={lineups.away} />
         </div>
-        <div className="space-y-5 border-t border-border px-3 py-3">
+        <div className="section-reveal space-y-5 border-t border-border px-3 py-3">
           <p className="text-[11px] font-bold tracking-[0.08em] text-text-secondary">
             PREDICTED FORMATION / 予想フォーメーション
           </p>

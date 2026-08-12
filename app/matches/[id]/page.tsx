@@ -163,7 +163,7 @@ export default async function MatchDetailPage({
           </div>
 
           <div className="mt-10 lg:col-start-2 lg:mt-0">
-            <section>
+            <section className="section-reveal">
               <SectionHeader title="戦術軍師 β 試合総括" eyebrow="MATCH REVIEW" />
               <div className="border-y border-border bg-surface p-4">
                 <AnalysisReportView state="ready" report={getPostMatchAnalysis(match)} />

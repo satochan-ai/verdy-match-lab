@@ -14,7 +14,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="ja" className="h-full">
       <body className="flex min-h-full flex-col bg-background text-text-primary antialiased">
         <Header />
-        <main className="flex-1 py-6 md:py-8">
+        <main className="match-page-enter flex-1 py-6 md:py-8">
           <Container>{children}</Container>
         </main>
         <Footer />

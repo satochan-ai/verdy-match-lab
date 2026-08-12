@@ -53,7 +53,7 @@ export default async function Home() {
   return (
     <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
       <div className="space-y-8 lg:space-y-10">
-        <section className="border-t-2 border-fusion-black pt-4 lg:pt-5">
+        <section className="section-reveal border-t-2 border-fusion-black pt-4 lg:pt-5">
           <div className="flex items-baseline justify-between gap-3">
             <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
               NEXT MATCH

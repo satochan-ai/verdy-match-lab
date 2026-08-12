@@ -51,8 +51,11 @@ export function StatusBadge({
 }) {
   return (
     <span
-      className={`inline-block rounded px-2 py-0.5 text-[11px] font-bold tracking-wide ${styles[variant]}`}
+      className={`inline-flex items-center gap-1.5 rounded px-2 py-0.5 text-[11px] font-bold tracking-wide ${styles[variant]}`}
     >
+      {variant === "live" && (
+        <span aria-hidden="true" className="live-pulse inline-block size-1.5 rounded-full bg-white" />
+      )}
       {label ?? labels[variant]}
     </span>
   );
