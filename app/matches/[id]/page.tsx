@@ -5,6 +5,7 @@ import { resolveMatchStatus } from "@/lib/match/status";
 import { MatchScoreboard } from "@/components/match/MatchScoreboard";
 import { MatchMeta } from "@/components/match/MatchMeta";
 import { StrategyList } from "@/components/match/StrategyList";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PredictedLineups } from "@/components/match/PredictedLineups";
 import { AvailabilityInfo } from "@/components/match/AvailabilityInfo";
 import { PreviousMatchSummary } from "@/components/match/PreviousMatchSummary";
@@ -132,7 +133,14 @@ export default async function MatchDetailPage({
 
       {displayStatus === "half_time" && (
         <div className="space-y-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
-          <MatchScoreboard match={displayMatch} />
+          <div className="space-y-6">
+            <MatchScoreboard match={displayMatch} />
+            <StrategyList
+              strategies={match.strategies}
+              showResult
+              title="軍師の三策（前半終了時点）"
+            />
+          </div>
           <section className="border border-border bg-surface p-4">
             <h2 className="text-[15px] font-bold text-text-primary">戦術軍師 β</h2>
             <AnalysisReportView state="ready" report={getHalfTimeAnalysis(match)} />
@@ -141,19 +149,67 @@ export default async function MatchDetailPage({
       )}
 
       {displayStatus === "finished" && (
-        <div className="space-y-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
-          <div className="space-y-6">
+        <div className="lg:grid lg:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
+          <div className="lg:col-start-1">
             <MatchScoreboard match={displayMatch} />
-            <section className="border border-border bg-surface p-4">
-              <h2 className="text-[15px] font-bold text-text-primary">戦術軍師 β 試合総括</h2>
-              <AnalysisReportView state="ready" report={getPostMatchAnalysis(match)} />
+          </div>
+
+          <div className="mt-10 lg:col-start-1 lg:mt-6">
+            <StrategyList
+              strategies={match.strategies}
+              showResult
+              title="軍師の三策 答え合わせ"
+            />
+          </div>
+
+          <div className="mt-10 lg:col-start-2 lg:mt-0">
+            <section>
+              <SectionHeader title="戦術軍師 β 試合総括" eyebrow="MATCH REVIEW" />
+              <div className="border-y border-border bg-surface p-4">
+                <AnalysisReportView state="ready" report={getPostMatchAnalysis(match)} />
+              </div>
             </section>
           </div>
-          <StrategyList
-            strategies={match.strategies}
-            showResult
-            title="軍師の三策 答え合わせ"
-          />
+
+          <div className="mt-8 lg:col-start-2 lg:mt-8">
+            <details className="border border-border bg-surface p-4">
+              <summary className="cursor-pointer text-[13px] font-bold text-text-primary">
+                補助情報を見る
+              </summary>
+              <div className="mt-4 space-y-4">
+                <div>
+                  <h3 className="text-[13px] font-bold text-text-primary">注目ポイント</h3>
+                  <ul className="mt-1 list-disc space-y-0.5 pl-4">
+                    {match.focusPoints.map((p) => (
+                      <li key={p} className="text-[13px] text-text-primary">
+                        {p}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-[13px] font-bold text-text-primary">
+                    東京ヴェルディの特徴
+                  </h3>
+                  <p className="mt-1 text-[13px] text-text-primary">
+                    攻撃：{match.verdyProfile.characteristics.attack}
+                  </p>
+                  <p className="mt-1 text-[13px] text-text-primary">
+                    守備：{match.verdyProfile.characteristics.defense}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-[13px] font-bold text-text-primary">相手の特徴</h3>
+                  <p className="mt-1 text-[13px] text-text-primary">
+                    攻撃：{match.opponentProfile.characteristics.attack}
+                  </p>
+                  <p className="mt-1 text-[13px] text-text-primary">
+                    守備：{match.opponentProfile.characteristics.defense}
+                  </p>
+                </div>
+              </div>
+            </details>
+          </div>
         </div>
       )}
     </div>
