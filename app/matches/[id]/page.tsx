@@ -9,6 +9,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PredictedLineups } from "@/components/match/PredictedLineups";
 import { AvailabilityInfo } from "@/components/match/AvailabilityInfo";
 import { PreviousMatchSummary } from "@/components/match/PreviousMatchSummary";
+import { HalfTimeNote } from "@/components/match/HalfTimeNote";
 import { AiGuidePanel } from "@/features/ai-guide/ui/AiGuidePanel";
 import { LiveGuidePanel } from "@/features/ai-guide/ui/LiveGuidePanel";
 import { AnalysisReportView } from "@/features/ai-guide/ui/AnalysisReportView";
@@ -127,9 +128,7 @@ export default async function MatchDetailPage({
         </div>
       )}
 
-      {displayStatus === "live" && (
-        <LiveGuidePanel match={displayMatch} scoreboard={<MatchScoreboard match={displayMatch} />} />
-      )}
+      {displayStatus === "live" && <LiveGuidePanel match={displayMatch} />}
 
       {displayStatus === "half_time" && (
         <div className="space-y-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
@@ -140,6 +139,7 @@ export default async function MatchDetailPage({
               showResult
               title="軍師の三策（前半終了時点）"
             />
+            <HalfTimeNote />
           </div>
           <section className="border border-border bg-surface p-4">
             <h2 className="text-[15px] font-bold text-text-primary">戦術軍師 β</h2>

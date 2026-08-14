@@ -10,8 +10,19 @@ const timeSegmentLabel: Record<TimeSegment, string> = {
   second_late: "後半終盤",
 };
 
-export function MatchScoreboard({ match }: { match: Match }) {
+export function MatchScoreboard({
+  match,
+  displayHomeScore,
+  displayAwayScore,
+}: {
+  match: Match;
+  /** LIVE手動スコア入力など、match本体をmutateせずに表示だけ上書きしたい場合に使用。 */
+  displayHomeScore?: number;
+  displayAwayScore?: number;
+}) {
   const hasScore = match.status !== "scheduled";
+  const homeScore = displayHomeScore ?? match.homeScore;
+  const awayScore = displayAwayScore ?? match.awayScore;
 
   return (
     <div className="section-reveal border-2 border-fusion-black bg-surface">
@@ -38,7 +49,7 @@ export function MatchScoreboard({ match }: { match: Match }) {
         <div className="flex flex-col items-center lg:border-x lg:border-border lg:px-6">
           {hasScore ? (
             <p className="tabular-nums text-[34px] font-extrabold leading-none text-text-primary lg:text-[54px]">
-              {match.homeScore} - {match.awayScore}
+              {homeScore} - {awayScore}
             </p>
           ) : (
             <p className="text-[15px] font-extrabold text-fusion-black lg:text-[20px]">VS</p>

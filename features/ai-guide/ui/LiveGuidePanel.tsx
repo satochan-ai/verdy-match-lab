@@ -12,15 +12,12 @@ import { getLiveAnalysis } from "@/features/ai-guide/mockResponses";
 import { SituationSelector } from "@/features/ai-guide/ui/SituationSelector";
 import { AnalysisReportView } from "@/features/ai-guide/ui/AnalysisReportView";
 import { StickyCta } from "@/components/ui/StickyCta";
-import type { ReactNode } from "react";
+import { MatchScoreboard } from "@/components/match/MatchScoreboard";
+import { LiveScoreControl } from "@/components/match/LiveScoreControl";
 
-export function LiveGuidePanel({
-  match,
-  scoreboard,
-}: {
-  match: Match;
-  scoreboard?: ReactNode;
-}) {
+export function LiveGuidePanel({ match }: { match: Match }) {
+  const [homeScore, setHomeScore] = useState(match.homeScore ?? 0);
+  const [awayScore, setAwayScore] = useState(match.awayScore ?? 0);
   const [scoreSituation, setScoreSituation] = useState<ScoreSituation | null>(null);
   const [timeSegment, setTimeSegment] = useState<TimeSegment | null>(match.timeSegment);
   const [specials, setSpecials] = useState<SpecialSituation[]>([]);
@@ -47,7 +44,17 @@ export function LiveGuidePanel({
   return (
     <div className="space-y-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
       <div className="space-y-6">
-        {scoreboard}
+        <MatchScoreboard match={match} displayHomeScore={homeScore} displayAwayScore={awayScore} />
+        <LiveScoreControl
+          homeTeamName={match.homeTeam.name}
+          awayTeamName={match.awayTeam.name}
+          homeScore={homeScore}
+          awayScore={awayScore}
+          onHomeIncrement={() => setHomeScore((prev) => prev + 1)}
+          onHomeDecrement={() => setHomeScore((prev) => Math.max(0, prev - 1))}
+          onAwayIncrement={() => setAwayScore((prev) => prev + 1)}
+          onAwayDecrement={() => setAwayScore((prev) => Math.max(0, prev - 1))}
+        />
         <section className="border border-border bg-surface p-4 pb-2">
           <h2 className="text-[15px] font-bold text-text-primary">状況を入力</h2>
           <div className="mt-3">
