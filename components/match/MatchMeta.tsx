@@ -1,4 +1,5 @@
 import type { Match } from "@/types/domain";
+import { getMatchDayLabel } from "@/lib/match/display";
 
 function formatDate(iso: string) {
   const d = new Date(iso);
@@ -16,20 +17,19 @@ function formatDate(iso: string) {
   return `${part("month")}/${part("day")}(${part("weekday")}) ${part("hour")}:${part("minute")} KO`;
 }
 
-function daysUntil(iso: string) {
-  const diff = new Date(iso).getTime() - Date.now();
-  return Math.ceil(diff / (1000 * 60 * 60 * 24));
-}
-
 export function MatchMeta({ match, showCountdown }: { match: Match; showCountdown?: boolean }) {
-  const days = daysUntil(match.kickoffAt);
+  const dayLabel = getMatchDayLabel(match, new Date());
 
   return (
     <div className="space-y-1 text-[14px] text-text-primary">
-      {showCountdown && match.status === "scheduled" && (
-        <p className="text-[12px] font-bold text-primary-green">
-          {days > 0 ? `あと${days}日` : "本日開催"}
-        </p>
+      {showCountdown && dayLabel.kind === "days" && (
+        <p className="text-[12px] font-bold text-primary-green">あと{dayLabel.days}日</p>
+      )}
+      {showCountdown && dayLabel.kind === "today" && (
+        <p className="text-[12px] font-bold text-primary-green">今日</p>
+      )}
+      {showCountdown && dayLabel.kind === "live" && (
+        <p className="text-[12px] font-bold text-primary-green">試合中</p>
       )}
       <p>{formatDate(match.kickoffAt)}</p>
       <p className="text-text-secondary">{match.venue}</p>

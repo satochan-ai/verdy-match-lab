@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
 import { StrategyList } from "@/components/match/StrategyList";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { resolveMatchStatus } from "@/lib/match/status";
+import { getMatchDayLabel } from "@/lib/match/display";
 
 function formatMatchday(iso: string) {
   const d = new Date(iso);
@@ -30,27 +30,6 @@ function formatShortDate(iso: string) {
   return `${d.getMonth() + 1}/${d.getDate()}`;
 }
 
-function jstDateKey(d: Date) {
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Asia/Tokyo",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  }).format(d);
-}
-
-/**
- * JSTの暦日ベースでの日数差分。時刻差ではなく、試合日と今日の「calendar day」差分を返す。
- * 例：現在 8/14 11:10 JST・キックオフ 8/14 19:00 JSTなら、時刻差(約8時間)ではなく0を返す。
- */
-function daysUntil(kickoffIso: string, now: Date) {
-  const [ky, km, kd] = jstDateKey(new Date(kickoffIso)).split("-").map(Number);
-  const [ny, nm, nd] = jstDateKey(now).split("-").map(Number);
-  const kickoffUTCMidnight = Date.UTC(ky, km - 1, kd);
-  const nowUTCMidnight = Date.UTC(ny, nm - 1, nd);
-  return Math.round((kickoffUTCMidnight - nowUTCMidnight) / (1000 * 60 * 60 * 24));
-}
-
 export default async function Home() {
   const [nextMatch, recent] = await Promise.all([
     getNextMatch(),
@@ -68,8 +47,7 @@ export default async function Home() {
 
   const now = new Date();
   const fixture = formatMatchday(nextMatch.kickoffAt);
-  const days = daysUntil(nextMatch.kickoffAt, now);
-  const displayStatus = resolveMatchStatus(nextMatch, now);
+  const dayLabel = getMatchDayLabel(nextMatch, now);
 
   return (
     <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
@@ -79,12 +57,13 @@ export default async function Home() {
             <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
               NEXT MATCH
             </p>
-            {displayStatus === "scheduled" && (
-              <p className="text-[11px] font-bold text-primary-green">
-                {days > 0 ? `あと${days}日` : "今日"}
-              </p>
+            {dayLabel.kind === "days" && (
+              <p className="text-[11px] font-bold text-primary-green">あと{dayLabel.days}日</p>
             )}
-            {displayStatus === "live" && (
+            {dayLabel.kind === "today" && (
+              <p className="text-[11px] font-bold text-primary-green">今日</p>
+            )}
+            {dayLabel.kind === "live" && (
               <p className="text-[11px] font-bold text-primary-green">試合中</p>
             )}
           </div>
