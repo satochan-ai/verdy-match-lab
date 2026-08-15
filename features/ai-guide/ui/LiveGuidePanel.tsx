@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type {
   Match,
   ScoreSituation,
@@ -14,14 +14,38 @@ import { AnalysisReportView } from "@/features/ai-guide/ui/AnalysisReportView";
 import { StickyCta } from "@/components/ui/StickyCta";
 import { MatchScoreboard } from "@/components/match/MatchScoreboard";
 import { LiveScoreControl } from "@/components/match/LiveScoreControl";
+import { readLiveScore, writeLiveScore } from "@/lib/client/match-storage";
 
 export function LiveGuidePanel({ match }: { match: Match }) {
   const [homeScore, setHomeScore] = useState(match.homeScore ?? 0);
   const [awayScore, setAwayScore] = useState(match.awayScore ?? 0);
+  const [isScoreRestored, setIsScoreRestored] = useState(false);
   const [scoreSituation, setScoreSituation] = useState<ScoreSituation | null>(null);
   const [timeSegment, setTimeSegment] = useState<TimeSegment | null>(match.timeSegment);
   const [specials, setSpecials] = useState<SpecialSituation[]>([]);
   const [state, setState] = useState<AiPanelState>("idle");
+
+  // Client mount後にlocalStorageを確認し、正常な保存値があれば復元する。
+  // restore完了前にinitial stateを書き戻してしまう事故を防ぐため、
+  // isScoreRestoredがtrueになるまで下の保存effectは動かさない。
+  // setTimeoutで一段遅らせ、effect内での直接setState呼び出しによる
+  // cascading render警告（react-hooks/set-state-in-effect）を避ける。
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      const saved = readLiveScore(match.id);
+      if (saved) {
+        setHomeScore(saved.homeScore);
+        setAwayScore(saved.awayScore);
+      }
+      setIsScoreRestored(true);
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [match.id]);
+
+  useEffect(() => {
+    if (!isScoreRestored) return;
+    writeLiveScore(match.id, homeScore, awayScore);
+  }, [isScoreRestored, match.id, homeScore, awayScore]);
 
   const canSubmit = Boolean(scoreSituation && timeSegment);
   const report =

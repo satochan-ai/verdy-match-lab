@@ -1,14 +1,34 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
+import { readHalfTimeNote, writeHalfTimeNote } from "@/lib/client/match-storage";
 
 /**
- * 前半終了時点でのユーザー自身の気づきメモ。local stateのみで、
- * ページreloadで消えてよい（今回は永続保存・POSTへの引き継ぎは実装しない）。
+ * 前半終了時点でのユーザー自身の気づきメモ。試合ごとにlocalStorageへ保存し、
+ * reload後も端末内で復元する（今回はPOSTへの引き継ぎは実装しない）。
  */
-export function HalfTimeNote() {
+export function HalfTimeNote({ matchId }: { matchId: string }) {
   const textareaId = useId();
   const [note, setNote] = useState("");
+  const [isNoteRestored, setIsNoteRestored] = useState(false);
+
+  // setTimeoutで一段遅らせ、effect内での直接setState呼び出しによる
+  // cascading render警告（react-hooks/set-state-in-effect）を避ける。
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      const saved = readHalfTimeNote(matchId);
+      if (typeof saved === "string") {
+        setNote(saved);
+      }
+      setIsNoteRestored(true);
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [matchId]);
+
+  useEffect(() => {
+    if (!isNoteRestored) return;
+    writeHalfTimeNote(matchId, note);
+  }, [isNoteRestored, matchId, note]);
 
   return (
     <section className="border-y border-border bg-surface p-4">

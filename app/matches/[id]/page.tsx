@@ -139,7 +139,7 @@ export default async function MatchDetailPage({
               showResult
               title="軍師の三策（前半終了時点）"
             />
-            <HalfTimeNote />
+            <HalfTimeNote matchId={match.id} />
           </div>
           <section className="border border-border bg-surface p-4">
             <h2 className="text-[15px] font-bold text-text-primary">戦術軍師 β</h2>
