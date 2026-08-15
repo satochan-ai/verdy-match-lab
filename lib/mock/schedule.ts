@@ -72,6 +72,16 @@ export const scheduleMatches: ScheduleMatch[] = [
     status: "scheduled",
   },
   {
+    id: "sched-cerezo",
+    competition: "j1",
+    round: "第6節",
+    kickoffAt: "2026-09-06T19:00:00+09:00",
+    venue: "YANMAR HANASAKA STADIUM",
+    isVerdyHome: false,
+    opponentName: "C大阪",
+    status: "scheduled",
+  },
+  {
     id: "sched-levain-1st",
     competition: "levain_cup",
     round: "1stラウンド",
