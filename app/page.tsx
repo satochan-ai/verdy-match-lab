@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
+import { getPreviousMatches, getUpcomingMatches } from "@/lib/data/schedule";
 import { StrategyList } from "@/components/match/StrategyList";
+import { MatchSchedule } from "@/components/match/MatchSchedule";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { getMatchDayLabel } from "@/lib/match/display";
 
@@ -31,9 +33,11 @@ function formatShortDate(iso: string) {
 }
 
 export default async function Home() {
-  const [nextMatch, recent] = await Promise.all([
+  const [nextMatch, recent, pastSchedule, nextSchedule] = await Promise.all([
     getNextMatch(),
     getRecentFinishedMatchSummary(),
+    getPreviousMatches(5),
+    getUpcomingMatches(5),
   ]);
   const opponent = nextMatch.isVerdyHome ? nextMatch.awayTeam : nextMatch.homeTeam;
   const recentOpponent = recent.isVerdyHome ? recent.awayTeam : recent.homeTeam;
@@ -135,6 +139,10 @@ export default async function Home() {
         <Link href="/archive" className="block text-[12px] font-bold text-deep-green">
           過去の試合を見る →
         </Link>
+      </div>
+
+      <div className="mt-8 border-t border-border pt-6 lg:col-span-2 lg:mt-10">
+        <MatchSchedule past={pastSchedule} next={nextSchedule} />
       </div>
     </div>
   );

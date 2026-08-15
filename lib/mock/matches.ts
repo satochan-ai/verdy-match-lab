@@ -14,10 +14,56 @@ export const matches: Match[] = [
     isVerdyHome: true,
     kickoffAt: "2026-08-14T19:00:00+09:00",
     venue: "ＭＵＦＧスタジアム（国立競技場）",
-    status: "scheduled",
-    homeScore: null,
-    awayScore: null,
+    status: "finished",
+    homeScore: 1,
+    awayScore: 3,
     timeSegment: null,
+    /**
+     * 公式結果（https://www.verdy.co.jp/match/info/2026081401/result）で確認できた
+     * 得点・アシストのみを記録。11分の遠藤アシストはユーザー確認情報でも公式結果でも
+     * 未確認のため空欄のまま（推測で埋めない）。
+     */
+    goals: [
+      { minute: "2'", scorer: "林 尚輝", team: "東京V", assist: "食野 壮磨" },
+      { minute: "11'", scorer: "遠藤 渓太", team: "柏" },
+      { minute: "65'", scorer: "瀬川 祐輔", team: "柏", assist: "渡井 理己" },
+      { minute: "82'", scorer: "久保 藤次郎", team: "柏", assist: "渡井 理己" },
+    ],
+    cards: [
+      { minute: "65'", player: "中川 敦瑛", team: "柏", type: "yellow" },
+      { minute: "88'", player: "鈴木 海音", team: "東京V", type: "yellow" },
+      { minute: "90+6'", player: "渡井 理己", team: "柏", type: "yellow" },
+    ],
+    actualLineups: {
+      home: {
+        starters: {
+          GK: ["1 マテウス"],
+          DF: ["15 鈴木 海音", "4 林 尚輝", "6 宮原 和也"],
+          MF: ["22 内田 陽介", "20 食野 壮磨", "16 平川 怜", "18 溝口 修平"],
+          FW: ["7 松橋 優安", "9 染野 唯月", "14 福田 湧矢"],
+        },
+        bench: {
+          GK: ["21 長沢 祐弥"],
+          DF: ["5 井上 竜太", "36 松田 陸"],
+          MF: ["24 仲山 獅恩", "28 山本 丈偉", "40 新井 悠太"],
+          FW: ["25 熊取谷 一星", "27 白井 亮丞", "38 神田 奏真"],
+        },
+      },
+      away: {
+        starters: {
+          GK: ["25 小島 亨介"],
+          DF: ["24 久保 藤次郎", "42 原田 亘", "4 古賀 太陽", "26 杉岡 大暉"],
+          MF: ["39 中川 敦瑛", "27 熊坂 光希", "5 遠藤 渓太", "8 小泉 佳穂"],
+          FW: ["87 山内 日向汰", "18 垣田 裕暉"],
+        },
+        bench: {
+          GK: ["29 永井 堅梧"],
+          DF: ["88 馬場 晴也", "2 三丸 拡"],
+          MF: ["40 原川 力", "44 弓場 堅真", "11 渡井 理己", "19 仲間 隼斗", "20 瀬川 祐輔"],
+          FW: ["9 細谷 真大"],
+        },
+      },
+    },
     verdyProfile: {
       formation: "3-4-2-1",
       characteristics: {
@@ -137,6 +183,35 @@ export const matches: Match[] = [
         result: "pending",
       },
     ],
+  },
+  {
+    // 次戦。三策・predicted lineup・availabilityは試合前分析Phaseで別途作成するため、
+    // 現時点ではTopのNEXT MATCH自動選択に必要な最小限のフィールドのみを持つ。
+    id: "match-7",
+    homeTeam: opponent("fagiano-okayama", "ファジアーノ岡山"),
+    awayTeam: verdy,
+    isVerdyHome: false,
+    kickoffAt: "2026-08-22T18:30:00+09:00",
+    venue: "ＪＦＥ晴れの国スタジアム",
+    status: "scheduled",
+    homeScore: null,
+    awayScore: null,
+    timeSegment: null,
+    verdyProfile: {
+      formation: "情報準備中",
+      characteristics: { attack: "情報準備中", defense: "情報準備中" },
+      keyPlayers: [],
+      recentTrend: "情報準備中",
+    },
+    opponentProfile: {
+      formation: "情報準備中",
+      characteristics: { attack: "情報準備中", defense: "情報準備中" },
+      keyPlayers: [],
+      recentTrend: "情報準備中",
+    },
+    matchNotes: [],
+    focusPoints: [],
+    strategies: [],
   },
   {
     id: "match-0",

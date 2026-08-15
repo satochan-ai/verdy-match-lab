@@ -55,6 +55,25 @@ export interface PreviousMatchGoal {
   minute: string;
   scorer: string;
   team: string;
+  /** アシスト。公式結果で確認できた場合のみ設定する（推測で埋めない）。 */
+  assist?: string;
+}
+
+/** Matchの自試合の得点記録。前節参照用のPreviousMatchGoalと同一形状のため型を共有する。 */
+export type MatchGoal = PreviousMatchGoal;
+
+export interface MatchCard {
+  /** 公式結果ページで確認できた場合のみ設定する。未確認ならundefinedのまま。 */
+  minute?: string;
+  player: string;
+  team: string;
+  type: "yellow" | "red";
+}
+
+/** 試合終了後の実際のStarting XI / Bench。予想（PredictedLineup）とは別物として扱う。 */
+export interface ActualLineup {
+  starters: PositionPlayerGroups;
+  bench: PositionPlayerGroups;
 }
 
 export interface AvailabilityInfo {
@@ -117,6 +136,18 @@ export interface Match {
   };
   previousMatch?: PreviousMatch;
   availability?: AvailabilityInfo;
+  /** この試合自体の得点記録。finished以降、公式結果が確認できた場合のみ設定する。 */
+  goals?: MatchGoal[];
+  /** この試合自体の警告・退場記録。finished以降、公式結果が確認できた場合のみ設定する。 */
+  cards?: MatchCard[];
+  /**
+   * 試合終了後の実際のStarting XI / Bench。predictedLineupsとは独立したフィールドで、
+   * 予想を実績で上書きしない（PRE_MATCHのpredictedLineupsはそのまま残す）。
+   */
+  actualLineups?: {
+    home: ActualLineup;
+    away: ActualLineup;
+  };
   matchNotes: string[];
   focusPoints: string[];
   strategies: Strategy[];
@@ -126,4 +157,30 @@ export interface Match {
    * この値を設定しないため、DB由来のMatchは常にundefined＝公開扱いとなる。
    */
   isDemo?: boolean;
+}
+
+/** MATCH SCHEDULE表示用の大会区分。東京ヴェルディトップチームの公式戦のみを対象とする。 */
+export type Competition = "j1" | "emperor_cup" | "levain_cup";
+
+/**
+ * MATCH SCHEDULE（前後最大5試合）表示専用の軽量な試合情報。
+ * Matchのように詳細画面向けの重いフィールド（predictedLineups・strategies等）を持たず、
+ * 一覧表示に必要な最小限の項目のみを持つ。detailMatchIdがある試合のみ詳細ページへリンクする。
+ */
+export interface ScheduleMatch {
+  id: string;
+  competition: Competition;
+  /** 公式サイトで節数・ラウンドが確認できた場合のみ設定する（推測で埋めない）。 */
+  round?: string;
+  kickoffAt: string;
+  venue: string;
+  isVerdyHome: boolean;
+  opponentName: string;
+  /** 対戦相手が未定の場合（例：天皇杯の抽選待ち）にtrue。 */
+  opponentTbd?: boolean;
+  status: MatchStatus;
+  homeScore?: number | null;
+  awayScore?: number | null;
+  /** 詳細Matchが存在する試合のみ設定する。未設定の行はリンクしない。 */
+  detailMatchId?: string;
 }

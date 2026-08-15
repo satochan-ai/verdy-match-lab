@@ -10,6 +10,7 @@ import { PredictedLineups } from "@/components/match/PredictedLineups";
 import { AvailabilityInfo } from "@/components/match/AvailabilityInfo";
 import { PreviousMatchSummary } from "@/components/match/PreviousMatchSummary";
 import { HalfTimeNote } from "@/components/match/HalfTimeNote";
+import { MatchRecord } from "@/components/match/MatchRecord";
 import { AiGuidePanel } from "@/features/ai-guide/ui/AiGuidePanel";
 import { LiveGuidePanel } from "@/features/ai-guide/ui/LiveGuidePanel";
 import { AnalysisReportView } from "@/features/ai-guide/ui/AnalysisReportView";
@@ -169,6 +170,16 @@ export default async function MatchDetailPage({
                 <AnalysisReportView state="ready" report={getPostMatchAnalysis(match)} />
               </div>
             </section>
+          </div>
+
+          <div className="mt-8 lg:col-start-1 lg:mt-8">
+            <MatchRecord
+              homeTeamName={match.homeTeam.name}
+              awayTeamName={match.awayTeam.name}
+              goals={match.goals}
+              cards={match.cards}
+              actualLineups={match.actualLineups}
+            />
           </div>
 
           <div className="mt-8 lg:col-start-2 lg:mt-8">
