@@ -36,16 +36,7 @@ export function PredictedFormation({
   const outfieldRows = rows.map((count, rowIndex) => {
     const startIndex = rows.slice(0, rowIndex).reduce((total, rowCount) => total + rowCount, 0);
 
-    return {
-      players: outfieldPlayers.slice(startIndex, startIndex + count),
-      /**
-       * 3-4-2-1の4人行はWB-CH-CH-WBの並び（配列側で既に保証済み）。
-       * 均等4分割グリッドだとWBとCHが同一直線上に見えてしまうため、
-       * この行のみ「WBを両端・CHを中央でまとめる」専用レイアウトに切り替える。
-       * 他formationの4人行（4-4-2の最終ラインなど）は対象外で、既存の均等グリッドのまま。
-       */
-      isWingbackRow: lineup.formation === "3-4-2-1" && count === 4,
-    };
+    return outfieldPlayers.slice(startIndex, startIndex + count);
   });
 
   return (
@@ -69,23 +60,10 @@ export function PredictedFormation({
         <div className="pointer-events-none absolute inset-x-[18%] bottom-0 h-6 border-x border-t border-fusion-black/15 lg:h-11" />
 
         <div className="relative z-10 flex min-h-56 flex-col justify-between gap-2 lg:min-h-[25rem] lg:gap-3">
-          {[...outfieldRows].reverse().map((row, rowIndex) => {
-            if (row.isWingbackRow && row.players.length === 4) {
-              const [wbLeft, chLeft, chRight, wbRight] = row.players;
-              return (
-                <div key={`${lineup.formation}-${rowIndex}`} className="flex items-start justify-between">
-                  <PlayerMarker player={wbLeft} team={team} />
-                  <div className="flex gap-2 lg:gap-4">
-                    <PlayerMarker player={chLeft} team={team} />
-                    <PlayerMarker player={chRight} team={team} />
-                  </div>
-                  <PlayerMarker player={wbRight} team={team} />
-                </div>
-              );
-            }
+          {[...outfieldRows].reverse().map((players, rowIndex) => {
             return (
-              <div key={`${lineup.formation}-${rowIndex}`} className="grid" style={{ gridTemplateColumns: `repeat(${row.players.length}, minmax(0, 1fr))` }}>
-                {row.players.map((player) => (
+              <div key={`${lineup.formation}-${rowIndex}`} className="grid" style={{ gridTemplateColumns: `repeat(${players.length}, minmax(0, 1fr))` }}>
+                {players.map((player) => (
                   <PlayerMarker key={`${player.number ?? "tbd"}-${player.name}`} player={player} team={team} />
                 ))}
               </div>
