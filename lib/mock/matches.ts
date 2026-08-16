@@ -191,8 +191,8 @@ export const matches: Match[] = [
     ],
   },
   {
-    // 次戦。三策・predicted lineup・availabilityは試合前分析Phaseで別途作成するため、
-    // 現時点ではTopのNEXT MATCH自動選択に必要な最小限のフィールドのみを持つ。
+    // 次戦。PRE_MATCH分析（Phase 6-A-1〜6-A-6）で確認できた事実のみを反映。
+    // predictedLineups・availabilityは試合前予想であり、actualLineupsは未登録（試合前のため）。
     id: "match-7",
     homeTeam: opponent("fagiano-okayama", "ファジアーノ岡山"),
     awayTeam: verdy,
@@ -204,20 +204,130 @@ export const matches: Match[] = [
     awayScore: null,
     timeSegment: null,
     verdyProfile: {
-      formation: "情報準備中",
-      characteristics: { attack: "情報準備中", defense: "情報準備中" },
+      formation: "3-4-2-1",
+      characteristics: {
+        attack:
+          "柏戦は2分に先制したものの、その後は柏にペースを渡す展開に。ロングスローや食野壮磨を経由した崩しは機能した一方、前を向いた形でのフィニッシュは限定的だった。",
+        defense:
+          "柏戦はマンツーマン気味の対応から中盤でズレが生じ、相手の2シャドーを前向きにさせる場面が続いた。受け渡しの整理が課題として残る。",
+      },
       keyPlayers: [],
-      recentTrend: "情報準備中",
+      recentTrend: "直近は8/9川崎戦1-1、8/14柏戦1-3。柏戦は先制しながら逆転負け。",
     },
     opponentProfile: {
-      formation: "情報準備中",
-      characteristics: { attack: "情報準備中", defense: "情報準備中" },
-      keyPlayers: [],
-      recentTrend: "情報準備中",
+      formation: "3-4-2-1",
+      characteristics: {
+        attack:
+          "前線へ早くボールを届け、ルカオへのロングボールとポストプレーを起点に攻める形が中心。江坂任・ナサンホの2シャドーがライン間で前を向けるかが崩しの鍵。WBも高い位置を取る傾向があり、縦への速さが持ち味。",
+        defense:
+          "3バックがハイラインを保ち、WBも高い位置を取ったまま2シャドーとルカオでプレスをかける形が基本という情報がある（一部情報源のみ・詳細未確認）。前に重心をかける分、WB裏や中盤脇にスペースが生まれる可能性がある。",
+      },
+      keyPlayers: [
+        {
+          name: "99 ルカオ",
+          note: "1トップ。ポストプレー、ロングボールの収まり、裏抜け、セカンドボールの起点に注目。",
+        },
+        {
+          name: "8 江坂 任",
+          note: "シャドー。ライン間で前向きに受ける位置、ラストパス、ルカオとの距離感に注目。",
+        },
+        {
+          name: "10 ナ サンホ",
+          note: "シャドー。スピードを生かした裏への動き、1対1、ゴール前への侵入に注目。",
+        },
+        {
+          name: "41 宮本 英治",
+          note: "ボランチ。セカンドボール回収、前線への縦パス、攻撃参加のタイミングに注目。8/15長崎戦ではルカオの決勝点をアシスト。",
+        },
+      ],
+      recentTrend: "直近は8/8Ｃ大阪戦1-2で敗戦、8/15長崎戦1-0で勝利（決勝点はルカオ、アシスト宮本英治）。",
     },
-    matchNotes: [],
-    focusPoints: [],
-    strategies: [],
+    predictedLineups: {
+      home: {
+        formation: "3-4-2-1",
+        starters: [
+          { number: 1, name: "レナート モーザー", position: "GK" },
+          { number: 6, name: "大森 博", position: "DF" },
+          { number: 43, name: "鈴木 喜丈", position: "DF" },
+          { number: 48, name: "立田 悠悟", position: "DF" },
+          { number: 51, name: "白井 康介", position: "MF" },
+          { number: 41, name: "宮本 英治", position: "MF" },
+          { number: 80, name: "オベルダン", position: "MF" },
+          { number: 88, name: "山根 永遠", position: "MF" },
+          { number: 8, name: "江坂 任", position: "FW" },
+          { number: 10, name: "ナ サンホ", position: "FW" },
+          { number: 99, name: "ルカオ", position: "FW" },
+        ],
+      },
+      away: {
+        formation: "3-4-2-1",
+        starters: [
+          { number: 1, name: "マテウス", position: "GK" },
+          { number: 6, name: "宮原 和也", position: "DF" },
+          { number: 4, name: "林 尚輝", position: "DF" },
+          { number: 15, name: "鈴木 海音", position: "DF" },
+          { number: 18, name: "溝口 修平", position: "MF" },
+          { number: 20, name: "食野 壮磨", position: "MF" },
+          {
+            number: 16,
+            name: "平川 怜",
+            position: "MF",
+            alternative: "熊取谷 一星（8/14柏戦で途中交代。コンディション次第）",
+          },
+          { number: 22, name: "内田 陽介", position: "MF" },
+          {
+            number: 7,
+            name: "松橋 優安",
+            position: "FW",
+            alternative: "新井 悠太（8/14柏戦で途中交代。コンディション次第）",
+          },
+          { number: 14, name: "福田 湧矢", position: "FW" },
+          { number: 9, name: "染野 唯月", position: "FW" },
+        ],
+      },
+    },
+    availability: {
+      likelyUnavailable: [
+        { team: "岡山", players: ["小倉 幸成"] },
+        { team: "東京V", players: ["山見 大登", "吉田 泰授", "森田 晃樹", "田邉 秀斗"] },
+      ],
+      suspensionNote: "8/16時点で確認できる出場停止情報なし（鈴木海音は8/14柏戦で警告1枚、出場停止には該当しない）。",
+      ineligibleNote: "なし",
+    },
+    matchNotes: [
+      "予想スタメンは8/15長崎戦（岡山）・8/14柏戦（東京V）のStarting XIを基準にした編集部予想。確定Starting XIではない。",
+      "8/16時点・欠場濃厚：岡山＝小倉幸成（左膝外側半月板断裂、術後全治約6ヶ月）／東京V＝森田晃樹（左鎖骨骨折、全治6〜10週、7/23発表）、田邉秀斗（左膝内側側副靱帯損傷、全治6〜10週、7/23発表）、吉田泰授（左膝複合靭帯損傷・半月板損傷）、山見大登（左膝前十字靭帯損傷）。",
+      "8/16時点・出場可否は要確認：岡山＝木村太哉（左足内果疲労骨折。6月発表時点で全治2〜3ヶ月、復帰の公式発表なし）／東京V＝平川怜（8/14柏戦で筋肉系トラブルにより途中交代。監督は重篤ではない旨をコメント）、松橋優安（8/14柏戦で足がつり途中交代。負傷発表なし）。",
+      "岡山3CB・WB・2シャドーの左右配置は情報源からは確定できておらず、断定していない。",
+    ],
+    focusPoints: [
+      "柏戦で崩れた2シャドー対応をどう修正するか",
+      "ルカオへの供給経路をどう制限するか",
+      "岡山WBが前に出た背後を東京Vが使えるか",
+    ],
+    strategies: [
+      {
+        orderNo: 1,
+        title: "ルカオを止めるな、供給源を止めろ",
+        description:
+          "ルカオ本人を潰しにいくのではなく、3CBと中盤で彼への縦パス・ロングボールの経路を消す。岡山の3CB・ボランチからルカオへ縦パスが入る場面で、東京Vがコースを限定できているかに注目したい。",
+        result: "pending",
+      },
+      {
+        orderNo: 2,
+        title: "2シャドーはゾーンで受け渡す",
+        description:
+          "江坂任・ナサンホをマンツーマンで追わず、受け渡しのルールで前向きにさせない。ライン間に降りてきた際、東京Vの対応と受け渡しがスムーズかに注目したい。",
+        result: "pending",
+      },
+      {
+        orderNo: 3,
+        title: "WB裏とボランチ脇を最速で突く",
+        description:
+          "岡山のWBが高い位置を取ることで生まれる背後のスペースと、中盤脇を素早く使う。東京VのWB・シャドーが岡山のWB裏やボランチ脇へ飛び出すタイミングに注目したい。",
+        result: "pending",
+      },
+    ],
   },
   {
     id: "match-0",
