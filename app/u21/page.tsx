@@ -1,9 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { u21Match, u21HomeOfficialLineup, u21AwayOfficialLineup } from "@/lib/mock/u21";
+import {
+  u21Match,
+  u21HomeOfficialLineup,
+  u21AwayOfficialLineup,
+  u21OfficialRecord,
+  u21Goals,
+  u21Cards,
+  u21Substitutions,
+  u21SeasonHistory,
+} from "@/lib/mock/u21";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { U21LiveSection } from "@/components/match/U21LiveSection";
 import { U21OfficialLineups } from "@/components/match/U21OfficialLineups";
+import { MatchRecord } from "@/components/match/MatchRecord";
+import { U21SeasonHistory } from "@/components/match/U21SeasonHistory";
+import { StatusBadge } from "@/components/ui/StatusBadge";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 
 /**
  * このページはPRE/LIVEの判定を毎リクエスト評価する必要があるため、
@@ -18,7 +31,19 @@ export const metadata: Metadata = {
 
 export default function U21Page() {
   const displayStatus = resolveMatchStatus(u21Match, new Date());
-  const statusLabel = displayStatus === "live" ? "LIVE" : "試合前";
+  const statusLabel = {
+    scheduled: "試合前",
+    live: "LIVE",
+    half_time: "ハーフタイム",
+    finished: "試合終了",
+  }[displayStatus];
+  const isFinished = displayStatus === "finished";
+  const resultLabel =
+    u21Match.homeScore === u21Match.awayScore
+      ? "draw"
+      : u21Match.homeScore > u21Match.awayScore
+      ? "win"
+      : "loss";
 
   return (
     <div className="space-y-8 pb-4">
@@ -35,6 +60,12 @@ export default function U21Page() {
           {u21Match.competition}
         </p>
 
+        {isFinished && (
+          <div className="mt-2 flex justify-center">
+            <StatusBadge variant={resultLabel} label={resultLabel.toUpperCase()} />
+          </div>
+        )}
+
         <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2 lg:mt-5 lg:gap-6">
           <div className="min-w-0 text-right">
             <p className="truncate text-[14px] font-extrabold leading-[1.15] text-text-primary lg:text-[24px]">
@@ -44,9 +75,15 @@ export default function U21Page() {
               HOME
             </p>
           </div>
-          <div className="px-1.5 text-[13px] font-extrabold text-fusion-black lg:px-4 lg:text-[18px]">
-            VS
-          </div>
+          {isFinished ? (
+            <p className="tabular-nums text-[26px] font-extrabold leading-none text-text-primary lg:text-[38px]">
+              {u21Match.homeScore} - {u21Match.awayScore}
+            </p>
+          ) : (
+            <div className="px-1.5 text-[13px] font-extrabold text-fusion-black lg:px-4 lg:text-[18px]">
+              VS
+            </div>
+          )}
           <div className="min-w-0 text-left">
             <p className="truncate text-[14px] font-extrabold leading-[1.15] text-text-primary lg:text-[24px]">
               {u21Match.awayTeamName}
@@ -57,10 +94,22 @@ export default function U21Page() {
           </div>
         </div>
 
+        {isFinished && u21Goals.length > 0 && (
+          <ul className="mt-3 flex flex-wrap justify-center gap-x-3 gap-y-1 border-t border-border pt-3 text-[12px] text-text-secondary">
+            {u21Goals.map((goal) => (
+              <li key={`${goal.minute}-${goal.scorer}`} className="tabular-nums">
+                {goal.minute} <span className="text-text-primary">{goal.scorer}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+
         <div className="mt-4 flex flex-col items-center gap-1 border-t border-border pt-3 text-center lg:mt-6 lg:flex-row lg:items-baseline lg:justify-between lg:border-t-0 lg:pt-0 lg:text-left">
           <p className="tabular-nums text-[15px] font-bold text-text-primary lg:text-[16px]">
             {u21Match.kickoffLabel}{" "}
-            <span className="text-[11px] font-bold text-text-secondary lg:text-[12px]">KICK OFF</span>
+            <span className="text-[11px] font-bold text-text-secondary lg:text-[12px]">
+              {isFinished ? "予定KICK OFF" : "KICK OFF"}
+            </span>
           </p>
           <p className="text-[12px] text-text-secondary">{u21Match.venue}</p>
         </div>
@@ -71,13 +120,14 @@ export default function U21Page() {
         )}
       </section>
 
-      {displayStatus === "live" ? (
+      {displayStatus === "live" && (
         <U21LiveSection
           matchId={u21Match.id}
           homeTeamName={u21Match.homeTeamName}
           awayTeamName={u21Match.awayTeamName}
         />
-      ) : (
+      )}
+      {displayStatus === "scheduled" && (
         <p className="text-[13px] text-text-secondary">
           キックオフ後、この画面でLIVE Scoreとメモを記録できます。
         </p>
@@ -89,6 +139,24 @@ export default function U21Page() {
         homeLineup={u21HomeOfficialLineup}
         awayLineup={u21AwayOfficialLineup}
       />
+
+      {isFinished && (
+        <MatchRecord
+          homeTeamName={u21Match.homeTeamName}
+          awayTeamName={u21Match.awayTeamName}
+          goals={u21Goals}
+          cards={u21Cards}
+          substitutions={u21Substitutions}
+          officialRecord={u21OfficialRecord}
+        />
+      )}
+
+      {u21SeasonHistory.length > 0 && (
+        <section>
+          <SectionHeader title="2026/27シーズン試合履歴" eyebrow="SEASON HISTORY" />
+          <U21SeasonHistory entries={u21SeasonHistory} />
+        </section>
+      )}
     </div>
   );
 }

@@ -124,16 +124,27 @@ export default async function Home() {
             <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
               U-21 MATCH
             </p>
-            <p className="mt-1 text-[11px] font-bold text-primary-green">本日、U-21も試合開催</p>
+            {u21Match.status === "finished" ? (
+              <p className="mt-1 text-[11px] font-bold text-text-secondary">FT</p>
+            ) : (
+              <p className="mt-1 text-[11px] font-bold text-primary-green">本日、U-21も試合開催</p>
+            )}
             <div className="mt-2 border-t border-border py-2 text-[13px]">
-              <p className="min-w-0 truncate text-text-primary">
-                {u21Match.homeTeamName} vs {u21Match.awayTeamName}
-              </p>
+              {u21Match.status === "finished" ? (
+                <p className="min-w-0 truncate text-text-primary">
+                  {u21Match.homeTeamName} {u21Match.homeScore}-{u21Match.awayScore}{" "}
+                  {u21Match.awayTeamName}
+                </p>
+              ) : (
+                <p className="min-w-0 truncate text-text-primary">
+                  {u21Match.homeTeamName} vs {u21Match.awayTeamName}
+                </p>
+              )}
               <p className="mt-1 text-text-secondary">
                 {u21Match.kickoffLabel} KICK OFF ／ {u21Match.venue}
               </p>
               <Link href="/u21" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
-                MATCHを見る →
+                {u21Match.status === "finished" ? "結果を見る →" : "MATCHを見る →"}
               </Link>
             </div>
           </section>
