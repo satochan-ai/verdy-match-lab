@@ -70,6 +70,44 @@ export interface MatchCard {
   type: "yellow" | "red";
 }
 
+/** 公式試合記録で確認できた交代。 */
+export interface MatchSubstitution {
+  minute: string;
+  team: string;
+  playerIn: string;
+  playerOut: string;
+}
+
+/** チームごとの公式試合終了スタッツ。 */
+export interface TeamMatchStats {
+  shots: number;
+  shotsOnTarget: number;
+  possession: string;
+  passSuccessRate: string;
+  distance: string;
+  sprints: number;
+  offsides: number;
+  corners: number;
+  freeKicks: number;
+  yellowCards: number;
+  redCards: number;
+}
+
+export interface MatchStats {
+  home: TeamMatchStats;
+  away: TeamMatchStats;
+}
+
+/** 公式試合記録で確認できた試合運営情報。 */
+export interface OfficialMatchRecord {
+  kickoff?: string;
+  attendance?: number;
+  weather?: string;
+  temperature?: string;
+  humidity?: string;
+  sourceUrl?: string;
+}
+
 /** 公式発表された実際のStarting XI / Bench。予想（PredictedLineup）とは別物として扱う。 */
 export interface ActualLineup {
   /** 公式発表画面で確認できた場合のみ設定する。 */
@@ -142,6 +180,12 @@ export interface Match {
   goals?: MatchGoal[];
   /** この試合自体の警告・退場記録。finished以降、公式結果が確認できた場合のみ設定する。 */
   cards?: MatchCard[];
+  /** 公式試合記録で確認できた交代。 */
+  substitutions?: MatchSubstitution[];
+  /** 公式試合終了スタッツ。 */
+  matchStats?: MatchStats;
+  /** 公式試合記録で確認できたキックオフ時刻・天候等。 */
+  officialRecord?: OfficialMatchRecord;
   /**
    * 公式発表された実際のStarting XI / Bench。predictedLineupsとは独立したフィールドで、
    * 予想を実績で上書きしない（PRE_MATCHのpredictedLineupsはそのまま残す）。

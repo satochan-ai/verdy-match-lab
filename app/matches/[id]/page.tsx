@@ -249,6 +249,9 @@ export default async function MatchDetailPage({
               awayTeamName={match.awayTeam.name}
               goals={match.goals}
               cards={match.cards}
+              substitutions={match.substitutions}
+              matchStats={match.matchStats}
+              officialRecord={match.officialRecord}
               actualLineups={match.actualLineups}
             />
           </div>
