@@ -37,34 +37,55 @@ export default function BelezaPage() {
           {belezaMatch.dateLabel}
         </p>
 
-        <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2 lg:mt-5 lg:gap-6">
-          <div className="min-w-0 text-right">
-            <p className="truncate text-[14px] font-extrabold leading-[1.15] text-text-primary lg:text-[24px]">
-              {belezaTeam.name}
-            </p>
-            <p className="mt-0.5 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
-              HOME
-            </p>
-          </div>
-          <div className="px-1.5 text-[13px] font-extrabold text-fusion-black lg:px-4 lg:text-[18px]">
-            VS
-          </div>
-          <div className="min-w-0 text-left">
-            <p className="truncate text-[14px] font-extrabold leading-[1.15] text-text-primary lg:text-[24px]">
-              {jefChibaLadiesTeam.name}
-            </p>
-            <p className="mt-0.5 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
-              AWAY
-            </p>
-          </div>
+        {/* mobile: 正式名称を省略せず縦積みで表示する（横並びgridだとtruncateで名称が切れるため） */}
+        <div className="mt-4 flex flex-col items-center gap-1.5 text-center lg:hidden">
+          <p className="text-[16px] font-extrabold leading-snug text-text-primary">
+            {belezaTeam.name}
+          </p>
+          <p className="text-[10px] font-bold tracking-wide text-text-secondary">HOME</p>
+          <p className="py-1 text-[13px] font-extrabold text-fusion-black">VS</p>
+          <p className="text-[16px] font-extrabold leading-snug text-text-primary">
+            {jefChibaLadiesTeam.name}
+          </p>
+          <p className="text-[10px] font-bold tracking-wide text-text-secondary">AWAY</p>
         </div>
-
-        <div className="mt-4 flex flex-col items-center gap-1 border-t border-border pt-3 text-center lg:mt-6 lg:flex-row lg:items-baseline lg:justify-between lg:border-t-0 lg:pt-0 lg:text-left">
-          <p className="tabular-nums text-[15px] font-bold text-text-primary lg:text-[16px]">
+        <div className="mt-4 flex flex-col items-center gap-1 border-t border-border pt-3 text-center lg:hidden">
+          <p className="tabular-nums text-[15px] font-bold text-text-primary">
             {belezaMatch.kickoffLabel}{" "}
-            <span className="text-[11px] font-bold text-text-secondary lg:text-[12px]">KICK OFF</span>
+            <span className="text-[11px] font-bold text-text-secondary">KICK OFF</span>
           </p>
           <p className="text-[12px] text-text-secondary">{belezaMatch.venue}</p>
+        </div>
+
+        {/* desktop: 既存の横並びレイアウトを維持 */}
+        <div className="hidden lg:block">
+          <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-6">
+            <div className="min-w-0 text-right">
+              <p className="truncate text-[24px] font-extrabold leading-[1.15] text-text-primary">
+                {belezaTeam.name}
+              </p>
+              <p className="mt-0.5 text-[11px] font-bold tracking-wide text-text-secondary">
+                HOME
+              </p>
+            </div>
+            <div className="px-4 text-[18px] font-extrabold text-fusion-black">VS</div>
+            <div className="min-w-0 text-left">
+              <p className="truncate text-[24px] font-extrabold leading-[1.15] text-text-primary">
+                {jefChibaLadiesTeam.name}
+              </p>
+              <p className="mt-0.5 text-[11px] font-bold tracking-wide text-text-secondary">
+                AWAY
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 flex items-baseline justify-between text-left">
+            <p className="tabular-nums text-[16px] font-bold text-text-primary">
+              {belezaMatch.kickoffLabel}{" "}
+              <span className="text-[12px] font-bold text-text-secondary">KICK OFF</span>
+            </p>
+            <p className="text-[12px] text-text-secondary">{belezaMatch.venue}</p>
+          </div>
         </div>
       </section>
 
