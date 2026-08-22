@@ -5,6 +5,7 @@ import { StrategyList } from "@/components/match/StrategyList";
 import { MatchSchedule } from "@/components/match/MatchSchedule";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { getMatchDayLabel, daysUntilJST } from "@/lib/match/display";
+import { belezaMatch } from "@/lib/mock/beleza";
 
 /**
  * U-21試合の補助情報。トップチームのMatch型は使わず、
@@ -148,6 +149,24 @@ export default async function Home() {
             </div>
           </section>
         )}
+
+        <section>
+          <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
+            BELEZA
+          </p>
+          <div className="mt-2 border-t border-border py-2 text-[13px]">
+            <p className="text-text-secondary">{belezaMatch.dateLabel}</p>
+            <p className="mt-1 min-w-0 truncate text-text-primary">
+              日テレ・東京ヴェルディベレーザ vs ジェフ千葉レディース
+            </p>
+            <p className="mt-1 text-text-secondary">
+              {belezaMatch.kickoffLabel} KICK OFF ／ {belezaMatch.venue}
+            </p>
+            <Link href="/beleza" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
+              PREを見る →
+            </Link>
+          </div>
+        </section>
 
         <section>
           <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
