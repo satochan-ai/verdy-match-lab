@@ -4,7 +4,21 @@ import { getPreviousMatches, getUpcomingMatches } from "@/lib/data/schedule";
 import { StrategyList } from "@/components/match/StrategyList";
 import { MatchSchedule } from "@/components/match/MatchSchedule";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { getMatchDayLabel } from "@/lib/match/display";
+import { getMatchDayLabel, daysUntilJST } from "@/lib/match/display";
+
+/**
+ * U-21試合の補助情報。トップチームのMatch型は使わず、
+ * 表示に必要な最小限のフィールドのみを持つ最小限のローカル定数として扱う
+ * （predicted lineup・戦術分析等は一切作らない方針のため、Match型に乗せる意味がない）。
+ * 公式確認済み：https://www.verdy.co.jp/news/15149
+ */
+const u21Match = {
+  opponentName: "FC東京U-21",
+  kickoffAt: "2026-08-22T18:00:00+09:00",
+  kickoffLabel: "18:00",
+  venue: "味の素フィールド西が丘",
+  competition: "2026／27Ｕ-21Ｊリーグ 東西リーグラウンド 第1節",
+};
 
 function formatMatchday(iso: string) {
   const d = new Date(iso);
@@ -52,6 +66,7 @@ export default async function Home() {
   const now = new Date();
   const fixture = formatMatchday(nextMatch.kickoffAt);
   const dayLabel = getMatchDayLabel(nextMatch, now);
+  const showU21Match = daysUntilJST(u21Match.kickoffAt, now) === 0;
 
   return (
     <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
@@ -116,6 +131,24 @@ export default async function Home() {
       </div>
 
       <div className="mt-8 space-y-6 border-t border-border pt-6 lg:mt-0 lg:border-t-0 lg:pt-0">
+        {showU21Match && (
+          <section>
+            <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
+              U-21 MATCH
+            </p>
+            <p className="mt-1 text-[11px] font-bold text-primary-green">本日、U-21も試合開催</p>
+            <div className="mt-2 border-t border-border py-2 text-[13px]">
+              <p className="min-w-0 truncate text-text-primary">
+                東京ヴェルディU-21 vs {u21Match.opponentName}
+              </p>
+              <p className="mt-1 text-text-secondary">
+                {u21Match.kickoffLabel} KICK OFF ／ {u21Match.venue}
+              </p>
+              <p className="mt-1 text-text-secondary">若きヴェルディの戦いにも注目。</p>
+            </div>
+          </section>
+        )}
+
         <section>
           <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
             LAST MATCH
