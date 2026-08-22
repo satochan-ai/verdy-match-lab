@@ -51,42 +51,36 @@ export default async function MatchDetailPage({
         <span className="w-8" />
       </div>
 
-      {displayStatus === "scheduled" && (
-        <div className="lg:grid lg:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
-          <div className="lg:col-start-1">
+      {displayStatus === "scheduled" && (() => {
+        const overviewBlock = (
+          <div>
             <MatchScoreboard match={displayMatch} />
             <div className="mt-4">
               <MatchMeta match={displayMatch} showCountdown />
             </div>
           </div>
+        );
 
-          <div className="mt-10 lg:col-start-2 lg:mt-0">
-            <StrategyList strategies={match.strategies} />
-          </div>
+        const strategyBlock = <StrategyList strategies={match.strategies} />;
 
-          {match.predictedLineups && (
-            <div className="mt-10 lg:col-start-1 lg:mt-8">
-              <PredictedLineups
-                homeTeam={match.homeTeam}
-                awayTeam={match.awayTeam}
-                lineups={match.predictedLineups}
-              />
-            </div>
-          )}
+        const predictedLineupsBlock = match.predictedLineups && (
+          <PredictedLineups
+            homeTeam={match.homeTeam}
+            awayTeam={match.awayTeam}
+            lineups={match.predictedLineups}
+          />
+        );
 
-          {match.availability && (
-            <div className="mt-8 lg:col-start-1 lg:mt-8">
-              <AvailabilityInfo availability={match.availability} />
-            </div>
-          )}
+        const availabilityBlock = match.availability && (
+          <AvailabilityInfo availability={match.availability} />
+        );
 
-          {match.previousMatch && (
-            <div className="mt-8 lg:col-start-1 lg:mt-8">
-              <PreviousMatchSummary previousMatch={match.previousMatch} />
-            </div>
-          )}
+        const previousMatchBlock = match.previousMatch && (
+          <PreviousMatchSummary previousMatch={match.previousMatch} />
+        );
 
-          <div className="mt-8 lg:col-start-2 lg:mt-8">
+        const guideBlock = (
+          <div>
             <AiGuidePanel match={displayMatch} />
             <details className="mt-4 border border-border bg-surface p-4">
               <summary className="cursor-pointer text-[13px] font-bold text-text-primary">
@@ -126,8 +120,43 @@ export default async function MatchDetailPage({
               </div>
             </details>
           </div>
-        </div>
-      )}
+        );
+
+        return (
+          <>
+            {/*
+              モバイル：既存の表示順（試合概要→三策→予想スタメン→出場情報→前節→ガイド）を
+              そのまま維持する専用ブロック。PC版とはCSS上で排他表示にし、DOM順序を変えない。
+            */}
+            <div className="space-y-8 lg:hidden">
+              {overviewBlock}
+              {strategyBlock}
+              {predictedLineupsBlock}
+              {availabilityBlock}
+              {previousMatchBlock}
+              {guideBlock}
+            </div>
+
+            {/*
+              PC：左カラム（試合概要＋予想スタメン等）と右カラム（三策＋ガイド）を
+              独立したgrid item（各1個）として分離し、三策の高さに予想スタメンが
+              引っ張られないようにする。同じブロックを参照するのみでロジックの重複はない。
+            */}
+            <div className="hidden lg:grid lg:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
+              <div className="space-y-8">
+                {overviewBlock}
+                {predictedLineupsBlock}
+                {availabilityBlock}
+                {previousMatchBlock}
+              </div>
+              <div className="space-y-8">
+                {strategyBlock}
+                {guideBlock}
+              </div>
+            </div>
+          </>
+        );
+      })()}
 
       {displayStatus === "live" && <LiveGuidePanel match={displayMatch} />}
 
