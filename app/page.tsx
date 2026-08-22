@@ -6,20 +6,7 @@ import { MatchSchedule } from "@/components/match/MatchSchedule";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { getMatchDayLabel, daysUntilJST } from "@/lib/match/display";
 import { belezaMatch } from "@/lib/mock/beleza";
-
-/**
- * U-21試合の補助情報。トップチームのMatch型は使わず、
- * 表示に必要な最小限のフィールドのみを持つ最小限のローカル定数として扱う
- * （predicted lineup・戦術分析等は一切作らない方針のため、Match型に乗せる意味がない）。
- * 公式確認済み：https://www.verdy.co.jp/news/15149
- */
-const u21Match = {
-  opponentName: "FC東京U-21",
-  kickoffAt: "2026-08-22T18:00:00+09:00",
-  kickoffLabel: "18:00",
-  venue: "味の素フィールド西が丘",
-  competition: "2026／27Ｕ-21Ｊリーグ 東西リーグラウンド 第1節",
-};
+import { u21Match } from "@/lib/mock/u21";
 
 function formatMatchday(iso: string) {
   const d = new Date(iso);
@@ -140,12 +127,14 @@ export default async function Home() {
             <p className="mt-1 text-[11px] font-bold text-primary-green">本日、U-21も試合開催</p>
             <div className="mt-2 border-t border-border py-2 text-[13px]">
               <p className="min-w-0 truncate text-text-primary">
-                東京ヴェルディU-21 vs {u21Match.opponentName}
+                {u21Match.homeTeamName} vs {u21Match.awayTeamName}
               </p>
               <p className="mt-1 text-text-secondary">
                 {u21Match.kickoffLabel} KICK OFF ／ {u21Match.venue}
               </p>
-              <p className="mt-1 text-text-secondary">若きヴェルディの戦いにも注目。</p>
+              <Link href="/u21" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
+                MATCHを見る →
+              </Link>
             </div>
           </section>
         )}
