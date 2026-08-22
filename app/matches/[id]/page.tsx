@@ -50,6 +50,14 @@ export default async function MatchDetailPage({
     />
   );
 
+  const predictedLineupsBlock = match.predictedLineups && (
+    <PredictedLineups
+      homeTeam={match.homeTeam}
+      awayTeam={match.awayTeam}
+      lineups={match.predictedLineups}
+    />
+  );
+
   return (
     <div className="space-y-6 pb-4">
       <div className="flex items-center justify-between">
@@ -86,14 +94,6 @@ export default async function MatchDetailPage({
         );
 
         const strategyBlock = match.strategies.length > 0 && <StrategyList strategies={match.strategies} />;
-
-        const predictedLineupsBlock = match.predictedLineups && (
-          <PredictedLineups
-            homeTeam={match.homeTeam}
-            awayTeam={match.awayTeam}
-            lineups={match.predictedLineups}
-          />
-        );
 
         const availabilityBlock = match.availability && (
           <AvailabilityInfo availability={match.availability} />
@@ -216,6 +216,14 @@ export default async function MatchDetailPage({
         <div className="lg:grid lg:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
           <div className="lg:col-start-1">
             <MatchScoreboard match={displayMatch} />
+          </div>
+
+          <div className="mt-8 lg:col-start-1 lg:mt-6">
+            {predictedLineupsBlock}
+          </div>
+
+          <div className="mt-8 lg:col-start-1 lg:mt-6">
+            {officialLineupsBlock}
           </div>
 
           <div className="mt-10 lg:col-start-1 lg:mt-6">

@@ -199,9 +199,9 @@ export const matches: Match[] = [
     isVerdyHome: false,
     kickoffAt: "2026-08-22T18:30:00+09:00",
     venue: "ＪＦＥ晴れの国スタジアム",
-    status: "scheduled",
-    homeScore: null,
-    awayScore: null,
+    status: "finished",
+    homeScore: 0,
+    awayScore: 0,
     timeSegment: null,
     verdyProfile: {
       formation: "3-4-2-1",
@@ -327,6 +327,7 @@ export const matches: Match[] = [
       ineligibleNote: "なし",
     },
     matchNotes: [
+      "2026/8/22 J1第3節、ファジアーノ岡山 0-0 東京ヴェルディで試合終了。",
       "予想スタメンは8/15長崎戦（岡山）・8/14柏戦（東京V）のStarting XIを基準にした編集部予想。確定Starting XIではない。",
       "8/16時点・欠場濃厚：岡山＝小倉幸成（左膝外側半月板断裂、術後全治約6ヶ月）／東京V＝森田晃樹（左鎖骨骨折、全治6〜10週、7/23発表）、田邉秀斗（左膝内側側副靱帯損傷、全治6〜10週、7/23発表）、吉田泰授（左膝複合靭帯損傷・半月板損傷）、山見大登（左膝前十字靭帯損傷）。",
       "8/16時点・出場可否は要確認：岡山＝木村太哉（左足内果疲労骨折。6月発表時点で全治2〜3ヶ月、復帰の公式発表なし）／東京V＝平川怜（8/14柏戦で筋肉系トラブルにより途中交代。監督は重篤ではない旨をコメント）、松橋優安（8/14柏戦で足がつり途中交代。負傷発表なし）。",

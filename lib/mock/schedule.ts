@@ -36,11 +36,14 @@ export const scheduleMatches: ScheduleMatch[] = [
   {
     id: "sched-match-7",
     competition: "j1",
+    round: "第3節",
     kickoffAt: "2026-08-22T18:30:00+09:00",
     venue: "ＪＦＥ晴れの国スタジアム",
     isVerdyHome: false,
     opponentName: "岡山",
-    status: "scheduled",
+    status: "finished",
+    homeScore: 0,
+    awayScore: 0,
     detailMatchId: "match-7",
   },
   {
