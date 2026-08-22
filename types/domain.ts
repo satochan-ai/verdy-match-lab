@@ -70,8 +70,10 @@ export interface MatchCard {
   type: "yellow" | "red";
 }
 
-/** 試合終了後の実際のStarting XI / Bench。予想（PredictedLineup）とは別物として扱う。 */
+/** 公式発表された実際のStarting XI / Bench。予想（PredictedLineup）とは別物として扱う。 */
 export interface ActualLineup {
+  /** 公式発表画面で確認できた場合のみ設定する。 */
+  formation?: string;
   starters: PositionPlayerGroups;
   bench: PositionPlayerGroups;
 }
@@ -141,7 +143,7 @@ export interface Match {
   /** この試合自体の警告・退場記録。finished以降、公式結果が確認できた場合のみ設定する。 */
   cards?: MatchCard[];
   /**
-   * 試合終了後の実際のStarting XI / Bench。predictedLineupsとは独立したフィールドで、
+   * 公式発表された実際のStarting XI / Bench。predictedLineupsとは独立したフィールドで、
    * 予想を実績で上書きしない（PRE_MATCHのpredictedLineupsはそのまま残す）。
    */
   actualLineups?: {

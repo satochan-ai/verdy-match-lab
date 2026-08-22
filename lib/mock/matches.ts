@@ -191,8 +191,8 @@ export const matches: Match[] = [
     ],
   },
   {
-    // 次戦。PRE_MATCH分析（Phase 6-A-1〜6-A-6）で確認できた事実のみを反映。
-    // predictedLineups・availabilityは試合前予想であり、actualLineupsは未登録（試合前のため）。
+    // 次戦。PRE_MATCH分析（Phase 6-A-1〜6-A-6）と公式発表で確認できた事実のみを反映。
+    // predictedLineupsは予想として維持し、actualLineupsとは独立して扱う。
     id: "match-7",
     homeTeam: opponent("fagiano-okayama", "ファジアーノ岡山"),
     awayTeam: verdy,
@@ -284,6 +284,38 @@ export const matches: Match[] = [
           { number: 14, name: "福田 湧矢", position: "FW" },
           { number: 9, name: "染野 唯月", position: "FW" },
         ],
+      },
+    },
+    actualLineups: {
+      home: {
+        formation: "3-4-2-1",
+        starters: {
+          GK: ["1 レナート モーザー"],
+          DF: ["6 大森 博", "48 立田 悠悟", "43 鈴木 喜丈"],
+          MF: ["51 白井 康介", "80 オベルダン", "41 宮本 英治", "88 山根 永遠"],
+          FW: ["10 ナ サンホ", "8 江坂 任", "99 ルカオ"],
+        },
+        bench: {
+          GK: ["13 松田 駿"],
+          DF: ["18 田上 大地", "44 森 壮一朗"],
+          MF: ["26 本山 遥", "33 神谷 優太", "66 西川 潤", "79 ブラウン ノア 賢信"],
+          FW: ["9 レオ ガウショ", "22 一美 和成"],
+        },
+      },
+      away: {
+        formation: "3-4-2-1",
+        starters: {
+          GK: ["1 マテウス"],
+          DF: ["5 井上 詩音", "4 林 尚輝", "6 宮原 和也"],
+          MF: ["18 溝口 修平", "16 平川 怜", "28 山本 丈偉", "22 内田 陽介"],
+          FW: ["14 福田 湧矢", "71 平尾 勇人", "9 染野 唯月"],
+        },
+        bench: {
+          GK: ["21 長沢 祐弥"],
+          DF: ["15 鈴木 海音"],
+          MF: ["7 松橋 優安", "20 食野 壮磨", "40 新井 悠太"],
+          FW: ["13 山田 剛綺", "25 熊取谷 一星", "27 白井 亮丞", "38 神田 奏真"],
+        },
       },
     },
     availability: {

@@ -19,12 +19,14 @@ const OPPONENT_MARKER_ACCENT: Record<string, string> = {
   "kashiwa-reysol": "bg-team-opponent-accent text-fusion-black",
 };
 
-export function PredictedFormation({
+export function FormationPitch({
   team,
   lineup,
+  idPrefix = "formation",
 }: {
   team: Team;
   lineup: PredictedLineup;
+  idPrefix?: string;
 }) {
   const rows = formationRows[lineup.formation];
 
@@ -40,9 +42,9 @@ export function PredictedFormation({
   });
 
   return (
-    <section aria-labelledby={`predicted-formation-${team.id}`}>
+    <section aria-labelledby={`${idPrefix}-${team.id}`}>
       <div className="flex items-baseline justify-between gap-3">
-        <h3 id={`predicted-formation-${team.id}`} className="min-w-0 text-[14px] font-extrabold text-text-primary lg:text-[16px]">
+        <h3 id={`${idPrefix}-${team.id}`} className="min-w-0 text-[14px] font-extrabold text-text-primary lg:text-[16px]">
           {team.name}
         </h3>
         <p className="shrink-0 text-[12px] font-bold tabular-nums text-text-secondary">
@@ -76,6 +78,16 @@ export function PredictedFormation({
       </div>
     </section>
   );
+}
+
+export function PredictedFormation({
+  team,
+  lineup,
+}: {
+  team: Team;
+  lineup: PredictedLineup;
+}) {
+  return <FormationPitch team={team} lineup={lineup} idPrefix="predicted-formation" />;
 }
 
 function PlayerMarker({

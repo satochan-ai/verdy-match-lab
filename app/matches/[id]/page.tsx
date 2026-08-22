@@ -7,6 +7,7 @@ import { MatchMeta } from "@/components/match/MatchMeta";
 import { StrategyList } from "@/components/match/StrategyList";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PredictedLineups } from "@/components/match/PredictedLineups";
+import { OfficialLineups } from "@/components/match/OfficialLineups";
 import { AvailabilityInfo } from "@/components/match/AvailabilityInfo";
 import { PreviousMatchSummary } from "@/components/match/PreviousMatchSummary";
 import { HalfTimeNote } from "@/components/match/HalfTimeNote";
@@ -40,6 +41,14 @@ export default async function MatchDetailPage({
     half_time: "ハーフタイム",
     finished: "試合終了",
   }[displayStatus];
+
+  const officialLineupsBlock = match.actualLineups && (
+    <OfficialLineups
+      homeTeam={match.homeTeam}
+      awayTeam={match.awayTeam}
+      lineups={match.actualLineups}
+    />
+  );
 
   return (
     <div className="space-y-6 pb-4">
@@ -132,6 +141,7 @@ export default async function MatchDetailPage({
               {overviewBlock}
               {strategyBlock}
               {predictedLineupsBlock}
+              {officialLineupsBlock}
               {availabilityBlock}
               {previousMatchBlock}
               {guideBlock}
@@ -146,6 +156,7 @@ export default async function MatchDetailPage({
               <div className="space-y-8">
                 {overviewBlock}
                 {predictedLineupsBlock}
+                {officialLineupsBlock}
                 {availabilityBlock}
                 {previousMatchBlock}
               </div>
@@ -158,7 +169,12 @@ export default async function MatchDetailPage({
         );
       })()}
 
-      {displayStatus === "live" && <LiveGuidePanel match={displayMatch} />}
+      {displayStatus === "live" && (
+        <div className="space-y-8">
+          <LiveGuidePanel match={displayMatch} />
+          {officialLineupsBlock}
+        </div>
+      )}
 
       {displayStatus === "half_time" && (
         <div className="space-y-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
@@ -170,6 +186,7 @@ export default async function MatchDetailPage({
               title="軍師の三策（前半終了時点）"
             />
             <HalfTimeNote matchId={match.id} />
+            {officialLineupsBlock}
           </div>
           <section className="border border-border bg-surface p-4">
             <h2 className="text-[15px] font-bold text-text-primary">戦術軍師 β</h2>
