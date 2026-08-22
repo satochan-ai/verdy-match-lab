@@ -46,12 +46,13 @@ export const scheduleMatches: ScheduleMatch[] = [
   {
     id: "sched-emperor-cup-2",
     competition: "emperor_cup",
+    round: "2回戦",
     kickoffAt: "2026-08-26T18:30:00+09:00",
     venue: "味の素フィールド西が丘",
     isVerdyHome: true,
-    opponentName: "対戦相手未定",
-    opponentTbd: true,
+    opponentName: "ザスパ群馬",
     status: "scheduled",
+    detailMatchId: "match-8",
   },
   {
     id: "sched-kashima",

@@ -61,16 +61,31 @@ export default async function MatchDetailPage({
       </div>
 
       {displayStatus === "scheduled" && (() => {
+        const hasPreMatchContent =
+          match.strategies.length > 0 ||
+          Boolean(match.predictedLineups || match.availability || match.previousMatch);
+
         const overviewBlock = (
           <div>
             <MatchScoreboard match={displayMatch} />
             <div className="mt-4">
-              <MatchMeta match={displayMatch} showCountdown />
+              <MatchMeta match={displayMatch} showCountdown={hasPreMatchContent} />
             </div>
           </div>
         );
 
-        const strategyBlock = <StrategyList strategies={match.strategies} />;
+        const fixtureInfoBlock = !hasPreMatchContent && match.matchNotes.length > 0 && (
+          <section>
+            <SectionHeader title="試合情報" eyebrow="MATCH INFO" />
+            <div className="border-y border-border bg-surface px-3 py-3 text-[13px] text-text-primary">
+              {match.matchNotes.map((note) => (
+                <p key={note}>{note}</p>
+              ))}
+            </div>
+          </section>
+        );
+
+        const strategyBlock = match.strategies.length > 0 && <StrategyList strategies={match.strategies} />;
 
         const predictedLineupsBlock = match.predictedLineups && (
           <PredictedLineups
@@ -88,7 +103,7 @@ export default async function MatchDetailPage({
           <PreviousMatchSummary previousMatch={match.previousMatch} />
         );
 
-        const guideBlock = (
+        const guideBlock = hasPreMatchContent && (
           <div>
             <AiGuidePanel match={displayMatch} />
             <details className="mt-4 border border-border bg-surface p-4">
@@ -139,6 +154,7 @@ export default async function MatchDetailPage({
             */}
             <div className="space-y-8 lg:hidden">
               {overviewBlock}
+              {fixtureInfoBlock}
               {strategyBlock}
               {predictedLineupsBlock}
               {officialLineupsBlock}
@@ -155,6 +171,7 @@ export default async function MatchDetailPage({
             <div className="hidden lg:grid lg:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
               <div className="space-y-8">
                 {overviewBlock}
+                {fixtureInfoBlock}
                 {predictedLineupsBlock}
                 {officialLineupsBlock}
                 {availabilityBlock}

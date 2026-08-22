@@ -7,6 +7,11 @@ const competitionLabel: Record<ScheduleMatch["competition"], string> = {
   levain_cup: "ルヴァン",
 };
 
+function formatCompetition(item: ScheduleMatch) {
+  const label = competitionLabel[item.competition];
+  return item.round ? `${label} ${item.round}` : label;
+}
+
 function formatMD(iso: string) {
   const d = new Date(iso);
   const parts = new Intl.DateTimeFormat("en-GB", {
@@ -42,7 +47,7 @@ function ScheduleRow({ item }: { item: ScheduleMatch }) {
       <span className="w-9 shrink-0 tabular-nums text-text-secondary">{formatMD(item.kickoffAt)}</span>
       {item.competition !== "j1" && (
         <span className="shrink-0 text-[10px] font-bold text-pioneer-gold-deep">
-          {competitionLabel[item.competition]}
+          {formatCompetition(item)}
         </span>
       )}
       <span className="min-w-0 flex-1 truncate text-text-primary">
