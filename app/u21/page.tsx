@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { u21Match } from "@/lib/mock/u21";
+import { u21Match, u21HomeOfficialLineup, u21AwayOfficialLineup } from "@/lib/mock/u21";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { U21LiveSection } from "@/components/match/U21LiveSection";
+import { U21OfficialLineups } from "@/components/match/U21OfficialLineups";
 
 /**
  * このページはPRE/LIVEの判定を毎リクエスト評価する必要があるため、
@@ -63,6 +64,11 @@ export default function U21Page() {
           </p>
           <p className="text-[12px] text-text-secondary">{u21Match.venue}</p>
         </div>
+        {u21Match.scheduleNote && (
+          <p className="mt-3 border-t border-border pt-3 text-[11px] leading-relaxed text-text-secondary">
+            {u21Match.scheduleNote}
+          </p>
+        )}
       </section>
 
       {displayStatus === "live" ? (
@@ -76,6 +82,13 @@ export default function U21Page() {
           キックオフ後、この画面でLIVE Scoreとメモを記録できます。
         </p>
       )}
+
+      <U21OfficialLineups
+        homeTeamName={u21Match.homeTeamName}
+        awayTeamName={u21Match.awayTeamName}
+        homeLineup={u21HomeOfficialLineup}
+        awayLineup={u21AwayOfficialLineup}
+      />
     </div>
   );
 }
