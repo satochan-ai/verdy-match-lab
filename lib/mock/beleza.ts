@@ -53,9 +53,9 @@ export const belezaGoals: MatchGoal[] = [
 ];
 
 /**
- * WEリーグ公式試合記録（Phase 6-H.16確認）。予定KO 18:00とは別に、
+ * WEリーグ公式試合記録（Phase 6-H.16／6-H.17確認）。予定KO 18:00とは別に、
  * 実績のKick Off 18:05をofficialRecord側で保持する（予定と実績を混同しない）。
- * sourceUrlは本セッションで確認済みの公式URLが無いため未設定（推測で埋めない）。
+ * sourceUrlはユーザー確認済みのアドレスバーURLをそのまま使用（推測で埋めない）。
  */
 export const belezaOfficialRecord: OfficialMatchRecord = {
   kickoff: "18:05",
@@ -63,7 +63,11 @@ export const belezaOfficialRecord: OfficialMatchRecord = {
   weather: "曇時々雨",
   temperature: "28.7℃",
   humidity: "73%",
+  sourceUrl: "https://weleague.jp/matches/2026082305/",
 };
+
+/** MatchRecordのSOURCEリンク表示名（大会名がJ.LEAGUEではないため上書きする）。 */
+export const belezaOfficialSourceLabel = "WE LEAGUE Official Match Record";
 
 /** 警告・退場（公式確認済み）。ベレーザ側・退場は今回確認できるものなし。 */
 export const belezaCards: MatchCard[] = [

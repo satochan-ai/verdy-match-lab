@@ -127,7 +127,14 @@ function MatchStatsSection({
   );
 }
 
-function OfficialInfo({ record }: { record: OfficialMatchRecord }) {
+function OfficialInfo({
+  record,
+  sourceLabel = "J.LEAGUE Official Match Record",
+}: {
+  record: OfficialMatchRecord;
+  /** SOURCEリンクの表示名。大会が異なる場合（例：WEリーグ）は呼び出し側から上書きする。 */
+  sourceLabel?: string;
+}) {
   const items = [
     record.kickoff && `Kick Off ${record.kickoff}`,
     record.attendance !== undefined && `入場者数 ${record.attendance.toLocaleString()}人`,
@@ -146,10 +153,10 @@ function OfficialInfo({ record }: { record: OfficialMatchRecord }) {
         <a
           href={record.sourceUrl}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="mt-2 inline-block text-[11px] font-bold text-deep-green underline underline-offset-2"
         >
-          SOURCE / J.LEAGUE Official Match Record ↗
+          SOURCE / {sourceLabel} ↗
         </a>
       )}
     </div>
@@ -198,6 +205,7 @@ export function MatchRecord({
   substitutions,
   matchStats,
   officialRecord,
+  officialSourceLabel,
   actualLineups,
 }: {
   homeTeamName: string;
@@ -207,6 +215,8 @@ export function MatchRecord({
   substitutions?: MatchSubstitution[];
   matchStats?: MatchStats;
   officialRecord?: OfficialMatchRecord;
+  /** OFFICIAL MATCH INFOのSOURCEリンク表示名。大会が異なる場合に上書きする（未指定時はJ.LEAGUE表記）。 */
+  officialSourceLabel?: string;
   actualLineups?: { home: ActualLineup; away: ActualLineup };
 }) {
   if (!goals?.length && !cards?.length && !substitutions?.length && !matchStats && !officialRecord && !actualLineups) return null;
@@ -215,7 +225,12 @@ export function MatchRecord({
     <section>
       <SectionHeader title="試合記録" eyebrow="MATCH RECORD" />
       <div className="border-y border-border bg-surface px-3 py-3">
-        {officialRecord && <OfficialInfo record={officialRecord} />}
+        {officialRecord && (
+          <OfficialInfo
+            record={officialRecord}
+            sourceLabel={officialSourceLabel}
+          />
+        )}
         {goals && goals.length > 0 && (
           <div className="border-b border-border pb-3">
             <p className="mb-1.5 text-[11px] font-bold tracking-[0.08em] text-text-secondary">

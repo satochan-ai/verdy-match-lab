@@ -16,6 +16,7 @@ import {
   belezaCards,
   belezaSubstitutions,
   belezaOfficialRecord,
+  belezaOfficialSourceLabel,
   belezaMatchStats,
   belezaPredictedLineup,
   belezaKeyPlayers,
@@ -224,6 +225,7 @@ export default function BelezaPage() {
           cards={belezaCards}
           substitutions={belezaSubstitutions}
           officialRecord={belezaOfficialRecord}
+          officialSourceLabel={belezaOfficialSourceLabel}
         />
       )}
 
