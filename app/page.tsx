@@ -5,9 +5,9 @@ import { StrategyList } from "@/components/match/StrategyList";
 import { MatchSchedule } from "@/components/match/MatchSchedule";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
-import { getMatchDayLabel, daysUntilJST } from "@/lib/match/display";
+import { getMatchDayLabel } from "@/lib/match/display";
 import { belezaMatch } from "@/lib/mock/beleza";
-import { u21Match } from "@/lib/mock/u21";
+import { u21Match, u21UpcomingMatches } from "@/lib/mock/u21";
 
 function formatMatchday(iso: string) {
   const d = new Date(iso);
@@ -55,7 +55,7 @@ export default async function Home() {
   const now = new Date();
   const fixture = formatMatchday(nextMatch.kickoffAt);
   const dayLabel = getMatchDayLabel(nextMatch, now);
-  const showU21Match = daysUntilJST(u21Match.kickoffAt, now) === 0;
+  const nextU21Fixture = u21UpcomingMatches[0];
 
   return (
     <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
@@ -126,39 +126,63 @@ export default async function Home() {
       </div>
 
       <div className="mt-8 space-y-6 border-t border-border pt-6 lg:mt-0 lg:border-t-0 lg:pt-0">
-        {showU21Match && (
-          <section>
-            <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
-              U-21 MATCH
-            </p>
-            {u21Match.status === "finished" ? (
-              <p className="mt-1 text-[11px] font-bold text-text-secondary">FT</p>
-            ) : (
-              <p className="mt-1 text-[11px] font-bold text-primary-green">本日、U-21も試合開催</p>
-            )}
-            <div className="mt-2 border-t border-border py-2 text-[13px]">
+        <section>
+          <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
+            U-21 MATCH
+          </p>
+          {nextU21Fixture ? (
+            <>
+              <p className="mt-1 text-[11px] font-bold text-primary-green">NEXT MATCH</p>
+              <div className="mt-2 border-t border-border py-2 text-[13px]">
+                <p className="tabular-nums text-text-secondary">{nextU21Fixture.dateLabel}</p>
+                <FixtureMetaLine meta={nextU21Fixture.fixtureMeta} compact />
+                <p className="mt-1 min-w-0 truncate text-text-primary">
+                  <span className="mr-1 font-bold">
+                    {nextU21Fixture.isHome ? "HOME" : "AWAY"}
+                  </span>
+                  {nextU21Fixture.opponentName}
+                </p>
+                <p className="mt-1 text-text-secondary">
+                  {nextU21Fixture.kickoffLabel === "TBD"
+                    ? "KICK OFF TBD"
+                    : `${nextU21Fixture.kickoffLabel} KICK OFF`}
+                </p>
+                <Link href="/u21" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
+                  MATCHを見る →
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
               {u21Match.status === "finished" ? (
-                <p className="min-w-0 truncate text-text-primary">
-                  {u21Match.homeTeamName} {u21Match.homeScore}-{u21Match.awayScore}{" "}
-                  {u21Match.awayTeamName}
-                </p>
+                <p className="mt-1 text-[11px] font-bold text-text-secondary">FT</p>
               ) : (
-                <p className="min-w-0 truncate text-text-primary">
-                  {u21Match.homeTeamName} vs {u21Match.awayTeamName}
+                <p className="mt-1 text-[11px] font-bold text-primary-green">本日、U-21も試合開催</p>
+              )}
+              <div className="mt-2 border-t border-border py-2 text-[13px]">
+                {u21Match.status === "finished" ? (
+                  <p className="min-w-0 truncate text-text-primary">
+                    {u21Match.homeTeamName} {u21Match.homeScore}-{u21Match.awayScore}{" "}
+                    {u21Match.awayTeamName}
+                  </p>
+                ) : (
+                  <p className="min-w-0 truncate text-text-primary">
+                    {u21Match.homeTeamName} vs {u21Match.awayTeamName}
+                  </p>
+                )}
+                <p className="mt-1 text-text-secondary">
+                  {u21Match.kickoffLabel} KICK OFF ／ {u21Match.venue}
                 </p>
-              )}
-              <p className="mt-1 text-text-secondary">
-                {u21Match.kickoffLabel} KICK OFF ／ {u21Match.venue}
-              </p>
-              {u21Match.fixtureMeta && (
-                <FixtureMetaLine meta={u21Match.fixtureMeta} compact />
-              )}
-              <Link href="/u21" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
-                {u21Match.status === "finished" ? "結果を見る →" : "MATCHを見る →"}
-              </Link>
-            </div>
-          </section>
-        )}
+                {u21Match.fixtureMeta && (
+                  <FixtureMetaLine meta={u21Match.fixtureMeta} compact />
+                )}
+                <Link href="/u21" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
+                  {u21Match.status === "finished" ? "結果を見る →" : "MATCHを見る →"}
+                </Link>
+              </div>
+            </>
+          )}
+        </section>
 
         <section>
           <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
