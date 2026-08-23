@@ -1,4 +1,4 @@
-import type { KeyPlayer, PredictedLineup, Team } from "@/types/domain";
+import type { KeyPlayer, MatchGoal, PredictedLineup, Team } from "@/types/domain";
 
 /**
  * 日テレ・東京ヴェルディベレーザ（WEリーグ）専用の軽量PREデータ。
@@ -20,12 +20,29 @@ export const jefChibaLadiesTeam: Team = {
   isVerdy: false,
 };
 
+/** 公式確定結果（Phase 6-H.16確認）。ベレーザ 2-1 ジェフ千葉レディースでBELEZA WIN。 */
 export const belezaMatch = {
-  competition: "2026／27 WEリーグ 第1節",
+  competition: "2026／27 SOMPO WEリーグ 第1節",
   dateLabel: "08.23 SUN",
   kickoffLabel: "18:00",
   venue: "味の素フィールド西が丘",
+  status: "finished" as const,
+  homeScore: 2,
+  awayScore: 1,
 };
+
+/** 前半・後半のスコア推移（公式確認済み）。 */
+export const belezaHalfScores = {
+  firstHalf: "1-1",
+  secondHalf: "1-0",
+};
+
+/** 得点記録（公式確認済み）。 */
+export const belezaGoals: MatchGoal[] = [
+  { minute: "10'", scorer: "井上 綾香", team: jefChibaLadiesTeam.name },
+  { minute: "23'", scorer: "氏原 里穂菜", team: belezaTeam.name },
+  { minute: "89'", scorer: "眞城 美春", team: belezaTeam.name },
+];
 
 /**
  * PREDICTED（公式未発表）。登録選手・これまでの起用傾向を基にした予想。
@@ -91,22 +108,28 @@ export const belezaOfficialBench: string[] = [
 ];
 
 /**
- * 開幕戦 公式スタメン（ジェフユナイテッド市原・千葉レディース）。
- * formationは公式に確認できないため推測せず、登録ポジション付きリストのみで扱う（pitch表示なし）。
+ * 開幕戦 公式スタメン（ジェフユナイテッド市原・千葉レディース）。actual formation。
+ * ユーザー確認済みの配置（4-4-2）をそのまま採用し、左右は入れ替えない。
+ * DF：99 鈴木菫（左）／4 林香奈絵／3 石田菜々海／17 山口千尋（右）
+ * MF：18 稲山美優（左サイド）／19 曽根七海（中央左）／14 植本愛実（中央右）／13 角谷瑠菜（右サイド）
+ * FW：9 井上綾香（左）／10 小川由姫（右）
  */
-export const jefChibaLadiesOfficialLineup: { number: number; position: "GK" | "DF" | "MF" | "FW"; name: string }[] = [
-  { number: 1, position: "GK", name: "清水 美紅" },
-  { number: 4, position: "DF", name: "林 香奈絵" },
-  { number: 99, position: "DF", name: "鈴木 菫" },
-  { number: 3, position: "DF", name: "石田 菜々海" },
-  { number: 19, position: "MF", name: "曽根 七海" },
-  { number: 17, position: "MF", name: "山口 千尋" },
-  { number: 14, position: "MF", name: "植本 愛実" },
-  { number: 18, position: "MF", name: "稲山 美優" },
-  { number: 13, position: "MF", name: "角谷 瑠菜" },
-  { number: 10, position: "FW", name: "小川 由姫" },
-  { number: 9, position: "FW", name: "井上 綾香" },
-];
+export const jefChibaLadiesOfficialLineup: PredictedLineup = {
+  formation: "4-4-2",
+  starters: [
+    { number: 1, name: "清水 美紅", position: "GK" },
+    { number: 99, name: "鈴木 菫", position: "DF" },
+    { number: 4, name: "林 香奈絵", position: "DF" },
+    { number: 3, name: "石田 菜々海", position: "DF" },
+    { number: 17, name: "山口 千尋", position: "DF" },
+    { number: 18, name: "稲山 美優", position: "MF" },
+    { number: 19, name: "曽根 七海", position: "MF" },
+    { number: 14, name: "植本 愛実", position: "MF" },
+    { number: 13, name: "角谷 瑠菜", position: "MF" },
+    { number: 9, name: "井上 綾香", position: "FW" },
+    { number: 10, name: "小川 由姫", position: "FW" },
+  ],
+};
 
 /** 開幕戦 公式ベンチ（ジェフ千葉レディース）。公式ページでポジション未照合のため背番号＋氏名のみ。 */
 export const jefChibaLadiesOfficialBench: string[] = [
@@ -137,4 +160,35 @@ export const jefChibaLadiesNotes = [
   "元ベレーザGKの清水美紅が今季加入。",
   "開幕戦のため新体制の配置・起用はまだ読みづらい。",
   "ベレーザ側はまず自分たちの立ち位置・選手構成を見る試合。",
+];
+
+export type BelezaMatchResult = "win" | "draw" | "loss";
+
+export interface BelezaSeasonHistoryEntry {
+  id: string;
+  dateLabel: string;
+  round: string;
+  homeTeamName: string;
+  awayTeamName: string;
+  homeScore: number;
+  awayScore: number;
+  /** ベレーザから見た結果。 */
+  result: BelezaMatchResult;
+}
+
+/**
+ * 2026/27シーズンのベレーザ試合履歴。今季の試合のみを蓄積する（過去シーズンは混ぜない）。
+ * この開幕戦がRECENT 1として履歴の起点となる。
+ */
+export const belezaSeasonHistory: BelezaSeasonHistoryEntry[] = [
+  {
+    id: "beleza-match-1",
+    dateLabel: "08.23",
+    round: "第1節",
+    homeTeamName: belezaTeam.name,
+    awayTeamName: jefChibaLadiesTeam.name,
+    homeScore: belezaMatch.homeScore,
+    awayScore: belezaMatch.awayScore,
+    result: "win",
+  },
 ];

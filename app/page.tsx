@@ -154,16 +154,27 @@ export default async function Home() {
           <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
             BELEZA
           </p>
+          {belezaMatch.status === "finished" ? (
+            <p className="mt-1 text-[11px] font-bold text-text-secondary">FT</p>
+          ) : (
+            <p className="mt-1 text-text-secondary">{belezaMatch.dateLabel}</p>
+          )}
           <div className="mt-2 border-t border-border py-2 text-[13px]">
-            <p className="text-text-secondary">{belezaMatch.dateLabel}</p>
-            <p className="mt-1 min-w-0 truncate text-text-primary">
-              日テレ・東京ヴェルディベレーザ vs ジェフ千葉レディース
-            </p>
+            {belezaMatch.status === "finished" ? (
+              <p className="min-w-0 truncate text-text-primary">
+                日テレ・東京ヴェルディベレーザ {belezaMatch.homeScore}-{belezaMatch.awayScore}{" "}
+                ジェフ千葉レディース
+              </p>
+            ) : (
+              <p className="min-w-0 truncate text-text-primary">
+                日テレ・東京ヴェルディベレーザ vs ジェフ千葉レディース
+              </p>
+            )}
             <p className="mt-1 text-text-secondary">
               {belezaMatch.kickoffLabel} KICK OFF ／ {belezaMatch.venue}
             </p>
             <Link href="/beleza" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
-              PREを見る →
+              {belezaMatch.status === "finished" ? "結果を見る →" : "PREを見る →"}
             </Link>
           </div>
         </section>
