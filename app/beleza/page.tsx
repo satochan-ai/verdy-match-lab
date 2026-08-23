@@ -5,12 +5,18 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { PredictedFormation } from "@/components/match/PredictedFormation";
 import { BelezaOfficialLineup } from "@/components/match/BelezaOfficialLineup";
 import { BelezaSeasonHistory } from "@/components/match/BelezaSeasonHistory";
+import { BelezaMatchStats } from "@/components/match/BelezaMatchStats";
+import { MatchRecord } from "@/components/match/MatchRecord";
 import {
   belezaTeam,
   jefChibaLadiesTeam,
   belezaMatch,
   belezaHalfScores,
   belezaGoals,
+  belezaCards,
+  belezaSubstitutions,
+  belezaOfficialRecord,
+  belezaMatchStats,
   belezaPredictedLineup,
   belezaKeyPlayers,
   belezaOfficialLineup,
@@ -209,6 +215,25 @@ export default function BelezaPage() {
         opponentLineup={jefChibaLadiesOfficialLineup}
         opponentBench={jefChibaLadiesOfficialBench}
       />
+
+      {isFinished && (
+        <MatchRecord
+          homeTeamName={belezaTeam.name}
+          awayTeamName={jefChibaLadiesTeam.name}
+          goals={belezaGoals}
+          cards={belezaCards}
+          substitutions={belezaSubstitutions}
+          officialRecord={belezaOfficialRecord}
+        />
+      )}
+
+      {isFinished && (
+        <BelezaMatchStats
+          belezaTeamName={belezaTeam.name}
+          opponentTeamName={jefChibaLadiesTeam.name}
+          stats={belezaMatchStats}
+        />
+      )}
 
       <section>
         <SectionHeader title="欠場予定" eyebrow="UNAVAILABLE" />

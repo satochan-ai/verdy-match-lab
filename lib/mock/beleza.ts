@@ -1,4 +1,12 @@
-import type { KeyPlayer, MatchGoal, PredictedLineup, Team } from "@/types/domain";
+import type {
+  KeyPlayer,
+  MatchCard,
+  MatchGoal,
+  MatchSubstitution,
+  OfficialMatchRecord,
+  PredictedLineup,
+  Team,
+} from "@/types/domain";
 
 /**
  * 日テレ・東京ヴェルディベレーザ（WEリーグ）専用の軽量PREデータ。
@@ -43,6 +51,46 @@ export const belezaGoals: MatchGoal[] = [
   { minute: "23'", scorer: "氏原 里穂菜", team: belezaTeam.name },
   { minute: "89'", scorer: "眞城 美春", team: belezaTeam.name },
 ];
+
+/**
+ * WEリーグ公式試合記録（Phase 6-H.16確認）。予定KO 18:00とは別に、
+ * 実績のKick Off 18:05をofficialRecord側で保持する（予定と実績を混同しない）。
+ * sourceUrlは本セッションで確認済みの公式URLが無いため未設定（推測で埋めない）。
+ */
+export const belezaOfficialRecord: OfficialMatchRecord = {
+  kickoff: "18:05",
+  attendance: 2513,
+  weather: "曇時々雨",
+  temperature: "28.7℃",
+  humidity: "73%",
+};
+
+/** 警告・退場（公式確認済み）。ベレーザ側・退場は今回確認できるものなし。 */
+export const belezaCards: MatchCard[] = [
+  { minute: "84'", player: "栗本 悠加", team: jefChibaLadiesTeam.name, type: "yellow" },
+];
+
+/** 交代記録（公式確認済み）。 */
+export const belezaSubstitutions: MatchSubstitution[] = [
+  { minute: "60'", team: belezaTeam.name, playerIn: "猶本 光", playerOut: "小林 里歌子" },
+  { minute: "60'", team: belezaTeam.name, playerIn: "北村 菜々美", playerOut: "松永 未夢" },
+  { minute: "81'", team: belezaTeam.name, playerIn: "松田 紫野", playerOut: "朝生 珠実" },
+  { minute: "81'", team: belezaTeam.name, playerIn: "武田 和", playerOut: "氏原 里穂菜" },
+  { minute: "90+1'", team: belezaTeam.name, playerIn: "安藤 梢", playerOut: "眞城 美春" },
+  { minute: "37'", team: jefChibaLadiesTeam.name, playerIn: "正野 瑠菜", playerOut: "曽根 七海" },
+  { minute: "70'", team: jefChibaLadiesTeam.name, playerIn: "田中 真理子", playerOut: "鈴木 菫" },
+  { minute: "70'", team: jefChibaLadiesTeam.name, playerIn: "栗本 悠加", playerOut: "角谷 瑠菜" },
+  { minute: "70'", team: jefChibaLadiesTeam.name, playerIn: "エラ ジョンソン", playerOut: "林 香奈絵" },
+];
+
+/**
+ * 公式記録で確認できたスタッツのみ（シュート・FK・CK）。
+ * 支配率・パス成功率・走行距離等、未確認の項目は推測で追加しない。
+ */
+export const belezaMatchStats = {
+  beleza: { shots: 10, freeKicks: 7, corners: 4 },
+  opponent: { shots: 11, freeKicks: 8, corners: 2 },
+};
 
 /**
  * PREDICTED（公式未発表）。登録選手・これまでの起用傾向を基にした予想。
