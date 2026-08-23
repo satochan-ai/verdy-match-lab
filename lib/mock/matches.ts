@@ -203,6 +203,7 @@ export const matches: Match[] = [
     homeScore: 0,
     awayScore: 0,
     timeSegment: null,
+    fixtureMeta: { competition: "2026 J1リーグ", roundLabel: "第3節" },
     officialRecord: {
       kickoff: "18:33",
       attendance: 14426,
@@ -427,6 +428,7 @@ export const matches: Match[] = [
     homeScore: null,
     awayScore: null,
     timeSegment: null,
+    fixtureMeta: { competition: "天皇杯 JFA 第106回全日本サッカー選手権大会", roundLabel: "2回戦" },
     verdyProfile: {
       formation: "情報準備中",
       characteristics: { attack: "情報準備中", defense: "情報準備中" },

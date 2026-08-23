@@ -7,6 +7,7 @@ import { BelezaOfficialLineup } from "@/components/match/BelezaOfficialLineup";
 import { BelezaSeasonHistory } from "@/components/match/BelezaSeasonHistory";
 import { BelezaMatchStats } from "@/components/match/BelezaMatchStats";
 import { MatchRecord } from "@/components/match/MatchRecord";
+import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
 import {
   belezaTeam,
   jefChibaLadiesTeam,
@@ -29,6 +30,7 @@ import {
   belezaPreNote,
   jefChibaLadiesNotes,
   belezaSeasonHistory,
+  belezaUpcomingMatches,
 } from "@/lib/mock/beleza";
 
 export const metadata: Metadata = {
@@ -284,6 +286,13 @@ export default function BelezaPage() {
         <section>
           <SectionHeader title="2026/27シーズン試合履歴" eyebrow="SEASON HISTORY" />
           <BelezaSeasonHistory entries={belezaSeasonHistory} />
+        </section>
+      )}
+
+      {belezaUpcomingMatches.length > 0 && (
+        <section>
+          <SectionHeader title="NEXT 5" eyebrow="UPCOMING FIXTURES" />
+          <UpcomingFixtureList fixtures={belezaUpcomingMatches} />
         </section>
       )}
     </div>

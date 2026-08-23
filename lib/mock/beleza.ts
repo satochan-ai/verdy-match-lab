@@ -1,4 +1,5 @@
 import type {
+  FixtureMeta,
   KeyPlayer,
   MatchCard,
   MatchGoal,
@@ -6,6 +7,7 @@ import type {
   OfficialMatchRecord,
   PredictedLineup,
   Team,
+  UpcomingFixture,
 } from "@/types/domain";
 
 /**
@@ -31,6 +33,8 @@ export const jefChibaLadiesTeam: Team = {
 /** 公式確定結果（Phase 6-H.16確認）。ベレーザ 2-1 ジェフ千葉レディースでBELEZA WIN。 */
 export const belezaMatch = {
   competition: "2026／27 SOMPO WEリーグ 第1節",
+  /** fixture metadata統一表示用（大会名／節を分離）。既存のcompetition文字列は表示互換のため維持する。 */
+  fixtureMeta: { competition: "2026/27 WEリーグ", roundLabel: "第1節" } satisfies FixtureMeta,
   dateLabel: "08.23 SUN",
   kickoffLabel: "18:00",
   venue: "味の素フィールド西が丘",
@@ -242,5 +246,64 @@ export const belezaSeasonHistory: BelezaSeasonHistoryEntry[] = [
     homeScore: belezaMatch.homeScore,
     awayScore: belezaMatch.awayScore,
     result: "win",
+  },
+];
+
+/**
+ * 開幕戦終了後のNEXT 5（公式日程のみ）。会場は公式サイトで確認できた場合のみ設定し、
+ * 未確認の試合はvenueを省略する（推測で埋めない）。
+ */
+export const belezaUpcomingMatches: UpcomingFixture[] = [
+  {
+    id: "beleza-next-1",
+    dateLabel: "08.29 SAT",
+    kickoffLabel: "18:00",
+    fixtureMeta: { competition: "2026/27 WEリーグ", roundLabel: "第2節" },
+    isHome: false,
+    opponentName: "AC長野パルセイロ・レディース",
+  },
+  {
+    id: "beleza-next-2",
+    dateLabel: "09.05 SAT",
+    kickoffLabel: "18:00",
+    fixtureMeta: { competition: "2026/27 WEリーグ", roundLabel: "第3節" },
+    isHome: false,
+    opponentName: "三菱重工浦和レッズレディース",
+  },
+  {
+    id: "beleza-next-3",
+    dateLabel: "09.12 SAT",
+    kickoffLabel: "18:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ クラシエカップ",
+      stage: "リーグステージ",
+      roundLabel: "第1節",
+    },
+    isHome: true,
+    opponentName: "INAC神戸レオネッサ",
+  },
+  {
+    id: "beleza-next-4",
+    dateLabel: "09.19 SAT",
+    kickoffLabel: "16:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ クラシエカップ",
+      stage: "リーグステージ",
+      roundLabel: "第2節",
+    },
+    isHome: false,
+    opponentName: "ちふれASエルフェン埼玉",
+  },
+  {
+    id: "beleza-next-5",
+    dateLabel: "09.23 WED",
+    kickoffLabel: "14:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ クラシエカップ",
+      stage: "リーグステージ",
+      roundLabel: "第3節",
+    },
+    isHome: true,
+    opponentName: "アルビレックス新潟レディース",
   },
 ];

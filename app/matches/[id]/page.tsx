@@ -4,6 +4,7 @@ import { getMatchDetail } from "@/lib/data/matches";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { MatchScoreboard } from "@/components/match/MatchScoreboard";
 import { MatchMeta } from "@/components/match/MatchMeta";
+import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { StrategyList } from "@/components/match/StrategyList";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PredictedLineups } from "@/components/match/PredictedLineups";
@@ -75,6 +76,11 @@ export default async function MatchDetailPage({
 
         const overviewBlock = (
           <div>
+            {match.fixtureMeta && (
+              <div className="mb-3">
+                <FixtureMetaLine meta={match.fixtureMeta} />
+              </div>
+            )}
             <MatchScoreboard match={displayMatch} />
             <div className="mt-4">
               <MatchMeta match={displayMatch} showCountdown={hasPreMatchContent} />
@@ -215,6 +221,11 @@ export default async function MatchDetailPage({
       {displayStatus === "finished" && (
         <div className="lg:grid lg:grid-cols-[minmax(0,1.8fr)_minmax(0,1fr)] lg:items-start lg:gap-10">
           <div className="lg:col-start-1">
+            {match.fixtureMeta && (
+              <div className="mb-3">
+                <FixtureMetaLine meta={match.fixtureMeta} />
+              </div>
+            )}
             <MatchScoreboard match={displayMatch} />
           </div>
 

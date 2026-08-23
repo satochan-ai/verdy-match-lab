@@ -197,12 +197,46 @@ export interface Match {
   matchNotes: string[];
   focusPoints: string[];
   strategies: Strategy[];
+  /** 大会名・ステージ・節/回戦をfixture card上で表示するためのメタデータ。確認できた試合のみ設定する。 */
+  fixtureMeta?: FixtureMeta;
   /**
    * mock運用専用のoptional field。trueの場合、Top/Archiveなど公開一覧からは除外する
    * （URL直接アクセスでの開発回帰確認は維持）。DBマッパー（lib/data/mappers.ts）は
    * この値を設定しないため、DB由来のMatchは常にundefined＝公開扱いとなる。
    */
   isDemo?: boolean;
+}
+
+/**
+ * TOP TEAM / BELEZA / U-21の3カテゴリーで再利用する、fixture表示用の大会メタデータ。
+ * 「大会名」「ステージ」「節・回戦」を分離して保持し、大会ごとに異なる節/回戦表現
+ * （第○節・○回戦・リーグステージ 第○節 等）を無理に単一のsectionNumber等へ統一しない。
+ */
+export interface FixtureMeta {
+  /** 大会名。例："2026 J1リーグ" "天皇杯 JFA 第106回全日本サッカー選手権大会"。 */
+  competition: string;
+  /** ステージ名（該当する大会のみ）。例："リーグステージ" "東西リーグラウンド"。 */
+  stage?: string;
+  /** 節・回戦・ラウンド表記。例："第2節" "2回戦"。公式で確認できた場合のみ設定する。 */
+  roundLabel?: string;
+}
+
+/**
+ * BELEZA / U-21のNEXT 5（今後の公式日程）表示用の軽量fixture情報。
+ * 日時・会場が未確定の場合は、単一の値を勝手に確定しない
+ * （dateLabelに範囲表記、kickoffLabelに"TBD"を許容し、venueは未確認ならundefinedのまま）。
+ */
+export interface UpcomingFixture {
+  id: string;
+  /** 表示用日付ラベル。例："08.29 SAT"。日程未確定の場合は "10.31 - 11.02" のような範囲表記も許容する。 */
+  dateLabel: string;
+  /** 表示用キックオフラベル。例："18:00"。未確定の場合は "TBD"。 */
+  kickoffLabel: string;
+  fixtureMeta: FixtureMeta;
+  isHome: boolean;
+  opponentName: string;
+  /** 公式サイトで確認できた場合のみ設定する（推測で埋めない）。未設定ならUI側でTBD扱い。 */
+  venue?: string;
 }
 
 /** MATCH SCHEDULE表示用の大会区分。東京ヴェルディトップチームの公式戦のみを対象とする。 */

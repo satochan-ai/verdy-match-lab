@@ -4,6 +4,7 @@ import { getPreviousMatches, getUpcomingMatches } from "@/lib/data/schedule";
 import { StrategyList } from "@/components/match/StrategyList";
 import { MatchSchedule } from "@/components/match/MatchSchedule";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { getMatchDayLabel, daysUntilJST } from "@/lib/match/display";
 import { belezaMatch } from "@/lib/mock/beleza";
 import { u21Match } from "@/lib/mock/u21";
@@ -79,6 +80,12 @@ export default async function Home() {
             {fixture.mmdd} <span className="ml-1">{fixture.weekday}</span>
           </p>
 
+          {nextMatch.fixtureMeta && (
+            <div className="mt-2">
+              <FixtureMetaLine meta={nextMatch.fixtureMeta} />
+            </div>
+          )}
+
           <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2 lg:mt-5 lg:gap-6">
             <div className="min-w-0 text-right">
               <p className="truncate text-[15px] font-extrabold leading-[1.15] text-text-primary lg:text-[36px]">
@@ -143,6 +150,9 @@ export default async function Home() {
               <p className="mt-1 text-text-secondary">
                 {u21Match.kickoffLabel} KICK OFF ／ {u21Match.venue}
               </p>
+              {u21Match.fixtureMeta && (
+                <FixtureMetaLine meta={u21Match.fixtureMeta} compact />
+              )}
               <Link href="/u21" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
                 {u21Match.status === "finished" ? "結果を見る →" : "MATCHを見る →"}
               </Link>
@@ -173,6 +183,7 @@ export default async function Home() {
             <p className="mt-1 text-text-secondary">
               {belezaMatch.kickoffLabel} KICK OFF ／ {belezaMatch.venue}
             </p>
+            <FixtureMetaLine meta={belezaMatch.fixtureMeta} compact />
             <Link href="/beleza" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
               {belezaMatch.status === "finished" ? "結果を見る →" : "PREを見る →"}
             </Link>
@@ -183,19 +194,23 @@ export default async function Home() {
           <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
             LAST MATCH
           </p>
-          <Link
-            href={`/matches/${recent.id}`}
-            className="mt-2 flex items-center justify-between border-t border-border py-2 text-[13px]"
-          >
-            <span className="min-w-0 truncate text-text-primary">
-              {formatShortDate(recent.kickoffAt)}　{recentOpponent.name}
-            </span>
-            <span className="ml-2 flex shrink-0 items-center gap-2">
-              <span className="tabular-nums font-bold text-text-primary">
-                {recent.homeScore}-{recent.awayScore}
+          <Link href={`/matches/${recent.id}`} className="mt-2 block border-t border-border py-2 text-[13px]">
+            <div className="flex items-center justify-between">
+              <span className="min-w-0 truncate text-text-primary">
+                {formatShortDate(recent.kickoffAt)}　{recentOpponent.name}
               </span>
-              <StatusBadge variant={recentResult} />
-            </span>
+              <span className="ml-2 flex shrink-0 items-center gap-2">
+                <span className="tabular-nums font-bold text-text-primary">
+                  {recent.homeScore}-{recent.awayScore}
+                </span>
+                <StatusBadge variant={recentResult} />
+              </span>
+            </div>
+            {recent.fixtureMeta && (
+              <div className="mt-1">
+                <FixtureMetaLine meta={recent.fixtureMeta} compact />
+              </div>
+            )}
           </Link>
         </section>
 

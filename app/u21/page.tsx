@@ -9,12 +9,14 @@ import {
   u21Cards,
   u21Substitutions,
   u21SeasonHistory,
+  u21UpcomingMatches,
 } from "@/lib/mock/u21";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { U21LiveSection } from "@/components/match/U21LiveSection";
 import { U21OfficialLineups } from "@/components/match/U21OfficialLineups";
 import { MatchRecord } from "@/components/match/MatchRecord";
 import { U21SeasonHistory } from "@/components/match/U21SeasonHistory";
+import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
@@ -155,6 +157,13 @@ export default function U21Page() {
         <section>
           <SectionHeader title="2026/27シーズン試合履歴" eyebrow="SEASON HISTORY" />
           <U21SeasonHistory entries={u21SeasonHistory} />
+        </section>
+      )}
+
+      {u21UpcomingMatches.length > 0 && (
+        <section>
+          <SectionHeader title="NEXT 5" eyebrow="UPCOMING FIXTURES" />
+          <UpcomingFixtureList fixtures={u21UpcomingMatches} />
         </section>
       )}
     </div>

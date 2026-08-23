@@ -1,9 +1,11 @@
 import type {
+  FixtureMeta,
   MatchCard,
   MatchGoal,
   MatchStatus,
   MatchSubstitution,
   OfficialMatchRecord,
+  UpcomingFixture,
 } from "@/types/domain";
 
 /**
@@ -17,6 +19,12 @@ export const u21Match = {
   id: "u21-match-1",
   status: "finished" as MatchStatus,
   competition: "2026／27Ｕ-21Ｊリーグ 東西リーグラウンド EAST 第1節",
+  /** fixture metadata統一表示用（大会名／ステージ／節を分離）。既存のcompetition文字列は表示互換のため維持する。 */
+  fixtureMeta: {
+    competition: "2026/27 U-21 Jリーグ",
+    stage: "東西リーグラウンド",
+    roundLabel: "第1節",
+  } satisfies FixtureMeta,
   /**
    * 雷雨の影響により、東京ヴェルディ公式発表でキックオフが19:00へ変更された
    * （当初18:00）。19:03と表記するJリーグ公式アプリ画面も確認されたが、
@@ -154,5 +162,72 @@ export const u21SeasonHistory: U21SeasonHistoryEntry[] = [
     homeScore: u21Match.homeScore,
     awayScore: u21Match.awayScore,
     result: "loss",
+  },
+];
+
+/**
+ * 開幕節終了後のNEXT 5（公式日程のみ）。日時未確定の試合（5戦目）は単一の日付を確定させず、
+ * dateLabelを範囲表記、kickoffLabelを"TBD"とする。会場は公式確認できた場合のみ設定する。
+ */
+export const u21UpcomingMatches: UpcomingFixture[] = [
+  {
+    id: "u21-next-1",
+    dateLabel: "09.12 SAT",
+    kickoffLabel: "18:00",
+    fixtureMeta: {
+      competition: "2026/27 U-21 Jリーグ",
+      stage: "東西リーグラウンド",
+      roundLabel: "第2節",
+    },
+    isHome: false,
+    opponentName: "U-21浦和レッズ",
+  },
+  {
+    id: "u21-next-2",
+    dateLabel: "09.20 SUN",
+    kickoffLabel: "14:00",
+    fixtureMeta: {
+      competition: "2026/27 U-21 Jリーグ",
+      stage: "東西リーグラウンド",
+      roundLabel: "第3節",
+    },
+    isHome: true,
+    opponentName: "U-21清水エスパルス",
+  },
+  {
+    id: "u21-next-3",
+    dateLabel: "10.03 SAT",
+    kickoffLabel: "15:00",
+    fixtureMeta: {
+      competition: "2026/27 U-21 Jリーグ",
+      stage: "東西リーグラウンド",
+      roundLabel: "第4節",
+    },
+    isHome: false,
+    opponentName: "U-21川崎フロンターレ",
+  },
+  {
+    id: "u21-next-4",
+    dateLabel: "10.17 SAT",
+    kickoffLabel: "15:00",
+    fixtureMeta: {
+      competition: "2026/27 U-21 Jリーグ",
+      stage: "東西リーグラウンド",
+      roundLabel: "第5節",
+    },
+    isHome: false,
+    opponentName: "U-21ジュビロ磐田",
+  },
+  {
+    id: "u21-next-5",
+    dateLabel: "10.31 - 11.02",
+    kickoffLabel: "TBD",
+    fixtureMeta: {
+      competition: "2026/27 U-21 Jリーグ",
+      stage: "交流戦ラウンド",
+      roundLabel: "第1節",
+    },
+    isHome: true,
+    opponentName: "U-21名古屋グランパス",
   },
 ];
