@@ -2,12 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PredictedFormation } from "@/components/match/PredictedFormation";
+import { BelezaOfficialLineup } from "@/components/match/BelezaOfficialLineup";
 import {
   belezaTeam,
   jefChibaLadiesTeam,
   belezaMatch,
   belezaPredictedLineup,
   belezaKeyPlayers,
+  belezaOfficialLineup,
+  belezaOfficialBench,
+  jefChibaLadiesOfficialLineup,
+  jefChibaLadiesOfficialBench,
   belezaUnavailablePlayers,
   belezaU20Note,
   belezaPreNote,
@@ -123,6 +128,15 @@ export default function BelezaPage() {
           直近情報を基にした予想です。公式のStarting XIではありません。実際の先発メンバーとは異なる場合があります。
         </p>
       </section>
+
+      <BelezaOfficialLineup
+        belezaTeam={belezaTeam}
+        belezaLineup={belezaOfficialLineup}
+        belezaBench={belezaOfficialBench}
+        opponentTeamName={jefChibaLadiesTeam.name}
+        opponentStarters={jefChibaLadiesOfficialLineup}
+        opponentBench={jefChibaLadiesOfficialBench}
+      />
 
       <section>
         <SectionHeader title="欠場予定" eyebrow="UNAVAILABLE" />

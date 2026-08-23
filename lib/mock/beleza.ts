@@ -58,6 +58,68 @@ export const belezaKeyPlayers: KeyPlayer[] = [
 ];
 
 /**
+ * 開幕戦 公式スタメン（ベレーザ・actual）。PREDICTED LINEUPとは別物として扱い、上書きしない。
+ * PredictedLineupと同形状のためFormationPitchをそのまま再利用する。
+ * 配置はユーザー確認情報（公式発表画像）を正として採用。
+ */
+export const belezaOfficialLineup: PredictedLineup = {
+  formation: "4-2-3-1",
+  starters: [
+    { number: 1, name: "野田 にな", position: "GK" },
+    { number: 17, name: "朝生 珠実", position: "DF" },
+    { number: 3, name: "村松 智子", position: "DF" },
+    { number: 2, name: "青木 夕菜", position: "DF" },
+    { number: 4, name: "土光 真代", position: "DF" },
+    { number: 14, name: "眞城 美春", position: "MF" },
+    { number: 6, name: "隅田 凜", position: "MF" },
+    { number: 13, name: "氏原 里穂菜", position: "MF" },
+    { number: 19, name: "塩越 柚歩", position: "MF" },
+    { number: 18, name: "松永 未夢", position: "MF" },
+    { number: 20, name: "小林 里歌子", position: "FW" },
+  ],
+};
+
+/** 開幕戦 公式ベンチ（ベレーザ）。公式ページでポジション未照合のため背番号＋氏名のみ（推測でPosを付けない）。 */
+export const belezaOfficialBench: string[] = [
+  "21 水口 茉優",
+  "5 松田 紫野",
+  "22 井手 ひなた",
+  "7 北村 菜々美",
+  "8 猶本 光",
+  "30 武田 和",
+  "40 安藤 梢",
+];
+
+/**
+ * 開幕戦 公式スタメン（ジェフユナイテッド市原・千葉レディース）。
+ * formationは公式に確認できないため推測せず、登録ポジション付きリストのみで扱う（pitch表示なし）。
+ */
+export const jefChibaLadiesOfficialLineup: { number: number; position: "GK" | "DF" | "MF" | "FW"; name: string }[] = [
+  { number: 1, position: "GK", name: "清水 美紅" },
+  { number: 4, position: "DF", name: "林 香奈絵" },
+  { number: 99, position: "DF", name: "鈴木 菫" },
+  { number: 3, position: "DF", name: "石田 菜々海" },
+  { number: 19, position: "MF", name: "曽根 七海" },
+  { number: 17, position: "MF", name: "山口 千尋" },
+  { number: 14, position: "MF", name: "植本 愛実" },
+  { number: 18, position: "MF", name: "稲山 美優" },
+  { number: 13, position: "MF", name: "角谷 瑠菜" },
+  { number: 10, position: "FW", name: "小川 由姫" },
+  { number: 9, position: "FW", name: "井上 綾香" },
+];
+
+/** 開幕戦 公式ベンチ（ジェフ千葉レディース）。公式ページでポジション未照合のため背番号＋氏名のみ。 */
+export const jefChibaLadiesOfficialBench: string[] = [
+  "30 足立 橙",
+  "5 田中 真理子",
+  "16 エラ ジョンソン",
+  "20 正野 瑠菜",
+  "36 栗本 悠加",
+  "47 小久保 まい",
+  "84 北沢 明未",
+];
+
+/**
  * 開幕戦の欠場予定選手（公式確認済み）。理由・復帰時期は未確定のため推測で追加しない。
  * 出典：東京ヴェルディ公式「日テレ・東京ヴェルディベレーザ 選手・スタッフ」https://www.verdy.co.jp/beleza/content/team/
  */
