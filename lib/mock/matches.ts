@@ -18,6 +18,20 @@ export const matches: Match[] = [
     homeScore: 1,
     awayScore: 3,
     timeSegment: null,
+    fixtureMeta: { competition: "2026 J1リーグ", roundLabel: "第2節" },
+    /**
+     * 公式試合記録（https://www.jleague.jp/match/j1/2026/081401/、Phase 6-I.4確認）で
+     * 再確認。中川敦瑛の警告時刻は公式記録上「59'」（後半14分）が正しく、旧データの
+     * 「65'」は誤りだったため修正した。
+     */
+    officialRecord: {
+      kickoff: "19:00",
+      attendance: 44690,
+      weather: "晴れ",
+      temperature: "27.4℃",
+      humidity: "90%",
+      sourceUrl: "https://www.jleague.jp/match/j1/2026/081401/",
+    },
     /**
      * 公式結果（https://www.verdy.co.jp/match/info/2026081401/result）で確認できた
      * 得点・アシストのみを記録。11分の遠藤アシストはユーザー確認情報でも公式結果でも
@@ -30,12 +44,53 @@ export const matches: Match[] = [
       { minute: "82'", scorer: "久保 藤次郎", team: "柏", assist: "渡井 理己" },
     ],
     cards: [
-      { minute: "65'", player: "中川 敦瑛", team: "柏", type: "yellow" },
+      { minute: "59'", player: "中川 敦瑛", team: "柏", type: "yellow" },
       { minute: "88'", player: "鈴木 海音", team: "東京V", type: "yellow" },
       { minute: "90+6'", player: "渡井 理己", team: "柏", type: "yellow" },
     ],
+    substitutions: [
+      { minute: "55'", team: "東京V", playerIn: "新井 悠太", playerOut: "松橋 優安" },
+      { minute: "55'", team: "東京V", playerIn: "熊取谷 一星", playerOut: "平川 怜" },
+      { minute: "56'", team: "柏", playerIn: "瀬川 祐輔", playerOut: "垣田 裕暉" },
+      { minute: "56'", team: "柏", playerIn: "渡井 理己", playerOut: "山内 日向汰" },
+      { minute: "73'", team: "東京V", playerIn: "仲山 獅恩", playerOut: "食野 壮磨" },
+      { minute: "73'", team: "東京V", playerIn: "神田 奏真", playerOut: "福田 湧矢" },
+      { minute: "79'", team: "東京V", playerIn: "白井 亮丞", playerOut: "内田 陽介" },
+      { minute: "79'", team: "柏", playerIn: "仲間 隼斗", playerOut: "小泉 佳穂" },
+      { minute: "79'", team: "柏", playerIn: "弓場 堅真", playerOut: "遠藤 渓太" },
+      { minute: "84'", team: "柏", playerIn: "馬場 晴也", playerOut: "久保 藤次郎" },
+    ],
+    matchStats: {
+      home: {
+        shots: 11,
+        shotsOnTarget: 4,
+        possession: "38%",
+        passSuccessRate: "84%",
+        distance: "121.5km",
+        sprints: 88,
+        offsides: 0,
+        corners: 3,
+        freeKicks: 9,
+        yellowCards: 1,
+        redCards: 0,
+      },
+      away: {
+        shots: 16,
+        shotsOnTarget: 6,
+        possession: "62%",
+        passSuccessRate: "89%",
+        distance: "120.3km",
+        sprints: 82,
+        offsides: 0,
+        corners: 5,
+        freeKicks: 10,
+        yellowCards: 2,
+        redCards: 0,
+      },
+    },
     actualLineups: {
       home: {
+        formation: "3-4-2-1",
         starters: {
           GK: ["1 マテウス"],
           DF: ["15 鈴木 海音", "4 林 尚輝", "6 宮原 和也"],
@@ -50,6 +105,7 @@ export const matches: Match[] = [
         },
       },
       away: {
+        formation: "3-4-2-1",
         starters: {
           GK: ["25 小島 亨介"],
           DF: ["24 久保 藤次郎", "42 原田 亘", "4 古賀 太陽", "26 杉岡 大暉"],
@@ -446,6 +502,9 @@ export const matches: Match[] = [
     strategies: [],
   },
   {
+    // 第1節。公式試合記録（https://www.jleague.jp/match/j1/2026/080901/）で確認できた
+    // 事実のみを反映。当時PRE_MATCH分析・predictedLineupsを作成していなかったため、
+    // 後から予想を捏造して追加しない（verdyProfile/opponentProfileは情報準備中のまま維持）。
     id: "match-0",
     homeTeam: verdy,
     awayTeam: opponent("kawasaki-frontale", "川崎フロンターレ"),
@@ -456,6 +515,92 @@ export const matches: Match[] = [
     homeScore: 1,
     awayScore: 1,
     timeSegment: null,
+    fixtureMeta: { competition: "2026 J1リーグ", roundLabel: "第1節" },
+    officialRecord: {
+      kickoff: "18:00",
+      attendance: 27452,
+      weather: "晴れ",
+      temperature: "30℃",
+      humidity: "69%",
+      sourceUrl: "https://www.jleague.jp/match/j1/2026/080901/",
+    },
+    goals: [
+      { minute: "46'", scorer: "溝口 修平", team: "東京V" },
+      { minute: "90+6'", scorer: "ラザル ロマニッチ", team: "川崎F" },
+    ],
+    cards: [{ minute: "68'", player: "伊藤 達哉", team: "川崎F", type: "yellow" }],
+    substitutions: [
+      { minute: "61'", team: "川崎F", playerIn: "マルシーニョ", playerOut: "紺野 和也" },
+      { minute: "61'", team: "川崎F", playerIn: "ラザル ロマニッチ", playerOut: "持山 匡佑" },
+      { minute: "63'", team: "東京V", playerIn: "仲山 獅恩", playerOut: "松橋 優安" },
+      { minute: "63'", team: "東京V", playerIn: "井上 竜太", playerOut: "鈴木 海音" },
+      { minute: "73'", team: "東京V", playerIn: "熊取谷 一星", playerOut: "食野 壮磨" },
+      { minute: "75'", team: "川崎F", playerIn: "大関 友翔", playerOut: "橘田 健人" },
+      { minute: "75'", team: "川崎F", playerIn: "佐々木 旭", playerOut: "三浦 颯太" },
+      { minute: "80'", team: "東京V", playerIn: "白井 亮丞", playerOut: "溝口 修平" },
+      { minute: "80'", team: "東京V", playerIn: "新井 悠太", playerOut: "福田 湧矢" },
+      { minute: "86'", team: "川崎F", playerIn: "宮城 天", playerOut: "山本 悠樹" },
+    ],
+    matchStats: {
+      home: {
+        shots: 14,
+        shotsOnTarget: 4,
+        possession: "34%",
+        passSuccessRate: "72%",
+        distance: "117.6km",
+        sprints: 116,
+        offsides: 1,
+        corners: 4,
+        freeKicks: 10,
+        yellowCards: 0,
+        redCards: 0,
+      },
+      away: {
+        shots: 15,
+        shotsOnTarget: 4,
+        possession: "66%",
+        passSuccessRate: "84%",
+        distance: "111.9km",
+        sprints: 108,
+        offsides: 2,
+        corners: 4,
+        freeKicks: 15,
+        yellowCards: 1,
+        redCards: 0,
+      },
+    },
+    actualLineups: {
+      home: {
+        formation: "3-4-2-1",
+        starters: {
+          GK: ["1 マテウス"],
+          DF: ["4 林 尚輝", "6 宮原 和也", "15 鈴木 海音"],
+          MF: ["16 平川 怜", "18 溝口 修平", "20 食野 壮磨", "22 内田 陽介"],
+          FW: ["7 松橋 優安", "9 染野 唯月", "14 福田 湧矢"],
+        },
+        bench: {
+          GK: ["21 長沢 祐弥"],
+          DF: ["5 井上 竜太", "29 佐古 真礼"],
+          MF: ["24 仲山 獅恩", "28 山本 丈偉", "40 新井 悠太"],
+          FW: ["25 熊取谷 一星", "27 白井 亮丞", "45 寺沼 星文"],
+        },
+      },
+      away: {
+        formation: "4-2-3-1",
+        starters: {
+          GK: ["49 スベンド ブローダーセン"],
+          DF: ["3 谷口 栄斗", "4 ペドロ ホマーノ", "13 三浦 颯太", "29 山原 怜音"],
+          MF: ["6 山本 悠樹", "8 橘田 健人", "14 脇坂 泰斗", "17 伊藤 達哉", "18 紺野 和也"],
+          FW: ["20 持山 匡佑"],
+        },
+        bench: {
+          GK: ["1 山口 瑠伊"],
+          DF: ["5 佐々木 旭", "22 フィリップ ウレモヴィッチ"],
+          MF: ["16 大関 友翔", "19 河原 創", "34 長 璃喜"],
+          FW: ["9 ラザル ロマニッチ", "23 マルシーニョ", "24 宮城 天"],
+        },
+      },
+    },
     verdyProfile: {
       formation: "情報準備中",
       characteristics: { attack: "情報準備中", defense: "情報準備中" },
