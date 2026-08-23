@@ -57,6 +57,12 @@ export const belezaKeyPlayers: KeyPlayer[] = [
   { name: "11 樋渡 百花", note: "FW／1トップ。前線での起点、裏への動き、フィニッシュに注目。" },
 ];
 
+/**
+ * 開幕戦の欠場予定選手（公式確認済み）。理由・復帰時期は未確定のため推測で追加しない。
+ * 出典：東京ヴェルディ公式「日テレ・東京ヴェルディベレーザ 選手・スタッフ」https://www.verdy.co.jp/beleza/content/team/
+ */
+export const belezaUnavailablePlayers: string[] = ["10 MF 菅野 奏音", "16 DF 本多 桃華"];
+
 /** U-20日本女子代表選出（公式確認済み）。開幕戦後に代表活動へ合流予定。欠場・出場不透明とは書かない。 */
 export const belezaU20Note =
   "青木夕菜・朝生珠実・眞城美春・松永未夢は、開幕戦後にU-20日本女子代表活動へ参加予定。";

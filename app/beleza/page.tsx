@@ -8,6 +8,7 @@ import {
   belezaMatch,
   belezaPredictedLineup,
   belezaKeyPlayers,
+  belezaUnavailablePlayers,
   belezaU20Note,
   belezaPreNote,
   jefChibaLadiesNotes,
@@ -121,6 +122,17 @@ export default function BelezaPage() {
         <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
           直近情報を基にした予想です。公式のStarting XIではありません。実際の先発メンバーとは異なる場合があります。
         </p>
+      </section>
+
+      <section>
+        <SectionHeader title="欠場予定" eyebrow="UNAVAILABLE" />
+        <ul className="divide-y divide-border border-y border-border bg-surface px-3 text-[13px]">
+          {belezaUnavailablePlayers.map((player) => (
+            <li key={player} className="py-2 font-bold text-text-primary">
+              {player}
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section>
