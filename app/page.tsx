@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
-import { getPreviousMatches, getUpcomingMatches } from "@/lib/data/schedule";
+import { getPreviousMatches, getUpcomingMatches, getUpcomingFixtures } from "@/lib/data/schedule";
 import { StrategyList } from "@/components/match/StrategyList";
 import { MatchSchedule } from "@/components/match/MatchSchedule";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
+import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
 import { getMatchDayLabel } from "@/lib/match/display";
 import { belezaMatch } from "@/lib/mock/beleza";
 import { u21Match, u21UpcomingMatches } from "@/lib/mock/u21";
@@ -36,11 +37,12 @@ function formatShortDate(iso: string) {
 }
 
 export default async function Home() {
-  const [nextMatch, recent, pastSchedule, nextSchedule] = await Promise.all([
+  const [nextMatch, recent, pastSchedule, nextSchedule, topUpcoming] = await Promise.all([
     getNextMatch(),
     getRecentFinishedMatchSummary(),
     getPreviousMatches(5),
     getUpcomingMatches(5),
+    getUpcomingFixtures(5),
   ]);
   const opponent = nextMatch.isVerdyHome ? nextMatch.awayTeam : nextMatch.homeTeam;
   const recentOpponent = recent.isVerdyHome ? recent.awayTeam : recent.homeTeam;
@@ -123,6 +125,17 @@ export default async function Home() {
         </section>
 
         <StrategyList strategies={nextMatch.strategies} />
+
+        {topUpcoming.length > 0 && (
+          <section>
+            <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
+              NEXT 5
+            </p>
+            <div className="mt-2">
+              <UpcomingFixtureList fixtures={topUpcoming} />
+            </div>
+          </section>
+        )}
       </div>
 
       <div className="mt-8 space-y-6 border-t border-border pt-6 lg:mt-0 lg:border-t-0 lg:pt-0">

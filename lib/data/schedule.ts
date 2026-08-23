@@ -1,4 +1,4 @@
-import type { ScheduleMatch } from "@/types/domain";
+import type { ScheduleMatch, UpcomingFixture } from "@/types/domain";
 import * as mock from "@/lib/mock/schedule";
 
 /**
@@ -12,4 +12,9 @@ export async function getPreviousMatches(limit = 5): Promise<ScheduleMatch[]> {
 
 export async function getUpcomingMatches(limit = 5): Promise<ScheduleMatch[]> {
   return mock.getUpcomingMatches(limit);
+}
+
+/** TOP TEAMのNEXT 5表示用。getUpcomingMatches（source of truth）をUpcomingFixture形状へ変換するのみ。 */
+export async function getUpcomingFixtures(limit = 5): Promise<UpcomingFixture[]> {
+  return mock.getUpcomingFixtures(limit);
 }

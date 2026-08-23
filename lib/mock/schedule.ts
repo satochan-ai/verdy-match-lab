@@ -1,4 +1,4 @@
-import type { ScheduleMatch } from "@/types/domain";
+import type { Competition, ScheduleMatch, UpcomingFixture } from "@/types/domain";
 
 /**
  * MATCH SCHEDULE用の軽量fixtureデータ。東京ヴェルディトップチームの公式戦のみを対象とする
@@ -109,4 +109,59 @@ export function getUpcomingMatches(limit = 5): ScheduleMatch[] {
     .filter((m) => m.status !== "finished")
     .sort((a, b) => new Date(a.kickoffAt).getTime() - new Date(b.kickoffAt).getTime())
     .slice(0, limit);
+}
+
+/**
+ * ScheduleMatch["competition"]（内部enum）→ fixtureMeta.competition（表示用正式名称）変換。
+ * TOPのMatch.fixtureMeta（lib/mock/matches.ts）で既に使っている表記と揃える
+ * （j1/emperor_cupは既存match-7・match-8のfixtureMetaと同一文言）。
+ */
+const competitionFullName: Record<Competition, string> = {
+  j1: "2026 J1リーグ",
+  emperor_cup: "天皇杯 JFA 第106回全日本サッカー選手権大会",
+  levain_cup: "ルヴァン",
+};
+
+function formatFixtureDateLabel(iso: string) {
+  const d = new Date(iso);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Tokyo",
+    month: "2-digit",
+    day: "2-digit",
+    weekday: "short",
+  }).formatToParts(d);
+  const part = (type: Intl.DateTimeFormatPartTypes) => parts.find((p) => p.type === type)?.value ?? "";
+  return `${part("month")}.${part("day")} ${part("weekday").toUpperCase()}`;
+}
+
+function formatFixtureKickoffLabel(iso: string) {
+  return new Intl.DateTimeFormat("ja-JP", {
+    timeZone: "Asia/Tokyo",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).format(new Date(iso));
+}
+
+/**
+ * TOP TEAMのNEXT 5表示用アダプター。scheduleMatches（source of truth）を
+ * BELEZA/U-21と共通のUpcomingFixture形状へ変換するだけで、新しい試合データは作らない。
+ */
+function toUpcomingFixture(item: ScheduleMatch): UpcomingFixture {
+  return {
+    id: item.id,
+    dateLabel: formatFixtureDateLabel(item.kickoffAt),
+    kickoffLabel: formatFixtureKickoffLabel(item.kickoffAt),
+    fixtureMeta: {
+      competition: competitionFullName[item.competition],
+      roundLabel: item.round,
+    },
+    isHome: item.isVerdyHome,
+    opponentName: item.opponentTbd ? "対戦相手未定" : item.opponentName,
+    venue: item.venue,
+  };
+}
+
+export function getUpcomingFixtures(limit = 5): UpcomingFixture[] {
+  return getUpcomingMatches(limit).map(toUpcomingFixture);
 }
