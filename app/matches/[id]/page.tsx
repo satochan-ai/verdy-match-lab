@@ -62,7 +62,7 @@ export default async function MatchDetailPage({
   return (
     <div className="space-y-6 pb-4">
       <div className="flex items-center justify-between">
-        <Link href="/" className="text-[13px] font-bold text-deep-green">
+        <Link href="/top" className="text-[13px] font-bold text-deep-green">
           ← 戻る
         </Link>
         <h1 className="text-[15px] font-bold text-text-primary">{statusLabel}</h1>
