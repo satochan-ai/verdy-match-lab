@@ -50,3 +50,16 @@ export function getMatchDayLabel(
 
   return { kind: "hidden" };
 }
+
+/**
+ * 大会の正式名称は一覧・カード内では長すぎるため、表示時のみ短縮名へ置き換える。
+ * データ本体（fixtureMeta.competition）は正式名称のまま保持し、ここでは表示だけを変える。
+ * 未登録の大会名はそのまま返すため、短縮を追加しない限り既存表示は一切変わらない。
+ */
+const COMPETITION_SHORT_NAMES: Record<string, string> = {
+  "天皇杯 JFA 第106回全日本サッカー選手権大会": "天皇杯",
+};
+
+export function shortenCompetition(competition: string): string {
+  return COMPETITION_SHORT_NAMES[competition] ?? competition;
+}

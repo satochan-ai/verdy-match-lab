@@ -68,10 +68,16 @@
   --color-fusion-black: var(--color-fusion-black);
   --color-team-opponent-accent: var(--team-opponent-accent);
   --color-surface-tint: var(--color-surface-tint);
-  --font-sans: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif;
+  --font-sans: var(--font-noto-sans-jp), -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif;
 }
 
 body {
+  /*
+   * full-bleedなHero（総合TOP）はcalc(50%-50vw)でContainerの外へ広がるため、
+   * スクロールバー幅の分だけviewport右端を僅かに超える。hiddenではなくclipを使い、
+   * position: stickyを壊さずに横スクロールバーの発生だけを防ぐ。
+   */
+  overflow-x: clip;
   background: var(--color-background);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
@@ -79,6 +85,22 @@ body {
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
+}
+
+/*
+ * キーボードfocusリング。Tailwindのoutline-color utilityはcurrentColorに
+ * 上書きされてしまうため、明示的なCSSとして定義する。
+ * .focus-ring         ：白系の面の上（カード等）に置く緑のリング。
+ * .focus-ring-inverse ：緑ベタの面の上（Hero CTA等）に置く白のリング。
+ */
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-primary-green);
+  outline-offset: 2px;
+}
+
+.focus-ring-inverse:focus-visible {
+  outline: 2px solid var(--color-shine-white);
+  outline-offset: 2px;
 }
 
 /*
