@@ -5,6 +5,8 @@ import { belezaMatch, belezaUpcomingMatches } from "@/lib/mock/beleza";
 import { u21Match, u21UpcomingMatches } from "@/lib/mock/u21";
 import { HomeHero } from "@/components/home/HomeHero";
 import { CategoryHomeCard } from "@/components/match/CategoryHomeCard";
+import topTeamCardPhoto from "@/public/images/home/top-team-card.jpg";
+import belezaCardPhoto from "@/public/images/home/beleza-card.jpg";
 
 export const metadata: Metadata = {
   title: "Verdy Match Lab",
@@ -70,6 +72,15 @@ export default async function Home() {
             statusTone={isTopLive ? "live" : "next"}
             accent="green"
             size="lg"
+            photo={{
+              src: topTeamCardPhoto,
+              alt: "東京ヴェルディのホームスタジアム、味の素スタジアム入場ゲート前のエンブレム",
+              // 縦長写真（下部にエンブレムの実体）を横長カードで見せるため、縦位置を
+              // 下寄りに固定。エンブレムが常に写真frameの中に収まるようbreakpointごとに
+              // 微調整する（実測はComponent実装後にブラウザで確認・調整）。
+              positionClassName: "object-[center_78%] md:object-[center_74%] lg:object-[center_72%]",
+              sizes: "(min-width: 1024px) 60vw, 100vw",
+            }}
             dateLabel={topFixture.dateLabel}
             fixtureMeta={nextMatch.fixtureMeta}
             homeAway={nextMatch.isVerdyHome ? "HOME" : "AWAY"}
@@ -104,6 +115,14 @@ export default async function Home() {
               statusLabel={isBelezaLive ? "LIVE" : nextBelezaFixture ? "NEXT MATCH" : "LAST RESULT"}
               statusTone={isBelezaLive ? "live" : nextBelezaFixture ? "next" : "finished"}
               accent="deep"
+              photo={{
+                src: belezaCardPhoto,
+                alt: "味の素フィールド西が丘のピッチ全景",
+                // 横長写真は空が上半分を占めるため、縦位置を下寄りにしてピッチとスタンドを
+                // 優先的に見せる。
+                positionClassName: "object-[center_72%] md:object-[center_68%] lg:object-[center_66%]",
+                sizes: "(min-width: 1024px) 40vw, 100vw",
+              }}
               dateLabel={nextBelezaFixture?.dateLabel}
               fixtureMeta={nextBelezaFixture?.fixtureMeta ?? belezaMatch.fixtureMeta}
               homeAway={nextBelezaFixture ? (nextBelezaFixture.isHome ? "HOME" : "AWAY") : undefined}
