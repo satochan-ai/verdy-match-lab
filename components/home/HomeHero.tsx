@@ -1,12 +1,18 @@
+import Image from "next/image";
 import Link from "next/link";
+import heroPhoto from "@/public/images/home/verdy-match-lab-hero.jpg";
 
 /**
  * 総合TOP（`/`）のfull-bleed Hero。
  *
- * レイヤー構成は「背景 → オーバーレイ → コピー」の3層で固定してある。現時点の背景は
- * VERDY GREENのベタ面のみだが、将来ユーザー撮影写真を導入する際は背景レイヤー（下記
- * `background layer`）へNext/Image等を差し込み、オーバーレイの不透明度を上げるだけで
- * 移行できる。現段階ではダミー画像・ストック写真の類は一切使用しない。
+ * レイヤー構成は「背景（写真）→ オーバーレイ → コピー」の3層で固定してある。背景は
+ * ユーザー本人が撮影したスタジアム写真（味の素スタジアム、試合開始前の夕景）1枚のみ。
+ * ダミー画像・ストック写真・AI生成画像の類は一切使用しない。
+ *
+ * 元画像は縦長（1152×1536）でHero自体は横長のため、object-fit: coverは縦方向を
+ * 大きくクロップする。object-positionは「空だけ／ピッチだけ」に振り切らず、
+ * スタンドの弧＋ピッチ上部が同時に収まる縦位置（56%付近）を基準に、breakpointごとに
+ * 微調整している（詳細はcontent layer直前のコメントを参照）。
  *
  * full-bleed化は`layout.tsx`のContainer（max-w-1280 + 左右padding）とmainのpaddingを
  * 打ち消す負のmarginで行う。スクロールバー幅の分だけviewport端を僅かに超えるが、
@@ -21,12 +27,32 @@ export function HomeHero({
 }) {
   return (
     <section className="relative -mt-6 mx-[calc(50%-50vw)] overflow-hidden bg-primary-green text-shine-white md:-mt-8">
-      {/* background layer：将来ここに写真が入る。現在は親のbg-primary-greenがそのまま見える。 */}
+      {/*
+        background layer：ユーザー撮影のスタジアム写真1枚。Heroは画面表示直後に見える
+        LCP要素になるためpriorityを付け、fill + sizes="100vw"でCLSなく全幅表示する。
+        object-positionはbreakpointごとに縦位置だけ変える（横は常にcenter）。
+      */}
+      <Image
+        src={heroPhoto}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover object-[center_60%] md:object-[center_58%] lg:object-[center_56%]"
+      />
 
-      {/* overlay layer：下端をdeep-greenへ落とすごく弱いgradient。写真導入時はここを濃くする。 */}
+      {/*
+        overlay layer：Verdy Greenを写真の上に重ね、「写真だと分かる」かつ
+        「Verdy GreenのHero」に見える濃度に調整。左側（テキストが乗る側）を最も濃く、
+        右側へ向かって薄くするhorizontal gradientと、下端を締めるvertical gradientの二重。
+      */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-deep-green/45"
+        className="absolute inset-0 bg-gradient-to-r from-deep-green/85 via-deep-green/55 to-primary-green/25"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-deep-green/50"
       />
 
       {/* content layer */}
