@@ -7,7 +7,8 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
 import { getMatchDayLabel } from "@/lib/match/display";
-import { belezaMatch } from "@/lib/mock/beleza";
+import { resolveMatchStatus } from "@/lib/match/status";
+import { belezaMatch, belezaUpcomingMatches } from "@/lib/mock/beleza";
 import { u21Match, u21UpcomingMatches } from "@/lib/mock/u21";
 
 function formatMatchday(iso: string) {
@@ -58,6 +59,10 @@ export default async function Home() {
   const fixture = formatMatchday(nextMatch.kickoffAt);
   const dayLabel = getMatchDayLabel(nextMatch, now);
   const nextU21Fixture = u21UpcomingMatches[0];
+  const nextBelezaFixture = belezaUpcomingMatches[0];
+  // 現在の一次データ（u21Match／belezaMatch）が試合中なら、NEXT MATCH表示より優先してLIVEを示す。
+  const isU21Live = resolveMatchStatus(u21Match, now) === "live";
+  const isBelezaLive = resolveMatchStatus(belezaMatch, now) === "live";
 
   return (
     <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
@@ -143,13 +148,25 @@ export default async function Home() {
           <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
             U-21 MATCH
           </p>
-          {nextU21Fixture ? (
+          {isU21Live ? (
+            <>
+              <p className="mt-1 text-[11px] font-bold text-primary-green">LIVE</p>
+              <div className="mt-2 border-t border-border py-2 text-[13px]">
+                <p className="min-w-0 break-words text-text-primary">
+                  {u21Match.homeTeamName} vs {u21Match.awayTeamName}
+                </p>
+                <Link href="/u21" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
+                  MATCHを見る →
+                </Link>
+              </div>
+            </>
+          ) : nextU21Fixture ? (
             <>
               <p className="mt-1 text-[11px] font-bold text-primary-green">NEXT MATCH</p>
               <div className="mt-2 border-t border-border py-2 text-[13px]">
                 <p className="tabular-nums text-text-secondary">{nextU21Fixture.dateLabel}</p>
                 <FixtureMetaLine meta={nextU21Fixture.fixtureMeta} compact />
-                <p className="mt-1 min-w-0 truncate text-text-primary">
+                <p className="mt-1 min-w-0 break-words text-text-primary">
                   <span className="mr-1 font-bold">
                     {nextU21Fixture.isHome ? "HOME" : "AWAY"}
                   </span>
@@ -174,12 +191,12 @@ export default async function Home() {
               )}
               <div className="mt-2 border-t border-border py-2 text-[13px]">
                 {u21Match.status === "finished" ? (
-                  <p className="min-w-0 truncate text-text-primary">
+                  <p className="min-w-0 break-words text-text-primary">
                     {u21Match.homeTeamName} {u21Match.homeScore}-{u21Match.awayScore}{" "}
                     {u21Match.awayTeamName}
                   </p>
                 ) : (
-                  <p className="min-w-0 truncate text-text-primary">
+                  <p className="min-w-0 break-words text-text-primary">
                     {u21Match.homeTeamName} vs {u21Match.awayTeamName}
                   </p>
                 )}
@@ -201,30 +218,68 @@ export default async function Home() {
           <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
             BELEZA
           </p>
-          {belezaMatch.status === "finished" ? (
-            <p className="mt-1 text-[11px] font-bold text-text-secondary">FT</p>
+          {isBelezaLive ? (
+            <>
+              <p className="mt-1 text-[11px] font-bold text-primary-green">LIVE</p>
+              <div className="mt-2 border-t border-border py-2 text-[13px]">
+                <p className="min-w-0 break-words text-text-primary">
+                  日テレ・東京ヴェルディベレーザ vs ジェフ千葉レディース
+                </p>
+                <Link href="/beleza" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
+                  MATCHを見る →
+                </Link>
+              </div>
+            </>
+          ) : nextBelezaFixture ? (
+            <>
+              <p className="mt-1 text-[11px] font-bold text-primary-green">NEXT MATCH</p>
+              <div className="mt-2 border-t border-border py-2 text-[13px]">
+                <p className="tabular-nums text-text-secondary">{nextBelezaFixture.dateLabel}</p>
+                <FixtureMetaLine meta={nextBelezaFixture.fixtureMeta} compact />
+                <p className="mt-1 min-w-0 break-words text-text-primary">
+                  <span className="mr-1 font-bold">
+                    {nextBelezaFixture.isHome ? "HOME" : "AWAY"}
+                  </span>
+                  {nextBelezaFixture.opponentName}
+                </p>
+                <p className="mt-1 text-text-secondary">
+                  {nextBelezaFixture.kickoffLabel === "TBD"
+                    ? "KICK OFF TBD"
+                    : `${nextBelezaFixture.kickoffLabel} KICK OFF`}
+                </p>
+                <Link href="/beleza" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
+                  MATCHを見る →
+                </Link>
+              </div>
+            </>
           ) : (
-            <p className="mt-1 text-text-secondary">{belezaMatch.dateLabel}</p>
+            <>
+              {belezaMatch.status === "finished" ? (
+                <p className="mt-1 text-[11px] font-bold text-text-secondary">FT</p>
+              ) : (
+                <p className="mt-1 text-text-secondary">{belezaMatch.dateLabel}</p>
+              )}
+              <div className="mt-2 border-t border-border py-2 text-[13px]">
+                {belezaMatch.status === "finished" ? (
+                  <p className="min-w-0 break-words text-text-primary">
+                    日テレ・東京ヴェルディベレーザ {belezaMatch.homeScore}-{belezaMatch.awayScore}{" "}
+                    ジェフ千葉レディース
+                  </p>
+                ) : (
+                  <p className="min-w-0 break-words text-text-primary">
+                    日テレ・東京ヴェルディベレーザ vs ジェフ千葉レディース
+                  </p>
+                )}
+                <p className="mt-1 text-text-secondary">
+                  {belezaMatch.kickoffLabel} KICK OFF ／ {belezaMatch.venue}
+                </p>
+                <FixtureMetaLine meta={belezaMatch.fixtureMeta} compact />
+                <Link href="/beleza" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
+                  {belezaMatch.status === "finished" ? "結果を見る →" : "PREを見る →"}
+                </Link>
+              </div>
+            </>
           )}
-          <div className="mt-2 border-t border-border py-2 text-[13px]">
-            {belezaMatch.status === "finished" ? (
-              <p className="min-w-0 truncate text-text-primary">
-                日テレ・東京ヴェルディベレーザ {belezaMatch.homeScore}-{belezaMatch.awayScore}{" "}
-                ジェフ千葉レディース
-              </p>
-            ) : (
-              <p className="min-w-0 truncate text-text-primary">
-                日テレ・東京ヴェルディベレーザ vs ジェフ千葉レディース
-              </p>
-            )}
-            <p className="mt-1 text-text-secondary">
-              {belezaMatch.kickoffLabel} KICK OFF ／ {belezaMatch.venue}
-            </p>
-            <FixtureMetaLine meta={belezaMatch.fixtureMeta} compact />
-            <Link href="/beleza" className="mt-2 inline-block text-[12px] font-bold text-deep-green">
-              {belezaMatch.status === "finished" ? "結果を見る →" : "PREを見る →"}
-            </Link>
-          </div>
         </section>
 
         <section>
