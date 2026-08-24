@@ -8,6 +8,8 @@ import { BelezaSeasonHistory } from "@/components/match/BelezaSeasonHistory";
 import { BelezaMatchStats } from "@/components/match/BelezaMatchStats";
 import { MatchRecord } from "@/components/match/MatchRecord";
 import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
+import { BelezaLiveSection } from "@/components/match/BelezaLiveSection";
+import { resolveMatchStatus } from "@/lib/match/status";
 import {
   belezaTeam,
   jefChibaLadiesTeam,
@@ -33,13 +35,22 @@ import {
   belezaUpcomingMatches,
 } from "@/lib/mock/beleza";
 
+/**
+ * PRE/LIVE判定はkickoffAtと現在時刻の比較（resolveMatchStatus）に依存するため、
+ * U-21ページと同じ理由で静的prerenderにしない。
+ */
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "ベレーザ MATCH | Verdy Match Lab",
   description: "日テレ・東京ヴェルディベレーザの試合情報。",
 };
 
 export default function BelezaPage() {
-  const isFinished = belezaMatch.status === "finished";
+  const displayStatus = resolveMatchStatus(belezaMatch, new Date());
+  const isFinished = displayStatus === "finished";
+  const isLive = displayStatus === "live";
+  const isScheduled = displayStatus === "scheduled";
   const resultLabel =
     belezaMatch.homeScore === belezaMatch.awayScore
       ? "draw"
@@ -54,7 +65,7 @@ export default function BelezaPage() {
           ← 戻る
         </Link>
         <h1 className="text-[15px] font-bold text-text-primary">
-          {isFinished ? "試合終了" : "BELEZA MATCH PREVIEW"}
+          {isFinished ? "試合終了" : isLive ? "LIVE" : "BELEZA MATCH PREVIEW"}
         </h1>
         <span className="w-8" />
       </div>
@@ -175,6 +186,19 @@ export default function BelezaPage() {
           </div>
         </div>
       </section>
+
+      {isLive && (
+        <BelezaLiveSection
+          matchId={belezaMatch.id}
+          homeTeamName={belezaTeam.name}
+          awayTeamName={jefChibaLadiesTeam.name}
+        />
+      )}
+      {isScheduled && (
+        <p className="text-[13px] text-text-secondary">
+          キックオフ後、この画面でLIVE Scoreとメモを記録できます。
+        </p>
+      )}
 
       <section>
         <SectionHeader title="予想スタメン" eyebrow="PREDICTED LINEUP" />

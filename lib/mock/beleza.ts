@@ -30,13 +30,21 @@ export const jefChibaLadiesTeam: Team = {
   isVerdy: false,
 };
 
-/** 公式確定結果（Phase 6-H.16確認）。ベレーザ 2-1 ジェフ千葉レディースでBELEZA WIN。 */
+/**
+ * 公式確定結果（Phase 6-H.16確認）。ベレーザ 2-1 ジェフ千葉レディースでBELEZA WIN。
+ * id/kickoffAtはPhase 6-J.1でPRE/LIVE/POST判定（resolveMatchStatus）・LIVE Score/Noteの
+ * localStorageキーとして追加。次節以降はstatusを"scheduled"に更新するだけで
+ * キックオフ後に自動でLIVE状態へ切り替わる汎用設計にする（開幕戦は既にfinishedのため
+ * kickoffAtの値自体は表示へ影響しない）。
+ */
 export const belezaMatch = {
+  id: "beleza-match-1",
   competition: "2026／27 SOMPO WEリーグ 第1節",
   /** fixture metadata統一表示用（大会名／節を分離）。既存のcompetition文字列は表示互換のため維持する。 */
   fixtureMeta: { competition: "2026/27 WEリーグ", roundLabel: "第1節" } satisfies FixtureMeta,
   dateLabel: "08.23 SUN",
   kickoffLabel: "18:00",
+  kickoffAt: "2026-08-23T18:00:00+09:00",
   venue: "味の素フィールド西が丘",
   status: "finished" as const,
   homeScore: 2,
