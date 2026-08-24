@@ -60,6 +60,9 @@ export const scheduleMatches: ScheduleMatch[] = [
   {
     id: "sched-kashima",
     competition: "j1",
+    // 公式クラブスケジュール（https://www.jleague.jp/club/tokyov/、Phase 6-I.5確認）で
+    // "seasonText":"第4節" を確認。
+    round: "第4節",
     kickoffAt: "2026-08-29T19:00:00+09:00",
     venue: "味の素スタジアム",
     isVerdyHome: true,
@@ -69,6 +72,7 @@ export const scheduleMatches: ScheduleMatch[] = [
   {
     id: "sched-kobe",
     competition: "j1",
+    // 節数は公式ソースで未確認のため未設定のまま維持（推測で埋めない）。
     kickoffAt: "2026-09-02T19:00:00+09:00",
     venue: "味の素スタジアム",
     isVerdyHome: true,
