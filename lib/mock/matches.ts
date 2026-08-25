@@ -500,14 +500,14 @@ export const matches: Match[] = [
       formation: "3-4-2-1",
       characteristics: {
         attack:
-          "8/22岡山戦はシュート14本・保持率56%と主導権を握ったが無得点。3バックと溝口修平を経由した前進、福田湧矢を経由して染野唯月へ収める形が引き続き軸になる見込み。",
+          "8/22岡山戦はシュート14本・保持率56%と主導権を握ったが無得点。今回は大幅ターンオーバーの中、3バックと溝口修平を経由した前進から、CF起用が予想される寺沼星文へ収める形が軸になる見込み。",
         defense:
           "岡山戦はルカオへの供給経路を管理して無失点。今回は前がかりに来るザスパの中盤・前線をどう管理するかが焦点になる。",
       },
       keyPlayers: [
         {
-          name: "9 染野 唯月",
-          note: "CFとして継続起用が濃厚な得点源。ザスパの高いDFラインの裏を取れるかに注目したい。",
+          name: "45 寺沼 星文",
+          note: "大幅ターンオーバーの中でCF起用が予想される。最前線の起点・フィニッシュの両方に関与できるかに注目したい。",
         },
         {
           name: "18 溝口 修平",
@@ -542,32 +542,27 @@ export const matches: Match[] = [
       home: {
         formation: "3-4-2-1",
         starters: [
-          { number: 1, name: "マテウス", position: "GK" },
-          { number: 6, name: "宮原 和也", position: "DF" },
-          { number: 4, name: "林 尚輝", position: "DF" },
-          {
-            number: 15,
-            name: "鈴木 海音",
-            position: "DF",
-            alternative: "井上 竜太（岡山戦先発。中3日で温存の可能性）",
-          },
+          { number: 21, name: "長沢 祐弥", position: "GK" },
+          { number: 36, name: "松田 陸", position: "DF" },
+          { number: 5, name: "井上 竜太", position: "DF" },
+          { number: 15, name: "鈴木 海音", position: "DF" },
           { number: 18, name: "溝口 修平", position: "MF" },
-          { number: 16, name: "平川 怜", position: "MF" },
-          { number: 22, name: "内田 陽介", position: "MF" },
+          { number: 20, name: "食野 壮磨", position: "MF" },
+          { number: 28, name: "山本 丈偉", position: "MF" },
           {
-            number: 7,
-            name: "松橋 優安",
+            number: 40,
+            name: "新井 悠太",
             position: "MF",
-            alternative: "山本 丈偉（岡山戦先発。中3日で温存の可能性）",
+            alternative: "松橋 優安（右WB対抗。新井が左へ回る形も想定）",
           },
+          { number: 38, name: "神田 奏真", position: "FW" },
           {
-            number: 20,
-            name: "食野 壮磨",
+            number: 13,
+            name: "山田 剛綺",
             position: "FW",
-            alternative: "新井 悠太／熊取谷 一星（シャドー起用実績あり）",
+            alternative: "白井 亮丞（右シャドー対抗）",
           },
-          { number: 14, name: "福田 湧矢", position: "FW" },
-          { number: 9, name: "染野 唯月", position: "FW" },
+          { number: 45, name: "寺沼 星文", position: "FW" },
         ],
       },
       away: {
@@ -602,7 +597,7 @@ export const matches: Match[] = [
     matchNotes: [
       "予想スタメン・フォーメーションは8/25時点の公開情報を基準にした編集部予想。確定Starting XIではない。",
       "8/25時点、JFA公式試合ページ（https://www.jfa.jp/match/emperorscup_2026/match_page/m28.html）はスタメン発表前で、両チームの登録メンバー（東京V40名・ザスパ39名）のみが確認できる。",
-      "東京Vの天皇杯登録メンバー40名のうち、8/22岡山戦の先発11人中10人が名を連ねている。唯一、平尾勇人（71）のみ登録メンバーに含まれておらず、理由は公式未発表だが今回は出場できない。",
+      "東京Vの天皇杯登録メンバー40名のうち、8/22岡山戦の先発11人中10人が名を連ねている。平尾勇人（71）は日本大学在学中のため天皇杯登録メンバー外であり、今回の予想Starting XIには含めない（負傷やコンディション不良によるものではない）。",
       "8/16時点で長期離脱と発表済み：森田晃樹（左鎖骨骨折、全治6〜10週、7/23発表）、田邉秀斗（左膝内側側副靱帯損傷、全治6〜10週、7/23発表）、吉田泰授（左膝複合靭帯損傷・半月板損傷）、山見大登（左膝前十字靭帯損傷）。8/25時点で復帰に関する新たな公式発表は確認できない。",
       "ザスパ群馬はJ3で直近3連敗中だが、天皇杯1回戦は東北学院大学に3-1で勝利。沖田優監督（2025年就任）は大木武（甲府）・ミハイロ ペトロヴィッチ（札幌）・ペップ グアルディオラからの影響を公言し、「失点を恐れず得点を増やす」超攻撃的スタイルを掲げている（上毛新聞インタビュー等で確認）。",
     ],
