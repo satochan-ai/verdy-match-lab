@@ -491,9 +491,9 @@ export const matches: Match[] = [
     isVerdyHome: true,
     kickoffAt: "2026-08-26T18:30:00+09:00",
     venue: "味の素フィールド西が丘",
-    status: "scheduled",
-    homeScore: null,
-    awayScore: null,
+    status: "finished",
+    homeScore: 4,
+    awayScore: 1,
     timeSegment: null,
     fixtureMeta: { competition: "天皇杯 JFA 第106回全日本サッカー選手権大会", roundLabel: "2回戦" },
     verdyProfile: {
@@ -594,6 +594,27 @@ export const matches: Match[] = [
       suspensionNote: "8/25時点で確認できる出場停止情報なし。",
       ineligibleNote: "なし",
     },
+    goals: [
+      { minute: "24'", scorer: "神田 奏真", team: "東京V" },
+      { minute: "65'", scorer: "出間 思努", team: "群馬" },
+      { minute: "70'", scorer: "白井 亮丞（PK）", team: "東京V" },
+      { minute: "89'", scorer: "熊取谷 一星（PK）", team: "東京V" },
+      { minute: "90'", scorer: "川村 楽人", team: "東京V" },
+    ],
+    substitutions: [
+      { minute: "45'", team: "東京V", playerIn: "新井 悠太", playerOut: "松橋 優安" },
+      { minute: "45'", team: "東京V", playerIn: "柴戸 海", playerOut: "森田 晃樹" },
+      { minute: "52'", team: "群馬", playerIn: "山原 康太郎", playerOut: "中村 涼" },
+      { minute: "52'", team: "群馬", playerIn: "中島 大嘉", playerOut: "百田 真登" },
+      { minute: "67'", team: "群馬", playerIn: "小竹 知恩", playerOut: "貫 真郷" },
+      { minute: "72'", team: "東京V", playerIn: "熊取谷 一星", playerOut: "仲山 獅恩" },
+      { minute: "77'", team: "群馬", playerIn: "瀬畠 義成", playerOut: "池下 由也" },
+      { minute: "77'", team: "群馬", playerIn: "風間 宏希", playerOut: "原田 高虎" },
+      { minute: "80'", team: "東京V", playerIn: "山田 剛綺", playerOut: "神田 奏真" },
+      { minute: "88'", team: "東京V", playerIn: "川村 楽人", playerOut: "白井 亮丞" },
+      { minute: "89'", team: "群馬", playerIn: "青木 翔大", playerOut: "玉城 大志" },
+      { minute: "90+1'", team: "東京V", playerIn: "山本 丈偉", playerOut: "食野 壮磨" },
+    ],
     actualLineups: {
       home: {
         formation: "3-4-2-1",
@@ -610,19 +631,33 @@ export const matches: Match[] = [
           FW: ["13 山田 剛綺", "25 熊取谷 一星"],
         },
       },
-      // ザスパ群馬の公式Starting XI・ベンチは今回のPhaseで未確認のため、推測で埋めない。
+      // ザスパ群馬は公式メンバー表でStarting XI・ベンチ・Captain・監督まで確認済み。
+      // ただしformation・3バック等の左右配置・pitch座標はこの資料からは確定できないため、
+      // formationキー自体を設定しない（推測で座標を割り当てない）。
       away: {
-        starters: { GK: [], DF: [], MF: [], FW: [] },
-        bench: { GK: [], DF: [], MF: [], FW: [] },
+        starters: {
+          GK: ["88 キム ジェヒ"],
+          DF: ["2 中村 涼", "30 小柳 達司", "25 中野 力瑠"],
+          MF: ["21 池下 由也", "4 玉城 大志（C）", "42 原田 高虎", "69 出間 思努"],
+          FW: ["22 貫 真郷", "17 百田 真登", "18 田中 翔太"],
+        },
+        bench: {
+          GK: ["13 近藤 壱成"],
+          DF: ["16 山原 康太郎"],
+          MF: ["15 風間 宏希", "37 瀬畠 義成", "44 古賀 竣", "97 ソン ミンソッ"],
+          FW: ["9 青木 翔大", "77 小竹 知恩", "99 中島 大嘉"],
+        },
       },
     },
     matchNotes: [
+      "神田奏真の先制点で前半を1-0で折り返すと、後半20分に出間思努のゴールで追いつかれたが、後半25分に白井亮丞のPK、後半44分に熊取谷一星のPK、後半45分に川村楽人のゴールで突き放し、4-1で天皇杯3回戦進出を決めた。",
+      "東京V監督は城福浩、ザスパ群馬監督は沖田優（いずれも公式メンバー表で確認）。",
+      "長期離脱と発表されていた森田晃樹は、天皇杯ザスパ群馬戦で公式Starting XIに復帰。10番・キャプテンとして先発し、後半開始のHTで柴戸海と交代した。復帰時期・経緯等の公式発表内容は未確認のため、Starting XI入り・キャプテン就任・HT交代という事実のみ反映する。",
+      "Phase 6-L.2の予想スタメン11人中、公式Starting XI入りしたのは6人（長沢祐弥・松田陸・鈴木海音・溝口修平・食野壮磨・神田奏真）。",
       "予想スタメン・フォーメーションは8/25時点の公開情報を基準にした編集部予想。確定Starting XIではない。",
-      "8/25時点、JFA公式試合ページ（https://www.jfa.jp/match/emperorscup_2026/match_page/m28.html）はスタメン発表前で、両チームの登録メンバー（東京V40名・ザスパ39名）のみが確認できる。",
+      "8/25時点、JFA公式試合ページ（https://www.jfa.jp/match/emperorscup_2026/match_page/m28.html）はスタメン発表前で、両チームの登録メンバー（東京V40名・ザスパ39名）のみが確認できる状態だった。",
       "東京Vの天皇杯登録メンバー40名のうち、8/22岡山戦の先発11人中10人が名を連ねている。平尾勇人（71）は日本大学在学中のため天皇杯登録メンバー外であり、今回の予想Starting XIには含めない（負傷やコンディション不良によるものではない）。",
       "8/16時点で長期離脱と発表済み：田邉秀斗（左膝内側側副靱帯損傷、全治6〜10週、7/23発表）、吉田泰授（左膝複合靭帯損傷・半月板損傷）、山見大登（左膝前十字靭帯損傷）。8/25時点で復帰に関する新たな公式発表は確認できない。",
-      "8/16時点で長期離脱と発表されていた森田晃樹（左鎖骨骨折、全治6〜10週、7/23発表）は、8/26公式発表の東京V Starting XIに10番・キャプテンとして名を連ねた。復帰時期・経緯等の公式発表内容は未確認のため、今回はStarting XI入りとキャプテン就任の事実のみ反映する。",
-      "8/26、東京Vの公式Starting XI・ベンチが発表された。監督は城福浩。ザスパ群馬側の公式Starting XIは今回のPhaseでは未反映。",
       "ザスパ群馬はJ3で直近3連敗中だが、天皇杯1回戦は東北学院大学に3-1で勝利。沖田優監督（2025年就任）は大木武（甲府）・ミハイロ ペトロヴィッチ（札幌）・ペップ グアルディオラからの影響を公言し、「失点を恐れず得点を増やす」超攻撃的スタイルを掲げている（上毛新聞インタビュー等で確認）。",
     ],
     focusPoints: [
@@ -636,23 +671,60 @@ export const matches: Match[] = [
         title: "出間思努と中島大嘉の対角を消す",
         description:
           "天皇杯1回戦で2得点した出間思努の飛び出しと、途中出場から決勝点を挙げた中島大嘉への裏へのボールを、3バックとボランチでどれだけ早い段階で管理できるかに注目したい。",
-        result: "pending",
+        result: "miss",
+        resultComment: "出間に後半20分の同点弾を許し、狙いを完全には遂行できなかった。中島大嘉は後半7分から途中出場。",
       },
       {
         orderNo: 2,
         title: "3バック＋溝口の配球でザスパの前プレスを外す",
         description:
           "沖田監督のザスパは「失点を恐れず主導権を握る」姿勢で前から来る可能性が高い。3バックと溝口修平の立ち位置でボールを動かし、ザスパのプレスを外して前進できるかに注目したい。",
-        result: "pending",
+        result: "partial",
+        resultComment:
+          "4-1で勝利したものの、ビルドアップや前プレス回避の成否を裏付ける公式スタッツが未確認のため、結果のみで○とはせず△とする。",
       },
       {
         orderNo: 3,
         title: "ターンオーバーでも運動量を落とさない",
         description:
           "岡山戦・鹿島戦に挟まれた中3日連戦の中日として、複数ポジションでメンバーを入れ替える見込み。入れ替わった選手たちが強度を落とさず90分（あるいは延長）を戦い切れるかに注目したい。",
-        result: "pending",
+        result: "hit",
+        resultComment: "メンバーを大きく入れ替えながら、終盤まで強度を維持。89分、90分にも得点して試合を決めた。",
       },
     ],
+  },
+  {
+    // 第4節・鹿島戦。lib/mock/schedule.tsのsched-kashima（既存source of truth）と同一fixture。
+    // ザスパ群馬戦（match-8）がfinishedへ移行した後もgetNextMatch()が正しく次戦を返せるよう、
+    // 詳細ページ用の最小限のMatchエントリのみを追加する。PRE_MATCH分析・predictedLineupsは
+    // このPhaseの対象外のため作成せず、verdyProfile/opponentProfileはmatch-0と同じ
+    // 「情報準備中」のまま維持し、推測で埋めない。
+    id: "match-9",
+    homeTeam: verdy,
+    awayTeam: opponent("kashima-antlers", "鹿島アントラーズ"),
+    isVerdyHome: true,
+    kickoffAt: "2026-08-29T19:00:00+09:00",
+    venue: "味の素スタジアム",
+    status: "scheduled",
+    homeScore: null,
+    awayScore: null,
+    timeSegment: null,
+    fixtureMeta: { competition: "2026 J1リーグ", roundLabel: "第4節" },
+    verdyProfile: {
+      formation: "情報準備中",
+      characteristics: { attack: "情報準備中", defense: "情報準備中" },
+      keyPlayers: [],
+      recentTrend: "情報準備中",
+    },
+    opponentProfile: {
+      formation: "情報準備中",
+      characteristics: { attack: "情報準備中", defense: "情報準備中" },
+      keyPlayers: [],
+      recentTrend: "情報準備中",
+    },
+    matchNotes: [],
+    focusPoints: [],
+    strategies: [],
   },
   {
     // 第1節。公式試合記録（https://www.jleague.jp/match/j1/2026/080901/）で確認できた

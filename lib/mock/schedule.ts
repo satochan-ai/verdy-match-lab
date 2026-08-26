@@ -54,7 +54,9 @@ export const scheduleMatches: ScheduleMatch[] = [
     venue: "味の素フィールド西が丘",
     isVerdyHome: true,
     opponentName: "ザスパ群馬",
-    status: "scheduled",
+    status: "finished",
+    homeScore: 4,
+    awayScore: 1,
     detailMatchId: "match-8",
   },
   {
@@ -68,6 +70,7 @@ export const scheduleMatches: ScheduleMatch[] = [
     isVerdyHome: true,
     opponentName: "鹿島",
     status: "scheduled",
+    detailMatchId: "match-9",
   },
   {
     id: "sched-kobe",
