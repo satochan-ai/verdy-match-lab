@@ -695,10 +695,8 @@ export const matches: Match[] = [
   },
   {
     // 第4節・鹿島戦。lib/mock/schedule.tsのsched-kashima（既存source of truth）と同一fixture。
-    // ザスパ群馬戦（match-8）がfinishedへ移行した後もgetNextMatch()が正しく次戦を返せるよう、
-    // 詳細ページ用の最小限のMatchエントリのみを追加する。PRE_MATCH分析・predictedLineupsは
-    // このPhaseの対象外のため作成せず、verdyProfile/opponentProfileはmatch-0と同じ
-    // 「情報準備中」のまま維持し、推測で埋めない。
+    // Phase 6-M.1：PRE_MATCH予想Starting XIを追加。公式Starting XIは未発表のため、
+    // actualLineups等の正式試合記録フィールドには一切入れない（predictedLineupsのみ）。
     id: "match-9",
     homeTeam: verdy,
     awayTeam: opponent("kashima-antlers", "鹿島アントラーズ"),
@@ -711,20 +709,129 @@ export const matches: Match[] = [
     timeSegment: null,
     fixtureMeta: { competition: "2026 J1リーグ", roundLabel: "第4節" },
     verdyProfile: {
-      formation: "情報準備中",
-      characteristics: { attack: "情報準備中", defense: "情報準備中" },
-      keyPlayers: [],
-      recentTrend: "情報準備中",
+      formation: "3-4-2-1",
+      characteristics: {
+        attack:
+          "3-4-2-1を基準に、2シャドー（福田湧矢・熊取谷一星）とCF染野唯月の関係で鹿島CBの背後・SB脇を突く形を観戦の出発点とする。",
+        defense:
+          "鹿島から期限付き移籍中の溝口修平が契約上出場不可のため、左WB新井悠太・左CB宮原和也・左CM森田晃樹の連係が守備の整理点になる。",
+      },
+      keyPlayers: [
+        {
+          name: "9 染野唯月",
+          note: "鹿島のCBラインを押し下げ、2シャドーが使うスペースを作れるかが焦点。",
+        },
+        {
+          name: "10 森田晃樹",
+          note: "8/26天皇杯ザスパ群馬戦で実戦復帰（先発・キャプテン・前半45分出場）。リーグ戦復帰後初戦になる可能性があり、左CMからの配球・ゲームコントロールに注目。完治や90分出場可否、鹿島戦の先発は公式未確認のため断定しない。",
+        },
+      ],
+      recentTrend:
+        "直近公式戦は8/26天皇杯2回戦・ザスパ群馬戦で4-1勝利（大幅ターンオーバー実施）。リーグ戦としては8/22第3節・ファジアーノ岡山戦が直近で0-0のドロー。",
     },
     opponentProfile: {
-      formation: "情報準備中",
-      characteristics: { attack: "情報準備中", defense: "情報準備中" },
-      keyPlayers: [],
-      recentTrend: "情報準備中",
+      formation: "4-4-2",
+      characteristics: {
+        attack:
+          "4-4-2を基準に、FWレオ・セアラ／40番鈴木優磨の2トップへ縦パスを入れる形とサイドからのクロスを観戦の出発点とする。",
+        defense:
+          "右SB安西幸輝が7月に左膝前十字靭帯損傷で長期離脱中（7/21鹿島公式発表）のため、守備ラインの構成がどう変わるかが整理点になる。",
+      },
+      keyPlayers: [
+        {
+          name: "40 鈴木優磨",
+          note: "鹿島の中心的な2トップの一角。中央でどれだけ自由に収められるかが試合の入り方を左右する。",
+        },
+        {
+          name: "9 レオ・セアラ",
+          note: "鈴木優磨とのコンビでフィニッシュに関わる予想。東京V3バックとの空中戦・裏抜けの攻防に注目。",
+        },
+      ],
+      recentTrend:
+        "直近の公式戦は4-4-2を基本布陣とし、早川友基・小川諒也・関川郁万・植田直通・広瀬陸斗を守備の軸とする形が続いているというユーザー確認情報を基準にする。",
     },
-    matchNotes: [],
-    focusPoints: [],
-    strategies: [],
+    predictedLineups: {
+      home: {
+        formation: "3-4-2-1",
+        starters: [
+          { number: 1, name: "マテウス", position: "GK" },
+          { number: 6, name: "宮原 和也", position: "DF" },
+          { number: 4, name: "林 尚輝", position: "DF" },
+          {
+            number: 15,
+            name: "鈴木 海音",
+            position: "DF",
+            alternative: "宮原が右CBへ回り、5 井上 竜太が左CBに入る形も候補",
+          },
+          { number: 40, name: "新井 悠太", position: "MF" },
+          { number: 10, name: "森田 晃樹", position: "MF" },
+          { number: 16, name: "平川 怜", position: "MF" },
+          { number: 22, name: "内田 陽介", position: "MF" },
+          { number: 14, name: "福田 湧矢", position: "FW" },
+          { number: 25, name: "熊取谷 一星", position: "FW" },
+          { number: 9, name: "染野 唯月", position: "FW" },
+        ],
+      },
+      away: {
+        formation: "4-4-2",
+        starters: [
+          { number: 1, name: "早川 友基", position: "GK" },
+          { number: 7, name: "小川 諒也", position: "DF" },
+          { number: 5, name: "関川 郁万", position: "DF" },
+          { number: 55, name: "植田 直通", position: "DF" },
+          { number: 37, name: "広瀬 陸斗", position: "DF" },
+          { number: 30, name: "吉田 湊海", position: "MF" },
+          { number: 8, name: "マテウス・ブエノ", position: "MF" },
+          { number: 10, name: "柴崎 岳", position: "MF" },
+          { number: 27, name: "松村 優太", position: "MF" },
+          { number: 9, name: "レオ・セアラ", position: "FW" },
+          { number: 40, name: "鈴木 優磨", position: "FW" },
+        ],
+      },
+    },
+    availability: {
+      likelyUnavailable: [
+        { team: "鹿島", players: ["ヤン・マテウス", "安西幸輝"] },
+      ],
+      suspensionNote: "8/28時点で確認できる出場停止情報なし。",
+      ineligibleNote:
+        "溝口修平（鹿島アントラーズからの期限付き移籍中のため、移籍元である鹿島との公式戦には出場できない契約条件）。",
+    },
+    matchNotes: [
+      "天皇杯ザスパ群馬戦（8/26、4-1）から中2日で迎えるリーグ戦第4節。東京Vは天皇杯で大幅にメンバーを入れ替えながら4-1で勝利しており、鹿島戦ではリーグ戦の主力を戻すことが予想される。一方、鹿島から期限付き移籍中の溝口修平は移籍元契約により出場不可。天皇杯で実戦復帰した森田晃樹をどこまで起用するかも焦点となる。",
+      "鹿島は右SB安西幸輝が7月に左膝前十字靭帯損傷で長期離脱中（7/21鹿島公式発表）。FWヤン・マテウスも今節は欠場予定（欠場理由は未確認）。",
+      "東京Vの3バックは鈴木海音・林尚輝・宮原和也を第一予想とする。宮原を右CBへ回し、左CBに井上竜太を置く形も候補として考えられる。",
+      "予想スタメン・フォーメーションは8/28時点の公開情報を基準にした編集部予想。確定Starting XIではない。",
+    ],
+    focusPoints: [
+      "溝口不在の左サイド：新井悠太・宮原和也・森田晃樹の連係で鹿島の右サイド攻撃にどう対応するか",
+      "森田晃樹（左CM）と平川怜（右CM）の中盤コンビネーション",
+      "福田湧矢・熊取谷一星の2シャドーとCF染野唯月の距離感、鹿島CB背後・SB脇への侵入",
+      "鹿島の2トップ（レオ・セアラ、鈴木優磨）を東京V3バックがどう管理するか",
+    ],
+    strategies: [
+      {
+        orderNo: 1,
+        title: "レオ・セアラと鈴木優磨の2トップを中央で自由にさせない",
+        description:
+          "3バック＋森田晃樹・平川怜で中央を管理し、2トップへの縦パス、クロス後のセカンドボール、CB前のスペースを制限できるかに注目したい。",
+        result: "pending",
+      },
+      {
+        orderNo: 2,
+        title: "溝口不在の左サイドを狙われない",
+        description:
+          "左WB新井悠太・左CB宮原和也・左CM森田晃樹の3人の連係で、鹿島の右サイド攻撃にどう対応できるかに注目したい。",
+        result: "pending",
+      },
+      {
+        orderNo: 3,
+        title: "鹿島の4-4-2の外側を動かして前進する",
+        description:
+          "鹿島の2トップ＋中盤4枚を正面から突破するだけでなく、3バック・新井悠太＋内田陽介・森田晃樹＋平川怜を使い、相手ブロックの脇・外側へボールを動かして前進経路を作れるかに注目したい。",
+        result: "pending",
+      },
+    ],
   },
   {
     // 第1節。公式試合記録（https://www.jleague.jp/match/j1/2026/080901/）で確認できた
