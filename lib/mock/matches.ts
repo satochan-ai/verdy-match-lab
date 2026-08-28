@@ -791,6 +791,7 @@ export const matches: Match[] = [
     },
     availability: {
       likelyUnavailable: [
+        { team: "東京V", players: ["田邉秀斗", "吉田泰授", "山見大登"] },
         { team: "鹿島", players: ["ヤン・マテウス", "安西幸輝"] },
       ],
       suspensionNote: "8/28時点で確認できる出場停止情報なし。",
