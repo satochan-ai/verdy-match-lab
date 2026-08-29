@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import { PredictedFormation } from "@/components/match/PredictedFormation";
-import { BelezaOfficialLineup } from "@/components/match/BelezaOfficialLineup";
 import { BelezaSeasonHistory } from "@/components/match/BelezaSeasonHistory";
 import { BelezaMatchStats } from "@/components/match/BelezaMatchStats";
 import { MatchRecord } from "@/components/match/MatchRecord";
@@ -11,8 +9,6 @@ import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
 import { BelezaLiveSection } from "@/components/match/BelezaLiveSection";
 import { resolveMatchStatus } from "@/lib/match/status";
 import {
-  belezaTeam,
-  jefChibaLadiesTeam,
   belezaMatch,
   belezaHalfScores,
   belezaGoals,
@@ -21,16 +17,7 @@ import {
   belezaOfficialRecord,
   belezaOfficialSourceLabel,
   belezaMatchStats,
-  belezaPredictedLineup,
-  belezaKeyPlayers,
-  belezaOfficialLineup,
-  belezaOfficialBench,
-  jefChibaLadiesOfficialLineup,
-  jefChibaLadiesOfficialBench,
-  belezaUnavailablePlayers,
-  belezaU20Note,
-  belezaPreNote,
-  jefChibaLadiesNotes,
+  belezaPostMatchSummary,
   belezaSeasonHistory,
   belezaUpcomingMatches,
 } from "@/lib/mock/beleza";
@@ -51,12 +38,10 @@ export default function BelezaPage() {
   const isFinished = displayStatus === "finished";
   const isLive = displayStatus === "live";
   const isScheduled = displayStatus === "scheduled";
+  const belezaScore = belezaMatch.isBelezaHome ? belezaMatch.homeScore : belezaMatch.awayScore;
+  const opponentScore = belezaMatch.isBelezaHome ? belezaMatch.awayScore : belezaMatch.homeScore;
   const resultLabel =
-    belezaMatch.homeScore === belezaMatch.awayScore
-      ? "draw"
-      : belezaMatch.homeScore > belezaMatch.awayScore
-        ? "win"
-        : "loss";
+    belezaScore === opponentScore ? "draw" : belezaScore > opponentScore ? "win" : "loss";
 
   return (
     <div className="space-y-8 pb-4">
@@ -87,7 +72,7 @@ export default function BelezaPage() {
         {/* mobile: 正式名称を省略せず縦積みで表示する（横並びgridだとtruncateで名称が切れるため） */}
         <div className="mt-4 flex flex-col items-center gap-1.5 text-center lg:hidden">
           <p className="text-[16px] font-extrabold leading-snug text-text-primary">
-            {belezaTeam.name}
+            {belezaMatch.homeTeamName}
           </p>
           <p className="text-[10px] font-bold tracking-wide text-text-secondary">HOME</p>
           {isFinished ? (
@@ -98,12 +83,12 @@ export default function BelezaPage() {
             <p className="py-1 text-[13px] font-extrabold text-fusion-black">VS</p>
           )}
           <p className="text-[16px] font-extrabold leading-snug text-text-primary">
-            {jefChibaLadiesTeam.name}
+            {belezaMatch.awayTeamName}
           </p>
           <p className="text-[10px] font-bold tracking-wide text-text-secondary">AWAY</p>
         </div>
 
-        {isFinished && (
+        {isFinished && belezaHalfScores && (
           <div className="mt-3 flex flex-col items-center gap-2 border-t border-border pt-3 text-center lg:hidden">
             <p className="text-[11px] font-bold text-text-secondary">
               前半 {belezaHalfScores.firstHalf} ／ 後半 {belezaHalfScores.secondHalf}
@@ -135,7 +120,7 @@ export default function BelezaPage() {
           <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-6">
             <div className="min-w-0 text-right">
               <p className="truncate text-[24px] font-extrabold leading-[1.15] text-text-primary">
-                {belezaTeam.name}
+                {belezaMatch.homeTeamName}
               </p>
               <p className="mt-0.5 text-[11px] font-bold tracking-wide text-text-secondary">
                 HOME
@@ -150,7 +135,7 @@ export default function BelezaPage() {
             )}
             <div className="min-w-0 text-left">
               <p className="truncate text-[24px] font-extrabold leading-[1.15] text-text-primary">
-                {jefChibaLadiesTeam.name}
+                {belezaMatch.awayTeamName}
               </p>
               <p className="mt-0.5 text-[11px] font-bold tracking-wide text-text-secondary">
                 AWAY
@@ -158,7 +143,7 @@ export default function BelezaPage() {
             </div>
           </div>
 
-          {isFinished && (
+          {isFinished && belezaHalfScores && (
             <div className="mt-4 flex flex-col items-center gap-2 border-t border-border pt-4 text-center">
               <p className="text-[12px] font-bold text-text-secondary">
                 前半 {belezaHalfScores.firstHalf} ／ 後半 {belezaHalfScores.secondHalf}
@@ -190,8 +175,8 @@ export default function BelezaPage() {
       {isLive && (
         <BelezaLiveSection
           matchId={belezaMatch.id}
-          homeTeamName={belezaTeam.name}
-          awayTeamName={jefChibaLadiesTeam.name}
+          homeTeamName={belezaMatch.homeTeamName}
+          awayTeamName={belezaMatch.awayTeamName}
         />
       )}
       {isScheduled && (
@@ -200,53 +185,17 @@ export default function BelezaPage() {
         </p>
       )}
 
-      <section>
-        <SectionHeader title="予想スタメン" eyebrow="PREDICTED LINEUP" />
-        <ul className="border-y border-border">
-          {belezaPredictedLineup.starters.map((starter, index) => (
-            <li
-              key={`${starter.position}-${starter.number ?? "tbd"}-${starter.name}-${index}`}
-              className="grid grid-cols-[2rem_2rem_minmax(0,1fr)] items-center gap-x-2 border-b border-border py-2 text-[13px] last:border-b-0"
-            >
-              <span className="text-[10px] font-bold text-text-secondary">{starter.position}</span>
-              <span className="tabular-nums text-right text-text-secondary">{starter.number}</span>
-              <span className="min-w-0 pl-1">
-                <span className="block font-bold text-text-primary">{starter.name}</span>
-                {starter.alternative && (
-                  <span className="block truncate text-[10px] font-normal text-text-secondary">
-                    別候補：{starter.alternative}
-                  </span>
-                )}
-              </span>
-            </li>
-          ))}
-        </ul>
-        <div className="mt-4">
-          <p className="text-[11px] font-bold tracking-[0.08em] text-text-secondary">
-            PREDICTED FORMATION / 予想フォーメーション
-          </p>
-          <div className="mt-2">
-            <PredictedFormation team={belezaTeam} lineup={belezaPredictedLineup} />
-          </div>
-        </div>
-        <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
-          直近情報を基にした予想です。公式のStarting XIではありません。実際の先発メンバーとは異なる場合があります。
-        </p>
-      </section>
-
-      <BelezaOfficialLineup
-        belezaTeam={belezaTeam}
-        belezaLineup={belezaOfficialLineup}
-        belezaBench={belezaOfficialBench}
-        opponentTeam={jefChibaLadiesTeam}
-        opponentLineup={jefChibaLadiesOfficialLineup}
-        opponentBench={jefChibaLadiesOfficialBench}
-      />
+      {isFinished && (
+        <section>
+          <SectionHeader title="POST MATCH SUMMARY" />
+          <p className="text-[13px] leading-relaxed text-text-secondary">{belezaPostMatchSummary}</p>
+        </section>
+      )}
 
       {isFinished && (
         <MatchRecord
-          homeTeamName={belezaTeam.name}
-          awayTeamName={jefChibaLadiesTeam.name}
+          homeTeamName={belezaMatch.homeTeamName}
+          awayTeamName={belezaMatch.awayTeamName}
           goals={belezaGoals}
           cards={belezaCards}
           substitutions={belezaSubstitutions}
@@ -255,56 +204,13 @@ export default function BelezaPage() {
         />
       )}
 
-      {isFinished && (
+      {isFinished && belezaMatchStats && (
         <BelezaMatchStats
-          belezaTeamName={belezaTeam.name}
-          opponentTeamName={jefChibaLadiesTeam.name}
+          belezaTeamName={belezaTeamStatsLabel(belezaMatch)}
+          opponentTeamName={opponentTeamStatsLabel(belezaMatch)}
           stats={belezaMatchStats}
         />
       )}
-
-      <section>
-        <SectionHeader title="欠場予定" eyebrow="UNAVAILABLE" />
-        <ul className="divide-y divide-border border-y border-border bg-surface px-3 text-[13px]">
-          {belezaUnavailablePlayers.map((player) => (
-            <li key={player} className="py-2 font-bold text-text-primary">
-              {player}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section>
-        <p className="border-l-2 border-pioneer-gold bg-surface px-3 py-2 text-[12px] leading-relaxed text-text-secondary">
-          {belezaU20Note}
-        </p>
-      </section>
-
-      <section>
-        <SectionHeader title="KEY PLAYERS" eyebrow="ベレーザ注目選手" />
-        <ul className="divide-y divide-border border-y border-border">
-          {belezaKeyPlayers.map((player) => (
-            <li key={player.name} className="py-2.5 text-[13px]">
-              <p className="font-bold text-text-primary">{player.name}</p>
-              <p className="mt-0.5 text-text-secondary">{player.note}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section>
-        <SectionHeader title="PRE NOTE" />
-        <p className="text-[13px] leading-relaxed text-text-secondary">{belezaPreNote}</p>
-      </section>
-
-      <section>
-        <SectionHeader title="ジェフ千葉L簡易情報" />
-        <ul className="list-disc space-y-1 pl-4 text-[13px] text-text-secondary">
-          {jefChibaLadiesNotes.map((note) => (
-            <li key={note}>{note}</li>
-          ))}
-        </ul>
-      </section>
 
       {belezaSeasonHistory.length > 0 && (
         <section>
@@ -321,4 +227,12 @@ export default function BelezaPage() {
       )}
     </div>
   );
+}
+
+function belezaTeamStatsLabel(match: { homeTeamName: string; awayTeamName: string; isBelezaHome: boolean }) {
+  return match.isBelezaHome ? match.homeTeamName : match.awayTeamName;
+}
+
+function opponentTeamStatsLabel(match: { homeTeamName: string; awayTeamName: string; isBelezaHome: boolean }) {
+  return match.isBelezaHome ? match.awayTeamName : match.homeTeamName;
 }

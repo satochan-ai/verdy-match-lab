@@ -130,7 +130,7 @@ export default async function Home() {
               kickoffLabel={nextBelezaFixture?.kickoffLabel}
               resultLine={
                 !nextBelezaFixture
-                  ? `日テレ・東京ヴェルディベレーザ ${belezaMatch.homeScore}-${belezaMatch.awayScore} ジェフ千葉レディース`
+                  ? `${belezaMatch.homeTeamName} ${belezaMatch.homeScore}-${belezaMatch.awayScore} ${belezaMatch.awayTeamName}`
                   : undefined
               }
               href="/beleza"
