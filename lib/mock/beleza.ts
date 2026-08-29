@@ -1,4 +1,5 @@
 import type {
+  ActualLineup,
   FixtureMeta,
   KeyPlayer,
   MatchCard,
@@ -34,10 +35,9 @@ export const acNaganoTeam: Team = {
 };
 
 /**
- * 第2節 AC長野パルセイロ・レディース戦（Phase 6-N.1確認）。
- * 出典：WEリーグ公式 https://weleague.jp/matches/2026082925/ （ユーザー確認）。
- * 最終スコアと実キックオフのみユーザー確認済み。それ以外の試合経過（得点者・スタメン等）は
- * 未確認のため、このファイル内では推測で埋めていない（各項目のコメント参照）。
+ * 第2節 AC長野パルセイロ・レディース戦（Phase 6-N.1／6-N.1c確認）。
+ * 出典：WEリーグ公式 https://weleague.jp/matches/2026082925/ （ユーザー確認・公式試合記録画像）。
+ * 未確認のまま残っている項目（交代ペア・カード等）は各定数のコメント参照。推測で埋めていない。
  */
 export const belezaMatch = {
   id: "beleza-match-2",
@@ -57,48 +57,100 @@ export const belezaMatch = {
   awayScore: 4,
 };
 
-/**
- * 前半・後半のスコア推移。WEリーグ公式の試合経過が未確認のため、今節は未登録
- * （推測で埋めない）。
- */
-export const belezaHalfScores: { firstHalf: string; secondHalf: string } | undefined = undefined;
+/** 前半・後半のスコア推移（Phase 6-N.1c、WEリーグ公式試合記録画像で確認済み）。 */
+export const belezaHalfScores: { firstHalf: string; secondHalf: string } | undefined = {
+  firstHalf: "1-1",
+  secondHalf: "0-3",
+};
+
+/** 得点記録（Phase 6-N.1c、WEリーグ公式試合記録画像で確認済み・時系列順）。 */
+export const belezaGoals: MatchGoal[] = [
+  { minute: "27'", scorer: "隅田 凜", team: belezaTeam.name },
+  { minute: "34'", scorer: "吉野 真央", team: acNaganoTeam.name },
+  { minute: "59'", scorer: "北村 菜々美", team: belezaTeam.name },
+  { minute: "67'", scorer: "式田 和", team: belezaTeam.name },
+  { minute: "86'", scorer: "北村 菜々美", team: belezaTeam.name },
+];
 
 /**
- * 得点記録。WEリーグ公式の試合経過（得点者・時間）が未確認のため、今節は未登録
- * （最終スコアAC長野 1-4 BELEZAの内訳を推測で埋めない）。
- */
-export const belezaGoals: MatchGoal[] = [];
-
-/**
- * WEリーグ公式試合記録。実キックオフのみユーザー確認済み。入場者数・天候・気温・湿度は
- * 未確認のため未登録（推測で埋めない）。
+ * WEリーグ公式試合記録（Phase 6-N.1c、公式試合記録画像で確認済み）。
+ * sourceUrlはユーザー確認済みのアドレスバーURLをそのまま使用（推測で埋めない）。
  */
 export const belezaOfficialRecord: OfficialMatchRecord = {
-  kickoff: "18:05",
+  kickoff: "18:03",
+  attendance: 1319,
+  weather: "曇",
+  temperature: "21.5℃",
+  humidity: "94%",
   sourceUrl: "https://weleague.jp/matches/2026082925/",
 };
 
 /** MatchRecordのSOURCEリンク表示名（大会名がJ.LEAGUEではないため上書きする）。 */
 export const belezaOfficialSourceLabel = "WE LEAGUE Official Match Record";
 
-/** 警告・退場。WEリーグ公式の試合経過が未確認のため、今節は未登録。 */
+/**
+ * 警告・退場。Phase 6-N.1cで提供された公式試合記録画像内にカード欄が確認できなかったため、
+ * 今節は未登録のまま（推測で「なし」と断定しない）。
+ */
 export const belezaCards: MatchCard[] = [];
 
-/** 交代記録。WEリーグ公式の試合経過が未確認のため、今節は未登録。 */
+/**
+ * 交代記録。公式試合記録画像でOUT/IN・時間はそれぞれ確認できたが、同時刻に複数交代した際の
+ * 「誰OUT→誰IN」のペアが画像内で明示されていない（行位置だけでは断定できない）ため、
+ * 今節はペア未登録のまま（推測でペアを作らない）。
+ */
 export const belezaSubstitutions: MatchSubstitution[] = [];
 
 /**
- * 公式記録スタッツ（シュート・FK・CK）。WEリーグ公式ページの掲載スタッツが未確認のため、
- * 今節は未登録（undefinedのままMATCH STATSセクションを非表示にする）。
+ * 公式記録スタッツ（シュート・FK・CK）。Phase 6-N.1c、公式試合記録画像で確認済み。
+ * 支配率・枠内シュート・パス等、画像にない項目は追加しない。
  */
-export const belezaMatchStats: { beleza: { shots: number; freeKicks: number; corners: number }; opponent: { shots: number; freeKicks: number; corners: number } } | undefined = undefined;
+export const belezaMatchStats: { beleza: { shots: number; freeKicks: number; corners: number }; opponent: { shots: number; freeKicks: number; corners: number } } | undefined = {
+  beleza: { shots: 14, freeKicks: 7, corners: 5 },
+  opponent: { shots: 3, freeKicks: 4, corners: 1 },
+};
 
 /**
- * POST MATCH summary。最終スコア（AC長野 1-4 BELEZA）から確定できる範囲のみ記載する。
- * 開幕2連勝／首位／得失点差／順位等は公式順位表が未確認のため含めない。
+ * BELEZA 公式スタメン・ベンチ（Phase 6-N.1c確認）。formationは公式画像で確認できなかったため
+ * 設定しない（ActualLineup.formationはoptional）。ポジション区分（GK/DF/MF/FW）のみ確認済み。
+ */
+export const belezaActualLineup: ActualLineup = {
+  starters: {
+    GK: ["1 野田 にな"],
+    DF: ["22 井手 ひなた", "4 土光 真代", "3 村松 智子", "32 松岡 瑛美"],
+    MF: ["6 隅田 凜", "35 須長 穂乃果", "7 北村 菜々美", "19 塩越 柚歩", "13 氏原 里穂菜"],
+    FW: ["20 小林 里歌子"],
+  },
+  bench: {
+    GK: ["21 水口 茉優"],
+    DF: ["5 松田 紫野"],
+    MF: ["8 猶本 光"],
+    FW: ["25 ダネル タン", "38 式田 和", "40 安藤 梢", "43 諸田 彩渚"],
+  },
+};
+
+/** AC長野パルセイロ・レディース 公式スタメン・ベンチ（Phase 6-N.1c確認）。formationは未確認のため設定しない。 */
+export const acNaganoActualLineup: ActualLineup = {
+  starters: {
+    GK: ["21 垣内 愛菜"],
+    DF: ["34 鈴木 こなつ", "5 橘 麗衣", "25 奥川 千沙", "3 久保田 明未"],
+    MF: ["7 三谷 沙也加", "27 籔島 彩佳", "6 常田 麻友", "15 知久 奈菜穂", "14 塩谷 瑠南"],
+    FW: ["33 吉野 真央"],
+  },
+  bench: {
+    GK: ["1 梅村 真央"],
+    DF: ["18 町田 実香", "22 児玉 一穂"],
+    MF: ["23 松浦 芽育子"],
+    FW: ["10 北川 愛莉", "20 松岡 優空", "35 濱田 優音"],
+  },
+};
+
+/**
+ * POST MATCH summary（Phase 6-N.1c、公式試合経過を踏まえ具体化）。
+ * 「2連勝」「順位」等は公式順位表が未確認のため今回は追加しない。
  */
 export const belezaPostMatchSummary =
-  "アウェイでAC長野パルセイロ・レディースと対戦。4得点を挙げ、1-4で勝利した。第1節に続く勝利で勝点3を加えた。";
+  "アウェイでAC長野パルセイロ・レディースと対戦。27分に隅田凜のゴールで先制し、一度は同点とされたものの、後半に北村菜々美が2得点、式田和が1得点を挙げ、1-4で勝利した。";
 
 /**
  * === 第1節（ジェフ千葉レディース戦）アーカイブ ===
@@ -297,8 +349,9 @@ export const belezaSeasonHistory: BelezaSeasonHistoryEntry[] = [
     round: "第2節",
     homeTeamName: acNaganoTeam.name,
     awayTeamName: belezaTeam.name,
-    homeScore: belezaMatch.homeScore,
-    awayScore: belezaMatch.awayScore,
+    /** 確定結果を固定値として保持する（第3節以降のbelezaMatch更新で変わらないようにする）。 */
+    homeScore: 1,
+    awayScore: 4,
     result: "win",
   },
 ];

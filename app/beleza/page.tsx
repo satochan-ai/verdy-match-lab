@@ -17,6 +17,8 @@ import {
   belezaOfficialRecord,
   belezaOfficialSourceLabel,
   belezaMatchStats,
+  belezaActualLineup,
+  acNaganoActualLineup,
   belezaPostMatchSummary,
   belezaSeasonHistory,
   belezaUpcomingMatches,
@@ -201,6 +203,11 @@ export default function BelezaPage() {
           substitutions={belezaSubstitutions}
           officialRecord={belezaOfficialRecord}
           officialSourceLabel={belezaOfficialSourceLabel}
+          actualLineups={
+            belezaMatch.isBelezaHome
+              ? { home: belezaActualLineup, away: acNaganoActualLineup }
+              : { home: acNaganoActualLineup, away: belezaActualLineup }
+          }
         />
       )}
 
