@@ -695,8 +695,10 @@ export const matches: Match[] = [
   },
   {
     // 第4節・鹿島戦。lib/mock/schedule.tsのsched-kashima（既存source of truth）と同一fixture。
-    // Phase 6-M.1：PRE_MATCH予想Starting XIを追加。公式Starting XIは未発表のため、
-    // actualLineups等の正式試合記録フィールドには一切入れない（predictedLineupsのみ）。
+    // Phase 6-M.1：PRE_MATCH予想Starting XIを追加。
+    // Phase 6-M.2：公式Starting XI・benchが発表されたためactualLineupsを追加。
+    // predictedLineupsは答え合わせ用にそのまま維持し、上書き・削除しない。
+    // キックオフ前のためscore/statusは変更しない（homeScore/awayScore: null, status: "scheduled"）。
     id: "match-9",
     homeTeam: verdy,
     awayTeam: opponent("kashima-antlers", "鹿島アントラーズ"),
@@ -789,6 +791,47 @@ export const matches: Match[] = [
         ],
       },
     },
+    /**
+     * Phase 6-M.2：公式発表されたStarting XI・bench。actual formation配置は
+     * ユーザー確認済みのpitch配置を正として登録（match-0と同じ規約）。
+     * OfficialLineups→FormationPitchはGK/DF/MF/FWの配列をformationRows
+     * （3-4-2-1: [3,4,2,1] / 4-4-2: [4,4,2]）で単純にスライスして行分割するため、
+     * 各配列内の並び順＝ピッチ上の行・左右位置に直結する。
+     * 3-4-2-1のFW配列は「先頭2名＝シャドー（左→右）、最後の1名＝アペックス（1トップ）」。
+     * キャプテン表記は公式確認が取れていないため付けない。
+     */
+    actualLineups: {
+      home: {
+        formation: "3-4-2-1",
+        starters: {
+          GK: ["1 マテウス"],
+          DF: ["5 井上 竜太", "4 林 尚輝", "15 鈴木 海音"],
+          MF: ["40 新井 悠太", "10 森田 晃樹", "16 平川 怜", "22 内田 陽介"],
+          FW: ["25 熊取谷 一星", "7 松橋 優安", "9 染野 唯月"],
+        },
+        bench: {
+          GK: ["21 長沢 祐弥"],
+          DF: ["29 佐古 真礼", "36 松田 陸"],
+          MF: ["2 柴戸 海", "24 仲山 獅恩", "28 山本 丈偉", "30 川村 楽人"],
+          FW: ["27 白井 亮丞", "38 神田 奏真"],
+        },
+      },
+      away: {
+        formation: "4-4-2",
+        starters: {
+          GK: ["1 早川 友基"],
+          DF: ["7 小川 諒也", "5 関川 郁万", "55 植田 直通", "37 広瀬 陸斗"],
+          MF: ["17 エウベル", "8 マテウス・ブエノ", "10 柴崎 岳", "27 松村 優太"],
+          FW: ["9 レオ・セアラ", "40 鈴木 優磨"],
+        },
+        bench: {
+          GK: ["21 山田 大樹"],
+          DF: ["3 キム・テヒョン", "4 千田 海人", "23 津久井 佳祐"],
+          MF: ["6 三竿 健斗", "24 林 晴己", "35 元砂 晏翔仁ウデンバ"],
+          FW: ["30 吉田 湊海", "77 チャヴリッチ"],
+        },
+      },
+    },
     availability: {
       likelyUnavailable: [
         { team: "東京V", players: ["田邉秀斗", "吉田泰授", "山見大登"] },
@@ -803,6 +846,7 @@ export const matches: Match[] = [
       "鹿島は右SB安西幸輝が7月に左膝前十字靭帯損傷で長期離脱中（7/21鹿島公式発表）。FWヤン・マテウスも今節は欠場予定（欠場理由は未確認）。",
       "東京Vの3バックは鈴木海音・林尚輝・宮原和也を第一予想とする。宮原を右CBへ回し、左CBに井上竜太を置く形も候補として考えられる。",
       "予想スタメン・フォーメーションは8/28時点の公開情報を基準にした編集部予想。確定Starting XIではない。",
+      "公式Starting XI発表：東京Vは予想11人中9人が的中（マテウス・鈴木海音・林尚輝・内田陽介・森田晃樹・平川怜・新井悠太・熊取谷一星・染野唯月）。予想メンバーだった宮原和也・福田湧矢に代わり、井上竜太・松橋優安が先発。鹿島は骨格を維持しつつ、予想の吉田湊海に代わりエウベルが先発。",
     ],
     focusPoints: [
       "溝口不在の左サイド：新井悠太・宮原和也・森田晃樹の連係で鹿島の右サイド攻撃にどう対応するか",
