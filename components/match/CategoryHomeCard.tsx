@@ -89,6 +89,7 @@ export function CategoryHomeCard({
   const contentPadding =
     size === "lg" ? "py-5 pl-6 pr-5 lg:py-8 lg:pl-9 lg:pr-8" : "py-4 pl-5 pr-4 lg:py-5 lg:pl-6 lg:pr-5";
   const isContainSplit = photo?.layout === "contain-split";
+  const isPhotoLessSmallCard = !photo && size === "sm";
 
   const infoBlock = (
     <>
@@ -187,7 +188,11 @@ export function CategoryHomeCard({
     <Link
       href={href}
       aria-label={linkLabel}
-      className={`group relative flex h-full overflow-hidden border border-border bg-surface transition duration-200 hover:bg-surface-tint focus-ring lg:hover:-translate-y-0.5 ${
+      className={`group relative flex h-full overflow-hidden border transition duration-200 hover:bg-surface-tint focus-ring lg:hover:-translate-y-0.5 ${
+        isPhotoLessSmallCard
+          ? "border-primary-green/30 bg-primary-green/[0.045]"
+          : "border-border bg-surface"
+      } ${
         isContainSplit ? "flex-col lg:flex-row" : "flex-col"
       }`}
     >

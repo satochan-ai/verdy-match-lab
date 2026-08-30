@@ -161,6 +161,7 @@ export default async function Home() {
               categoryLabel="U-21"
               {...u21CardState.card}
               accent="green-gold"
+              // 写真がないU-21も仮置きに見えないよう、カード側で緑の面と境界を強める。
               href="/u21"
               linkLabel="U-21のページを見る"
             />
