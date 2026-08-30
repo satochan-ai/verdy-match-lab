@@ -63,16 +63,23 @@ export default function U21Page() {
 
   return (
     <div className="space-y-8 pb-4">
-      <div className="flex items-center justify-between">
-        <Link href="/" className="text-[13px] font-bold text-deep-green">
+      <div className="flex items-start justify-between gap-4 border-l-2 border-primary-green pl-3">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-pioneer-gold-deep">
+            Verdy U-21
+          </p>
+          <h1 className="mt-1 text-[20px] font-extrabold tracking-tight text-text-primary">U-21</h1>
+          <p className="mt-1 text-[12px] leading-relaxed text-text-secondary">
+            ヴェルディの未来を担う世代を追う。
+          </p>
+        </div>
+        <Link href="/" className="pt-1 text-[13px] font-bold text-deep-green">
           ← 戻る
         </Link>
-        <h1 className="text-[15px] font-bold text-text-primary">U-21</h1>
-        <span className="w-8" />
       </div>
 
       {nextFixture && nextHomeName && nextAwayName ? (
-        <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
+        <section className="border-y-2 border-l-4 border-fusion-black border-l-primary-green bg-primary-green/[0.04] px-4 py-5 lg:px-8 lg:py-7">
           <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
             NEXT MATCH
           </p>
@@ -116,7 +123,7 @@ export default function U21Page() {
           </div>
         </section>
       ) : (
-        <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
+        <section className="border-y-2 border-l-4 border-fusion-black border-l-primary-green bg-primary-green/[0.04] px-4 py-5 lg:px-8 lg:py-7">
           <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
             NEXT MATCH
           </p>
