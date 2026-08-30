@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
+import { getRecentFinishedMatchSummary } from "@/lib/data/matches";
 import { resolveCategoryCardState } from "@/lib/match/category-card-state";
 import { belezaFixtures, toBelezaUpcomingMatch } from "@/lib/data/beleza-fixtures";
 import { u21Fixtures, toU21UpcomingMatch } from "@/lib/data/u21-fixtures";
+import { topFixtures, toTopUpcomingFixture } from "@/lib/data/top-fixtures";
 import { getLatestFinishedFixture, getNextFixture } from "@/lib/data/fixture-selectors";
 import { HomeHero } from "@/components/home/HomeHero";
 import { CategoryHomeCard } from "@/components/match/CategoryHomeCard";
@@ -14,49 +15,27 @@ export const metadata: Metadata = {
   description: "東京ヴェルディを、TOP TEAM・U-21・BELEZAの3カテゴリーから追う。",
 };
 
-function formatMatchday(iso: string) {
-  const d = new Date(iso);
-  const parts = new Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Tokyo",
-    month: "2-digit",
-    day: "2-digit",
-    weekday: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    hourCycle: "h23",
-  }).formatToParts(d);
-  const part = (type: Intl.DateTimeFormatPartTypes) =>
-    parts.find((item) => item.type === type)?.value ?? "";
-
-  return {
-    dateLabel: `${part("month")}.${part("day")} ${part("weekday").toUpperCase()}`,
-    time: `${part("hour")}:${part("minute")}`,
-  };
-}
-
 export default async function Home() {
   const now = new Date();
-  const [nextMatch, recentTopMatch] = await Promise.all([
-    getNextMatch(),
-    getRecentFinishedMatchSummary(),
-  ]);
+  const recentTopMatch = await getRecentFinishedMatchSummary();
+  const nextTopFixture = getNextFixture(topFixtures, now);
 
   // 3カテゴリーとも resolveCategoryCardState() で
   // LIVE → NEXT MATCH → LAST RESULT → EMPTY の同一ルールで状態を決める。
   // データ構造が異なるため、各カテゴリーのデータを共通ビューへ変換してから渡す
   // （Match型への統一はしない）。
 
-  const topFixture = nextMatch ? formatMatchday(nextMatch.kickoffAt) : null;
+  const topDisplayFixture = nextTopFixture ? toTopUpcomingFixture(nextTopFixture) : undefined;
   const topCardState = resolveCategoryCardState({
     now,
-    focus: nextMatch ? { status: nextMatch.status, kickoffAt: nextMatch.kickoffAt } : undefined,
-    nextFixture: nextMatch
+    focus: nextTopFixture?.kickoffAt ? { status: "scheduled", kickoffAt: nextTopFixture.kickoffAt } : undefined,
+    nextFixture: nextTopFixture
       ? {
-          opponentName: (nextMatch.isVerdyHome ? nextMatch.awayTeam : nextMatch.homeTeam).name,
-          dateLabel: topFixture?.dateLabel,
-          kickoffLabel: topFixture?.time,
-          homeAway: nextMatch.isVerdyHome ? "HOME" : "AWAY",
-          fixtureMeta: nextMatch.fixtureMeta,
+          opponentName: nextTopFixture.opponentName,
+          dateLabel: topDisplayFixture?.dateLabel,
+          kickoffLabel: topDisplayFixture?.kickoffLabel,
+          homeAway: nextTopFixture.isHome ? "HOME" : "AWAY",
+          fixtureMeta: { competition: nextTopFixture.competition.name, roundLabel: nextTopFixture.competition.round },
         }
       : undefined,
     lastResult:

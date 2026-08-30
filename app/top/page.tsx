@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
-import { getUpcomingFixtures } from "@/lib/data/schedule";
+import { topFixtures, toTopUpcomingFixture } from "@/lib/data/top-fixtures";
+import { getNextFixture, getUpcomingFixtures } from "@/lib/data/fixture-selectors";
 import { StrategyList } from "@/components/match/StrategyList";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
-import { getMatchDayLabel } from "@/lib/match/display";
 
 export const metadata: Metadata = {
   title: "東京ヴェルディ TOP TEAM | Verdy Match Lab",
@@ -41,17 +41,17 @@ function formatShortDate(iso: string) {
 }
 
 export default async function TopTeamPage() {
-  const [nextMatch, recent, topUpcoming] = await Promise.all([
+  const [nextMatch, recent] = await Promise.all([
     getNextMatch(),
     getRecentFinishedMatchSummary(),
-    getUpcomingFixtures(5),
   ]);
+  const now = new Date();
+  const nextFixture = getNextFixture(topFixtures, now);
+  const topUpcoming = getUpcomingFixtures(topFixtures, now, 5).map(toTopUpcomingFixture);
   // nextMatchがnull（scheduledな試合が未登録）の場合は、過去試合を出さずに
   // 「次戦情報準備中」の空状態を表示する。LAST MATCH / NEXT 5は独立して表示する。
-  const opponent = nextMatch
-    ? nextMatch.isVerdyHome
-      ? nextMatch.awayTeam
-      : nextMatch.homeTeam
+  const opponent = nextFixture
+    ? { name: nextFixture.opponentName }
     : null;
   const recentOpponent = recent.isVerdyHome ? recent.awayTeam : recent.homeTeam;
   const recentResult =
@@ -62,9 +62,7 @@ export default async function TopTeamPage() {
       ? "win"
       : "loss";
 
-  const now = new Date();
-  const fixture = nextMatch ? formatMatchday(nextMatch.kickoffAt) : null;
-  const dayLabel = nextMatch ? getMatchDayLabel(nextMatch, now) : null;
+  const fixture = nextFixture?.kickoffAt ? formatMatchday(nextFixture.kickoffAt) : null;
 
   return (
     <div className="space-y-6">
@@ -74,30 +72,21 @@ export default async function TopTeamPage() {
 
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
         <div className="space-y-8 lg:space-y-10">
-          {nextMatch && fixture && opponent && dayLabel ? (
+              {nextFixture && fixture && opponent ? (
           <section className="section-reveal border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
             <div className="flex items-baseline justify-between gap-3">
               <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
                 NEXT MATCH
               </p>
-              {dayLabel.kind === "days" && (
-                <p className="text-[11px] font-bold text-primary-green">あと{dayLabel.days}日</p>
-              )}
-              {dayLabel.kind === "today" && (
-                <p className="text-[11px] font-bold text-primary-green">今日</p>
-              )}
-              {dayLabel.kind === "live" && (
-                <p className="text-[11px] font-bold text-primary-green">試合中</p>
-              )}
             </div>
 
             <p className="mt-2 tabular-nums text-[15px] font-extrabold tracking-wide text-text-secondary lg:text-[17px]">
               {fixture.mmdd} <span className="ml-1">{fixture.weekday}</span>
             </p>
 
-            {nextMatch.fixtureMeta && (
-              <div className="mt-2">
-                <FixtureMetaLine meta={nextMatch.fixtureMeta} />
+              {nextFixture.competition && (
+                <div className="mt-2">
+                <FixtureMetaLine meta={{ competition: nextFixture.competition.name, roundLabel: nextFixture.competition.round }} />
               </div>
             )}
 
@@ -107,7 +96,7 @@ export default async function TopTeamPage() {
                   東京ヴェルディ
                 </p>
                 <p className="mt-0.5 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
-                  {nextMatch.isVerdyHome ? "HOME" : "AWAY"}
+                  {nextFixture.isHome ? "HOME" : "AWAY"}
                 </p>
               </div>
               <div className="px-1.5 text-[13px] font-extrabold text-fusion-black lg:px-4 lg:text-[18px]">
@@ -118,7 +107,7 @@ export default async function TopTeamPage() {
                   {opponent.name}
                 </p>
                 <p className="mt-0.5 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
-                  {nextMatch.isVerdyHome ? "AWAY" : "HOME"}
+                  {nextFixture.isHome ? "AWAY" : "HOME"}
                 </p>
               </div>
             </div>
@@ -130,9 +119,9 @@ export default async function TopTeamPage() {
                   KICK OFF
                 </span>
               </p>
-              <p className="text-[12px] text-text-secondary">{nextMatch.venue}</p>
+              <p className="text-[12px] text-text-secondary">{nextFixture.venue}</p>
               <Link
-                href={`/matches/${nextMatch.id}`}
+                href={nextFixture.detailMatchId ? `/matches/${nextFixture.detailMatchId}` : "/top"}
                 className="mt-3 flex h-12 w-full items-center justify-center bg-primary-green text-[14px] font-bold text-white lg:mt-0 lg:inline-flex lg:h-10 lg:w-auto lg:px-5"
               >
                 試合詳細を見る
