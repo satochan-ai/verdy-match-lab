@@ -13,6 +13,21 @@ Next.js + Neon Postgres（`DATABASE_URL`）+ mockフォールバック。外部A
   画像が存在していても、明示的な指示なく削除・移動・cleanしない。撮影者や素材の所有関係を
   コードだけから断定しない。
 
+## Merge済みbranch再利用禁止
+
+作業開始時に、現在branchと、それに対応するPRの状態（OPEN / MERGED / CLOSED）を必ず確認する。
+
+- PRが **OPEN**
+  → 同テーマの追加修正なら、その同じbranchへcommitしてよい。
+- PRが **MERGED または CLOSED**
+  → そのbranchへ新規commitしてはいけない。
+  → `git fetch origin` して最新 `origin/master` から新しいfeature branchを自動作成し、そこで追加作業を行う。
+
+PR作成後に追加指示が来た場合も同様。追加commitした後は、そのPRがすでにmerge済みでないかを必ず再確認し、
+merge済みなら追加分を最新 `origin/master` 起点の新branchへ移す（cherry-pick等）。
+
+branchの選択はユーザーへ求めず、AI側で安全なbranchを判断する。
+
 ## 非公式ファンサイト表記
 - Footer（`components/ui/Footer.tsx`）・metadata（`app/layout.tsx`）の「非公式ファンサイト」表記を
   削除・弱化しない。
