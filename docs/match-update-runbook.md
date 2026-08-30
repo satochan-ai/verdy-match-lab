@@ -5,11 +5,12 @@
 ## Quick Start
 
 1. 公式情報本文を貼る場合は、先に[公式情報コピペ → 構造化入力Prompt](./match-source-structuring-prompt.md)を使う。
-2. 対象カテゴリーと試合を特定する。
-3. 公式URLを添えて、試合前・スタメン・試合終了後の該当テンプレートを渡す。
-4. Claude Codeが既存fixture、detailMatchId、status、score、表示先を確認する。
-5. 変更後にselector、validation、test、typecheck、lint、build、diffを確認する。
-6. 問題がなければ、専用branch、commit、push、PR、merge、master同期、Production確認まで進める。
+2. 構造化結果を確認したら、[構造化結果 → コード更新Prompt](./match-structured-update-prompt.md)へ渡す。
+3. 対象カテゴリーと試合を特定する。
+4. 公式URLを添えて、試合前・スタメン・試合終了後の該当テンプレートを渡す。
+5. Claude Codeが既存fixture、detailMatchId、status、score、表示先を確認する。
+6. 変更後にselector、validation、test、typecheck、lint、build、diffを確認する。
+7. 問題がなければ、専用branch、commit、push、PR、merge、master同期、Production確認まで進める。
 
 ## 試合前
 
