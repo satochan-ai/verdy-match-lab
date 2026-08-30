@@ -125,12 +125,9 @@ export default async function Home() {
         「最も近いキックオフ」をデータから厳密に決定することはできない。fixtureデータを
         変更しない方針のため、ここではTOP TEAMの次戦を導線先として固定する。
       */}
-      <HomeHero
-        ctaHref={nextMatch ? `/matches/${nextMatch.id}` : "/top"}
-        ctaLabel="NEXT MATCHを見る"
-      />
+      <HomeHero ctaHref="#categories" ctaLabel="3カテゴリーを見る" />
 
-      <section>
+      <section id="categories">
         <div className="flex items-baseline gap-3">
           <h2 className="text-[15px] font-extrabold tracking-wide text-text-primary lg:text-[17px]">
             3つの緑を追う。
