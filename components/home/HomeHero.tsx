@@ -66,6 +66,10 @@ export function HomeHero({
             緑は、ひとつ。
           </h1>
 
+          <p className="mt-4 text-[16px] font-extrabold leading-snug tracking-tight text-shine-white md:mt-5 md:text-[22px] lg:text-[28px]">
+            TOP TEAMも、U-21も、BELEZAも。
+          </p>
+
           <div className="mt-6 max-w-[34rem] md:mt-8">
             <span
               aria-hidden="true"
@@ -76,8 +80,8 @@ export function HomeHero({
             </p>
           </div>
 
-          <p className="mt-5 max-w-[30rem] text-[13px] leading-relaxed text-shine-white/90 md:mt-6 md:text-[15px]">
-            東京ヴェルディの現在と未来を、試合・LIVE・記録から追う。
+          <p className="mt-4 max-w-[30rem] text-[13px] leading-relaxed text-shine-white/90 md:mt-5 md:text-[15px]">
+            東京ヴェルディの3カテゴリーを、ファンの視点で追う非公式メディア。
           </p>
 
           <Link
