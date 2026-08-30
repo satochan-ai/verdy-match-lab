@@ -95,3 +95,10 @@ routeやmetadataを変更する場合は、title、description、teamとmatchの
 ## 完了時の確認
 
 このrepositoryで作業した場合は、unofficial positioning、official factとprediction/analysisの分離、category境界、DB/mock source、lineupの意味、match status、image rights、`.claude/launch.json`、`Pictures/`、mobile behavior、deploymentへの関連する影響を報告すること。明示的に依頼されない限り、deployやexternal setting変更を行わないこと。
+
+## GitHub delivery safety
+
+- 通常の変更は最新の `origin/master` から新しいbranchで行い、対象ファイルだけをcommitする。MERGED / CLOSED branchは再利用しない。
+- `master` への反映はPR経由とし、merge後は `git fetch origin` と `git merge --ff-only origin/master` で同期する。reset、rebase、force pushは禁止する。
+- 既存WIP（特に `.claude/launch.json`、`Pictures/`、未コミットのAGENTS.md差分）をstage・commitへ混入させない。
+- PRとmergeはrepository権限・ユーザー指示の範囲で行い、PR diffとQAを確認してから実行する。

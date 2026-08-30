@@ -2,6 +2,18 @@
 
 # verdy-match-lab プロジェクトルール
 
+## GitHub / PR / Vercel delivery flow
+
+通常の変更は、最新の `origin/master` を確認してから新しい `claude/` branchで実装し、QA、対象ファイルだけのcommit、push、`gh pr create`、PR diff確認、`gh pr merge --merge --delete-branch`、masterのff-only同期、Production確認までClaude Code側で進める。ユーザーへPR作成やmergeを依頼して停止しない。
+
+- 作業前に現在branchと既存PRを確認し、MERGED / CLOSED branchは再利用しない。
+- `gh auth status` が未認証の場合は認証切れを報告し、ユーザーのブラウザ認証が必要なら復旧を依頼する。
+- PR作成前に同一headの既存OPEN PRを再利用し、既存PRがなければ作成する。
+- PRのbase、head、changed files、diff、QA結果を確認してからmergeする。明示的にPRのみ・mergeなしと指定された場合は従う。
+- merge後は `git fetch origin` と `git merge --ff-only origin/master` でmasterを同期する。reset、rebase、force pushは行わない。
+- merge後は `https://verdy-match-lab.vercel.app/` を確認し、`vercel deploy` / `vercel --prod` は原則実行しない。
+- `.claude/launch.json`、`Pictures/`、その他の既存WIPをcommitへ混入させない。
+
 東京ヴェルディの試合を戦術視点で楽しむ非公式ファンサイト（β版）。
 Next.js + Neon Postgres（`DATABASE_URL`）+ mockフォールバック。外部AI APIは使用しない。
 
