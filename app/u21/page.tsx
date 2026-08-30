@@ -1,51 +1,65 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  u21Match,
-  u21HomeOfficialLineup,
-  u21AwayOfficialLineup,
-  u21OfficialRecord,
-  u21Goals,
-  u21Cards,
-  u21Substitutions,
-  u21SeasonHistory,
-  u21UpcomingMatches,
-} from "@/lib/mock/u21";
+import { u21Match, u21SeasonHistory, u21UpcomingMatches } from "@/lib/mock/u21";
 import { resolveMatchStatus } from "@/lib/match/status";
-import { U21LiveSection } from "@/components/match/U21LiveSection";
-import { U21OfficialLineups } from "@/components/match/U21OfficialLineups";
-import { MatchRecord } from "@/components/match/MatchRecord";
 import { U21SeasonHistory } from "@/components/match/U21SeasonHistory";
 import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 
 /**
- * このページはPRE/LIVEの判定を毎リクエスト評価する必要があるため、
- * 静的prerenderにしない（Topページと同じ落とし穴を避ける）。
+ * /u21 は U-21 カテゴリーのトップページ。TOP TEAM（/top）・BELEZA（/beleza）と同じ情報設計で、
+ * 「未来（NEXT MATCH / NEXT 5）→ 過去（LAST MATCH / SEASON HISTORY）」を分離して表示する。
+ *
+ * NEXT MATCH  … u21UpcomingMatches[0]（今後の公式日程の先頭）
+ * NEXT 5      … u21UpcomingMatches
+ * LAST MATCH  … u21Match（直近の確定試合スナップショット）。詳細は /u21/matches/[id] へ。
+ *
+ * LAST MATCH の finished 判定に resolveMatchStatus を毎リクエスト使うため静的prerenderにしない。
  */
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "U-21 MATCH | Verdy Match Lab",
-  description: "東京ヴェルディU-21の試合情報。",
+  description: "東京ヴェルディU-21の次戦・NEXT 5・直近の試合結果。",
 };
 
+// U-21のチーム表示名。u21Match / u21SeasonHistory の homeTeamName 表記に合わせる。
+const U21_TEAM_NAME = "東京ヴェルディU-21";
+
+function formatMonthDay(iso: string) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Tokyo",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date(iso));
+  const part = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((p) => p.type === type)?.value ?? "";
+  return `${part("month")}.${part("day")}`;
+}
+
 export default function U21Page() {
-  const displayStatus = resolveMatchStatus(u21Match, new Date());
-  const statusLabel = {
-    scheduled: "試合前",
-    live: "LIVE",
-    half_time: "ハーフタイム",
-    finished: "試合終了",
-  }[displayStatus];
-  const isFinished = displayStatus === "finished";
-  const resultLabel =
-    u21Match.homeScore === u21Match.awayScore
-      ? "draw"
-      : u21Match.homeScore > u21Match.awayScore
-      ? "win"
-      : "loss";
+  const nextFixture = u21UpcomingMatches[0];
+  // U-21が home の節は HOME=ヴェルディ / AWAY=相手、away の節はその逆。
+  const nextHomeName = nextFixture
+    ? nextFixture.isHome
+      ? U21_TEAM_NAME
+      : nextFixture.opponentName
+    : null;
+  const nextAwayName = nextFixture
+    ? nextFixture.isHome
+      ? nextFixture.opponentName
+      : U21_TEAM_NAME
+    : null;
+
+  const lastFinished = resolveMatchStatus(u21Match, new Date()) === "finished";
+  const u21IsHome = u21Match.homeTeamName === U21_TEAM_NAME;
+  const lastOpponentName = u21IsHome ? u21Match.awayTeamName : u21Match.homeTeamName;
+  const u21Score = u21IsHome ? u21Match.homeScore : u21Match.awayScore;
+  const opponentScore = u21IsHome ? u21Match.awayScore : u21Match.homeScore;
+  const lastResult =
+    u21Score === opponentScore ? "draw" : u21Score > opponentScore ? "win" : "loss";
 
   return (
     <div className="space-y-8 pb-4">
@@ -53,110 +67,65 @@ export default function U21Page() {
         <Link href="/" className="text-[13px] font-bold text-deep-green">
           ← 戻る
         </Link>
-        <h1 className="text-[15px] font-bold text-text-primary">{statusLabel}</h1>
+        <h1 className="text-[15px] font-bold text-text-primary">U-21</h1>
         <span className="w-8" />
       </div>
 
-      <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
-        <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
-          {u21Match.competition}
-        </p>
+      {nextFixture && nextHomeName && nextAwayName ? (
+        <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
+            NEXT MATCH
+          </p>
+          <p className="mt-2 tabular-nums text-[15px] font-extrabold tracking-wide text-text-secondary lg:text-[17px]">
+            {nextFixture.dateLabel}
+          </p>
 
-        {isFinished && (
-          <div className="mt-2 flex justify-center">
-            <StatusBadge variant={resultLabel} label={resultLabel.toUpperCase()} />
+          <div className="mt-2">
+            <FixtureMetaLine meta={nextFixture.fixtureMeta} />
           </div>
-        )}
 
-        <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2 lg:mt-5 lg:gap-6">
-          <div className="min-w-0 text-right">
-            <p className="truncate text-[14px] font-extrabold leading-[1.15] text-text-primary lg:text-[24px]">
-              {u21Match.homeTeamName}
+          {/* 正式名称が長いため truncate せず縦積み。左右（HOME/AWAY）の関係を明示する。 */}
+          <div className="mt-4 flex flex-col items-center gap-1.5 text-center lg:mt-5">
+            <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">
+              {nextHomeName}
             </p>
-            <p className="mt-0.5 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
+            <p className="text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
               HOME
             </p>
-          </div>
-          {isFinished ? (
-            <p className="tabular-nums text-[26px] font-extrabold leading-none text-text-primary lg:text-[38px]">
-              {u21Match.homeScore} - {u21Match.awayScore}
+            <p className="py-1 text-[13px] font-extrabold text-fusion-black lg:text-[16px]">VS</p>
+            <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">
+              {nextAwayName}
             </p>
-          ) : (
-            <div className="px-1.5 text-[13px] font-extrabold text-fusion-black lg:px-4 lg:text-[18px]">
-              VS
-            </div>
-          )}
-          <div className="min-w-0 text-left">
-            <p className="truncate text-[14px] font-extrabold leading-[1.15] text-text-primary lg:text-[24px]">
-              {u21Match.awayTeamName}
-            </p>
-            <p className="mt-0.5 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
+            <p className="text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
               AWAY
             </p>
           </div>
-        </div>
 
-        {isFinished && u21Goals.length > 0 && (
-          <ul className="mt-3 flex flex-wrap justify-center gap-x-3 gap-y-1 border-t border-border pt-3 text-[12px] text-text-secondary">
-            {u21Goals.map((goal) => (
-              <li key={`${goal.minute}-${goal.scorer}`} className="tabular-nums">
-                {goal.minute} <span className="text-text-primary">{goal.scorer}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <div className="mt-4 flex flex-col items-center gap-1 border-t border-border pt-3 text-center lg:mt-6 lg:flex-row lg:items-baseline lg:justify-between lg:border-t-0 lg:pt-0 lg:text-left">
-          <p className="tabular-nums text-[15px] font-bold text-text-primary lg:text-[16px]">
-            {u21Match.kickoffLabel}{" "}
-            <span className="text-[11px] font-bold text-text-secondary lg:text-[12px]">
-              {isFinished ? "予定KICK OFF" : "KICK OFF"}
-            </span>
+          <div className="mt-4 flex flex-col items-center gap-1 border-t border-border pt-3 text-center lg:mt-6">
+            <p className="tabular-nums text-[15px] font-bold text-text-primary lg:text-[16px]">
+              {nextFixture.kickoffLabel === "TBD" ? "KICK OFF TBD" : nextFixture.kickoffLabel}{" "}
+              {nextFixture.kickoffLabel !== "TBD" && (
+                <span className="text-[11px] font-bold text-text-secondary lg:text-[12px]">
+                  KICK OFF
+                </span>
+              )}
+            </p>
+            {nextFixture.venue && (
+              <p className="text-[12px] text-text-secondary">{nextFixture.venue}</p>
+            )}
+          </div>
+        </section>
+      ) : (
+        <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
+          <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
+            NEXT MATCH
           </p>
-          <p className="text-[12px] text-text-secondary">{u21Match.venue}</p>
-        </div>
-        {u21Match.scheduleNote && (
-          <p className="mt-3 border-t border-border pt-3 text-[11px] leading-relaxed text-text-secondary">
-            {u21Match.scheduleNote}
+          <p className="mt-3 text-[15px] font-extrabold text-text-primary lg:text-[17px]">
+            次戦情報準備中
           </p>
-        )}
-      </section>
-
-      {displayStatus === "live" && (
-        <U21LiveSection
-          matchId={u21Match.id}
-          homeTeamName={u21Match.homeTeamName}
-          awayTeamName={u21Match.awayTeamName}
-        />
-      )}
-      {displayStatus === "scheduled" && (
-        <p className="text-[13px] text-text-secondary">
-          キックオフ後、この画面でLIVE Scoreとメモを記録できます。
-        </p>
-      )}
-
-      <U21OfficialLineups
-        homeTeamName={u21Match.homeTeamName}
-        awayTeamName={u21Match.awayTeamName}
-        homeLineup={u21HomeOfficialLineup}
-        awayLineup={u21AwayOfficialLineup}
-      />
-
-      {isFinished && (
-        <MatchRecord
-          homeTeamName={u21Match.homeTeamName}
-          awayTeamName={u21Match.awayTeamName}
-          goals={u21Goals}
-          cards={u21Cards}
-          substitutions={u21Substitutions}
-          officialRecord={u21OfficialRecord}
-        />
-      )}
-
-      {u21SeasonHistory.length > 0 && (
-        <section>
-          <SectionHeader title="2026/27シーズン試合履歴" eyebrow="SEASON HISTORY" />
-          <U21SeasonHistory entries={u21SeasonHistory} />
+          <p className="mt-2 text-[12px] leading-relaxed text-text-secondary">
+            次の試合日程が確定し次第、ここに表示します。
+          </p>
         </section>
       )}
 
@@ -166,6 +135,42 @@ export default function U21Page() {
           <UpcomingFixtureList fixtures={u21UpcomingMatches} />
         </section>
       )}
+
+      <div className="space-y-8 border-t border-border pt-8">
+        {lastFinished && (
+          <section>
+            <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
+              LAST MATCH
+            </p>
+            <Link
+              href={`/u21/matches/${u21Match.id}`}
+              className="mt-2 block border-t border-border py-2 text-[13px]"
+            >
+              <div className="flex items-center justify-between gap-2">
+                <span className="min-w-0 break-words text-text-primary">
+                  {formatMonthDay(u21Match.kickoffAt)}　{lastOpponentName}
+                </span>
+                <span className="ml-2 flex shrink-0 items-center gap-2">
+                  <span className="tabular-nums font-bold text-text-primary">
+                    {u21Match.homeScore}-{u21Match.awayScore}
+                  </span>
+                  <StatusBadge variant={lastResult} label={lastResult.toUpperCase()} />
+                </span>
+              </div>
+              <div className="mt-1">
+                <FixtureMetaLine meta={u21Match.fixtureMeta} compact />
+              </div>
+            </Link>
+          </section>
+        )}
+
+        {u21SeasonHistory.length > 0 && (
+          <section>
+            <SectionHeader title="2026/27シーズン試合履歴" eyebrow="SEASON HISTORY" />
+            <U21SeasonHistory entries={u21SeasonHistory} />
+          </section>
+        )}
+      </div>
     </div>
   );
 }
