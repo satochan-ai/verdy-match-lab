@@ -5,6 +5,7 @@ import { getUpcomingFixtures } from "@/lib/data/schedule";
 import { StrategyList } from "@/components/match/StrategyList";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
 import { getMatchDayLabel } from "@/lib/match/display";
 
@@ -156,12 +157,8 @@ export default async function TopTeamPage() {
 
           {topUpcoming.length > 0 && (
             <section>
-              <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
-                NEXT 5
-              </p>
-              <div className="mt-2">
-                <UpcomingFixtureList fixtures={topUpcoming} />
-              </div>
+              <SectionHeader title="NEXT 5" eyebrow="UPCOMING FIXTURES" />
+              <UpcomingFixtureList fixtures={topUpcoming} />
             </section>
           )}
         </div>
