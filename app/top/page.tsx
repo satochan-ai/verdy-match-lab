@@ -45,7 +45,13 @@ export default async function TopTeamPage() {
     getRecentFinishedMatchSummary(),
     getUpcomingFixtures(5),
   ]);
-  const opponent = nextMatch.isVerdyHome ? nextMatch.awayTeam : nextMatch.homeTeam;
+  // nextMatchがnull（scheduledな試合が未登録）の場合は、過去試合を出さずに
+  // 「次戦情報準備中」の空状態を表示する。LAST MATCH / NEXT 5は独立して表示する。
+  const opponent = nextMatch
+    ? nextMatch.isVerdyHome
+      ? nextMatch.awayTeam
+      : nextMatch.homeTeam
+    : null;
   const recentOpponent = recent.isVerdyHome ? recent.awayTeam : recent.homeTeam;
   const recentResult =
     recent.homeScore! === recent.awayScore!
@@ -56,8 +62,8 @@ export default async function TopTeamPage() {
       : "loss";
 
   const now = new Date();
-  const fixture = formatMatchday(nextMatch.kickoffAt);
-  const dayLabel = getMatchDayLabel(nextMatch, now);
+  const fixture = nextMatch ? formatMatchday(nextMatch.kickoffAt) : null;
+  const dayLabel = nextMatch ? getMatchDayLabel(nextMatch, now) : null;
 
   return (
     <div className="space-y-6">
@@ -67,6 +73,7 @@ export default async function TopTeamPage() {
 
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
         <div className="space-y-8 lg:space-y-10">
+          {nextMatch && fixture && opponent && dayLabel ? (
           <section className="section-reveal border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
             <div className="flex items-baseline justify-between gap-3">
               <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
@@ -131,8 +138,21 @@ export default async function TopTeamPage() {
               </Link>
             </div>
           </section>
+          ) : (
+          <section className="section-reveal border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
+            <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
+              NEXT MATCH
+            </p>
+            <p className="mt-3 text-[15px] font-extrabold text-text-primary lg:text-[17px]">
+              次戦情報準備中
+            </p>
+            <p className="mt-2 text-[12px] leading-relaxed text-text-secondary">
+              次の試合日程が確定し次第、ここに表示します。
+            </p>
+          </section>
+          )}
 
-          <StrategyList strategies={nextMatch.strategies} />
+          {nextMatch && <StrategyList strategies={nextMatch.strategies} />}
 
           {topUpcoming.length > 0 && (
             <section>

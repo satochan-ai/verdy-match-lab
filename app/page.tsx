@@ -37,9 +37,15 @@ export default async function Home() {
   const nextMatch = await getNextMatch();
   const now = new Date();
 
-  const topOpponent = nextMatch.isVerdyHome ? nextMatch.awayTeam : nextMatch.homeTeam;
-  const topFixture = formatMatchday(nextMatch.kickoffAt);
-  const isTopLive = resolveMatchStatus(nextMatch, now) === "live";
+  // nextMatchがnull（scheduledな試合が未登録）の場合は、過去試合を出さずに
+  // 「次戦情報準備中」の空状態を表示する。
+  const topOpponent = nextMatch
+    ? nextMatch.isVerdyHome
+      ? nextMatch.awayTeam
+      : nextMatch.homeTeam
+    : null;
+  const topFixture = nextMatch ? formatMatchday(nextMatch.kickoffAt) : null;
+  const isTopLive = nextMatch ? resolveMatchStatus(nextMatch, now) === "live" : false;
 
   const nextU21Fixture = u21UpcomingMatches[0];
   const isU21Live = resolveMatchStatus(u21Match, now) === "live";
@@ -55,7 +61,10 @@ export default async function Home() {
         「最も近いキックオフ」をデータから厳密に決定することはできない。fixtureデータを
         変更しない方針のため、ここではTOP TEAMの次戦を導線先として固定する。
       */}
-      <HomeHero ctaHref={`/matches/${nextMatch.id}`} ctaLabel="NEXT MATCHを見る" />
+      <HomeHero
+        ctaHref={nextMatch ? `/matches/${nextMatch.id}` : "/top"}
+        ctaLabel="NEXT MATCHを見る"
+      />
 
       <section>
         <div className="flex items-baseline gap-3">
@@ -80,11 +89,11 @@ export default async function Home() {
               layout: "contain-split",
               sizes: "(min-width: 1024px) 45vw, 100vw",
             }}
-            dateLabel={topFixture.dateLabel}
-            fixtureMeta={nextMatch.fixtureMeta}
-            homeAway={nextMatch.isVerdyHome ? "HOME" : "AWAY"}
-            opponentName={topOpponent.name}
-            kickoffLabel={topFixture.time}
+            dateLabel={topFixture?.dateLabel}
+            fixtureMeta={nextMatch?.fixtureMeta}
+            homeAway={nextMatch ? (nextMatch.isVerdyHome ? "HOME" : "AWAY") : undefined}
+            opponentName={topOpponent?.name ?? "次戦情報準備中"}
+            kickoffLabel={topFixture?.time}
             href="/top"
             linkLabel="TOP TEAMのページを見る"
           />
