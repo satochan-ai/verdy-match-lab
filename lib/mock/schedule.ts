@@ -77,7 +77,8 @@ export const scheduleMatches: ScheduleMatch[] = [
   {
     id: "sched-kobe",
     competition: "j1",
-    // 節数は公式ソースで未確認のため未設定のまま維持（推測で埋めない）。
+    // 節数は公式日程（Phase 6-C.6反映）で "第5節" を確認。
+    round: "第5節",
     kickoffAt: "2026-09-02T19:00:00+09:00",
     venue: "味の素スタジアム",
     isVerdyHome: true,
@@ -102,6 +103,26 @@ export const scheduleMatches: ScheduleMatch[] = [
     venue: "平和堂ＨＡＴＯスタジアム",
     isVerdyHome: false,
     opponentName: "レイラック滋賀",
+    status: "scheduled",
+  },
+  {
+    id: "sched-chiba",
+    competition: "j1",
+    round: "第7節",
+    kickoffAt: "2026-09-13T18:00:00+09:00",
+    venue: "味の素スタジアム",
+    isVerdyHome: true,
+    opponentName: "千葉",
+    status: "scheduled",
+  },
+  {
+    id: "sched-urawa",
+    competition: "j1",
+    round: "第8節",
+    kickoffAt: "2026-09-19T18:30:00+09:00",
+    venue: "埼玉スタジアム2002",
+    isVerdyHome: false,
+    opponentName: "浦和",
     status: "scheduled",
   },
 ];

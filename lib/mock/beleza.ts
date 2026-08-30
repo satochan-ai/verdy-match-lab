@@ -428,7 +428,8 @@ export const belezaSeasonHistory: BelezaSeasonHistoryEntry[] = [
 
 /**
  * 第2節終了後のNEXT 5（公式日程のみ）。AC長野戦はfinishedになったため一覧から外す。
- * 会場は公式サイトで確認できた場合のみ設定し、未確認の試合はvenueを省略する（推測で埋めない）。
+ * WEリーグとクラシエカップを大会横断で開催日時の早い順に並べる。
+ * 会場は公式日程で確認できた場合のみ設定する（推測で埋めない）。
  */
 export const belezaUpcomingMatches: UpcomingFixture[] = [
   {
@@ -438,6 +439,7 @@ export const belezaUpcomingMatches: UpcomingFixture[] = [
     fixtureMeta: { competition: "2026/27 WEリーグ", roundLabel: "第3節" },
     isHome: false,
     opponentName: "三菱重工浦和レッズレディース",
+    venue: "浦和駒場スタジアム",
   },
   {
     id: "beleza-next-3",
@@ -450,6 +452,7 @@ export const belezaUpcomingMatches: UpcomingFixture[] = [
     },
     isHome: true,
     opponentName: "INAC神戸レオネッサ",
+    venue: "味の素フィールド西が丘",
   },
   {
     id: "beleza-next-4",
@@ -462,6 +465,7 @@ export const belezaUpcomingMatches: UpcomingFixture[] = [
     },
     isHome: false,
     opponentName: "ちふれASエルフェン埼玉",
+    venue: "熊谷スポーツ文化公園陸上競技場",
   },
   {
     id: "beleza-next-5",
@@ -474,5 +478,19 @@ export const belezaUpcomingMatches: UpcomingFixture[] = [
     },
     isHome: true,
     opponentName: "アルビレックス新潟レディース",
+    venue: "多摩市立陸上競技場",
+  },
+  {
+    id: "beleza-next-6",
+    dateLabel: "09.27 SUN",
+    kickoffLabel: "18:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ クラシエカップ",
+      stage: "リーグステージ",
+      roundLabel: "第4節",
+    },
+    isHome: false,
+    opponentName: "セレッソ大阪ヤンマーレディース",
+    venue: "YANMAR HANASAKA STADIUM",
   },
 ];
