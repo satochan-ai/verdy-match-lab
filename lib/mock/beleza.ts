@@ -129,6 +129,34 @@ export const belezaActualLineup: ActualLineup = {
   },
 };
 
+/**
+ * BELEZA第2節の実際の並び（Phase 6-B.2）。ユーザー確認済みの配置に基づき 4-2-3-1 として
+ * フォーメーション図表示に用いる。belezaActualLineup（GK/DF/MF/FWの区分のみ・公式画像確認）
+ * とは別に、画面上の5ライン（GK / DF4 / ボランチ2 / 2列目3 / FW1）で見せるための順序付き配列。
+ *
+ * startersはFormationPitchが要求する順序（GK → DF → ボランチ → 2列目 → FW）で、
+ * 各行内の配列順＝画面左→右。DFは左から 22 井手→4 土光→3 村松→32 松岡、
+ * 2列目は左から 13 氏原→19 塩越→7 北村。左右を反転しない。
+ * position名はGK/DF/MF/FWのまま（ボランチ/2列目の区別は行分割で表現する）。
+ * 選手11名・背番号・氏名はbelezaActualLineupと一致させ、ここで新しい選手を増やさない。
+ */
+export const belezaActualFormation: PredictedLineup = {
+  formation: "4-2-3-1",
+  starters: [
+    { number: 1, name: "野田 にな", position: "GK" },
+    { number: 22, name: "井手 ひなた", position: "DF" },
+    { number: 4, name: "土光 真代", position: "DF" },
+    { number: 3, name: "村松 智子", position: "DF" },
+    { number: 32, name: "松岡 瑛美", position: "DF" },
+    { number: 6, name: "隅田 凜", position: "MF" },
+    { number: 35, name: "須長 穂乃果", position: "MF" },
+    { number: 13, name: "氏原 里穂菜", position: "MF" },
+    { number: 19, name: "塩越 柚歩", position: "MF" },
+    { number: 7, name: "北村 菜々美", position: "MF" },
+    { number: 20, name: "小林 里歌子", position: "FW" },
+  ],
+};
+
 /** AC長野パルセイロ・レディース 公式スタメン・ベンチ（Phase 6-N.1c確認）。formationは未確認のため設定しない。 */
 export const acNaganoActualLineup: ActualLineup = {
   starters: {
