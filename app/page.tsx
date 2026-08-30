@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
 import { resolveCategoryCardState } from "@/lib/match/category-card-state";
 import { belezaMatch, belezaSeasonHistory, belezaUpcomingMatches } from "@/lib/mock/beleza";
-import { u21Match, u21SeasonHistory, u21UpcomingMatches } from "@/lib/mock/u21";
+import { u21Fixtures, toU21UpcomingMatch } from "@/lib/data/u21-fixtures";
+import { getLatestFinishedFixture, getNextFixture } from "@/lib/data/fixture-selectors";
 import { HomeHero } from "@/components/home/HomeHero";
 import { CategoryHomeCard } from "@/components/match/CategoryHomeCard";
 import topTeamCardPhoto from "@/public/images/home/top-team-card.jpg";
@@ -69,26 +70,26 @@ export default async function Home() {
         : undefined,
   });
 
-  const nextU21Fixture = u21UpcomingMatches[0];
-  const u21LastResult = u21SeasonHistory.at(-1);
+  const nextU21Fixture = getNextFixture(u21Fixtures, now);
+  const u21LastFixture = getLatestFinishedFixture(u21Fixtures);
   const u21CardState = resolveCategoryCardState({
     now,
-    focus: { status: u21Match.status, kickoffAt: u21Match.kickoffAt },
+    focus: nextU21Fixture?.kickoffAt ? { status: "scheduled", kickoffAt: nextU21Fixture.kickoffAt } : undefined,
     nextFixture: nextU21Fixture
       ? {
           opponentName: nextU21Fixture.opponentName,
-          dateLabel: nextU21Fixture.dateLabel,
-          kickoffLabel: nextU21Fixture.kickoffLabel,
+          dateLabel: toU21UpcomingMatch(nextU21Fixture).dateLabel,
+          kickoffLabel: toU21UpcomingMatch(nextU21Fixture).kickoffLabel,
           homeAway: nextU21Fixture.isHome ? "HOME" : "AWAY",
-          fixtureMeta: nextU21Fixture.fixtureMeta,
+          fixtureMeta: toU21UpcomingMatch(nextU21Fixture).fixtureMeta,
         }
       : undefined,
-    lastResult: u21LastResult
+    lastResult: u21LastFixture?.score
       ? {
-          homeTeamName: u21LastResult.homeTeamName,
-          awayTeamName: u21LastResult.awayTeamName,
-          homeScore: u21LastResult.homeScore,
-          awayScore: u21LastResult.awayScore,
+          homeTeamName: u21LastFixture.isHome ? u21LastFixture.teamName : u21LastFixture.opponentName,
+          awayTeamName: u21LastFixture.isHome ? u21LastFixture.opponentName : u21LastFixture.teamName,
+          homeScore: u21LastFixture.score.home,
+          awayScore: u21LastFixture.score.away,
         }
       : undefined,
   });

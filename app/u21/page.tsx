@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { u21Match, u21SeasonHistory, u21UpcomingMatches } from "@/lib/mock/u21";
-import { resolveMatchStatus } from "@/lib/match/status";
+import { u21Match } from "@/lib/mock/u21";
+import { u21Fixtures, toU21SeasonHistoryEntry, toU21UpcomingMatch } from "@/lib/data/u21-fixtures";
+import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "@/lib/data/fixture-selectors";
 import { U21SeasonHistory } from "@/components/match/U21SeasonHistory";
 import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -40,24 +41,28 @@ function formatMonthDay(iso: string) {
 }
 
 export default function U21Page() {
-  const nextFixture = u21UpcomingMatches[0];
+  const now = new Date();
+  const nextFixture = getNextFixture(u21Fixtures, now);
+  const upcomingFixtures = getUpcomingFixtures(u21Fixtures, now, 5).map(toU21UpcomingMatch);
+  const lastFixture = getLatestFinishedFixture(u21Fixtures);
+  const history = getSeasonHistory(u21Fixtures).map(toU21SeasonHistoryEntry);
   // U-21が home の節は HOME=ヴェルディ / AWAY=相手、away の節はその逆。
-  const nextHomeName = nextFixture
-    ? nextFixture.isHome
+  const nextDisplayFixture = nextFixture ? toU21UpcomingMatch(nextFixture) : undefined;
+  const nextHomeName = nextDisplayFixture
+    ? nextDisplayFixture.isHome
       ? U21_TEAM_NAME
       : nextFixture.opponentName
     : null;
-  const nextAwayName = nextFixture
-    ? nextFixture.isHome
+  const nextAwayName = nextDisplayFixture
+    ? nextDisplayFixture.isHome
       ? nextFixture.opponentName
       : U21_TEAM_NAME
     : null;
 
-  const lastFinished = resolveMatchStatus(u21Match, new Date()) === "finished";
-  const u21IsHome = u21Match.homeTeamName === U21_TEAM_NAME;
-  const lastOpponentName = u21IsHome ? u21Match.awayTeamName : u21Match.homeTeamName;
-  const u21Score = u21IsHome ? u21Match.homeScore : u21Match.awayScore;
-  const opponentScore = u21IsHome ? u21Match.awayScore : u21Match.homeScore;
+  const lastFinished = lastFixture !== undefined;
+  const lastOpponentName = lastFixture?.opponentName ?? "";
+  const u21Score = lastFixture?.score?.home ?? 0;
+  const opponentScore = lastFixture?.score?.away ?? 0;
   const lastResult =
     u21Score === opponentScore ? "draw" : u21Score > opponentScore ? "win" : "loss";
 
@@ -78,17 +83,17 @@ export default function U21Page() {
         </Link>
       </div>
 
-      {nextFixture && nextHomeName && nextAwayName ? (
+      {nextDisplayFixture && nextHomeName && nextAwayName ? (
         <section className="border-y-2 border-l-4 border-fusion-black border-l-primary-green bg-primary-green/[0.04] px-4 py-5 lg:px-8 lg:py-7">
           <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
             NEXT MATCH
           </p>
           <p className="mt-2 tabular-nums text-[15px] font-extrabold tracking-wide text-text-secondary lg:text-[17px]">
-            {nextFixture.dateLabel}
+            {nextDisplayFixture.dateLabel}
           </p>
 
           <div className="mt-2">
-            <FixtureMetaLine meta={nextFixture.fixtureMeta} />
+            <FixtureMetaLine meta={nextDisplayFixture.fixtureMeta} />
           </div>
 
           {/* 正式名称が長いため truncate せず縦積み。左右（HOME/AWAY）の関係を明示する。 */}
@@ -110,15 +115,15 @@ export default function U21Page() {
 
           <div className="mt-4 flex flex-col items-center gap-1 border-t border-border pt-3 text-center lg:mt-6">
             <p className="tabular-nums text-[15px] font-bold text-text-primary lg:text-[16px]">
-              {nextFixture.kickoffLabel === "TBD" ? "KICK OFF TBD" : nextFixture.kickoffLabel}{" "}
-              {nextFixture.kickoffLabel !== "TBD" && (
+              {nextDisplayFixture.kickoffLabel === "TBD" ? "KICK OFF TBD" : nextDisplayFixture.kickoffLabel}{" "}
+              {nextDisplayFixture.kickoffLabel !== "TBD" && (
                 <span className="text-[11px] font-bold text-text-secondary lg:text-[12px]">
                   KICK OFF
                 </span>
               )}
             </p>
-            {nextFixture.venue && (
-              <p className="text-[12px] text-text-secondary">{nextFixture.venue}</p>
+            {nextDisplayFixture.venue && (
+              <p className="text-[12px] text-text-secondary">{nextDisplayFixture.venue}</p>
             )}
           </div>
         </section>
@@ -136,10 +141,10 @@ export default function U21Page() {
         </section>
       )}
 
-      {u21UpcomingMatches.length > 0 && (
+      {upcomingFixtures.length > 0 && (
         <section>
           <SectionHeader title="NEXT 5" eyebrow="UPCOMING FIXTURES" />
-          <UpcomingFixtureList fixtures={u21UpcomingMatches} />
+          <UpcomingFixtureList fixtures={upcomingFixtures} />
         </section>
       )}
 
@@ -150,31 +155,31 @@ export default function U21Page() {
               LAST MATCH
             </p>
             <Link
-              href={`/u21/matches/${u21Match.id}`}
+              href={`/u21/matches/${lastFixture?.detailMatchId ?? u21Match.id}`}
               className="mt-2 block border-t border-border py-2 text-[13px]"
             >
               <div className="flex items-center justify-between gap-2">
                 <span className="min-w-0 break-words text-text-primary">
-                  {formatMonthDay(u21Match.kickoffAt)}　{lastOpponentName}
+                  {lastFixture && formatMonthDay(lastFixture.kickoffAt!)}　{lastOpponentName}
                 </span>
                 <span className="ml-2 flex shrink-0 items-center gap-2">
                   <span className="tabular-nums font-bold text-text-primary">
-                    {u21Match.homeScore}-{u21Match.awayScore}
+                    {lastFixture?.score?.home}-{lastFixture?.score?.away}
                   </span>
                   <StatusBadge variant={lastResult} label={lastResult.toUpperCase()} />
                 </span>
               </div>
               <div className="mt-1">
-                <FixtureMetaLine meta={u21Match.fixtureMeta} compact />
+                <FixtureMetaLine meta={{ competition: lastFixture?.competition.name ?? "", roundLabel: lastFixture?.competition.round }} compact />
               </div>
             </Link>
           </section>
         )}
 
-        {u21SeasonHistory.length > 0 && (
+        {history.length > 0 && (
           <section>
             <SectionHeader title="2026/27シーズン試合履歴" eyebrow="SEASON HISTORY" />
-            <U21SeasonHistory entries={u21SeasonHistory} />
+            <U21SeasonHistory entries={history} />
           </section>
         )}
       </div>
