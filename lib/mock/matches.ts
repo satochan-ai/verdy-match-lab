@@ -1381,11 +1381,13 @@ export function getMatchById(id: string): Match | undefined {
   return matches.find((m) => m.id === id);
 }
 
-export function getNextMatch(): Match {
+export function getNextMatch(): Match | null {
   const upcoming = publicMatches
     .filter((m) => m.status === "scheduled")
     .sort((a, b) => new Date(a.kickoffAt).getTime() - new Date(b.kickoffAt).getTime());
-  return upcoming[0] ?? matches[0];
+  // scheduledな試合が無い場合は過去試合へフォールバックしない（過去試合を
+  // NEXT MATCHとして誤表示しないため）。呼び出し側でnullを空状態として扱う。
+  return upcoming[0] ?? null;
 }
 
 export function getRecentFinishedMatch(): Match {

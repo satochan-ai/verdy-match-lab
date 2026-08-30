@@ -91,7 +91,7 @@ export async function getMatchDetail(id: string): Promise<Match | undefined> {
   return assembleMatch(toMatchRow(rows[0]));
 }
 
-export async function getNextMatch(): Promise<Match> {
+export async function getNextMatch(): Promise<Match | null> {
   if (!isDbConfigured()) {
     return mock.getNextMatch();
   }
@@ -104,7 +104,8 @@ export async function getNextMatch(): Promise<Match> {
     limit 1
   `) as FlatMatchRow[];
 
-  if (rows.length === 0) return mock.getNextMatch();
+  // scheduledな試合が無い場合はnullを返す（過去試合をNEXT MATCHとして返さない）。
+  if (rows.length === 0) return null;
   return assembleMatch(toMatchRow(rows[0]));
 }
 
