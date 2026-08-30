@@ -36,6 +36,11 @@ export default async function ArchivePage() {
                 <span className="flex-1 px-3 text-text-primary">
                   vs {opponent.name}
                 </span>
+                {m.fixtureMeta && (
+                  <span className="hidden max-w-[220px] truncate text-[10px] text-text-secondary lg:inline">
+                    {[m.fixtureMeta.competition, m.fixtureMeta.stage, m.fixtureMeta.roundLabel].filter(Boolean).join(" ／ ")}
+                  </span>
+                )}
                 <span className="tabular-nums mr-2 font-bold text-text-primary">
                   {m.homeScore}-{m.awayScore}
                 </span>
