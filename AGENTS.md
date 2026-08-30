@@ -1,97 +1,97 @@
 <!-- BEGIN:nextjs-agent-rules -->
 
-# This is NOT the Next.js you know
+# これは、あなたが知っているNext.jsとは異なる
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+このversionにはbreaking changeがあり、API、規約、ファイル構成が学習データと異なる場合がある。コードを書く前に、`node_modules/next/dist/docs/`の関連guideを読むこと（このファイルのdirectoryから解決する。monorepoでは`next` packageがrepository rootから見えない場合がある）。deprecation noticeに従うこと。
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+このblockは`next dev`が書き込み、再追加する。`node_modules/next/dist/server/lib/generate-agent-files.js`で確認すること。diffから削除しても未commit変更が再作成されるだけなので、作業とともにcommitするとtreeをcleanに保てる。
 
 <!-- END:nextjs-agent-rules -->
 
-## Project Purpose and Unofficial Positioning
+## Projectの目的と非公式positioning
 
-This repository is an unofficial fan project for enjoying Tokyo Verdy matches through tactical and viewing perspectives. It covers TOP TEAM, U-21, and BELEZA match information, predictions, live context, and analysis. Keep the distinction between official facts and independent editorial views explicit.
+このrepositoryは、戦術・観戦の視点で東京ヴェルディの試合を楽しむための非公式fan projectである。TOP TEAM、U-21、BELEZAの試合情報、予想、live context、analysisを扱う。official factと独自のeditorial viewを明確に区別すること。
 
-Do not imply affiliation with Tokyo Verdy Co., Ltd., J.League, WE League, or competition organizers. Do not generate fictional official comments, manager statements, player statements, or club announcements. Preserve the “unofficial fan site” wording in `components/ui/Footer.tsx` and `app/layout.tsx`.
+東京ヴェルディ株式会社、J.League、WE League、競技会主催者との関係を示唆しないこと。架空のofficial comment、manager statement、player statement、club announcementを生成しないこと。`components/ui/Footer.tsx`と`app/layout.tsx`の「unofficial fan site」という表現を維持すること。
 
-## Source of Truth and Data Architecture
+## Source of truthとdata architecture
 
-Data ownership differs by category:
+dataの管理元はcategoryごとに異なる。
 
 - TOP TEAM details use `lib/data/matches.ts` and Neon PostgreSQL when `DATABASE_URL` is configured, with the existing `lib/mock/matches.ts` fallback when it is not configured or returns no rows.
 - TOP TEAM schedule currently uses `lib/mock/schedule.ts`; do not assume it is database-backed.
 - U-21 uses `lib/mock/u21.ts` and BELEZA uses `lib/mock/beleza.ts`; neither should be treated as having the TOP TEAM database structure.
 - Shared domain types are in `types/domain.ts`; database mapping is in `lib/data/mappers.ts`.
 
-“mock” filenames do not prove that every value is fictional. Check code comments, sources, and context before publishing or changing match data. Do not treat seed data or placeholders as verified facts.
+"mock"というfilenameだけで、すべての値が架空だとは判断しないこと。match dataを公開・変更する前に、code comment、source、contextを確認すること。seed dataやplaceholderを検証済みの事実として扱わないこと。
 
-## TOP TEAM / U-21 / BELEZA Boundaries
+## TOP TEAM / U-21 / BELEZAの境界
 
-Do not apply one category’s data model, schedule, analysis depth, lineup representation, or match history to another category merely because the UI looks similar. Shared component changes require checking all three categories. Category-specific components and data should remain separate unless a genuine shared requirement is established.
+UIが似ているというだけで、あるcategoryのdata model、schedule、analysis depth、lineup representation、match historyを別categoryへ適用しないこと。shared componentを変更する場合は3 categoryすべてを確認すること。真にsharedな要件が確立されない限り、category-specific componentとdataは分離しておくこと。
 
-## Match Data and Official Sources
+## Match dataとofficial source
 
-When changing a match, check the relevant match ID, teams, opponent, date, kickoff, venue, competition, fixture metadata, status, score, route, schedule visibility, archive visibility, and rendered PRE/LIVE/HALF_TIME/POST state.
+matchを変更する場合は、該当するmatch ID、team、opponent、date、kickoff、venue、competition、fixture metadata、status、score、route、schedule visibility、archive visibility、表示されるPRE/LIVE/HALF_TIME/POST stateを確認すること。
 
-Use club, league, or competition official sources for factual records where available. Do not guess unconfirmed dates, opponents, venues, scores, player information, statistics, or source links. Do not hard-code current match results or temporary match IDs in this file.
+利用可能な場合は、事実記録にclub、league、competitionのofficial sourceを使うこと。未確認のdate、opponent、venue、score、player information、statistic、source linkを推測しないこと。このファイルにcurrent match resultやtemporary match IDをhard-codeしないこと。
 
-## PRE / LIVE / HALF_TIME / POST Semantics
+## PRE / LIVE / HALF_TIME / POSTの意味
 
-Preserve the existing `scheduled`, `live`, `half_time`, and `finished` status model and the logic in `lib/match/status.ts` and `lib/match/display.ts`.
+既存の`scheduled`、`live`、`half_time`、`finished` status modelと、`lib/match/status.ts`および`lib/match/display.ts`のlogicを維持すること。
 
-Keep PRE_MATCH predictions, LIVE context, HALF_TIME analysis, and POST_MATCH results semantically separate. Do not show a final result, official statistics, or confirmed post-match conclusion before the match is finished.
+PRE_MATCH prediction、LIVE context、HALF_TIME analysis、POST_MATCH resultを意味上分離すること。matchがfinishedになる前にfinal result、official statistic、confirmed post-match conclusionを表示しないこと。
 
-## Predicted vs Official Lineups
+## Predictedとofficial lineupの区別
 
-`predictedLineups` and `actualLineups` are separate concepts. Never present predicted starters, formations, shirt numbers, positions, or availability as official information. Update official lineups only from confirmed sources, and do not overwrite or delete predictions when adding actual lineups.
+`predictedLineups`と`actualLineups`は別の概念である。predicted starter、formation、shirt number、position、availabilityをofficial informationとして表示しないこと。official lineupはconfirmed sourceからのみ更新し、actual lineupを追加する際にpredictionを上書き・削除しないこと。
 
-## Official Records and Editorial Analysis
+## Official recordとeditorial analysis
 
-Treat `officialRecord`, `goals`, `cards`, `substitutions`, `matchStats`, `actualLineups`, and confirmed results as factual records. Treat predictions, tactical analysis, the three plans, and post-match interpretation as editorial content. Do not mix AI-generated or independent analysis into official-record fields.
+`officialRecord`、`goals`、`cards`、`substitutions`、`matchStats`、`actualLineups`、confirmed resultを事実記録として扱うこと。prediction、tactical analysis、three plans、post-match interpretationをeditorial contentとして扱うこと。AI生成または独自analysisをofficial-record fieldに混在させないこと。
 
-## Database and Environment Safety
+## Databaseとenvironmentの安全
 
-`DATABASE_URL` is server-only. Never expose it through a `NEXT_PUBLIC_` variable, browser code, client bundles, logs, or this file. Preserve the `isDbConfigured()` guard and the existing DB/mock fallback unless an explicit architecture change is requested.
+`DATABASE_URL`はserver-onlyである。`NEXT_PUBLIC_` variable、browser code、client bundle、log、このファイルを通じて公開しないこと。明示的なarchitecture変更の依頼がない限り、`isDbConfigured()` guardと既存のDB/mock fallbackを維持すること。
 
-External AI APIs are not part of the current required architecture. Do not add them or new dependencies merely to make the analysis appear more authoritative.
+External AI APIは現行の必須architectureに含まれない。analysisをより権威あるものに見せるだけの理由で、これらやnew dependencyを追加しないこと。
 
-## Photo, Logo, and Copyright Safety
+## Photo、logo、copyrightの安全
 
-Do not add web-sourced player photos, official logos, club crests, press images, or third-party match photos without explicit confirmation of source, rights, and publication permission. Do not modify, replace, or delete existing `public/images/` assets without instruction. Treat `Pictures/` as user-owned untracked local material and do not delete, move, clean, or stage it without explicit instruction.
+source、rights、publication permissionの明示的な確認なしに、web由来のplayer photo、official logo、club crest、press image、third-party match photoを追加しないこと。指示なしに既存の`public/images/` assetを変更、置換、削除しないこと。`Pictures/`はユーザー所有のuntracked local materialとして扱い、明示的な指示なしに削除、移動、clean、stageしないこと。
 
-Do not independently infer ownership of user-provided or user-shot images. Preserve approved masking and do not restore hidden names, faces, or confidential information.
+ユーザー提供またはユーザー撮影の画像について、所有権を独自に推測しないこと。承認済みのmaskingを維持し、隠された名前、顔、confidential informationを復元しないこと。
 
-## Visual Identity and Responsive UX
+## Visual identityとresponsive UX
 
-The design should use Verdy-associated green as an identity anchor while keeping match information, tactical content, readability, and hierarchy primary. Do not turn the site into a decorative color exercise.
+designではVerdyに結びつくgreenをidentity anchorとして使いつつ、match information、tactical content、readability、hierarchyを優先すること。siteを装飾的なcolor exerciseにしないこと。
 
-UI changes require considering desktop and mobile navigation, match cards, lineups, formations, schedules, tables, images, Hero content, and sidebars. Do not declare a visual change complete from desktop review alone.
+UI変更ではdesktopとmobileのnavigation、match card、lineup、formation、schedule、table、image、Hero content、sidebarを考慮すること。desktop reviewだけでvisual changeを完了と判断しないこと。
 
-## SEO and Metadata
+## SEOとmetadata
 
-When changing routes or metadata, check title, description, team and match metadata, canonical, sitemap, robots, and OGP together. Do not use SEO as a reason to imply official affiliation or promote an unconfirmed prediction as fact. Do not hard-code temporary match data, production URLs, or project identifiers here.
+routeやmetadataを変更する場合は、title、description、teamとmatchのmetadata、canonical、sitemap、robots、OGPをまとめて確認すること。SEOを理由にofficial affiliationを示唆したり、未確認のpredictionを事実として広めたりしないこと。temporary match data、production URL、project identifierをここにhard-codeしないこと。
 
-## `.claude/launch.json` and Local Assets
+## `.claude/launch.json`とlocal asset
 
-`.claude/launch.json` is a tracked local launch configuration and currently has a pre-existing uncommitted change. Do not edit, restore, reset, stash, clean, stage, or commit it unless explicitly requested.
+`.claude/launch.json`はtracked local launch configurationで、現在は既存の未commit変更がある。明示的に依頼されない限り、edit、restore、reset、stash、clean、stage、commitしないこと。
 
-`Pictures/` is currently untracked local material. Do not edit, delete, move, rename, clean, stage, or commit it unless explicitly requested. These protections apply even when the goal is to make the working tree clean.
+`Pictures/`は現在untrackedのlocal materialである。明示的に依頼されない限り、edit、削除、移動、rename、clean、stage、commitしないこと。working treeをcleanにすることが目的でも、この保護を適用すること。
 
-## Validation and Verification
+## validationと検証
 
-Choose checks according to the change:
+変更内容に応じて確認を選ぶこと。
 
-- match data: verify source, opponent, date, venue, competition, status, result, route, schedule, and archive visibility
-- lineup: verify predicted versus actual status and confirmed player, number, position, and formation data
-- shared components: inspect TOP TEAM, U-21, and BELEZA
-- UI: review desktop and mobile layouts
-- image: verify source, copyright, permission, and preservation of masking
-- metadata: verify unofficial positioning and SEO semantics
-- code changes: run `npm run lint` and `npm run build` as appropriate
-- any diff: run `git diff --check`
+- match data: source、opponent、date、venue、competition、status、result、route、schedule、archive visibilityを確認
+- lineup: predictedとactualのstatus、confirmed player、number、position、formation dataを確認
+- shared component: TOP TEAM、U-21、BELEZAを確認
+- UI: desktopとmobileのlayoutを確認
+- image: source、copyright、permission、maskingの保持を確認
+- metadata: unofficial positioningとSEO semanticsを確認
+- code変更: 必要に応じて`npm run lint`と`npm run build`を実行
+- すべてのdiff: `git diff --check`を実行
 
-Do not report tests, responsive review, source checks, or link checks that were not actually performed.
+実際に実施していないtest、responsive review、source check、link checkを報告しないこと。
 
-## Completion Checks
+## 完了時の確認
 
-For work in this repository, report the relevant impact on unofficial positioning, official-fact versus prediction/analysis separation, category boundaries, DB/mock sources, lineup semantics, match status, image rights, `.claude/launch.json`, `Pictures/`, mobile behavior, and deployment. Do not deploy or change external settings unless explicitly requested.
+このrepositoryで作業した場合は、unofficial positioning、official factとprediction/analysisの分離、category境界、DB/mock source、lineupの意味、match status、image rights、`.claude/launch.json`、`Pictures/`、mobile behavior、deploymentへの関連する影響を報告すること。明示的に依頼されない限り、deployやexternal setting変更を行わないこと。
