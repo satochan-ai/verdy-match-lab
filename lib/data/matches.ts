@@ -2,6 +2,8 @@ import type { Match } from "@/types/domain";
 import { isDbConfigured, sql } from "@/lib/db/server";
 import * as mock from "@/lib/mock/matches";
 import { mapMatch } from "./mappers";
+import { topFixtures } from "./top-fixtures";
+import { enrichMatchFixtureMeta, enrichMatchesFixtureMeta } from "./top-match-fixture-meta";
 import type { MatchNoteRow, MatchRow, PredictionRow, TeamProfileRow } from "./dbTypes";
 
 /**
@@ -81,19 +83,21 @@ async function assembleMatch(matchRow: MatchRow): Promise<Match> {
 
 export async function getMatchDetail(id: string): Promise<Match | undefined> {
   if (!isDbConfigured()) {
-    return mock.getMatchById(id);
+    const match = mock.getMatchById(id);
+    return match ? enrichMatchFixtureMeta(match, topFixtures) : undefined;
   }
 
   const db = sql();
   const rows = (await db`${db.unsafe(MATCH_WITH_TEAMS_SQL)} where m.id = ${id}`) as FlatMatchRow[];
 
   if (rows.length === 0) return undefined;
-  return assembleMatch(toMatchRow(rows[0]));
+  return enrichMatchFixtureMeta(await assembleMatch(toMatchRow(rows[0])), topFixtures);
 }
 
 export async function getNextMatch(): Promise<Match | null> {
   if (!isDbConfigured()) {
-    return mock.getNextMatch();
+    const match = mock.getNextMatch();
+    return match ? enrichMatchFixtureMeta(match, topFixtures) : null;
   }
 
   const db = sql();
@@ -106,13 +110,13 @@ export async function getNextMatch(): Promise<Match | null> {
 
   // scheduledな試合が無い場合はnullを返す（過去試合をNEXT MATCHとして返さない）。
   if (rows.length === 0) return null;
-  return assembleMatch(toMatchRow(rows[0]));
+  return enrichMatchFixtureMeta(await assembleMatch(toMatchRow(rows[0])), topFixtures);
 }
 
 /** トップ画面の「直近の試合」表示用。三策・分析は不要なので軽量クエリのみ。 */
 export async function getRecentFinishedMatchSummary(): Promise<Match> {
   if (!isDbConfigured()) {
-    return mock.getRecentFinishedMatch();
+    return enrichMatchFixtureMeta(mock.getRecentFinishedMatch(), topFixtures);
   }
 
   const db = sql();
@@ -124,13 +128,13 @@ export async function getRecentFinishedMatchSummary(): Promise<Match> {
   `) as FlatMatchRow[];
 
   if (rows.length === 0) return mock.getRecentFinishedMatch();
-  return mapMatch(toMatchRow(rows[0]), [], [], []);
+  return enrichMatchFixtureMeta(mapMatch(toMatchRow(rows[0]), [], [], []), topFixtures);
 }
 
 /** アーカイブ一覧用。三策・分析は不要なので軽量クエリのみ（件数に関わらず1クエリ）。 */
 export async function getArchiveMatches(): Promise<Match[]> {
   if (!isDbConfigured()) {
-    return mock.getArchiveMatches();
+    return enrichMatchesFixtureMeta(mock.getArchiveMatches(), topFixtures);
   }
 
   const db = sql();
@@ -140,5 +144,5 @@ export async function getArchiveMatches(): Promise<Match[]> {
     order by m.kickoff_at desc
   `) as FlatMatchRow[];
 
-  return rows.map((row) => mapMatch(toMatchRow(row), [], [], []));
+  return enrichMatchesFixtureMeta(rows.map((row) => mapMatch(toMatchRow(row), [], [], [])), topFixtures);
 }
