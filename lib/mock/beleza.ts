@@ -35,9 +35,9 @@ export const acNaganoTeam: Team = {
 };
 
 /**
- * 第2節 AC長野パルセイロ・レディース戦（Phase 6-N.1／6-N.1c確認）。
+ * 第2節 AC長野パルセイロ・レディース戦（Phase 6-N.1／6-N.1c確認、交代はPhase 6-B.3で確定）。
  * 出典：WEリーグ公式 https://weleague.jp/matches/2026082925/ （ユーザー確認・公式試合記録画像）。
- * 未確認のまま残っている項目（交代ペア・カード等）は各定数のコメント参照。推測で埋めていない。
+ * 交代はユーザー提供の試合経過でOUT→INペアが確定済み。カードは未提供のため各定数のコメント参照。
  */
 export const belezaMatch = {
   id: "beleza-match-2",
@@ -95,11 +95,23 @@ export const belezaOfficialSourceLabel = "WE LEAGUE Official Match Record";
 export const belezaCards: MatchCard[] = [];
 
 /**
- * 交代記録。公式試合記録画像でOUT/IN・時間はそれぞれ確認できたが、同時刻に複数交代した際の
- * 「誰OUT→誰IN」のペアが画像内で明示されていない（行位置だけでは断定できない）ため、
- * 今節はペア未登録のまま（推測でペアを作らない）。
+ * 交代記録。ユーザー提供の試合経過でOUT→INのペアが確定したため正式登録（Phase 6-B.3）。
+ * 時系列順（同分は提供順を維持）。AC長野→BELEZAの順に並べる。
+ * 選手名は starting XI / bench の登録氏名と一致。ユーザー資料に「松岡 瑛茉(out)」表記が
+ * あったが、先発登録 32 松岡 瑛美 と同一人物とみなし既存氏名を使用する（新規選手は作らない）。
  */
-export const belezaSubstitutions: MatchSubstitution[] = [];
+export const belezaSubstitutions: MatchSubstitution[] = [
+  { minute: "65'", team: acNaganoTeam.name, playerOut: "久保田 明未", playerIn: "濱田 優音" },
+  { minute: "65'", team: acNaganoTeam.name, playerOut: "三谷 沙也加", playerIn: "松浦 芽育子" },
+  { minute: "76'", team: acNaganoTeam.name, playerOut: "塩谷 瑠南", playerIn: "北川 愛莉" },
+  { minute: "83'", team: acNaganoTeam.name, playerOut: "知久 奈菜穂", playerIn: "松岡 優空" },
+  { minute: "83'", team: acNaganoTeam.name, playerOut: "常田 麻友", playerIn: "町田 実香" },
+  { minute: "66'", team: belezaTeam.name, playerOut: "松岡 瑛美", playerIn: "松田 紫野" },
+  { minute: "66'", team: belezaTeam.name, playerOut: "氏原 里穂菜", playerIn: "式田 和" },
+  { minute: "66'", team: belezaTeam.name, playerOut: "小林 里歌子", playerIn: "猶本 光" },
+  { minute: "75'", team: belezaTeam.name, playerOut: "須長 穂乃果", playerIn: "諸田 彩渚" },
+  { minute: "81'", team: belezaTeam.name, playerOut: "井手 ひなた", playerIn: "安藤 梢" },
+];
 
 /**
  * 公式記録スタッツ（シュート・FK・CK）。Phase 6-N.1c、公式試合記録画像で確認済み。
