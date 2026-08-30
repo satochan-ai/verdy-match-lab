@@ -5,8 +5,9 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { BelezaSeasonHistory } from "@/components/match/BelezaSeasonHistory";
 import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
-import { resolveMatchStatus } from "@/lib/match/status";
-import { belezaTeam, belezaMatch, belezaSeasonHistory, belezaUpcomingMatches } from "@/lib/mock/beleza";
+import { belezaTeam, belezaMatch } from "@/lib/mock/beleza";
+import { belezaFixtures, toBelezaSeasonHistoryEntry, toBelezaUpcomingMatch } from "@/lib/data/beleza-fixtures";
+import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "@/lib/data/fixture-selectors";
 
 /**
  * /beleza は BELEZA カテゴリーのトップページ。TOP TEAM（/top）と同じ情報設計で、
@@ -26,25 +27,28 @@ export const metadata: Metadata = {
 };
 
 export default function BelezaPage() {
-  const nextFixture = belezaUpcomingMatches[0];
+  const now = new Date();
+  const nextFixture = getNextFixture(belezaFixtures, now);
+  const nextDisplayFixture = nextFixture ? toBelezaUpcomingMatch(nextFixture) : undefined;
+  const upcomingFixtures = getUpcomingFixtures(belezaFixtures, now, 5).map(toBelezaUpcomingMatch);
+  const lastFixture = getLatestFinishedFixture(belezaFixtures);
+  const history = getSeasonHistory(belezaFixtures).map(toBelezaSeasonHistoryEntry);
   // BELEZAが home の節は HOME=ベレーザ / AWAY=相手、away の節はその逆。
-  const nextHomeName = nextFixture
-    ? nextFixture.isHome
+  const nextHomeName = nextDisplayFixture
+    ? nextDisplayFixture.isHome
       ? belezaTeam.name
       : nextFixture.opponentName
     : null;
-  const nextAwayName = nextFixture
-    ? nextFixture.isHome
+  const nextAwayName = nextDisplayFixture
+    ? nextDisplayFixture.isHome
       ? nextFixture.opponentName
       : belezaTeam.name
     : null;
 
-  const lastFinished = resolveMatchStatus(belezaMatch, new Date()) === "finished";
-  const lastOpponentName = belezaMatch.isBelezaHome
-    ? belezaMatch.awayTeamName
-    : belezaMatch.homeTeamName;
-  const belezaScore = belezaMatch.isBelezaHome ? belezaMatch.homeScore : belezaMatch.awayScore;
-  const opponentScore = belezaMatch.isBelezaHome ? belezaMatch.awayScore : belezaMatch.homeScore;
+  const lastFinished = lastFixture !== undefined;
+  const lastOpponentName = lastFixture?.opponentName ?? "";
+  const belezaScore = lastFixture?.isHome ? lastFixture.score?.home ?? 0 : lastFixture?.score?.away ?? 0;
+  const opponentScore = lastFixture?.isHome ? lastFixture.score?.away ?? 0 : lastFixture?.score?.home ?? 0;
   const lastResult =
     belezaScore === opponentScore ? "draw" : belezaScore > opponentScore ? "win" : "loss";
 
@@ -58,17 +62,17 @@ export default function BelezaPage() {
         <span className="w-8" />
       </div>
 
-      {nextFixture && nextHomeName && nextAwayName ? (
+      {nextDisplayFixture && nextHomeName && nextAwayName ? (
         <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
           <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
             NEXT MATCH
           </p>
           <p className="mt-2 tabular-nums text-[15px] font-extrabold tracking-wide text-text-secondary lg:text-[17px]">
-            {nextFixture.dateLabel}
+            {nextDisplayFixture.dateLabel}
           </p>
 
           <div className="mt-2">
-            <FixtureMetaLine meta={nextFixture.fixtureMeta} />
+            <FixtureMetaLine meta={nextDisplayFixture.fixtureMeta} />
           </div>
 
           {/* 正式名称が長いため truncate せず縦積み。左右（HOME/AWAY）の関係を明示する。 */}
@@ -90,15 +94,15 @@ export default function BelezaPage() {
 
           <div className="mt-4 flex flex-col items-center gap-1 border-t border-border pt-3 text-center lg:mt-6">
             <p className="tabular-nums text-[15px] font-bold text-text-primary lg:text-[16px]">
-              {nextFixture.kickoffLabel === "TBD" ? "KICK OFF TBD" : nextFixture.kickoffLabel}{" "}
-              {nextFixture.kickoffLabel !== "TBD" && (
+              {nextDisplayFixture.kickoffLabel === "TBD" ? "KICK OFF TBD" : nextDisplayFixture.kickoffLabel}{" "}
+              {nextDisplayFixture.kickoffLabel !== "TBD" && (
                 <span className="text-[11px] font-bold text-text-secondary lg:text-[12px]">
                   KICK OFF
                 </span>
               )}
             </p>
-            {nextFixture.venue && (
-              <p className="text-[12px] text-text-secondary">{nextFixture.venue}</p>
+            {nextDisplayFixture.venue && (
+              <p className="text-[12px] text-text-secondary">{nextDisplayFixture.venue}</p>
             )}
           </div>
         </section>
@@ -116,10 +120,10 @@ export default function BelezaPage() {
         </section>
       )}
 
-      {belezaUpcomingMatches.length > 0 && (
+      {upcomingFixtures.length > 0 && (
         <section>
           <SectionHeader title="NEXT 5" eyebrow="UPCOMING FIXTURES" />
-          <UpcomingFixtureList fixtures={belezaUpcomingMatches} />
+          <UpcomingFixtureList fixtures={upcomingFixtures} />
         </section>
       )}
 
@@ -130,31 +134,31 @@ export default function BelezaPage() {
               LAST MATCH
             </p>
             <Link
-              href={`/beleza/matches/${belezaMatch.id}`}
+              href={`/beleza/matches/${lastFixture?.detailMatchId ?? belezaMatch.id}`}
               className="mt-2 block border-t border-border py-2 text-[13px]"
             >
               <div className="flex items-center justify-between gap-2">
                 <span className="min-w-0 break-words text-text-primary">
-                  {belezaMatch.dateLabel}　{lastOpponentName}
+                  {lastFixture?.dateLabel}　{lastOpponentName}
                 </span>
                 <span className="ml-2 flex shrink-0 items-center gap-2">
                   <span className="tabular-nums font-bold text-text-primary">
-                    {belezaMatch.homeScore}-{belezaMatch.awayScore}
+                    {lastFixture?.score?.home}-{lastFixture?.score?.away}
                   </span>
                   <StatusBadge variant={lastResult} label={lastResult.toUpperCase()} />
                 </span>
               </div>
               <div className="mt-1">
-                <FixtureMetaLine meta={belezaMatch.fixtureMeta} compact />
+                <FixtureMetaLine meta={{ competition: lastFixture?.competition.name ?? "", roundLabel: lastFixture?.competition.round }} compact />
               </div>
             </Link>
           </section>
         )}
 
-        {belezaSeasonHistory.length > 0 && (
+        {history.length > 0 && (
           <section>
             <SectionHeader title="2026/27シーズン試合履歴" eyebrow="SEASON HISTORY" />
-            <BelezaSeasonHistory entries={belezaSeasonHistory} />
+            <BelezaSeasonHistory entries={history} />
           </section>
         )}
       </div>
