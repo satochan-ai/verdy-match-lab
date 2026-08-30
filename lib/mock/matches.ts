@@ -697,19 +697,28 @@ export const matches: Match[] = [
     // 第4節・鹿島戦。lib/mock/schedule.tsのsched-kashima（既存source of truth）と同一fixture。
     // Phase 6-M.1：PRE_MATCH予想Starting XIを追加。
     // Phase 6-M.2：公式Starting XI・benchが発表されたためactualLineupsを追加。
-    // predictedLineupsは答え合わせ用にそのまま維持し、上書き・削除しない。
-    // キックオフ前のためscore/statusは変更しない（homeScore/awayScore: null, status: "scheduled"）。
+    // Phase 6-M.3：試合終了。公式結果（東京V 0-2 鹿島）とPOST MATCH記録を反映し、
+    // status: "finished" / homeScore: 0 / awayScore: 2 へ更新。
+    // predictedLineups・actualLineupsはいずれも答え合わせ用にそのまま維持し、上書き・削除しない。
     id: "match-9",
     homeTeam: verdy,
     awayTeam: opponent("kashima-antlers", "鹿島アントラーズ"),
     isVerdyHome: true,
     kickoffAt: "2026-08-29T19:00:00+09:00",
     venue: "味の素スタジアム",
-    status: "scheduled",
-    homeScore: null,
-    awayScore: null,
+    status: "finished",
+    homeScore: 0,
+    awayScore: 2,
     timeSegment: null,
     fixtureMeta: { competition: "2026 J1リーグ", roundLabel: "第4節" },
+    officialRecord: {
+      kickoff: "19:03",
+      attendance: 21966,
+      weather: "雨",
+      temperature: "24℃",
+      humidity: "90%",
+      sourceUrl: "https://www.jleague.jp/match/j1/2026/082906/",
+    },
     verdyProfile: {
       formation: "3-4-2-1",
       characteristics: {
@@ -841,12 +850,69 @@ export const matches: Match[] = [
       ineligibleNote:
         "溝口修平（鹿島アントラーズからの期限付き移籍中のため、移籍元である鹿島との公式戦には出場できない契約条件）。",
     },
+    goals: [
+      { minute: "42'", scorer: "レオ セアラ", team: "鹿島" },
+      { minute: "50'", scorer: "レオ セアラ", team: "鹿島" },
+    ],
+    cards: [
+      { player: "平川 怜", team: "東京V", type: "yellow" },
+      { player: "小川 諒也", team: "鹿島", type: "yellow" },
+      { player: "広瀬 陸斗", team: "鹿島", type: "yellow" },
+      { player: "エウベル", team: "鹿島", type: "yellow" },
+    ],
+    // Jリーグ公式（試合速報）のStarting XI表内、各選手の交代アイコン・分表示から登録。
+    // 同一分に複数交代が発生した場合のOUT/IN組み合わせは、公式ページ上のリスト表示順に基づく。
+    substitutions: [
+      { minute: "41'", team: "東京V", playerIn: "山本 丈偉", playerOut: "森田 晃樹" },
+      { minute: "46'", team: "東京V", playerIn: "白井 亮丞", playerOut: "熊取谷 一星" },
+      { minute: "60'", team: "東京V", playerIn: "神田 奏真", playerOut: "染野 唯月" },
+      { minute: "73'", team: "東京V", playerIn: "柴戸 海", playerOut: "平川 怜" },
+      { minute: "73'", team: "東京V", playerIn: "仲山 獅恩", playerOut: "松橋 優安" },
+      { minute: "90+5'", team: "東京V", playerIn: "川村 楽人", playerOut: "白井 亮丞" },
+      { minute: "73'", team: "鹿島", playerIn: "三竿 健斗", playerOut: "柴崎 岳" },
+      { minute: "73'", team: "鹿島", playerIn: "チャヴリッチ", playerOut: "エウベル" },
+      { minute: "83'", team: "鹿島", playerIn: "津久井 佳祐", playerOut: "広瀬 陸斗" },
+      { minute: "83'", team: "鹿島", playerIn: "林 晴己", playerOut: "松村 優太" },
+      { minute: "88'", team: "鹿島", playerIn: "元砂 晏翔仁ウデンバ", playerOut: "マテウス ブエノ" },
+      { minute: "88'", team: "鹿島", playerIn: "吉田 湊海", playerOut: "鈴木 優磨" },
+    ],
+    matchStats: {
+      home: {
+        shots: 4,
+        shotsOnTarget: 2,
+        possession: "40%",
+        passSuccessRate: "78%",
+        distance: "116.4km",
+        sprints: 137,
+        offsides: 0,
+        corners: 5,
+        freeKicks: 11,
+        yellowCards: 1,
+        redCards: 0,
+      },
+      away: {
+        shots: 24,
+        shotsOnTarget: 6,
+        possession: "60%",
+        passSuccessRate: "88%",
+        distance: "110.7km",
+        sprints: 126,
+        offsides: 1,
+        corners: 4,
+        freeKicks: 16,
+        yellowCards: 3,
+        redCards: 0,
+      },
+    },
     matchNotes: [
       "天皇杯ザスパ群馬戦（8/26、4-1）から中2日で迎えるリーグ戦第4節。東京Vは天皇杯で大幅にメンバーを入れ替えながら4-1で勝利しており、鹿島戦ではリーグ戦の主力を戻すことが予想される。一方、鹿島から期限付き移籍中の溝口修平は移籍元契約により出場不可。天皇杯で実戦復帰した森田晃樹をどこまで起用するかも焦点となる。",
       "鹿島は右SB安西幸輝が7月に左膝前十字靭帯損傷で長期離脱中（7/21鹿島公式発表）。FWヤン・マテウスも今節は欠場予定（欠場理由は未確認）。",
       "東京Vの3バックは鈴木海音・林尚輝・宮原和也を第一予想とする。宮原を右CBへ回し、左CBに井上竜太を置く形も候補として考えられる。",
       "予想スタメン・フォーメーションは8/28時点の公開情報を基準にした編集部予想。確定Starting XIではない。",
       "公式Starting XI発表：東京Vは予想11人中9人が的中（マテウス・鈴木海音・林尚輝・内田陽介・森田晃樹・平川怜・新井悠太・熊取谷一星・染野唯月）。予想メンバーだった宮原和也・福田湧矢に代わり、井上竜太・松橋優安が先発。鹿島は骨格を維持しつつ、予想の吉田湊海に代わりエウベルが先発。",
+      "前半42分にレオ セアラのゴールで先制を許すと、後半開始5分の50分にも同じくレオ セアラに追加点を許し、0-2で敗れた。",
+      "森田晃樹は前半41分に負傷交代（山本丈偉と交代）。交代理由の詳細・診断・離脱期間等の公式発表は未確認のため、負傷交代の事実のみ記載する。",
+      "警告：東京V平川怜、鹿島小川諒也・広瀬陸斗・エウベル（各分はJリーグ公式試合速報未確認のため未記載）。",
     ],
     focusPoints: [
       "溝口不在の左サイド：新井悠太・宮原和也・森田晃樹の連係で鹿島の右サイド攻撃にどう対応するか",
@@ -860,23 +926,62 @@ export const matches: Match[] = [
         title: "レオ・セアラと鈴木優磨の2トップを中央で自由にさせない",
         description:
           "3バック＋森田晃樹・平川怜で中央を管理し、2トップへの縦パス、クロス後のセカンドボール、CB前のスペースを制限できるかに注目したい。",
-        result: "pending",
+        result: "miss",
+        resultComment:
+          "最重要警戒対象だったレオ セアラに42分・50分と2得点を許し、狙いを遂行できなかった。",
       },
       {
         orderNo: 2,
         title: "溝口不在の左サイドを狙われない",
         description:
           "左WB新井悠太・左CB宮原和也・左CM森田晃樹の3人の連係で、鹿島の右サイド攻撃にどう対応できるかに注目したい。",
-        result: "pending",
+        result: "partial",
+        resultComment:
+          "2失点はいずれもレオ セアラで、鹿島の右サイド（小川諒也・広瀬陸斗）発の崩れが直接の失点経路だったかはJリーグ公式のスタッツ・試合速報からは断定できない。サイド別の被シュート・クロス数等の詳細データが未確認のため、△とする。",
       },
       {
         orderNo: 3,
         title: "鹿島の4-4-2の外側を動かして前進する",
         description:
           "鹿島の2トップ＋中盤4枚を正面から突破するだけでなく、3バック・新井悠太＋内田陽介・森田晃樹＋平川怜を使い、相手ブロックの脇・外側へボールを動かして前進経路を作れるかに注目したい。",
-        result: "pending",
+        result: "miss",
+        resultComment:
+          "シュート4本（枠内2）、ボール支配率40%、パス成功率78%、アタッキングサードプレー数85回（鹿島355回）と、Jリーグ公式スタッツ上も前進・攻撃機会を作れなかったことが数字に表れており、狙いを遂行できなかった。",
       },
     ],
+  },
+  {
+    // 第5節（節数未確認）・神戸戦。lib/mock/schedule.tsのsched-kobe（既存source of truth）と
+    // 同一fixture。鹿島戦（match-9）がPOST MATCH化されNEXT MATCH表示から外れたことに伴い、
+    // getNextMatch()のフォールバック（scheduledなmatchが無い場合はmatches[0]へ落ちる）を
+    // 避けるための最小限のPRE_MATCHプレースホルダー。詳細な予想スタメン・分析等は今回のPhaseでは
+    // 作り込まず、別Phaseで追加する（推測でPRE分析を捏造しない）。
+    id: "match-10",
+    homeTeam: verdy,
+    awayTeam: opponent("vissel-kobe", "ヴィッセル神戸"),
+    isVerdyHome: true,
+    kickoffAt: "2026-09-02T19:00:00+09:00",
+    venue: "味の素スタジアム",
+    status: "scheduled",
+    homeScore: null,
+    awayScore: null,
+    timeSegment: null,
+    fixtureMeta: { competition: "2026 J1リーグ" },
+    verdyProfile: {
+      formation: "情報準備中",
+      characteristics: { attack: "情報準備中", defense: "情報準備中" },
+      keyPlayers: [],
+      recentTrend: "情報準備中",
+    },
+    opponentProfile: {
+      formation: "情報準備中",
+      characteristics: { attack: "情報準備中", defense: "情報準備中" },
+      keyPlayers: [],
+      recentTrend: "情報準備中",
+    },
+    matchNotes: [],
+    focusPoints: [],
+    strategies: [],
   },
   {
     // 第1節。公式試合記録（https://www.jleague.jp/match/j1/2026/080901/）で確認できた
