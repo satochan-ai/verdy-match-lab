@@ -130,24 +130,26 @@ export const belezaActualLineup: ActualLineup = {
 };
 
 /**
- * BELEZA第2節の実際の並び（Phase 6-B.2）。ユーザー確認済みの配置に基づき 4-2-3-1 として
- * フォーメーション図表示に用いる。belezaActualLineup（GK/DF/MF/FWの区分のみ・公式画像確認）
- * とは別に、画面上の5ライン（GK / DF4 / ボランチ2 / 2列目3 / FW1）で見せるための順序付き配列。
+ * BELEZA第2節の実際の並び。ユーザー提供のスクリーンショットを正として 4-2-3-1 の
+ * フォーメーション図表示に用いる。belezaActualLineup（GK/DF/MF/FWの区分のみ）とは別に、
+ * 画面上の5ライン（GK / DF4 / ボランチ2 / 2列目3 / FW1）で見せるための順序付き配列。
  *
  * startersはFormationPitchが要求する順序（GK → DF → ボランチ → 2列目 → FW）で、
- * 各行内の配列順＝画面左→右。DFは左から 22 井手→4 土光→3 村松→32 松岡、
- * 2列目は左から 13 氏原→19 塩越→7 北村。左右を反転しない。
+ * 各行内の配列順＝画面左→右。スクリーンショットどおりの左右（6-B.3で確定）：
+ *   DF   ＝左から 32 松岡→3 村松→4 土光→22 井手
+ *   ボランチ＝左から 6 隅田→35 須長
+ *   2列目 ＝左から 13 氏原→19 塩越→7 北村
  * position名はGK/DF/MF/FWのまま（ボランチ/2列目の区別は行分割で表現する）。
- * 選手11名・背番号・氏名はbelezaActualLineupと一致させ、ここで新しい選手を増やさない。
+ * 選手11名・背番号・氏名・formationはbelezaActualLineupと一致させ、変更しない。
  */
 export const belezaActualFormation: PredictedLineup = {
   formation: "4-2-3-1",
   starters: [
     { number: 1, name: "野田 にな", position: "GK" },
-    { number: 22, name: "井手 ひなた", position: "DF" },
-    { number: 4, name: "土光 真代", position: "DF" },
-    { number: 3, name: "村松 智子", position: "DF" },
     { number: 32, name: "松岡 瑛美", position: "DF" },
+    { number: 3, name: "村松 智子", position: "DF" },
+    { number: 4, name: "土光 真代", position: "DF" },
+    { number: 22, name: "井手 ひなた", position: "DF" },
     { number: 6, name: "隅田 凜", position: "MF" },
     { number: 35, name: "須長 穂乃果", position: "MF" },
     { number: 13, name: "氏原 里穂菜", position: "MF" },
@@ -171,6 +173,34 @@ export const acNaganoActualLineup: ActualLineup = {
     MF: ["23 松浦 芽育子"],
     FW: ["10 北川 愛莉", "20 松岡 優空", "35 濱田 優音"],
   },
+};
+
+/**
+ * AC長野パルセイロ・レディース 第2節の実際の並び。ユーザー提供のスクリーンショットを正として
+ * 4-2-3-1 のフォーメーション図表示に用いる。選手名・背番号は acNaganoActualLineup と一致
+ * （再入力せず既存データを使う）。
+ *
+ * startersはFormationPitchが要求する順序（GK → DF → ボランチ → 2列目 → FW）で、
+ * 各行内の配列順＝画面左→右（スクリーンショットどおり）：
+ *   DF   ＝左から 3 久保田→25 奥川→5 橘→34 鈴木
+ *   ボランチ＝左から 27 籔島→7 三谷
+ *   2列目 ＝左から 14 塩谷→15 知久→6 常田
+ */
+export const acNaganoActualFormation: PredictedLineup = {
+  formation: "4-2-3-1",
+  starters: [
+    { number: 21, name: "垣内 愛菜", position: "GK" },
+    { number: 3, name: "久保田 明未", position: "DF" },
+    { number: 25, name: "奥川 千沙", position: "DF" },
+    { number: 5, name: "橘 麗衣", position: "DF" },
+    { number: 34, name: "鈴木 こなつ", position: "DF" },
+    { number: 27, name: "籔島 彩佳", position: "MF" },
+    { number: 7, name: "三谷 沙也加", position: "MF" },
+    { number: 14, name: "塩谷 瑠南", position: "MF" },
+    { number: 15, name: "知久 奈菜穂", position: "MF" },
+    { number: 6, name: "常田 麻友", position: "MF" },
+    { number: 33, name: "吉野 真央", position: "FW" },
+  ],
 };
 
 /**

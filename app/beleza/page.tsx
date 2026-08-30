@@ -11,6 +11,7 @@ import { BelezaLiveSection } from "@/components/match/BelezaLiveSection";
 import { resolveMatchStatus } from "@/lib/match/status";
 import {
   belezaTeam,
+  acNaganoTeam,
   belezaMatch,
   belezaHalfScores,
   belezaGoals,
@@ -22,6 +23,7 @@ import {
   belezaActualLineup,
   belezaActualFormation,
   acNaganoActualLineup,
+  acNaganoActualFormation,
   belezaPostMatchSummary,
   belezaSeasonHistory,
   belezaUpcomingMatches,
@@ -200,16 +202,20 @@ export default function BelezaPage() {
       {isFinished && (
         <section>
           <SectionHeader title="実際の並び" eyebrow="FORMATION" />
-          <div className="border-y border-border bg-surface px-3 py-4">
+          <div className="space-y-7 border-y border-border bg-surface px-3 py-4 lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
             <FormationPitch
               team={belezaTeam}
               lineup={belezaActualFormation}
               idPrefix="actual-formation"
             />
+            <FormationPitch
+              team={acNaganoTeam}
+              lineup={acNaganoActualFormation}
+              idPrefix="actual-formation"
+            />
           </div>
           <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
-            ベレーザの実際の並び（4-2-3-1）。AC長野パルセイロ・レディースの並びは公式フォーメーション
-            未確認のため、下の試合記録内でGK/DF/MF/FW区分のみ掲載しています。
+            両チームの実際の並び（4-2-3-1）。試合終了後のスクリーンショットに基づく配置です。
           </p>
         </section>
       )}
