@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
 import { resolveCategoryCardState } from "@/lib/match/category-card-state";
-import { belezaMatch, belezaSeasonHistory, belezaUpcomingMatches } from "@/lib/mock/beleza";
+import { belezaFixtures, toBelezaUpcomingMatch } from "@/lib/data/beleza-fixtures";
 import { u21Fixtures, toU21UpcomingMatch } from "@/lib/data/u21-fixtures";
 import { getLatestFinishedFixture, getNextFixture } from "@/lib/data/fixture-selectors";
 import { HomeHero } from "@/components/home/HomeHero";
@@ -94,26 +94,26 @@ export default async function Home() {
       : undefined,
   });
 
-  const nextBelezaFixture = belezaUpcomingMatches[0];
-  const belezaLastResult = belezaSeasonHistory.at(-1);
+  const nextBelezaFixture = getNextFixture(belezaFixtures, now);
+  const belezaLastFixture = getLatestFinishedFixture(belezaFixtures);
   const belezaCardState = resolveCategoryCardState({
     now,
-    focus: { status: belezaMatch.status, kickoffAt: belezaMatch.kickoffAt },
+    focus: nextBelezaFixture?.kickoffAt ? { status: "scheduled", kickoffAt: nextBelezaFixture.kickoffAt } : undefined,
     nextFixture: nextBelezaFixture
       ? {
           opponentName: nextBelezaFixture.opponentName,
-          dateLabel: nextBelezaFixture.dateLabel,
-          kickoffLabel: nextBelezaFixture.kickoffLabel,
+          dateLabel: toBelezaUpcomingMatch(nextBelezaFixture).dateLabel,
+          kickoffLabel: toBelezaUpcomingMatch(nextBelezaFixture).kickoffLabel,
           homeAway: nextBelezaFixture.isHome ? "HOME" : "AWAY",
-          fixtureMeta: nextBelezaFixture.fixtureMeta,
+          fixtureMeta: toBelezaUpcomingMatch(nextBelezaFixture).fixtureMeta,
         }
       : undefined,
-    lastResult: belezaLastResult
+    lastResult: belezaLastFixture?.score
       ? {
-          homeTeamName: belezaLastResult.homeTeamName,
-          awayTeamName: belezaLastResult.awayTeamName,
-          homeScore: belezaLastResult.homeScore,
-          awayScore: belezaLastResult.awayScore,
+          homeTeamName: belezaLastFixture.isHome ? belezaLastFixture.teamName : belezaLastFixture.opponentName,
+          awayTeamName: belezaLastFixture.isHome ? belezaLastFixture.opponentName : belezaLastFixture.teamName,
+          homeScore: belezaLastFixture.score.home,
+          awayScore: belezaLastFixture.score.away,
         }
       : undefined,
   });
