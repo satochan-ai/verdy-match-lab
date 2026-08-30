@@ -8,6 +8,7 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
+import { getMatchDayLabel } from "@/lib/match/display";
 
 export const metadata: Metadata = {
   title: "東京ヴェルディ TOP TEAM | Verdy Match Lab",
@@ -63,6 +64,7 @@ export default async function TopTeamPage() {
       : "loss";
 
   const fixture = nextFixture?.kickoffAt ? formatMatchday(nextFixture.kickoffAt) : null;
+  const dayLabel = nextMatch ? getMatchDayLabel(nextMatch, now) : null;
 
   return (
     <div className="space-y-6">
@@ -72,12 +74,15 @@ export default async function TopTeamPage() {
 
       <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
         <div className="space-y-8 lg:space-y-10">
-              {nextFixture && fixture && opponent ? (
+              {nextFixture && fixture && opponent && dayLabel ? (
           <section className="section-reveal border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
             <div className="flex items-baseline justify-between gap-3">
               <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
                 NEXT MATCH
               </p>
+              {dayLabel.kind === "days" && <p className="text-[11px] font-bold text-primary-green">あと{dayLabel.days}日</p>}
+              {dayLabel.kind === "today" && <p className="text-[11px] font-bold text-primary-green">今日</p>}
+              {dayLabel.kind === "live" && <p className="text-[11px] font-bold text-primary-green">試合中</p>}
             </div>
 
             <p className="mt-2 tabular-nums text-[15px] font-extrabold tracking-wide text-text-secondary lg:text-[17px]">

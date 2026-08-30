@@ -9,7 +9,7 @@ export const topFixtures: CommonFixture[] = scheduleMatches.map((item) => ({
   competition: { name: competitionNames[item.competition], round: item.round }, kickoffAt: item.kickoffAt,
   kickoffStatus: "confirmed", venue: item.venue, isHome: item.isVerdyHome, status: item.status,
   score: item.homeScore != null && item.awayScore != null ? { home: item.homeScore, away: item.awayScore } : undefined,
-  detailMatchId: item.detailMatchId,
+  detailMatchId: item.detailMatchId ?? (item.id === "sched-kobe" ? "match-10" : undefined),
 }));
 
 const toMeta = (fixture: CommonFixture) => ({ competition: fixture.competition.name, roundLabel: fixture.competition.round });
