@@ -1,0 +1,20 @@
+export type MatchCategory = "top" | "u21" | "beleza";
+export type FixtureStatus = "scheduled" | "live" | "half_time" | "finished" | "postponed" | "cancelled" | "abandoned";
+export type KickoffStatus = "confirmed" | "tbd" | "date_range";
+export type FixtureScore = { home: number; away: number };
+export type CommonFixture = {
+  id: string;
+  category: MatchCategory;
+  teamName: string;
+  opponentName: string;
+  competition: { name: string; round?: string };
+  kickoffAt?: string;
+  kickoffStatus: KickoffStatus;
+  dateLabel?: string;
+  venue?: string;
+  isHome: boolean;
+  status: FixtureStatus;
+  score?: FixtureScore;
+  detailMatchId?: string;
+  sourceUrl?: string;
+};
