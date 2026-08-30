@@ -697,8 +697,9 @@ export const matches: Match[] = [
     // 第4節・鹿島戦。lib/mock/schedule.tsのsched-kashima（既存source of truth）と同一fixture。
     // Phase 6-M.1：PRE_MATCH予想Starting XIを追加。
     // Phase 6-M.2：公式Starting XI・benchが発表されたためactualLineupsを追加。
-    // predictedLineupsは答え合わせ用にそのまま維持し、上書き・削除しない。
-    // キックオフ前のためscore/statusは変更しない（homeScore/awayScore: null, status: "scheduled"）。
+    // Phase 6-M.3：試合終了。公式結果（東京V 0-2 鹿島）とPOST MATCH記録を反映し、
+    // status: "finished" / homeScore: 0 / awayScore: 2 へ更新。
+    // predictedLineups・actualLineupsはいずれも答え合わせ用にそのまま維持し、上書き・削除しない。
     id: "match-9",
     homeTeam: verdy,
     awayTeam: opponent("kashima-antlers", "鹿島アントラーズ"),
