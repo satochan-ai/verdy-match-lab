@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { getNextMatch } from "@/lib/data/matches";
-import { resolveMatchStatus } from "@/lib/match/status";
-import { belezaMatch, belezaUpcomingMatches } from "@/lib/mock/beleza";
-import { u21Match, u21UpcomingMatches } from "@/lib/mock/u21";
+import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
+import { resolveCategoryCardState } from "@/lib/match/category-card-state";
+import { belezaMatch, belezaSeasonHistory, belezaUpcomingMatches } from "@/lib/mock/beleza";
+import { u21Match, u21SeasonHistory, u21UpcomingMatches } from "@/lib/mock/u21";
 import { HomeHero } from "@/components/home/HomeHero";
 import { CategoryHomeCard } from "@/components/match/CategoryHomeCard";
 import topTeamCardPhoto from "@/public/images/home/top-team-card.jpg";
@@ -34,24 +34,88 @@ function formatMatchday(iso: string) {
 }
 
 export default async function Home() {
-  const nextMatch = await getNextMatch();
   const now = new Date();
+  const [nextMatch, recentTopMatch] = await Promise.all([
+    getNextMatch(),
+    getRecentFinishedMatchSummary(),
+  ]);
 
-  // nextMatchがnull（scheduledな試合が未登録）の場合は、過去試合を出さずに
-  // 「次戦情報準備中」の空状態を表示する。
-  const topOpponent = nextMatch
-    ? nextMatch.isVerdyHome
-      ? nextMatch.awayTeam
-      : nextMatch.homeTeam
-    : null;
+  // 3カテゴリーとも resolveCategoryCardState() で
+  // LIVE → NEXT MATCH → LAST RESULT → EMPTY の同一ルールで状態を決める。
+  // データ構造が異なるため、各カテゴリーのデータを共通ビューへ変換してから渡す
+  // （Match型への統一はしない）。
+
   const topFixture = nextMatch ? formatMatchday(nextMatch.kickoffAt) : null;
-  const isTopLive = nextMatch ? resolveMatchStatus(nextMatch, now) === "live" : false;
+  const topCardState = resolveCategoryCardState({
+    now,
+    focus: nextMatch ? { status: nextMatch.status, kickoffAt: nextMatch.kickoffAt } : undefined,
+    nextFixture: nextMatch
+      ? {
+          opponentName: (nextMatch.isVerdyHome ? nextMatch.awayTeam : nextMatch.homeTeam).name,
+          dateLabel: topFixture?.dateLabel,
+          kickoffLabel: topFixture?.time,
+          homeAway: nextMatch.isVerdyHome ? "HOME" : "AWAY",
+          fixtureMeta: nextMatch.fixtureMeta,
+        }
+      : undefined,
+    lastResult:
+      recentTopMatch.homeScore != null && recentTopMatch.awayScore != null
+        ? {
+            homeTeamName: recentTopMatch.homeTeam.name,
+            awayTeamName: recentTopMatch.awayTeam.name,
+            homeScore: recentTopMatch.homeScore,
+            awayScore: recentTopMatch.awayScore,
+          }
+        : undefined,
+  });
 
   const nextU21Fixture = u21UpcomingMatches[0];
-  const isU21Live = resolveMatchStatus(u21Match, now) === "live";
+  const u21LastResult = u21SeasonHistory.at(-1);
+  const u21CardState = resolveCategoryCardState({
+    now,
+    focus: { status: u21Match.status, kickoffAt: u21Match.kickoffAt },
+    nextFixture: nextU21Fixture
+      ? {
+          opponentName: nextU21Fixture.opponentName,
+          dateLabel: nextU21Fixture.dateLabel,
+          kickoffLabel: nextU21Fixture.kickoffLabel,
+          homeAway: nextU21Fixture.isHome ? "HOME" : "AWAY",
+          fixtureMeta: nextU21Fixture.fixtureMeta,
+        }
+      : undefined,
+    lastResult: u21LastResult
+      ? {
+          homeTeamName: u21LastResult.homeTeamName,
+          awayTeamName: u21LastResult.awayTeamName,
+          homeScore: u21LastResult.homeScore,
+          awayScore: u21LastResult.awayScore,
+        }
+      : undefined,
+  });
 
   const nextBelezaFixture = belezaUpcomingMatches[0];
-  const isBelezaLive = resolveMatchStatus(belezaMatch, now) === "live";
+  const belezaLastResult = belezaSeasonHistory.at(-1);
+  const belezaCardState = resolveCategoryCardState({
+    now,
+    focus: { status: belezaMatch.status, kickoffAt: belezaMatch.kickoffAt },
+    nextFixture: nextBelezaFixture
+      ? {
+          opponentName: nextBelezaFixture.opponentName,
+          dateLabel: nextBelezaFixture.dateLabel,
+          kickoffLabel: nextBelezaFixture.kickoffLabel,
+          homeAway: nextBelezaFixture.isHome ? "HOME" : "AWAY",
+          fixtureMeta: nextBelezaFixture.fixtureMeta,
+        }
+      : undefined,
+    lastResult: belezaLastResult
+      ? {
+          homeTeamName: belezaLastResult.homeTeamName,
+          awayTeamName: belezaLastResult.awayTeamName,
+          homeScore: belezaLastResult.homeScore,
+          awayScore: belezaLastResult.awayScore,
+        }
+      : undefined,
+  });
 
   return (
     <div className="space-y-10 lg:space-y-14">
@@ -77,8 +141,7 @@ export default async function Home() {
         <div className="mt-4 grid gap-4 lg:mt-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-stretch">
           <CategoryHomeCard
             categoryLabel="TOP TEAM"
-            statusLabel={isTopLive ? "LIVE" : "NEXT MATCH"}
-            statusTone={isTopLive ? "live" : "next"}
+            {...topCardState.card}
             accent="green"
             size="lg"
             photo={{
@@ -89,11 +152,6 @@ export default async function Home() {
               layout: "contain-split",
               sizes: "(min-width: 1024px) 45vw, 100vw",
             }}
-            dateLabel={topFixture?.dateLabel}
-            fixtureMeta={nextMatch?.fixtureMeta}
-            homeAway={nextMatch ? (nextMatch.isVerdyHome ? "HOME" : "AWAY") : undefined}
-            opponentName={topOpponent?.name ?? "次戦情報準備中"}
-            kickoffLabel={topFixture?.time}
             href="/top"
             linkLabel="TOP TEAMのページを見る"
           />
@@ -101,27 +159,15 @@ export default async function Home() {
           <div className="grid gap-4 lg:grid-rows-2">
             <CategoryHomeCard
               categoryLabel="U-21"
-              statusLabel={isU21Live ? "LIVE" : nextU21Fixture ? "NEXT MATCH" : "LAST RESULT"}
-              statusTone={isU21Live ? "live" : nextU21Fixture ? "next" : "finished"}
+              {...u21CardState.card}
               accent="green-gold"
-              dateLabel={nextU21Fixture?.dateLabel}
-              fixtureMeta={nextU21Fixture?.fixtureMeta ?? u21Match.fixtureMeta}
-              homeAway={nextU21Fixture ? (nextU21Fixture.isHome ? "HOME" : "AWAY") : undefined}
-              opponentName={nextU21Fixture?.opponentName}
-              kickoffLabel={nextU21Fixture?.kickoffLabel}
-              resultLine={
-                !nextU21Fixture
-                  ? `${u21Match.homeTeamName} ${u21Match.homeScore}-${u21Match.awayScore} ${u21Match.awayTeamName}`
-                  : undefined
-              }
               href="/u21"
               linkLabel="U-21のページを見る"
             />
 
             <CategoryHomeCard
               categoryLabel="BELEZA"
-              statusLabel={isBelezaLive ? "LIVE" : nextBelezaFixture ? "NEXT MATCH" : "LAST RESULT"}
-              statusTone={isBelezaLive ? "live" : nextBelezaFixture ? "next" : "finished"}
+              {...belezaCardState.card}
               accent="deep"
               photo={{
                 src: belezaCardPhoto,
@@ -132,16 +178,6 @@ export default async function Home() {
                 positionClassName: "object-[center_72%] md:object-[center_68%] lg:object-[center_66%]",
                 sizes: "(min-width: 1024px) 40vw, 100vw",
               }}
-              dateLabel={nextBelezaFixture?.dateLabel}
-              fixtureMeta={nextBelezaFixture?.fixtureMeta ?? belezaMatch.fixtureMeta}
-              homeAway={nextBelezaFixture ? (nextBelezaFixture.isHome ? "HOME" : "AWAY") : undefined}
-              opponentName={nextBelezaFixture?.opponentName}
-              kickoffLabel={nextBelezaFixture?.kickoffLabel}
-              resultLine={
-                !nextBelezaFixture
-                  ? `${belezaMatch.homeTeamName} ${belezaMatch.homeScore}-${belezaMatch.awayScore} ${belezaMatch.awayTeamName}`
-                  : undefined
-              }
               href="/beleza"
               linkLabel="BELEZAのページを見る"
             />
