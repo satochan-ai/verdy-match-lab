@@ -1017,11 +1017,11 @@ export const matches: Match[] = [
     },
     // 試合前の出場可否情報（PRE_MATCH）。ユーザー提供の暫定情報を反映し、欠場は「予定」扱い。
     // 負傷名・復帰時期・欠場理由等は今回持たせない（推測・web補完はしない）。
-    // 神戸側3名は既存player dataに正式表記が無いため、入力どおりの姓のみで登録する。
+    // 神戸側3名は既存player dataに正式表記が無いため、ユーザー提供のフルネーム表記で登録する。
     availability: {
       likelyUnavailable: [
         { team: "東京V", players: ["森田 晃樹", "吉田 泰授", "山見 大登"] },
-        { team: "神戸", players: ["佐々木", "扇原", "アンデルソン・ロペス"] },
+        { team: "神戸", players: ["佐々木 大樹", "扇原 貴宏", "アンデルソン・ロペス"] },
       ],
       suspensionNote: "なし",
       ineligibleNote: "なし",

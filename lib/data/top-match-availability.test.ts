@@ -18,7 +18,7 @@ test("match-10 lists three expected absences per team without mixing home/away",
   assert.ok(kobe, "神戸 entry should exist");
 
   assert.deepEqual(verdy!.players, ["森田 晃樹", "吉田 泰授", "山見 大登"]);
-  assert.deepEqual(kobe!.players, ["佐々木", "扇原", "アンデルソン・ロペス"]);
+  assert.deepEqual(kobe!.players, ["佐々木 大樹", "扇原 貴宏", "アンデルソン・ロペス"]);
 
   // home/away混同がないこと（各チームの選手が相手側に紛れていない）。
   const overlap = verdy!.players.filter((name) => kobe!.players.includes(name));
