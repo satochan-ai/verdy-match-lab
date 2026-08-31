@@ -954,8 +954,11 @@ export const matches: Match[] = [
     // 第5節（節数未確認）・神戸戦。lib/mock/schedule.tsのsched-kobe（既存source of truth）と
     // 同一fixture。鹿島戦（match-9）がPOST MATCH化されNEXT MATCH表示から外れたことに伴い、
     // getNextMatch()のフォールバック（scheduledなmatchが無い場合はmatches[0]へ落ちる）を
-    // 避けるための最小限のPRE_MATCHプレースホルダー。詳細な予想スタメン・分析等は今回のPhaseでは
-    // 作り込まず、別Phaseで追加する（推測でPRE分析を捏造しない）。
+    // 避けるための最小限のPRE_MATCHプレースホルダー。
+    // predictedLineups.homeは編集部の予想スタメン（PRE_MATCH／actualLineupsとは独立）。
+    // predictedLineups.awayは神戸側の予想が未作成のためのplaceholder（formation「情報準備中」・
+    // starters空配列。FormationPitchはformationRows未定義で描画されず、選手名は捏造しない）。
+    // 神戸側の予想スタメン・PRE分析等は別Phaseで追加する（推測でPRE分析を捏造しない）。
     id: "match-10",
     homeTeam: verdy,
     awayTeam: opponent("vissel-kobe", "ヴィッセル神戸"),
@@ -978,6 +981,28 @@ export const matches: Match[] = [
       characteristics: { attack: "情報準備中", defense: "情報準備中" },
       keyPlayers: [],
       recentTrend: "情報準備中",
+    },
+    predictedLineups: {
+      home: {
+        formation: "3-4-2-1",
+        starters: [
+          { number: 1, name: "マテウス", position: "GK" },
+          { number: 15, name: "鈴木 海音", position: "DF" },
+          { number: 4, name: "林 尚輝", position: "DF" },
+          { number: 5, name: "井上 竜太", position: "DF" },
+          { number: 18, name: "溝口 修平", position: "MF" },
+          { number: 16, name: "平川 怜", position: "MF", alternative: "柴戸 海" },
+          { number: 20, name: "食野 壮磨", position: "MF" },
+          { number: 22, name: "内田 陽介", position: "MF" },
+          { number: 7, name: "松橋 優安", position: "FW" },
+          { number: 25, name: "熊取谷 一星", position: "FW" },
+          { number: 38, name: "神田 奏真", position: "FW", alternative: "染野 唯月" },
+        ],
+      },
+      away: {
+        formation: "情報準備中",
+        starters: [],
+      },
     },
     matchNotes: [],
     focusPoints: [],
