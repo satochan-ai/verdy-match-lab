@@ -955,10 +955,9 @@ export const matches: Match[] = [
     // 同一fixture。鹿島戦（match-9）がPOST MATCH化されNEXT MATCH表示から外れたことに伴い、
     // getNextMatch()のフォールバック（scheduledなmatchが無い場合はmatches[0]へ落ちる）を
     // 避けるための最小限のPRE_MATCHプレースホルダー。
-    // predictedLineups.homeは編集部の予想スタメン（PRE_MATCH／actualLineupsとは独立）。
-    // predictedLineups.awayは神戸側の予想が未作成のためのplaceholder（formation「情報準備中」・
-    // starters空配列。FormationPitchはformationRows未定義で描画されず、選手名は捏造しない）。
-    // 神戸側の予想スタメン・PRE分析等は別Phaseで追加する（推測でPRE分析を捏造しない）。
+    // predictedLineups.home/awayはいずれも編集部の予想スタメン（PRE_MATCH／actualLineupsとは独立）。
+    // awayは09.02時点で神戸の公式スタメン未発表のため、直近試合の4-1-2-3と起用を参考にした暫定予想。
+    // 負傷・出場停止・コンディション等の欠場情報は推測で追加しない（別途最新情報でalternative等を検討）。
     id: "match-10",
     homeTeam: verdy,
     awayTeam: opponent("vissel-kobe", "ヴィッセル神戸"),
@@ -1000,8 +999,20 @@ export const matches: Match[] = [
         ],
       },
       away: {
-        formation: "情報準備中",
-        starters: [],
+        formation: "4-1-2-3",
+        starters: [
+          { number: 1, name: "前川 黛也", position: "GK" },
+          { number: 15, name: "ジエゴ", position: "DF" },
+          { number: 3, name: "マテウス トゥーレル", position: "DF" },
+          { number: 4, name: "山川 哲史", position: "DF" },
+          { number: 17, name: "髙橋 壱晟", position: "DF" },
+          { number: 44, name: "日髙 光揮", position: "MF" },
+          { number: 5, name: "郷家 友太", position: "MF" },
+          { number: 7, name: "井手口 陽介", position: "MF" },
+          { number: 26, name: "ジェアン パトリッキ", position: "FW" },
+          { number: 29, name: "小松 蓮", position: "FW" },
+          { number: 41, name: "永戸 勝也", position: "FW" },
+        ],
       },
     },
     matchNotes: [],
