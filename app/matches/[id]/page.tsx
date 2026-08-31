@@ -101,6 +101,19 @@ export default async function MatchDetailPage({
 
         const strategyBlock = match.strategies.length > 0 && <StrategyList strategies={match.strategies} />;
 
+        // 試合前短評（Editorial Layer）。予想スタメン等の事実データがある試合では
+        // fixtureInfoBlock（MATCH INFO）が出ないため、matchNotesを独自分析として明示的に表示する。
+        const previewBlock = hasPreMatchContent && match.matchNotes.length > 0 && (
+          <section>
+            <SectionHeader title="試合前短評" eyebrow="PRE-MATCH REVIEW" />
+            <div className="space-y-2 border-y border-border bg-surface px-3 py-3 text-[13px] leading-relaxed text-text-primary">
+              {match.matchNotes.map((note) => (
+                <p key={note}>{note}</p>
+              ))}
+            </div>
+          </section>
+        );
+
         const availabilityBlock = match.availability && (
           <AvailabilityInfo availability={match.availability} />
         );
@@ -155,13 +168,14 @@ export default async function MatchDetailPage({
         return (
           <>
             {/*
-              モバイル：既存の表示順（試合概要→三策→予想スタメン→出場情報→前節→ガイド）を
+              モバイル：既存の表示順（試合概要→三策→短評→予想スタメン→出場情報→前節→ガイド）を
               そのまま維持する専用ブロック。PC版とはCSS上で排他表示にし、DOM順序を変えない。
             */}
             <div className="space-y-8 lg:hidden">
               {overviewBlock}
               {fixtureInfoBlock}
               {strategyBlock}
+              {previewBlock}
               {predictedLineupsBlock}
               {officialLineupsBlock}
               {availabilityBlock}
@@ -185,6 +199,7 @@ export default async function MatchDetailPage({
               </div>
               <div className="space-y-8">
                 {strategyBlock}
+                {previewBlock}
                 {guideBlock}
               </div>
             </div>
