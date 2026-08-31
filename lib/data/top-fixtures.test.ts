@@ -14,22 +14,22 @@ test("TOP schedule adapter produces valid CommonFixtures", () => {
 });
 
 test("TOP NEXT and NEXT5 use the schedule-derived CommonFixture selector", () => {
-  assert.equal(getNextFixture(topFixtures, now)?.opponentName, "神戸");
-  assert.deepEqual(getUpcomingFixtures(topFixtures, now, 5).map((fixture) => fixture.opponentName), ["神戸", "C大阪", "レイラック滋賀", "千葉", "浦和"]);
+  assert.equal(getNextFixture(topFixtures, now)?.opponentName, "ヴィッセル神戸");
+  assert.deepEqual(getUpcomingFixtures(topFixtures, now, 5).map((fixture) => fixture.opponentName), ["ヴィッセル神戸", "セレッソ大阪", "レイラック滋賀", "ジェフユナイテッド千葉", "浦和レッズ"]);
   assert.equal(getUpcomingFixtures(topFixtures, now, 5).length, 5);
 });
 
 test("TOP LAST is 08.29鹿島 and finished fixtures never enter NEXT", () => {
-  assert.equal(getLatestFinishedFixture(topFixtures, )?.opponentName, "鹿島");
+  assert.equal(getLatestFinishedFixture(topFixtures, )?.opponentName, "鹿島アントラーズ");
   assert.equal(getUpcomingFixtures(topFixtures, now).some((fixture) => fixture.status === "finished"), false);
 });
 
 test("TOP finishing simulations update NEXT and LAST without changing detail IDs", () => {
   const first = topFixtures.map((fixture) => fixture.id === "sched-kobe" ? { ...fixture, status: "finished" as const, score: { home: 0, away: 1 } } : fixture);
-  assert.equal(getNextFixture(first, now)?.opponentName, "C大阪");
-  assert.equal(getLatestFinishedFixture(first)?.opponentName, "神戸");
+  assert.equal(getNextFixture(first, now)?.opponentName, "セレッソ大阪");
+  assert.equal(getLatestFinishedFixture(first)?.opponentName, "ヴィッセル神戸");
   const second = first.map((fixture) => fixture.id === "sched-cerezo" ? { ...fixture, status: "finished" as const, score: { home: 1, away: 0 } } : fixture);
   assert.equal(getNextFixture(second, now)?.opponentName, "レイラック滋賀");
-  assert.equal(getLatestFinishedFixture(second)?.opponentName, "C大阪");
+  assert.equal(getLatestFinishedFixture(second)?.opponentName, "セレッソ大阪");
   assert.equal(topFixtures.find((fixture) => fixture.id === "sched-kashima")?.detailMatchId, "match-9");
 });
