@@ -62,6 +62,8 @@ const supplementaryStats: { key: keyof MatchStats["home"]; label: string }[] = [
   { key: "redCards", label: "退場" },
 ];
 
+const foulsStat = { key: "fouls" as const, label: "ファウル" };
+
 function StatRows({
   stats,
   items,
@@ -121,7 +123,15 @@ function MatchStatsSection({
       </div>
       <StatRows stats={stats} items={primaryStats} homeTeamName={homeTeamName} awayTeamName={awayTeamName} />
       <div className="mt-2">
-        <StatRows stats={stats} items={supplementaryStats} homeTeamName={homeTeamName} awayTeamName={awayTeamName} compact />
+        <StatRows
+          stats={stats}
+          items={stats.home.fouls !== undefined && stats.away.fouls !== undefined
+            ? [...supplementaryStats, foulsStat]
+            : supplementaryStats}
+          homeTeamName={homeTeamName}
+          awayTeamName={awayTeamName}
+          compact
+        />
       </div>
     </div>
   );

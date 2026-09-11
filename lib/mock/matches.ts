@@ -1075,8 +1075,8 @@ export const matches: Match[] = [
       { minute: "31'", team: "神戸", playerIn: "鍬先 祐弥", playerOut: "飯野 七聖" },
     ],
     matchStats: {
-      home: { shots: 14, shotsOnTarget: 7, possession: "44%", passSuccessRate: "70%", distance: "116.6km", sprints: 130, offsides: 3, corners: 6, freeKicks: 18, yellowCards: 3, redCards: 0 },
-      away: { shots: 8, shotsOnTarget: 3, possession: "56%", passSuccessRate: "69%", distance: "58.1km", sprints: 68, offsides: 1, corners: 3, freeKicks: 5, yellowCards: 1, redCards: 0 },
+      home: { shots: 6, shotsOnTarget: 0, possession: "56%", passSuccessRate: "78%", distance: "117km", sprints: 132, offsides: 1, corners: 3, freeKicks: 13, fouls: 15, yellowCards: 3, redCards: 0 },
+      away: { shots: 16, shotsOnTarget: 7, possession: "44%", passSuccessRate: "70%", distance: "116km", sprints: 130, offsides: 3, corners: 6, freeKicks: 10, fouls: 12, yellowCards: 1, redCards: 0 },
     },
     // 試合前の出場可否情報（PRE_MATCH）。ユーザー提供の暫定情報を反映し、欠場は「予定」扱い。
     // 負傷名・復帰時期・欠場理由等は今回持たせない（推測・web補完はしない）。

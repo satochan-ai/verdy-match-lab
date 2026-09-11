@@ -54,3 +54,10 @@ test("match-10 actual formations and benches are confirmed separately from predi
   }
   assert.ok(match10.predictedLineups, "pre-match predictions should remain");
 });
+
+test("match-10 official stats match the confirmed final totals", () => {
+  assert.deepEqual(match10.matchStats, {
+    home: { shots: 6, shotsOnTarget: 0, possession: "56%", passSuccessRate: "78%", distance: "117km", sprints: 132, offsides: 1, corners: 3, freeKicks: 13, fouls: 15, yellowCards: 3, redCards: 0 },
+    away: { shots: 16, shotsOnTarget: 7, possession: "44%", passSuccessRate: "70%", distance: "116km", sprints: 130, offsides: 3, corners: 6, freeKicks: 10, fouls: 12, yellowCards: 1, redCards: 0 },
+  });
+});
