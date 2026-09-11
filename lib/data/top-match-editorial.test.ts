@@ -27,10 +27,16 @@ test("match-10 actual formations and benches are confirmed separately from predi
   assert.equal(match10.actualLineups?.home.formation, "3-4-2-1");
   assert.equal(match10.actualLineups?.away.formation, "4-1-2-3");
 
+  const homeStarters = Object.values(match10.actualLineups!.home.starters).flat();
+  const awayStarters = Object.values(match10.actualLineups!.away.starters).flat();
+  assert.equal(homeStarters.length, 11);
+  assert.equal(awayStarters.length, 11);
+
   const homeBench = Object.values(match10.actualLineups!.home.bench).flat();
   const awayBench = Object.values(match10.actualLineups!.away.bench).flat();
   assert.equal(homeBench.length, 9);
   assert.equal(awayBench.length, 9);
+  assert.equal(new Set(awayStarters.concat(awayBench)).size, 20);
   assert.equal(homeBench.includes("14 福田 湧矢"), false);
   assert.equal(awayBench.includes("14 福田 湧矢"), false);
 
