@@ -96,7 +96,10 @@ export const scheduleMatches: ScheduleMatch[] = [
     venue: "YANMAR HANASAKA STADIUM",
     isVerdyHome: false,
     opponentName: "セレッソ大阪",
-    status: "scheduled",
+    status: "finished",
+    homeScore: 0,
+    awayScore: 0,
+    detailMatchId: "match-11",
   },
   {
     id: "sched-levain-1st",

@@ -1128,6 +1128,70 @@ export const matches: Match[] = [
     ],
   },
   {
+    // 第6節。公式試合記録（https://www.jleague.jp/match/j1/2026/090608/）で確認できた
+    // 試合終了記録。試合前の予測・分析は作成せず、公式記録のみを保持する。
+    id: "match-11",
+    homeTeam: opponent("cerezo-osaka", "セレッソ大阪"),
+    awayTeam: verdy,
+    isVerdyHome: false,
+    kickoffAt: "2026-09-06T19:00:00+09:00",
+    venue: "YANMAR HANASAKA STADIUM",
+    status: "finished",
+    homeScore: 0,
+    awayScore: 0,
+    timeSegment: null,
+    fixtureMeta: { competition: "2026 J1リーグ", roundLabel: "第6節" },
+    officialRecord: {
+      kickoff: "19:00",
+      attendance: 16939,
+      weather: "曇り一時雨",
+      temperature: "26℃",
+      humidity: "76%",
+      sourceUrl: "https://www.jleague.jp/match/j1/2026/090608/",
+    },
+    actualLineups: {
+      home: {
+        formation: "3-4-2-1",
+        starters: {
+          GK: ["23 中村 航輔"], DF: ["4 井上 黎生人", "27 ディオン クールズ", "44 畠中 槙之輔"],
+          MF: ["2 中村 拓海", "10 田中 駿汰", "14 横山 夢樹", "36 ジャクソン アーバイン", "41 小見 洋太", "66 大畑 歩夢"],
+          FW: ["11 チアゴ アンドラーデ"],
+        },
+        bench: { GK: [], DF: [], MF: [], FW: [] },
+      },
+      away: {
+        formation: "3-4-3",
+        starters: {
+          GK: ["1 マテウス"], DF: ["5 井上 竜太", "15 鈴木 海音", "29 佐古 真礼"],
+          MF: ["8 齋藤 功佑", "16 平川 怜", "18 溝口 修平", "40 新井 悠太"],
+          FW: ["9 染野 唯月", "14 福田 湧矢", "71 平尾 勇人"],
+        },
+        bench: { GK: [], DF: [], MF: [], FW: [] },
+      },
+    },
+    goals: [],
+    cards: [{ minute: "16'", player: "小見 洋太", team: "東京V", type: "yellow" }],
+    substitutions: [
+      { minute: "44'", team: "東京V", playerIn: "柴戸 海", playerOut: "食野 壮磨" },
+      { minute: "44'", team: "東京V", playerIn: "熊取谷 一星", playerOut: "松橋 優安" },
+      { minute: "44'", team: "東京V", playerIn: "パブロ サバック", playerOut: "横山 夢樹" },
+      { minute: "40'", team: "Ｃ大阪", playerIn: "香川 真司", playerOut: "大畑 歩夢" },
+      { minute: "33'", team: "Ｃ大阪", playerIn: "神田 奏真", playerOut: "福田 湧矢" },
+      { minute: "28'", team: "Ｃ大阪", playerIn: "ルーカス フェルナンデス", playerOut: "チアゴ アンドラーデ" },
+      { minute: "19'", team: "東京V", playerIn: "松橋 優安", playerOut: "平尾 勇人" },
+      { minute: "19'", team: "東京V", playerIn: "食野 壮磨", playerOut: "齋藤 功佑" },
+      { minute: "19'", team: "東京V", playerIn: "奥田 勇斗", playerOut: "中村 拓海" },
+      { minute: "16'", team: "Ｃ大阪", playerIn: "櫻川 ソロモン", playerOut: "小見 洋太" },
+    ],
+    matchStats: {
+      home: { shots: 17, shotsOnTarget: 2, possession: "62%", passSuccessRate: "81%", distance: "118.1km", sprints: 141, offsides: 2, corners: 8, freeKicks: 10, yellowCards: 1, redCards: 0 },
+      away: { shots: 5, shotsOnTarget: 2, possession: "38%", passSuccessRate: "68%", distance: "120.4km", sprints: 152, offsides: 0, corners: 3, freeKicks: 8, yellowCards: 0, redCards: 0 },
+    },
+    verdyProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
+    opponentProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
+    matchNotes: [], focusPoints: [], strategies: [],
+  },
+  {
     // 第1節。公式試合記録（https://www.jleague.jp/match/j1/2026/080901/）で確認できた
     // 事実のみを反映。当時PRE_MATCH分析・predictedLineupsを作成していなかったため、
     // 後から予想を捏造して追加しない（verdyProfile/opponentProfileは情報準備中のまま維持）。
