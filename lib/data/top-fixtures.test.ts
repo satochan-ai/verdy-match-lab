@@ -4,7 +4,7 @@ import { getLatestFinishedFixture, getNextFixture, getUpcomingFixtures } from ".
 import { topFixtures } from "./top-fixtures.ts";
 import { validateFixtures } from "./fixture-validation.ts";
 
-const now = new Date("2026-08-30T00:00:00+09:00");
+const now = new Date("2026-09-03T00:00:00+09:00");
 
 test("TOP schedule adapter produces valid CommonFixtures", () => {
   assert.equal(validateFixtures(topFixtures).length, 0);
@@ -14,13 +14,13 @@ test("TOP schedule adapter produces valid CommonFixtures", () => {
 });
 
 test("TOP NEXT and NEXT5 use the schedule-derived CommonFixture selector", () => {
-  assert.equal(getNextFixture(topFixtures, now)?.opponentName, "ヴィッセル神戸");
-  assert.deepEqual(getUpcomingFixtures(topFixtures, now, 5).map((fixture) => fixture.opponentName), ["ヴィッセル神戸", "セレッソ大阪", "レイラック滋賀", "ジェフユナイテッド千葉", "浦和レッズ"]);
-  assert.equal(getUpcomingFixtures(topFixtures, now, 5).length, 5);
+  assert.equal(getNextFixture(topFixtures, now)?.opponentName, "セレッソ大阪");
+  assert.deepEqual(getUpcomingFixtures(topFixtures, now, 5).map((fixture) => fixture.opponentName), ["セレッソ大阪", "レイラック滋賀", "ジェフユナイテッド千葉", "浦和レッズ"]);
+  assert.equal(getUpcomingFixtures(topFixtures, now, 5).length, 4);
 });
 
-test("TOP LAST is 08.29鹿島 and finished fixtures never enter NEXT", () => {
-  assert.equal(getLatestFinishedFixture(topFixtures, )?.opponentName, "鹿島アントラーズ");
+test("TOP LAST is 09.02神戸 and finished fixtures never enter NEXT", () => {
+  assert.equal(getLatestFinishedFixture(topFixtures)?.opponentName, "ヴィッセル神戸");
   assert.equal(getUpcomingFixtures(topFixtures, now).some((fixture) => fixture.status === "finished"), false);
 });
 

@@ -951,10 +951,8 @@ export const matches: Match[] = [
     ],
   },
   {
-    // 第5節（節数未確認）・神戸戦。lib/mock/schedule.tsのsched-kobe（既存source of truth）と
-    // 同一fixture。鹿島戦（match-9）がPOST MATCH化されNEXT MATCH表示から外れたことに伴い、
-    // getNextMatch()のフォールバック（scheduledなmatchが無い場合はmatches[0]へ落ちる）を
-    // 避けるための最小限のPRE_MATCHプレースホルダー。
+    // 第5節・神戸戦。公式試合記録（https://www.jleague.jp/match/j1/2026/090218/）で確認した
+    // 試合終了記録。PRE_MATCHの予想データは答え合わせ用にそのまま保持する。
     // predictedLineups.home/awayはいずれも編集部の予想スタメン（PRE_MATCH／actualLineupsとは独立）。
     // awayは09.02時点で神戸の公式スタメン未発表のため、直近試合の4-1-2-3と起用を参考にした暫定予想。
     // 負傷・出場停止・コンディション等の欠場情報は推測で追加しない（別途最新情報でalternative等を検討）。
@@ -964,11 +962,19 @@ export const matches: Match[] = [
     isVerdyHome: true,
     kickoffAt: "2026-09-02T19:00:00+09:00",
     venue: "味の素スタジアム",
-    status: "scheduled",
-    homeScore: null,
-    awayScore: null,
+    status: "finished",
+    homeScore: 0,
+    awayScore: 2,
     timeSegment: null,
-    fixtureMeta: { competition: "2026 J1リーグ" },
+    fixtureMeta: { competition: "2026 J1リーグ", roundLabel: "第5節" },
+    officialRecord: {
+      kickoff: "19:00",
+      attendance: 9087,
+      weather: "曇り",
+      temperature: "27.8℃",
+      humidity: "67%",
+      sourceUrl: "https://www.jleague.jp/match/j1/2026/090218/",
+    },
     verdyProfile: {
       formation: "情報準備中",
       characteristics: { attack: "情報準備中", defense: "情報準備中" },
@@ -1014,6 +1020,53 @@ export const matches: Match[] = [
           { number: 41, name: "永戸 勝也", position: "FW" },
         ],
       },
+    },
+    actualLineups: {
+      home: {
+        formation: "3-4-2-1",
+        starters: {
+          GK: ["1 マテウス"],
+          DF: ["4 林 尚輝", "5 井上 竜太", "15 鈴木 海音"],
+          MF: ["16 平川 怜", "18 溝口 修平", "20 食野 壮磨", "22 内田 陽介"],
+          FW: ["7 松橋 優安", "9 染野 唯月", "29 小松 蓮"],
+        },
+        bench: { GK: [], DF: [], MF: [], FW: [] },
+      },
+      away: {
+        formation: "4-1-2-3",
+        starters: {
+          GK: ["71 権田 修一"],
+          DF: ["3 マテウス トゥーレル", "4 山川 哲史", "15 ジエゴ", "41 永戸 勝也"],
+          MF: ["2 飯野 七聖", "5 郷家 友太", "7 井手口 陽介"],
+          FW: ["17 髙橋 壱晟", "14 福田 湧矢", "29 小松 蓮"],
+        },
+        bench: { GK: [], DF: [], MF: [], FW: [] },
+      },
+    },
+    goals: [
+      { minute: "16'", scorer: "髙橋 壱晟", team: "神戸" },
+      { minute: "51'", scorer: "永戸 勝也", team: "神戸" },
+    ],
+    cards: [
+      { minute: "36'", player: "井上 竜太", team: "東京V", type: "yellow" },
+      { minute: "39'", player: "福田 湧矢", team: "東京V", type: "yellow" },
+      { minute: "39'", player: "食野 壮磨", team: "東京V", type: "yellow" },
+      { minute: "39'", player: "郷家 友太", team: "神戸", type: "yellow" },
+    ],
+    substitutions: [
+      { minute: "44'", team: "東京V", playerIn: "川端 彪英", playerOut: "髙橋 壱晟" },
+      { minute: "44'", team: "東京V", playerIn: "平尾 勇人", playerOut: "溝口 修平" },
+      { minute: "31'", team: "東京V", playerIn: "神田 奏真", playerOut: "平川 怜" },
+      { minute: "14'", team: "東京V", playerIn: "大迫 勇也", playerOut: "小松 蓮" },
+      { minute: "14'", team: "東京V", playerIn: "新井 悠太", playerOut: "内田 陽介" },
+      { minute: "14'", team: "東京V", playerIn: "齋藤 功佑", playerOut: "松橋 優安" },
+      { minute: "0'", team: "神戸", playerIn: "日髙 光揮", playerOut: "郷家 友太" },
+      { minute: "0'", team: "神戸", playerIn: "佐古 真礼", playerOut: "林 尚輝" },
+      { minute: "31'", team: "神戸", playerIn: "鍬先 祐弥", playerOut: "飯野 七聖" },
+    ],
+    matchStats: {
+      home: { shots: 14, shotsOnTarget: 7, possession: "44%", passSuccessRate: "70%", distance: "116.6km", sprints: 130, offsides: 3, corners: 6, freeKicks: 18, yellowCards: 3, redCards: 0 },
+      away: { shots: 8, shotsOnTarget: 3, possession: "56%", passSuccessRate: "69%", distance: "58.1km", sprints: 68, offsides: 1, corners: 3, freeKicks: 5, yellowCards: 1, redCards: 0 },
     },
     // 試合前の出場可否情報（PRE_MATCH）。ユーザー提供の暫定情報を反映し、欠場は「予定」扱い。
     // 負傷名・復帰時期・欠場理由等は今回持たせない（推測・web補完はしない）。

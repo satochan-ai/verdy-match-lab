@@ -83,7 +83,10 @@ export const scheduleMatches: ScheduleMatch[] = [
     venue: "味の素スタジアム",
     isVerdyHome: true,
     opponentName: "ヴィッセル神戸",
-    status: "scheduled",
+    status: "finished",
+    homeScore: 0,
+    awayScore: 2,
+    detailMatchId: "match-10",
   },
   {
     id: "sched-cerezo",
