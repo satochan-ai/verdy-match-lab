@@ -22,3 +22,23 @@ test("match-10 strategies are pre-match (pending, no result comment)", () => {
     assert.ok(s.description.length > 0);
   }
 });
+
+test("match-10 actual formations and benches are confirmed separately from predictions", () => {
+  assert.equal(match10.actualLineups?.home.formation, "3-4-2-1");
+  assert.equal(match10.actualLineups?.away.formation, "4-1-2-3");
+
+  const homeBench = Object.values(match10.actualLineups!.home.bench).flat();
+  const awayBench = Object.values(match10.actualLineups!.away.bench).flat();
+  assert.equal(homeBench.length, 9);
+  assert.equal(awayBench.length, 9);
+  assert.equal(homeBench.includes("14 福田 湧矢"), false);
+  assert.equal(awayBench.includes("14 福田 湧矢"), false);
+
+  for (const player of ["29 佐古 真礼", "40 新井 悠太", "8 齋藤 功佑", "38 神田 奏真", "71 平尾 勇人"]) {
+    assert.ok(homeBench.includes(player), `${player} should be on the Tokyo Verdy bench`);
+  }
+  for (const player of ["44 日髙 光揮", "10 大迫 勇也", "25 鍬先 祐弥", "62 川端 彪英"]) {
+    assert.ok(awayBench.includes(player), `${player} should be on the Vissel Kobe bench`);
+  }
+  assert.ok(match10.predictedLineups, "pre-match predictions should remain");
+});
