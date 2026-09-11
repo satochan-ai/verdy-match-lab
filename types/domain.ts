@@ -89,6 +89,8 @@ export interface TeamMatchStats {
   offsides: number;
   corners: number;
   freeKicks: number;
+  /** 公式試合記録で確認できたファウル数。旧データ互換のため任意。 */
+  fouls?: number;
   yellowCards: number;
   redCards: number;
 }
