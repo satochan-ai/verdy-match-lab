@@ -73,3 +73,17 @@ test("match-10 official stats match the confirmed final totals", () => {
     away: { shots: 16, shotsOnTarget: 7, possession: "44%", passSuccessRate: "70%", distance: "116km", sprints: 130, offsides: 3, corners: 6, freeKicks: 10, fouls: 12, yellowCards: 1, redCards: 0 },
   });
 });
+
+test("match-10 substitutions match every official J.League change", () => {
+  assert.deepEqual(match10.substitutions, [
+    { minute: "44'", team: "東京V", playerIn: "川端 彪英", playerOut: "髙橋 壱晟" },
+    { minute: "44'", team: "東京V", playerIn: "平尾 勇人", playerOut: "溝口 修平" },
+    { minute: "31'", team: "東京V", playerIn: "神田 奏真", playerOut: "平川 怜" },
+    { minute: "14'", team: "東京V", playerIn: "大迫 勇也", playerOut: "小松 蓮" },
+    { minute: "14'", team: "東京V", playerIn: "新井 悠太", playerOut: "内田 陽介" },
+    { minute: "14'", team: "東京V", playerIn: "齋藤 功佑", playerOut: "松橋 優安" },
+    { minute: "0'", team: "神戸", playerIn: "日髙 光揮", playerOut: "郷家 友太" },
+    { minute: "0'", team: "神戸", playerIn: "佐古 真礼", playerOut: "林 尚輝" },
+    { minute: "31'", team: "神戸", playerIn: "鍬先 祐弥", playerOut: "飯野 七聖" },
+  ]);
+});
