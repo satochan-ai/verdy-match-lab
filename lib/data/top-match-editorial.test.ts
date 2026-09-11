@@ -26,6 +26,12 @@ test("match-10 strategies are pre-match (pending, no result comment)", () => {
 test("match-10 actual formations and benches are confirmed separately from predictions", () => {
   assert.equal(match10.actualLineups?.home.formation, "3-4-2-1");
   assert.equal(match10.actualLineups?.away.formation, "4-1-2-3");
+  assert.deepEqual(match10.actualLineups?.away.starters.DF, [
+    "17 髙橋 壱晟", "4 山川 哲史", "3 マテウス トゥーレル", "15 ジエゴ",
+  ]);
+  assert.deepEqual(match10.actualLineups?.away.starters.MF, [
+    "2 飯野 七聖", "7 井手口 陽介", "24 酒井 高徳", "5 郷家 友太",
+  ]);
 
   const homeStarters = Object.values(match10.actualLineups!.home.starters).flat();
   const awayStarters = Object.values(match10.actualLineups!.away.starters).flat();
