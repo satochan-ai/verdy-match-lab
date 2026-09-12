@@ -5,7 +5,7 @@ import { belezaFixtures, toBelezaSeasonHistoryEntry } from "./beleza-fixtures.ts
 import { belezaActualLineup, belezaActualFormation, inacKobeActualLineup } from "../mock/beleza.ts";
 import { validateFixtures } from "./fixture-validation.ts";
 
-const now = new Date("2026-09-06T00:00:00+09:00");
+const now = new Date("2026-09-13T00:00:00+09:00");
 
 test("BELEZA fixture collection is valid", () => {
   assert.equal(validateFixtures(belezaFixtures).length, 0);
@@ -25,50 +25,35 @@ test("BELEZA vs INAC official live lineups preserve confirmed counts and formati
   assert.equal(Object.values(inacKobeActualLineup.starters).flat().length, 11);
   assert.equal(Object.values(inacKobeActualLineup.bench).flat().length, 7);
   assert.equal(belezaActualFormation.formation, "3-4-2-1");
-  assert.equal(belezaFixtures.find((fixture) => fixture.id === "beleza-next-3")?.status, "scheduled");
+  assert.equal(belezaFixtures.find((fixture) => fixture.id === "beleza-next-3")?.status, "finished");
 });
 
 test("BELEZA season history entries carry detailMatchId through for mobile/desktop history links", () => {
   const history = getSeasonHistory(belezaFixtures).map(toBelezaSeasonHistoryEntry);
-  assert.equal(history.length, 3);
+  assert.equal(history.length, 4);
   assert.equal(history.every((entry) => entry.detailMatchId === entry.id), true);
 });
 
-test("BELEZA NEXT is 09.12 INAC神戸 and NEXT5 excludes finished fixtures", () => {
-  assert.equal(getNextFixture(belezaFixtures, now)?.opponentName, "INAC神戸レオネッサ");
+test("BELEZA NEXT is 09.19 ちふれ and NEXT5 excludes finished fixtures", () => {
+  assert.equal(getNextFixture(belezaFixtures, now)?.opponentName, "ちふれASエルフェン埼玉");
   const upcoming = getUpcomingFixtures(belezaFixtures, now, 5);
-  assert.equal(upcoming.length, 4);
+  assert.equal(upcoming.length, 3);
   assert.equal(upcoming.every((fixture) => fixture.status === "scheduled"), true);
-  assert.deepEqual(upcoming.map((fixture) => fixture.opponentName), ["INAC神戸レオネッサ", "ちふれASエルフェン埼玉", "アルビレックス新潟レディース", "セレッソ大阪ヤンマーレディース"]);
+  assert.deepEqual(upcoming.map((fixture) => fixture.opponentName), ["ちふれASエルフェン埼玉", "アルビレックス新潟レディース", "セレッソ大阪ヤンマーレディース"]);
 });
 
 test("BELEZA LAST, HISTORY and 09.05 浦和 result are derived", () => {
   const last = getLatestFinishedFixture(belezaFixtures)!;
-  assert.equal(last.opponentName, "三菱重工浦和レッズレディース");
-  assert.equal(toBelezaSeasonHistoryEntry(last).result, "loss");
+  assert.equal(last.opponentName, "INAC神戸レオネッサ");
+  assert.equal(toBelezaSeasonHistoryEntry(last).result, "win");
   const history = getSeasonHistory(belezaFixtures);
-  assert.equal(history.length, 3);
+  assert.equal(history.length, 4);
   assert.deepEqual(history.map((fixture) => fixture.opponentName), [
-    "三菱重工浦和レッズレディース", "AC長野パルセイロ・レディース", "ジェフユナイテッド市原・千葉レディース",
+    "INAC神戸レオネッサ", "三菱重工浦和レッズレディース", "AC長野パルセイロ・レディース", "ジェフユナイテッド市原・千葉レディース",
   ]);
   assert.equal(history.filter((fixture) => fixture.id === "beleza-match-3").length, 1);
 });
 
-test("BELEZA INAC match kicking off remains LIVE-only and leaves NEXT/LAST/History", () => {
-  const afterKickoff = new Date("2026-09-12T21:30:00+09:00");
-  assert.equal(getNextFixture(belezaFixtures, afterKickoff)?.opponentName, "ちふれASエルフェン埼玉");
-  const last = getLatestFinishedFixture(belezaFixtures)!;
-  assert.equal(last.opponentName, "三菱重工浦和レッズレディース");
-  assert.equal(getSeasonHistory(belezaFixtures).some((fixture) => fixture.id === "beleza-next-3"), false);
-});
-
-test("finishing 09.12 automatically moves BELEZA NEXT, LAST and HISTORY", () => {
-  const simulated = belezaFixtures.map((fixture) => fixture.id === "beleza-next-3"
-    ? { ...fixture, status: "finished" as const, score: { home: 2, away: 0 } }
-    : fixture);
-  assert.equal(getNextFixture(simulated, now)?.opponentName, "ちふれASエルフェン埼玉");
-  assert.equal(getLatestFinishedFixture(simulated)?.opponentName, "INAC神戸レオネッサ");
-  assert.deepEqual(getSeasonHistory(simulated).map((fixture) => fixture.opponentName), [
-    "INAC神戸レオネッサ", "三菱重工浦和レッズレディース", "AC長野パルセイロ・レディース", "ジェフユナイテッド市原・千葉レディース",
-  ]);
+test("BELEZA INAC official result is represented once in history", () => {
+  assert.equal(getSeasonHistory(belezaFixtures).filter((fixture) => fixture.id === "beleza-next-3").length, 1);
 });
