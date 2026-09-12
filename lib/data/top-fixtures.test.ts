@@ -16,22 +16,22 @@ test("TOP schedule adapter produces valid CommonFixtures", () => {
 });
 
 test("TOP NEXT and NEXT5 use the schedule-derived CommonFixture selector", () => {
-  assert.equal(getNextFixture(topFixtures, now)?.opponentName, "レイラック滋賀");
-  assert.deepEqual(getUpcomingFixtures(topFixtures, now, 5).map((fixture) => fixture.opponentName), ["レイラック滋賀", "ジェフユナイテッド千葉", "浦和レッズ"]);
-  assert.equal(getUpcomingFixtures(topFixtures, now, 5).length, 3);
+  assert.equal(getNextFixture(topFixtures, now)?.opponentName, "ジェフユナイテッド千葉");
+  assert.deepEqual(getUpcomingFixtures(topFixtures, now, 5).map((fixture) => fixture.opponentName), ["ジェフユナイテッド千葉", "浦和レッズ"]);
+  assert.equal(getUpcomingFixtures(topFixtures, now, 5).length, 2);
 });
 
-test("TOP LAST is 09.06 C大阪 and finished fixtures never enter NEXT", () => {
-  assert.equal(getLatestFinishedFixture(topFixtures)?.opponentName, "セレッソ大阪");
+test("TOP LAST is 09.09 滋賀 and finished fixtures never enter NEXT", () => {
+  assert.equal(getLatestFinishedFixture(topFixtures)?.opponentName, "レイラック滋賀FC");
   assert.equal(getUpcomingFixtures(topFixtures, now).some((fixture) => fixture.status === "finished"), false);
 });
 
 test("TOP finishing simulations update NEXT and LAST without changing detail IDs", () => {
   const first = topFixtures.map((fixture) => fixture.id === "sched-kobe" ? { ...fixture, status: "finished" as const, score: { home: 0, away: 1 } } : fixture);
-  assert.equal(getNextFixture(first, now)?.opponentName, "レイラック滋賀");
-  assert.equal(getLatestFinishedFixture(first)?.opponentName, "セレッソ大阪");
-  const second = first.map((fixture) => fixture.id === "sched-levain-1st" ? { ...fixture, status: "finished" as const, score: { home: 1, away: 0 } } : fixture);
-  assert.equal(getNextFixture(second, now)?.opponentName, "ジェフユナイテッド千葉");
-  assert.equal(getLatestFinishedFixture(second)?.opponentName, "レイラック滋賀");
+  assert.equal(getNextFixture(first, now)?.opponentName, "ジェフユナイテッド千葉");
+  assert.equal(getLatestFinishedFixture(first)?.opponentName, "レイラック滋賀FC");
+  const second = first.map((fixture) => fixture.id === "sched-chiba" ? { ...fixture, status: "finished" as const, score: { home: 1, away: 0 } } : fixture);
+  assert.equal(getNextFixture(second, now)?.opponentName, "浦和レッズ");
+  assert.equal(getLatestFinishedFixture(second)?.opponentName, "ジェフユナイテッド千葉");
   assert.equal(topFixtures.find((fixture) => fixture.id === "sched-kashima")?.detailMatchId, "match-9");
 });

@@ -84,8 +84,9 @@ export interface TeamMatchStats {
   shotsOnTarget: number;
   possession: string;
   passSuccessRate: string;
-  distance: string;
-  sprints: number;
+  /** 公式記録で取得できない場合は未設定のまま保持する。 */
+  distance?: string;
+  sprints?: number;
   offsides: number;
   corners: number;
   freeKicks: number;

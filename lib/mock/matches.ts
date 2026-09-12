@@ -1128,6 +1128,86 @@ export const matches: Match[] = [
     ],
   },
   {
+    // ルヴァンカップ1回戦。Jリーグ公式試合記録で確認できた終了後の公式記録のみを保持する。
+    id: "match-12",
+    homeTeam: opponent("leylac-shiga", "レイラック滋賀FC"),
+    awayTeam: verdy,
+    isVerdyHome: false,
+    kickoffAt: "2026-09-09T18:30:00+09:00",
+    venue: "平和堂ＨＡＴＯスタジアム",
+    status: "finished",
+    homeScore: 0,
+    awayScore: 1,
+    timeSegment: null,
+    fixtureMeta: { competition: "ルヴァン", roundLabel: "1回戦" },
+    officialRecord: {
+      kickoff: "18:30",
+      attendance: 2885,
+      weather: "曇り",
+      temperature: "22.9℃",
+      humidity: "86%",
+      sourceUrl: "https://www.jleague.jp/match/leaguecup/2026/090904/",
+    },
+    actualLineups: {
+      home: {
+        formation: "4-4-2",
+        starters: {
+          GK: ["1 伊東 倖希"],
+          DF: ["36 前川 智敬", "48 谷田 壮志朗", "2 平井 駿助", "4 井出 敬大"],
+          MF: ["23 竜田 柊士", "7 久保 瑛史", "32 海口 彦太", "30 山口 隆希"],
+          FW: ["10 人見 拓哉", "29 日野 友貴"],
+        },
+        bench: {
+          GK: ["41 本吉 勇貴"],
+          DF: ["55 小野寺 健也"],
+          MF: ["8 中村 健人", "11 三宅 海斗", "16 鈴木 翔太", "18 秋山 駿", "66 松原 海斗"],
+          FW: ["9 坂元 一渚璃", "77 北條 真汰"],
+        },
+      },
+      away: {
+        formation: "3-4-2-1",
+        starters: {
+          GK: ["21 長沢 祐弥"],
+          DF: ["22 内田 陽介", "29 佐古 真礼", "36 松田 陸"],
+          MF: ["42 今井 健人", "28 山本 丈偉", "2 柴戸 海", "7 松橋 優安"],
+          FW: ["38 神田 奏真", "27 白井 亮丞", "24 仲山 獅恩"],
+        },
+        bench: {
+          GK: ["41 中村 圭佑"],
+          DF: ["50 カマラ シェック セザール"],
+          MF: ["20 食野 壮磨", "30 川村 楽人"],
+          FW: ["13 山田 剛綺", "17 キム ヒョンウ", "25 熊取谷 一星", "51 大藤 颯太", "71 平尾 勇人"],
+        },
+      },
+    },
+    goals: [{ minute: "90+5'", scorer: "キム ヒョンウ", team: "東京V" }],
+    cards: [
+      { minute: "27'", player: "柴戸 海", team: "東京V", type: "yellow" },
+      { minute: "33'", player: "神田 奏真", team: "東京V", type: "yellow" },
+      { minute: "75'", player: "食野 壮磨", team: "東京V", type: "yellow" },
+      { minute: "90+2'", player: "今井 健人", team: "東京V", type: "yellow" },
+      { minute: "34'", player: "久保 瑛史", team: "滋賀", type: "yellow" },
+    ],
+    substitutions: [
+      { minute: "14'", team: "東京V", playerIn: "平尾 勇人", playerOut: "神田 奏真" },
+      { minute: "14'", team: "東京V", playerIn: "食野 壮磨", playerOut: "柴戸 海" },
+      { minute: "23'", team: "東京V", playerIn: "熊取谷 一星", playerOut: "松橋 優安" },
+      { minute: "30'", team: "東京V", playerIn: "キム ヒョンウ", playerOut: "白井 亮丞" },
+      { minute: "23'", team: "滋賀", playerIn: "北條 真汰", playerOut: "日野 友貴" },
+      { minute: "23'", team: "滋賀", playerIn: "三宅 海斗", playerOut: "山口 隆希" },
+      { minute: "23'", team: "滋賀", playerIn: "松原 海斗", playerOut: "竜田 柊士" },
+      { minute: "14'", team: "滋賀", playerIn: "中村 健人", playerOut: "久保 瑛史" },
+      { minute: "34'", team: "滋賀", playerIn: "秋山 駿", playerOut: "前川 智敬" },
+    ],
+    matchStats: {
+      home: { shots: 12, shotsOnTarget: 3, possession: "49%", passSuccessRate: "74%", offsides: 1, corners: 5, freeKicks: 15, yellowCards: 1, redCards: 0 },
+      away: { shots: 15, shotsOnTarget: 6, possession: "51%", passSuccessRate: "80%", offsides: 0, corners: 7, freeKicks: 15, yellowCards: 4, redCards: 0 },
+    },
+    verdyProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
+    opponentProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
+    matchNotes: [], focusPoints: [], strategies: [],
+  },
+  {
     // 第6節。公式試合記録（https://www.jleague.jp/match/j1/2026/090608/）で確認できた
     // 試合終了記録。試合前の予測・分析は作成せず、公式記録のみを保持する。
     id: "match-11",
@@ -1153,18 +1233,18 @@ export const matches: Match[] = [
       home: {
         formation: "3-4-2-1",
         starters: {
-          GK: ["23 中村 航輔"], DF: ["4 井上 黎生人", "27 ディオン クールズ", "44 畠中 槙之輔"],
-          MF: ["2 中村 拓海", "10 田中 駿汰", "14 横山 夢樹", "36 ジャクソン アーバイン", "41 小見 洋太", "66 大畑 歩夢"],
-          FW: ["11 チアゴ アンドラーデ"],
+          GK: ["23 中村 航輔"], DF: ["4 井上 黎生人", "44 畠中 槙之輔", "27 ディオン クールズ"],
+          MF: ["66 大畑 歩夢", "36 ジャクソン アーバイン", "10 田中 駿汰", "2 中村 拓海"],
+          FW: ["14 横山 夢樹", "41 小見 洋太", "11 チアゴ アンドラーデ"],
         },
         bench: { GK: [], DF: [], MF: [], FW: [] },
       },
       away: {
-        formation: "3-4-3",
+        formation: "3-4-2-1",
         starters: {
-          GK: ["1 マテウス"], DF: ["5 井上 竜太", "15 鈴木 海音", "29 佐古 真礼"],
-          MF: ["8 齋藤 功佑", "16 平川 怜", "18 溝口 修平", "40 新井 悠太"],
-          FW: ["9 染野 唯月", "14 福田 湧矢", "71 平尾 勇人"],
+          GK: ["1 マテウス"], DF: ["15 鈴木 海音", "29 佐古 真礼", "5 井上 竜太"],
+          MF: ["40 新井 悠太", "16 平川 怜", "8 齋藤 功佑", "18 溝口 修平"],
+          FW: ["71 平尾 勇人", "14 福田 湧矢", "9 染野 唯月"],
         },
         bench: { GK: [], DF: [], MF: [], FW: [] },
       },
