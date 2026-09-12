@@ -36,7 +36,7 @@ test("U-21 LAST and HISTORY are derived from the finished fixture", () => {
   assert.equal(toU21SeasonHistoryEntry(getLatestFinishedFixture(u21Fixtures)!).result, "loss");
 });
 
-test("U-21 09.12 U-21浦和 stays unfinished after kickoff time passes without an explicit finished status", () => {
+test("U-21 09.12 U-21浦和 remains LIVE-only after kickoff without explicit finished status", () => {
   // kickoffAt（09/12 18:00）を過ぎただけでは絶対にfinished扱いにしない
   // （試合前後の時刻だけを理由にfinished扱いされていた不具合の再発防止）。
   const wellAfterKickoff = new Date("2026-09-13T00:00:00+09:00");

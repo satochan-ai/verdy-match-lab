@@ -43,10 +43,7 @@ test("BELEZA LAST, HISTORY and 09.05 浦和 result are derived", () => {
   assert.equal(history.filter((fixture) => fixture.id === "beleza-match-3").length, 1);
 });
 
-test("BELEZA INAC match kicking off (kickoffAt in the past, status still scheduled) does not become LAST MATCH or enter Season History", () => {
-  // 09.12 18:00 のキックオフから数時間後を想定。resolveMatchStatusの表示上は
-  // "live"になり得るが、fixtureのstatus自体は明示的にfinishedへ書き換えるまで
-  // "scheduled"のまま（この選手はresolveMatchStatusを使わず生statusで判定する）。
+test("BELEZA INAC match kicking off remains LIVE-only and leaves NEXT/LAST/History", () => {
   const afterKickoff = new Date("2026-09-12T21:30:00+09:00");
   assert.equal(getNextFixture(belezaFixtures, afterKickoff)?.opponentName, "ちふれASエルフェン埼玉");
   const last = getLatestFinishedFixture(belezaFixtures)!;
