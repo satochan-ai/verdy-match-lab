@@ -204,18 +204,18 @@ test("match-13 stores only the Tokyo Verdy Chiba pre-match prediction", () => {
 test("match-13 pre-match editorial (strategies/focusPoints/matchNotes) treats Chiba's 4-4-2 as a hypothesis", () => {
   assert.equal(match13.strategies.length, 3);
   assert.deepEqual(match13.strategies.map(({ title }) => title), [
-    "千葉の2トップ脇から前進する",
-    "2シャドーを千葉の中盤背後へ",
-    "両WBの背後を使わせない",
+    "後ろの3対2を使いたい",
+    "シャドーが前を向けるか",
+    "失った後の一発に注意",
   ]);
   assert.equal(match13.strategies.every(({ result }) => result === "pending"), true);
 
   assert.equal(match13.focusPoints.length, 3);
-  assert.equal(match13.focusPoints.some((p) => p.startsWith("東京Vの3バック vs 千葉の前線")), true);
-  assert.equal(match13.focusPoints.some((p) => p.startsWith("内田・溝口の両WB")), true);
-  assert.equal(match13.focusPoints.some((p) => p.startsWith("7連戦最後の後半戦")), true);
+  assert.equal(match13.focusPoints.some((p) => p.startsWith("千葉15失点 vs 東京V総得点2")), true);
+  assert.equal(match13.focusPoints.some((p) => p.startsWith("両WBが高い位置を取れるか")), true);
+  assert.equal(match13.focusPoints.some((p) => p.startsWith("ルヴァン明けのメンバー構成")), true);
 
-  assert.equal(match13.matchNotes.length, 5);
+  assert.equal(match13.matchNotes.length, 6);
 
   // 千葉の4-4-2はユーザー確認済みの公式情報ではなく試合前の仮説のため、断定表現を使っていないこと。
   const editorialText = [
