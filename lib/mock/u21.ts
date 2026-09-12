@@ -23,17 +23,15 @@ import type {
 /**
  * === 東西リーグラウンド 第2節（U-21浦和レッズ戦）：現在表示中の1試合 ===
  * IDは既存のNEXT5エントリ「u21-next-1」をそのまま再利用する（重複作成しない）。
- * 出典：Jリーグ公式ラインナップ https://www.jleague.jp/match/u-21/2026/091225/#lineup
- * （ユーザー確認）。試合結果・status・goals/cards/substitutions/officialRecordは
- * ユーザーから未提供のため今回は変更しない：status: "scheduled"のままとし、
- * resolveMatchStatus（lib/match/status.ts）による自動scheduled/live判定に委ねる
- * （finishedへは時間経過だけで自動遷移しない）。公式スタメン・ベンチのみ登録する。
- * 公式ラインナップ画面上に「宮﨑 叶 1 goal」の表示が確認できたが、今回はスタメン登録
- * Phaseのため得点イベントは登録しない（結果登録Phaseで公式記録と時間を確認のうえ反映）。
+ * 出典：Jリーグ公式 https://www.jleague.jp/match/u-21/2026/091225/ （ユーザー確認済み、
+ * 試合終了）。status: "finished"へ明示的に変更し、最終スコア・得点・交代・警告・
+ * 公式試合記録を反映する。シュート数/CK/FK/オフサイド等は公式表示が「-」のため未確認
+ * として登録しない（0で埋めない）。formationは前半0分の実配置が公式表示から確定できない
+ * ため未設定のまま（推測禁止）。スタメン・ベンチはPR #67で登録済みのため変更しない。
  */
 export const u21Match = {
   id: "u21-next-1",
-  status: "scheduled" as MatchStatus,
+  status: "finished" as MatchStatus,
   competition: "2026／27Ｕ-21Ｊリーグ 東西リーグラウンド 第2節",
   fixtureMeta: {
     competition: "2026/27 U-21 Jリーグ",
@@ -43,20 +41,44 @@ export const u21Match = {
   kickoffAt: "2026-09-12T18:00:00+09:00",
   kickoffLabel: "18:00",
   scheduleNote: undefined as string | undefined,
-  venue: "TBD",
+  venue: "浦和駒場スタジアム",
   /** ヴェルディ視点の勝敗判定用（今節はAWAY）。 */
   isVerdyHome: false,
   homeTeamName: "U-21浦和レッズ",
   awayTeamName: "東京ヴェルディU-21",
-  homeScore: undefined as number | undefined,
-  awayScore: undefined as number | undefined,
+  homeScore: 1 as number | undefined,
+  awayScore: 2 as number | undefined,
 };
 
-/** スコア・得点・カード・交代・公式試合記録は今回未提供のため未設定（推測で埋めない）。 */
-export const u21OfficialRecord: OfficialMatchRecord | undefined = undefined;
-export const u21Goals: MatchGoal[] = [];
-export const u21Cards: MatchCard[] = [];
-export const u21Substitutions: MatchSubstitution[] = [];
+/** 公式試合記録（J.LEAGUE Official Match Record）。出典：https://www.jleague.jp/match/u-21/2026/091225/ */
+export const u21OfficialRecord: OfficialMatchRecord | undefined = {
+  kickoff: "18:03",
+  attendance: 2531,
+  weather: "曇",
+  temperature: "23.2℃",
+  humidity: "84%",
+  sourceUrl: "https://www.jleague.jp/match/u-21/2026/091225/",
+};
+
+export const u21Goals: MatchGoal[] = [
+  { minute: "30'", scorer: "宮﨑 叶", team: "U-21浦和レッズ" },
+  { minute: "56'", scorer: "白井 亮丞", team: "東京ヴェルディU-21" },
+  { minute: "71'", scorer: "山田 剛綺", team: "東京ヴェルディU-21" },
+];
+
+/** 警告は浦和のみ2枚（公式試合経過確認）。退場は両チーム0のため追加のred card eventは作成しない。 */
+export const u21Cards: MatchCard[] = [
+  { minute: "68'", player: "高橋 温郎", team: "U-21浦和レッズ", type: "yellow" },
+  { minute: "69'", player: "川内 太良", team: "U-21浦和レッズ", type: "yellow" },
+];
+
+export const u21Substitutions: MatchSubstitution[] = [
+  { minute: "64'", team: "U-21浦和レッズ", playerIn: "西川 碧斗", playerOut: "蔦澤 洋紀" },
+  { minute: "74'", team: "U-21浦和レッズ", playerIn: "菊池 大河", playerOut: "川内 太良" },
+  { minute: "76'", team: "東京ヴェルディU-21", playerIn: "ゼイナー 大耀", playerOut: "山田 剛綺" },
+  { minute: "86'", team: "東京ヴェルディU-21", playerIn: "植月 瑛大", playerOut: "キム ヒョンウ" },
+  { minute: "88'", team: "東京ヴェルディU-21", playerIn: "七久保 優", playerOut: "川村 楽人" },
+];
 
 /**
  * position別の選手グループ。"背番号 選手名" 形式の文字列で保持する
@@ -241,9 +263,19 @@ export interface U21SeasonHistoryEntry {
 
 /**
  * 2026/27シーズンのU-21試合履歴。今季の試合のみを蓄積する（過去シーズンは混ぜない）。
- * 第2節（U-21浦和レッズ戦）は公式結果未登録のため、確定結果としてここへ追加しない。
+ * 第2節（U-21浦和レッズ戦）は公式結果確認済みのため、確定結果としてここへ追加する。
  */
 export const u21SeasonHistory: U21SeasonHistoryEntry[] = [
+  {
+    id: u21Match.id,
+    dateLabel: "09.12",
+    round: "第2節",
+    homeTeamName: u21Match.homeTeamName,
+    awayTeamName: u21Match.awayTeamName,
+    homeScore: u21Match.homeScore!,
+    awayScore: u21Match.awayScore!,
+    result: "win",
+  },
   {
     id: u21Match1.id,
     dateLabel: "08.22",

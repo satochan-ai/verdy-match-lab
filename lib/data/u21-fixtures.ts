@@ -24,8 +24,8 @@ export const u21Fixtures: CommonFixture[] = [
     sourceUrl: "https://www.jleague.jp/match/u-21/2026/082229/",
   },
   {
-    // 現在表示中の1試合（東西リーグラウンド第2節・U-21浦和レッズ戦）。score/statusは
-    // 未提供のためu21Match.statusをそのまま使う（推測でfinished/scoreを埋めない）。
+    // 現在表示中の1試合（東西リーグラウンド第2節・U-21浦和レッズ戦）。公式結果確認済みの
+    // ためstatus/scoreはu21Matchの値をそのまま反映する（finished時のみscoreを設定）。
     id: u21Match.id,
     category: "u21",
     teamName: TEAM_NAME,
@@ -37,6 +37,10 @@ export const u21Fixtures: CommonFixture[] = [
     venue: u21Match.venue,
     isHome: u21Match.isVerdyHome,
     status: u21Match.status,
+    score: u21Match.status === "finished" && u21Match.homeScore !== undefined && u21Match.awayScore !== undefined
+      ? { home: u21Match.homeScore, away: u21Match.awayScore }
+      : undefined,
+    sourceUrl: "https://www.jleague.jp/match/u-21/2026/091225/",
     detailMatchId: u21Match.id,
   },
   ...u21UpcomingMatches.map((fixture, index) => ({
