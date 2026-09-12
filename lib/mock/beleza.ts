@@ -34,6 +34,13 @@ export const acNaganoTeam: Team = {
   isVerdy: false,
 };
 
+/** 第3節 対戦相手。 */
+export const urawaTeam: Team = {
+  id: "urawa-reds-ladies",
+  name: "三菱重工浦和レッズレディース",
+  isVerdy: false,
+};
+
 /**
  * INAC神戸レオネッサ（2026/27 WEリーグ クラシエカップ リーグステージ第1節 対戦相手）。
  */
@@ -42,197 +49,6 @@ export const inacKobeTeam: Team = {
   name: "INAC神戸レオネッサ",
   isVerdy: false,
 };
-
-/**
- * === 第2節（AC長野パルセイロ・レディース戦）アーカイブ ===
- * クラシエカップ第1節（INAC神戸戦）が新たな「現在表示中の1試合」スナップショットに
- * なったため、このファイルの他の定数群（belezaMatch等）から本節のデータを退避する。
- * belezaMatch1の archive と同じ方針：値は変更せず、名称にMatch2サフィックスを付けて保持する。
- * 詳細ページ（/beleza/matches/[id]）はbelezaMatchの1件のみを描画する設計のため、
- * 本節の詳細URL（beleza-match-2）は退避後は到達不能になる（belezaMatch1と同じ既知の制約）。
- */
-export const belezaMatch2 = {
-  id: "beleza-match-2",
-  competition: "2026／27 SOMPO WEリーグ 第2節",
-  /** fixture metadata統一表示用（大会名／節を分離）。既存のcompetition文字列は表示互換のため維持する。 */
-  fixtureMeta: { competition: "2026/27 WEリーグ", roundLabel: "第2節" } satisfies FixtureMeta,
-  dateLabel: "08.29 SAT",
-  kickoffLabel: "18:00",
-  kickoffAt: "2026-08-29T18:00:00+09:00",
-  venue: "長野Uスタジアム",
-  status: "finished" as const,
-  homeTeamName: acNaganoTeam.name,
-  awayTeamName: belezaTeam.name,
-  /** ベレーザ視点の勝敗判定用（今節はAWAY）。 */
-  isBelezaHome: false,
-  homeScore: 1,
-  awayScore: 4,
-};
-
-/** 前半・後半のスコア推移（Phase 6-N.1c、WEリーグ公式試合記録画像で確認済み）。 */
-export const belezaMatch2HalfScores: { firstHalf: string; secondHalf: string } | undefined = {
-  firstHalf: "1-1",
-  secondHalf: "0-3",
-};
-
-/** 得点記録（Phase 6-N.1c、WEリーグ公式試合記録画像で確認済み・時系列順）。 */
-export const belezaMatch2Goals: MatchGoal[] = [
-  { minute: "27'", scorer: "隅田 凜", team: belezaTeam.name },
-  { minute: "34'", scorer: "吉野 真央", team: acNaganoTeam.name },
-  { minute: "59'", scorer: "北村 菜々美", team: belezaTeam.name },
-  { minute: "67'", scorer: "式田 和", team: belezaTeam.name },
-  { minute: "86'", scorer: "北村 菜々美", team: belezaTeam.name },
-];
-
-/**
- * WEリーグ公式試合記録（Phase 6-N.1c、公式試合記録画像で確認済み）。
- * sourceUrlはユーザー確認済みのアドレスバーURLをそのまま使用（推測で埋めない）。
- */
-export const belezaMatch2OfficialRecord: OfficialMatchRecord = {
-  kickoff: "18:03",
-  attendance: 1319,
-  weather: "曇",
-  temperature: "21.5℃",
-  humidity: "94%",
-  sourceUrl: "https://weleague.jp/matches/2026082925/",
-};
-
-/** MatchRecordのSOURCEリンク表示名（大会名がJ.LEAGUEではないため上書きする）。 */
-export const belezaMatch2OfficialSourceLabel = "WE LEAGUE Official Match Record";
-
-/**
- * 警告・退場。Phase 6-N.1cで提供された公式試合記録画像内にカード欄が確認できなかったため、
- * 今節は未登録のまま（推測で「なし」と断定しない）。
- */
-export const belezaMatch2Cards: MatchCard[] = [];
-
-/**
- * 交代記録。ユーザー提供の試合経過でOUT→INのペアが確定したため正式登録（Phase 6-B.3）。
- * 時系列順（同分は提供順を維持）。AC長野→BELEZAの順に並べる。
- * 選手名は starting XI / bench の登録氏名と一致。ユーザー資料に「松岡 瑛茉(out)」表記が
- * あったが、先発登録 32 松岡 瑛美 と同一人物とみなし既存氏名を使用する（新規選手は作らない）。
- */
-export const belezaMatch2Substitutions: MatchSubstitution[] = [
-  { minute: "65'", team: acNaganoTeam.name, playerOut: "久保田 明未", playerIn: "濱田 優音" },
-  { minute: "65'", team: acNaganoTeam.name, playerOut: "三谷 沙也加", playerIn: "松浦 芽育子" },
-  { minute: "76'", team: acNaganoTeam.name, playerOut: "塩谷 瑠南", playerIn: "北川 愛莉" },
-  { minute: "83'", team: acNaganoTeam.name, playerOut: "知久 奈菜穂", playerIn: "松岡 優空" },
-  { minute: "83'", team: acNaganoTeam.name, playerOut: "常田 麻友", playerIn: "町田 実香" },
-  { minute: "66'", team: belezaTeam.name, playerOut: "松岡 瑛美", playerIn: "松田 紫野" },
-  { minute: "66'", team: belezaTeam.name, playerOut: "氏原 里穂菜", playerIn: "式田 和" },
-  { minute: "66'", team: belezaTeam.name, playerOut: "小林 里歌子", playerIn: "猶本 光" },
-  { minute: "75'", team: belezaTeam.name, playerOut: "須長 穂乃果", playerIn: "諸田 彩渚" },
-  { minute: "81'", team: belezaTeam.name, playerOut: "井手 ひなた", playerIn: "安藤 梢" },
-];
-
-/**
- * 公式記録スタッツ（シュート・FK・CK）。Phase 6-N.1c、公式試合記録画像で確認済み。
- * 支配率・枠内シュート・パス等、画像にない項目は追加しない。
- */
-export const belezaMatch2Stats: { beleza: { shots: number; freeKicks: number; corners: number }; opponent: { shots: number; freeKicks: number; corners: number } } | undefined = {
-  beleza: { shots: 14, freeKicks: 7, corners: 5 },
-  opponent: { shots: 3, freeKicks: 4, corners: 1 },
-};
-
-/**
- * BELEZA 公式スタメン・ベンチ（Phase 6-N.1c確認）。formationは公式画像で確認できなかったため
- * 設定しない（ActualLineup.formationはoptional）。ポジション区分（GK/DF/MF/FW）のみ確認済み。
- */
-export const belezaMatch2ActualLineup: ActualLineup = {
-  starters: {
-    GK: ["1 野田 にな"],
-    DF: ["22 井手 ひなた", "4 土光 真代", "3 村松 智子", "32 松岡 瑛美"],
-    MF: ["6 隅田 凜", "35 須長 穂乃果", "7 北村 菜々美", "19 塩越 柚歩", "13 氏原 里穂菜"],
-    FW: ["20 小林 里歌子"],
-  },
-  bench: {
-    GK: ["21 水口 茉優"],
-    DF: ["5 松田 紫野"],
-    MF: ["8 猶本 光"],
-    FW: ["25 ダネル タン", "38 式田 和", "40 安藤 梢", "43 諸田 彩渚"],
-  },
-};
-
-/**
- * BELEZA第2節の実際の並び。ユーザー提供のスクリーンショットを正として 4-2-3-1 の
- * フォーメーション図表示に用いる。belezaMatch2ActualLineup（GK/DF/MF/FWの区分のみ）とは別に、
- * 画面上の5ライン（GK / DF4 / ボランチ2 / 2列目3 / FW1）で見せるための順序付き配列。
- *
- * startersはFormationPitchが要求する順序（GK → DF → ボランチ → 2列目 → FW）で、
- * 各行内の配列順＝画面左→右。スクリーンショットどおりの左右（6-B.3で確定）：
- *   DF   ＝左から 32 松岡→3 村松→4 土光→22 井手
- *   ボランチ＝左から 6 隅田→35 須長
- *   2列目 ＝左から 13 氏原→19 塩越→7 北村
- * position名はGK/DF/MF/FWのまま（ボランチ/2列目の区別は行分割で表現する）。
- * 選手11名・背番号・氏名・formationはbelezaMatch2ActualLineupと一致させ、変更しない。
- */
-export const belezaMatch2ActualFormation: PredictedLineup = {
-  formation: "4-2-3-1",
-  starters: [
-    { number: 1, name: "野田 にな", position: "GK" },
-    { number: 32, name: "松岡 瑛美", position: "DF" },
-    { number: 3, name: "村松 智子", position: "DF" },
-    { number: 4, name: "土光 真代", position: "DF" },
-    { number: 22, name: "井手 ひなた", position: "DF" },
-    { number: 6, name: "隅田 凜", position: "MF" },
-    { number: 35, name: "須長 穂乃果", position: "MF" },
-    { number: 13, name: "氏原 里穂菜", position: "MF" },
-    { number: 19, name: "塩越 柚歩", position: "MF" },
-    { number: 7, name: "北村 菜々美", position: "MF" },
-    { number: 20, name: "小林 里歌子", position: "FW" },
-  ],
-};
-
-/** AC長野パルセイロ・レディース 公式スタメン・ベンチ（Phase 6-N.1c確認）。formationは未確認のため設定しない。 */
-export const acNaganoActualLineup: ActualLineup = {
-  starters: {
-    GK: ["21 垣内 愛菜"],
-    DF: ["34 鈴木 こなつ", "5 橘 麗衣", "25 奥川 千沙", "3 久保田 明未"],
-    MF: ["7 三谷 沙也加", "27 籔島 彩佳", "6 常田 麻友", "15 知久 奈菜穂", "14 塩谷 瑠南"],
-    FW: ["33 吉野 真央"],
-  },
-  bench: {
-    GK: ["1 梅村 真央"],
-    DF: ["18 町田 実香", "22 児玉 一穂"],
-    MF: ["23 松浦 芽育子"],
-    FW: ["10 北川 愛莉", "20 松岡 優空", "35 濱田 優音"],
-  },
-};
-
-/**
- * AC長野パルセイロ・レディース 第2節の実際の並び。ユーザー提供のスクリーンショットを正として
- * 4-2-3-1 のフォーメーション図表示に用いる。選手名・背番号は acNaganoActualLineup と一致
- * （再入力せず既存データを使う）。
- *
- * startersはFormationPitchが要求する順序（GK → DF → ボランチ → 2列目 → FW）で、
- * 各行内の配列順＝画面左→右（スクリーンショットどおり）：
- *   DF   ＝左から 3 久保田→25 奥川→5 橘→34 鈴木
- *   ボランチ＝左から 27 籔島→7 三谷
- *   2列目 ＝左から 14 塩谷→15 知久→6 常田
- */
-export const acNaganoActualFormation: PredictedLineup = {
-  formation: "4-2-3-1",
-  starters: [
-    { number: 21, name: "垣内 愛菜", position: "GK" },
-    { number: 3, name: "久保田 明未", position: "DF" },
-    { number: 25, name: "奥川 千沙", position: "DF" },
-    { number: 5, name: "橘 麗衣", position: "DF" },
-    { number: 34, name: "鈴木 こなつ", position: "DF" },
-    { number: 27, name: "籔島 彩佳", position: "MF" },
-    { number: 7, name: "三谷 沙也加", position: "MF" },
-    { number: 14, name: "塩谷 瑠南", position: "MF" },
-    { number: 15, name: "知久 奈菜穂", position: "MF" },
-    { number: 6, name: "常田 麻友", position: "MF" },
-    { number: 33, name: "吉野 真央", position: "FW" },
-  ],
-};
-
-/**
- * POST MATCH summary（Phase 6-N.1c、公式試合経過を踏まえ具体化）。
- * 「2連勝」「順位」等は公式順位表が未確認のため今回は追加しない。
- */
-export const belezaMatch2PostMatchSummary =
-  "アウェイでAC長野パルセイロ・レディースと対戦。27分に隅田凜のゴールで先制し、一度は同点とされたものの、後半に北村菜々美が2得点、式田和が1得点を挙げ、1-4で勝利した。";
 
 /**
  * === クラシエカップ リーグステージ第1節（INAC神戸レオネッサ戦）：現在表示中の1試合 ===
@@ -336,6 +152,246 @@ export const inacKobeActualLineup: ActualLineup = {
     FW: ["39 中平 怜那", "16 道上 彩花"],
   },
 };
+
+/**
+ * === 第3節（三菱重工浦和レッズレディース戦）アーカイブ ===
+ * クラシエカップ第1節（INAC神戸戦）が新たな「現在表示中の1試合」スナップショットに
+ * なったため、このファイルの他の定数群（belezaMatch等）から本節のデータを退避する。
+ * belezaMatch1／belezaMatch2の archive と同じ方針：値は変更せず、名称にMatch3サフィックス
+ * を付けて保持する。詳細ページ（/beleza/matches/[id]）はbelezaMatchの1件のみを描画する
+ * 設計のため、本節の詳細URL（beleza-match-3）は退避後は到達不能になる（既知の制約）。
+ */
+export const belezaMatch3 = {
+  id: "beleza-match-3",
+  competition: "2026／27 SOMPO WEリーグ 第3節",
+  fixtureMeta: { competition: "2026/27 WEリーグ", roundLabel: "第3節" } satisfies FixtureMeta,
+  dateLabel: "09.05 SAT",
+  kickoffLabel: "18:05",
+  kickoffAt: "2026-09-05T18:05:00+09:00",
+  venue: "浦和駒場スタジアム",
+  status: "finished" as const,
+  homeTeamName: urawaTeam.name,
+  awayTeamName: belezaTeam.name,
+  isBelezaHome: false,
+  homeScore: 3,
+  awayScore: 1,
+};
+
+export const belezaMatch3HalfScores = {
+  firstHalf: "3-1",
+  secondHalf: "0-0",
+};
+
+export const belezaMatch3Goals: MatchGoal[] = [
+  { minute: "4'", scorer: "榊原 琴乃", team: urawaTeam.name },
+  { minute: "28'", scorer: "大西 若菜", team: urawaTeam.name },
+  { minute: "37'", scorer: "伊藤 美紀", team: urawaTeam.name },
+  { minute: "39'", scorer: "氏原 里穂菜", team: belezaTeam.name },
+];
+
+export const belezaMatch3OfficialRecord: OfficialMatchRecord = {
+  kickoff: "18:05",
+  attendance: 2770,
+  weather: "晴",
+  temperature: "24.4℃",
+  sourceUrl: "https://www.verdy.co.jp/beleza/match/info/12026090516/result",
+};
+
+export const belezaMatch3Cards: MatchCard[] = [];
+
+export const belezaMatch3Substitutions: MatchSubstitution[] = [
+  { minute: "31'", team: belezaTeam.name, playerOut: "井手 ひなた", playerIn: "諸田 彩渚" },
+  { minute: "46'", team: belezaTeam.name, playerOut: "安藤 梢", playerIn: "猶本 光" },
+  { minute: "64'", team: belezaTeam.name, playerOut: "須長 穂乃果", playerIn: "伊藤 琴音" },
+  { minute: "64'", team: belezaTeam.name, playerOut: "北村 菜々美", playerIn: "式田 和" },
+  { minute: "81'", team: belezaTeam.name, playerOut: "氏原 里穂菜", playerIn: "樋渡 百花" },
+  { minute: "46'", team: urawaTeam.name, playerOut: "サンシャイン フォンテス", playerIn: "川船 暁海" },
+  { minute: "67'", team: urawaTeam.name, playerOut: "大西 若菜", playerIn: "丹野 凜々香" },
+  { minute: "76'", team: urawaTeam.name, playerOut: "加藤 千佳", playerIn: "柴田 華絵" },
+  { minute: "89'", team: urawaTeam.name, playerOut: "櫻井 まどか", playerIn: "エスタ マイ キス" },
+  { minute: "89'", team: urawaTeam.name, playerOut: "伊藤 美紀", playerIn: "高塚 映奈" },
+];
+
+export const belezaMatch3Stats = {
+  beleza: { shots: 8, freeKicks: 11, corners: 6 },
+  opponent: { shots: 12, freeKicks: 5, corners: 6 },
+};
+
+export const belezaMatch3ActualLineup: ActualLineup = {
+  starters: {
+    GK: ["1 野田 にな"],
+    DF: ["22 井手 ひなた", "32 松岡 瑛茉", "3 村松 智子", "5 松田 紫野"],
+    MF: ["6 隅田 凜", "35 須長 穂乃果", "7 北村 菜々美", "19 塩越 柚歩"],
+    FW: ["13 氏原 里穂菜", "40 安藤 梢"],
+  },
+  bench: {
+    GK: ["21 水口 茉優"],
+    DF: ["43 諸田 彩渚"],
+    MF: ["8 猶本 光"],
+    FW: ["11 樋渡 百花", "20 小林 里歌子", "24 伊藤 琴音", "38 式田 和"],
+  },
+};
+
+/** 三菱重工浦和レッズレディース 公式スタメン・ベンチ（公式結果ページで確認済み）。 */
+export const urawaActualLineup: ActualLineup = {
+  starters: {
+    GK: ["1 池田 咲紀子"],
+    DF: ["28 櫻井 まどか", "7 高橋 はな", "13 長嶋 玲奈", "30 長尾 ののか"],
+    MF: ["14 菊池 まりあ", "8 榊原 琴乃", "6 加藤 千佳", "5 伊藤 美紀", "16 大西 若菜"],
+    FW: ["19 サンシャイン フォンテス"],
+  },
+  bench: {
+    GK: ["12 福田 史織"],
+    DF: ["2 エスタ マイ キス"],
+    MF: ["18 柴田 華絵", "20 高塚 映奈", "21 タンチュリエ ローリー", "26 丹野 凜々香"],
+    FW: ["11 川船 暁海"],
+  },
+};
+
+/**
+ * 第3節は公式結果ページがStarting XIのポジション区分のみを示し、開始時formationを
+ * 明示していない。ポジション人数だけから推測でformationを登録しないため、今節は
+ * フォーメーション図（実際の並び）を未設定のままにする（belezaMatch3ActualLineup/
+ * urawaActualLineupのポジション区分自体は登録済み）。
+ */
+export const belezaMatch3ActualFormation: PredictedLineup | undefined = undefined;
+export const urawaActualFormation: PredictedLineup | undefined = undefined;
+
+export const belezaMatch3PostMatchSummary =
+  "アウェイで三菱重工浦和レッズレディースと対戦。前半に3失点を許したが、39分に氏原里穂菜がゴールを返した。後半は無得点で終わり、1-3で敗れた。";
+
+/**
+ * === 第2節（AC長野パルセイロ・レディース戦）アーカイブ ===
+ * このファイルの他の定数は「現在表示中の1試合」のスナップショットとして節ごとに
+ * 上書きされるため、第3節への更新でページ上には表示されなくなる。この節では、
+ * 第2節でPhase 6-N.1c等にて公式確認済みだった詳細記録を、確認済み事実として
+ * 消去せずここに保持する（BELEZAページからは参照しない）。
+ */
+export const belezaMatch2 = {
+  id: "beleza-match-2",
+  competition: "2026／27 SOMPO WEリーグ 第2節",
+  fixtureMeta: { competition: "2026/27 WEリーグ", roundLabel: "第2節" } satisfies FixtureMeta,
+  dateLabel: "08.29 SAT",
+  kickoffLabel: "18:00",
+  kickoffAt: "2026-08-29T18:00:00+09:00",
+  venue: "長野Uスタジアム",
+  status: "finished" as const,
+  homeTeamName: acNaganoTeam.name,
+  awayTeamName: belezaTeam.name,
+  isBelezaHome: false,
+  homeScore: 1,
+  awayScore: 4,
+};
+
+export const belezaMatch2HalfScores = {
+  firstHalf: "1-1",
+  secondHalf: "0-3",
+};
+
+export const belezaMatch2Goals: MatchGoal[] = [
+  { minute: "27'", scorer: "隅田 凜", team: belezaTeam.name },
+  { minute: "34'", scorer: "吉野 真央", team: acNaganoTeam.name },
+  { minute: "59'", scorer: "北村 菜々美", team: belezaTeam.name },
+  { minute: "67'", scorer: "式田 和", team: belezaTeam.name },
+  { minute: "86'", scorer: "北村 菜々美", team: belezaTeam.name },
+];
+
+export const belezaMatch2OfficialRecord: OfficialMatchRecord = {
+  kickoff: "18:03",
+  attendance: 1319,
+  weather: "曇",
+  temperature: "21.5℃",
+  humidity: "94%",
+  sourceUrl: "https://weleague.jp/matches/2026082925/",
+};
+
+export const belezaMatch2Cards: MatchCard[] = [];
+
+export const belezaMatch2Substitutions: MatchSubstitution[] = [
+  { minute: "65'", team: acNaganoTeam.name, playerOut: "久保田 明未", playerIn: "濱田 優音" },
+  { minute: "65'", team: acNaganoTeam.name, playerOut: "三谷 沙也加", playerIn: "松浦 芽育子" },
+  { minute: "76'", team: acNaganoTeam.name, playerOut: "塩谷 瑠南", playerIn: "北川 愛莉" },
+  { minute: "83'", team: acNaganoTeam.name, playerOut: "知久 奈菜穂", playerIn: "松岡 優空" },
+  { minute: "83'", team: acNaganoTeam.name, playerOut: "常田 麻友", playerIn: "町田 実香" },
+  { minute: "66'", team: belezaTeam.name, playerOut: "松岡 瑛美", playerIn: "松田 紫野" },
+  { minute: "66'", team: belezaTeam.name, playerOut: "氏原 里穂菜", playerIn: "式田 和" },
+  { minute: "66'", team: belezaTeam.name, playerOut: "小林 里歌子", playerIn: "猶本 光" },
+  { minute: "75'", team: belezaTeam.name, playerOut: "須長 穂乃果", playerIn: "諸田 彩渚" },
+  { minute: "81'", team: belezaTeam.name, playerOut: "井手 ひなた", playerIn: "安藤 梢" },
+];
+
+export const belezaMatch2Stats = {
+  beleza: { shots: 14, freeKicks: 7, corners: 5 },
+  opponent: { shots: 3, freeKicks: 4, corners: 1 },
+};
+
+export const belezaMatch2ActualLineup: ActualLineup = {
+  starters: {
+    GK: ["1 野田 にな"],
+    DF: ["22 井手 ひなた", "4 土光 真代", "3 村松 智子", "32 松岡 瑛美"],
+    MF: ["6 隅田 凜", "35 須長 穂乃果", "7 北村 菜々美", "19 塩越 柚歩", "13 氏原 里穂菜"],
+    FW: ["20 小林 里歌子"],
+  },
+  bench: {
+    GK: ["21 水口 茉優"],
+    DF: ["5 松田 紫野"],
+    MF: ["8 猶本 光"],
+    FW: ["25 ダネル タン", "38 式田 和", "40 安藤 梢", "43 諸田 彩渚"],
+  },
+};
+
+export const belezaMatch2ActualFormation: PredictedLineup = {
+  formation: "4-2-3-1",
+  starters: [
+    { number: 1, name: "野田 にな", position: "GK" },
+    { number: 32, name: "松岡 瑛美", position: "DF" },
+    { number: 3, name: "村松 智子", position: "DF" },
+    { number: 4, name: "土光 真代", position: "DF" },
+    { number: 22, name: "井手 ひなた", position: "DF" },
+    { number: 6, name: "隅田 凜", position: "MF" },
+    { number: 35, name: "須長 穂乃果", position: "MF" },
+    { number: 13, name: "氏原 里穂菜", position: "MF" },
+    { number: 19, name: "塩越 柚歩", position: "MF" },
+    { number: 7, name: "北村 菜々美", position: "MF" },
+    { number: 20, name: "小林 里歌子", position: "FW" },
+  ],
+};
+
+/** AC長野パルセイロ・レディース 公式スタメン・ベンチ（Phase 6-N.1c確認）。formationは未確認のため設定しない。 */
+export const acNaganoActualLineup: ActualLineup = {
+  starters: {
+    GK: ["21 垣内 愛菜"],
+    DF: ["34 鈴木 こなつ", "5 橘 麗衣", "25 奥川 千沙", "3 久保田 明未"],
+    MF: ["7 三谷 沙也加", "27 籔島 彩佳", "6 常田 麻友", "15 知久 奈菜穂", "14 塩谷 瑠南"],
+    FW: ["33 吉野 真央"],
+  },
+  bench: {
+    GK: ["1 梅村 真央"],
+    DF: ["18 町田 実香", "22 児玉 一穂"],
+    MF: ["23 松浦 芽育子"],
+    FW: ["10 北川 愛莉", "20 松岡 優空", "35 濱田 優音"],
+  },
+};
+
+export const acNaganoActualFormation: PredictedLineup = {
+  formation: "4-2-3-1",
+  starters: [
+    { number: 21, name: "垣内 愛菜", position: "GK" },
+    { number: 3, name: "久保田 明未", position: "DF" },
+    { number: 25, name: "奥川 千沙", position: "DF" },
+    { number: 5, name: "橘 麗衣", position: "DF" },
+    { number: 34, name: "鈴木 こなつ", position: "DF" },
+    { number: 27, name: "籔島 彩佳", position: "MF" },
+    { number: 7, name: "三谷 沙也加", position: "MF" },
+    { number: 14, name: "塩谷 瑠南", position: "MF" },
+    { number: 15, name: "知久 奈菜穂", position: "MF" },
+    { number: 6, name: "常田 麻友", position: "MF" },
+    { number: 33, name: "吉野 真央", position: "FW" },
+  ],
+};
+
+export const belezaMatch2PostMatchSummary =
+  "アウェイでAC長野パルセイロ・レディースと対戦。27分に隅田凜のゴールで先制し、一度は同点とされたものの、後半に北村菜々美が2得点、式田和が1得点を挙げ、1-4で勝利した。";
 
 /**
  * === 第1節（ジェフ千葉レディース戦）アーカイブ ===
@@ -534,30 +590,32 @@ export const belezaSeasonHistory: BelezaSeasonHistoryEntry[] = [
     round: "第2節",
     homeTeamName: acNaganoTeam.name,
     awayTeamName: belezaTeam.name,
-    /** 確定結果を固定値として保持する（第3節以降のbelezaMatch更新で変わらないようにする）。 */
+    /** 確定結果を固定値として保持する（次節以降のbelezaMatch更新で変わらないようにする）。 */
     homeScore: 1,
     awayScore: 4,
     result: "win",
   },
+  {
+    id: "beleza-match-3",
+    dateLabel: "09.05",
+    round: "第3節",
+    homeTeamName: urawaTeam.name,
+    awayTeamName: belezaTeam.name,
+    /** 確定結果を固定値として保持する（次節以降のbelezaMatch更新で変わらないようにする）。 */
+    homeScore: 3,
+    awayScore: 1,
+    result: "loss",
+  },
 ];
 
 /**
- * 第2節終了後のNEXT 5（公式日程のみ）。AC長野戦はfinishedになったため一覧から外す。
+ * 第3節終了後のNEXT 5（公式日程のみ）。浦和戦はfinishedになったため一覧から外す。
  * クラシエカップ第1節（INAC神戸戦）はbelezaMatch（現在表示中の1試合）へ昇格したため、
  * 重複登録を避けるためこの一覧からは外す。
  * WEリーグとクラシエカップを大会横断で開催日時の早い順に並べる。
  * 会場は公式日程で確認できた場合のみ設定する（推測で埋めない）。
  */
 export const belezaUpcomingMatches: UpcomingFixture[] = [
-  {
-    id: "beleza-next-2",
-    dateLabel: "09.05 SAT",
-    kickoffLabel: "18:00",
-    fixtureMeta: { competition: "2026/27 WEリーグ", roundLabel: "第3節" },
-    isHome: false,
-    opponentName: "三菱重工浦和レッズレディース",
-    venue: "浦和駒場スタジアム",
-  },
   {
     id: "beleza-next-4",
     dateLabel: "09.19 SAT",

@@ -208,6 +208,10 @@ export default async function BelezaMatchDetailPage({
         </section>
       )}
 
+      {/*
+        今節はベレーザのフォーメーションのみ公式に確認できている（相手は開始時フォーメーションが
+        未確認）。formationが公式確認できていないチームまで推測で補わないため、片側のみ表示する。
+      */}
       {isFinished && (
         <section>
           <SectionHeader title="実際の並び" eyebrow="FORMATION" />
@@ -219,7 +223,7 @@ export default async function BelezaMatchDetailPage({
             />
           </div>
           <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
-            ベレーザの実際の並び（3-4-2-1）。{opponentTeamStatsLabel(belezaMatch)}は開始時フォーメーションが公式に確認できていないため、フォーメーション図は未掲載です（スタメン・ベンチは下記MATCH RECORDに記載）。
+            ベレーザの実際の並び（{belezaActualFormation.formation}）。{opponentTeamStatsLabel(belezaMatch)}は開始時フォーメーションが公式に確認できていないため、フォーメーション図は未掲載です（スタメン・ベンチは下記MATCH RECORDに記載）。
           </p>
         </section>
       )}
