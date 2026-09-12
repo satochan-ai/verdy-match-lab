@@ -10,9 +10,9 @@ const match13 = matches.find((item) => item.id === "match-13")!;
 test("recent Tokyo Verdy actual lineups preserve official horizontal order", () => {
   const expected = {
     "match-10": {
-      DF: ["4 林 尚輝", "5 井上 竜太", "15 鈴木 海音"],
-      MF: ["16 平川 怜", "18 溝口 修平", "20 食野 壮磨", "22 内田 陽介"],
-      FW: ["7 松橋 優安", "9 染野 唯月", "14 福田 湧矢"],
+      DF: ["5 井上 竜太", "4 林 尚輝", "15 鈴木 海音"],
+      MF: ["18 溝口 修平", "16 平川 怜", "20 食野 壮磨", "22 内田 陽介"],
+      FW: ["14 福田 湧矢", "7 松橋 優安", "9 染野 唯月"],
     },
     "match-11": {
       DF: ["5 井上 竜太", "29 佐古 真礼", "15 鈴木 海音"],
@@ -92,22 +92,22 @@ test("match-10 actual formations and benches are confirmed separately from predi
   assert.equal(match10.actualLineups?.home.formation, "3-4-2-1");
   assert.equal(match10.actualLineups?.away.formation, "4-1-2-3");
   assert.deepEqual(match10.actualLineups?.home.starters.DF, [
-    "4 林 尚輝", "5 井上 竜太", "15 鈴木 海音",
+    "5 井上 竜太", "4 林 尚輝", "15 鈴木 海音",
   ]);
   assert.deepEqual(match10.actualLineups?.home.starters.MF, [
-    "16 平川 怜", "18 溝口 修平", "20 食野 壮磨", "22 内田 陽介",
+    "18 溝口 修平", "16 平川 怜", "20 食野 壮磨", "22 内田 陽介",
   ]);
   assert.deepEqual(match10.actualLineups?.home.starters.FW, [
-    "7 松橋 優安", "9 染野 唯月", "14 福田 湧矢",
+    "14 福田 湧矢", "7 松橋 優安", "9 染野 唯月",
   ]);
   assert.deepEqual(match10.actualLineups?.away.starters.DF, [
-    "17 髙橋 壱晟", "4 山川 哲史", "3 マテウス トゥーレル", "15 ジエゴ",
+    "15 ジエゴ", "3 マテウス トゥーレル", "4 山川 哲史", "17 髙橋 壱晟",
   ]);
   assert.deepEqual(match10.actualLineups?.away.starters.MF, [
     "24 酒井 高徳", "7 井手口 陽介", "5 郷家 友太",
   ]);
   assert.deepEqual(match10.actualLineups?.away.starters.FW, [
-    "2 飯野 七聖", "29 小松 蓮", "41 永戸 勝也",
+    "41 永戸 勝也", "29 小松 蓮", "2 飯野 七聖",
   ]);
 
   const homeStarters = Object.values(match10.actualLineups!.home.starters).flat();
