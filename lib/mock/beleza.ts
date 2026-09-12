@@ -55,8 +55,9 @@ export const inacKobeTeam: Team = {
  * IDは既存のNEXT5エントリ「beleza-next-3」をそのまま再利用する（重複作成しない）。
  * 試合結果・status・goals/cards/substitutions/matchStats/officialRecordはユーザーから
  * 未提供のため今回は変更しない：status: "scheduled"のままとし、resolveMatchStatus（
- * lib/match/status.ts）による自動live/finished判定に委ねる。公式スタメン・ベンチ・
- * ベレーザのフォーメーションのみ、ユーザー提供情報に基づき登録する。
+ * lib/match/status.ts）による自動scheduled/live判定に委ねる（finishedへは時間経過だけで
+ * 自動遷移しない。公式結果登録まではkickoffAtを過ぎてもliveのまま留まる）。公式スタメン・
+ * ベンチ・ベレーザのフォーメーションのみ、ユーザー提供情報に基づき登録する。
  */
 export const belezaMatch = {
   id: "beleza-next-3",
