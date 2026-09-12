@@ -4,13 +4,12 @@ import type { MatchStatus } from "@/types/domain";
  * 表示用のstatusを解決する。元データのstatusが"scheduled"かつkickoffAtを過ぎていれば
  * "live"として扱う（キックオフ後の自動リロードでLIVE画面へ入れるようにするため）。
  *
- * 重要：kickoffAtからの経過時間だけを根拠に"finished"へ自動昇格させることはしない。
- * 試合終了は必ず元データのstatus更新（status: "finished"・score・goals・stats等の登録）
- * によってのみ確定させる。経過時間だけで終了扱いにすると、公式結果が未登録のまま
- * スコア未定（null）の試合が「終了済み・DRAW」のように誤表示される事故につながるため、
- * 以前あった「一定時間経過で自動finished化する安全策」は廃止した。
- * 元データがいつまでも"scheduled"のままなら、表示は無期限に"live"のままになるが、
- * これは「finishedを誤って自動生成しない」という原則を優先した意図的な挙動である。
+ * 重要：時間経過だけを理由に"finished"へ自動遷移することは絶対にしない。
+ * 試合は90分＋ハーフタイム＋アディショナルタイム＋延長戦＋PK戦＋中断・遅延等があり、
+ * kickoffAtからの経過時間だけでは試合終了を判定できない。実際の試合終了は必ず
+ * 元データへ明示的に status: "finished"（および score・goals・stats等）を登録した
+ * 場合のみ成立する。公式結果が未登録の間は、kickoffAtをどれだけ過ぎていても
+ * "live"のまま留まる（無期限にLIVE表示が残ることは許容する）。
  *
  * live/half_time/finishedなど明示statusはそのまま優先する（元データを尊重）。
  */

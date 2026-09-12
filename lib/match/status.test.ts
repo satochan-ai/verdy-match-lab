@@ -2,30 +2,33 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { resolveMatchStatus } from "./status.ts";
 
-test("scheduled fixture before kickoff stays scheduled", () => {
+test("scheduled + future kickoffAt stays scheduled", () => {
+  const now = new Date("2026-09-12T17:59:00+09:00");
   const match = { status: "scheduled" as const, kickoffAt: "2026-09-12T18:00:00+09:00" };
-  assert.equal(resolveMatchStatus(match, new Date("2026-09-12T17:59:00+09:00")), "scheduled");
+  assert.equal(resolveMatchStatus(match, now), "scheduled");
 });
 
-test("scheduled fixture becomes live right after kickoff", () => {
+test("scheduled + kickoffAt just passed becomes live", () => {
+  const now = new Date("2026-09-12T18:01:00+09:00");
   const match = { status: "scheduled" as const, kickoffAt: "2026-09-12T18:00:00+09:00" };
-  assert.equal(resolveMatchStatus(match, new Date("2026-09-12T18:01:00+09:00")), "live");
+  assert.equal(resolveMatchStatus(match, now), "live");
 });
 
-test("scheduled fixture never auto-promotes to finished purely from elapsed time", () => {
-  // 過去に存在した「kickoffAtから3時間経過したらfinishedへ自動昇格する」安全策は、
-  // 公式結果未登録の試合をscore未定のまま「終了済み」と誤表示する事故の原因だったため廃止した。
-  // status: "scheduled"のままである限り、どれだけ時間が経ってもfinishedにはならないことを固定する。
+test("scheduled never auto-promotes to finished no matter how much time has elapsed", () => {
   const match = { status: "scheduled" as const, kickoffAt: "2026-09-12T18:00:00+09:00" };
-  assert.equal(resolveMatchStatus(match, new Date("2026-09-12T22:00:00+09:00")), "live");
-  assert.equal(resolveMatchStatus(match, new Date("2026-09-13T18:00:00+09:00")), "live");
-  assert.equal(resolveMatchStatus(match, new Date("2026-12-31T00:00:00+09:00")), "live");
+  // 3時間後（旧LIVE_WINDOW境界）でもfinishedにならない。
+  assert.equal(resolveMatchStatus(match, new Date("2026-09-12T21:00:01+09:00")), "live");
+  // 何日経ってもfinishedにならない（公式結果登録＝明示的なstatus更新のみがfinishedにする）。
+  assert.equal(resolveMatchStatus(match, new Date("2026-09-20T00:00:00+09:00")), "live");
 });
 
-test("explicit status values are always respected as-is", () => {
-  const kickoffAt = "2026-09-12T18:00:00+09:00";
-  const now = new Date("2026-09-13T00:00:00+09:00");
+test("explicit status is always respected regardless of kickoffAt", () => {
+  const kickoffAt = "2020-01-01T18:00:00+09:00";
+  const now = new Date("2026-09-12T18:00:00+09:00");
   assert.equal(resolveMatchStatus({ status: "finished", kickoffAt }, now), "finished");
   assert.equal(resolveMatchStatus({ status: "live", kickoffAt }, now), "live");
   assert.equal(resolveMatchStatus({ status: "half_time", kickoffAt }, now), "half_time");
+  // 未来のkickoffAtでも、明示statusがfinished/liveならそのまま尊重する。
+  const futureKickoff = "2099-01-01T18:00:00+09:00";
+  assert.equal(resolveMatchStatus({ status: "finished", kickoffAt: futureKickoff }, now), "finished");
 });
