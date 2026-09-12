@@ -168,12 +168,12 @@ test("match-13 stores only the Tokyo Verdy Chiba pre-match prediction", () => {
   assert.equal(match13.predictedLineups?.away.formation, "3-4-2-1");
   assert.equal(match13.predictedLineups?.away.starters.length, 11);
   assert.deepEqual(match13.predictedLineups?.away.starters.map(({ name }) => name), [
-    "ホセ スアレス", "河野 貴志", "鳥海 晃司", "ダニエル ホール",
+    "ホセ スアレス", "河野 貴志", "ダニエル ホール", "鳥海 晃司",
     "日高 大", "マテウス インディオ", "津久井 匠海", "石尾 陸登",
     "石川 大地", "杉山 直宏", "矢村 健",
   ]);
   assert.deepEqual(match13.predictedLineups?.away.starters.map(({ number }) => number), [
-    19, 28, 24, 66, 67, 25, 8, 39, 20, 18, 29,
+    19, 28, 66, 24, 67, 25, 8, 39, 20, 18, 29,
   ]);
   assert.deepEqual(match13.availability?.likelyUnavailable, [
     {
