@@ -165,15 +165,23 @@ test("match-13 stores only the Tokyo Verdy Chiba pre-match prediction", () => {
     undefined, undefined, "佐古 真礼", undefined, undefined, undefined, undefined, undefined,
     "キム ヒョンウ", "熊取谷 一星", undefined,
   ]);
-  assert.equal(match13.predictedLineups?.away.formation, "3-4-2-1");
+  assert.equal(match13.predictedLineups?.away.formation, "4-4-2");
   assert.equal(match13.predictedLineups?.away.starters.length, 11);
+  assert.deepEqual(match13.predictedLineups?.away.starters.map(({ position }) => position), [
+    "GK", "DF", "DF", "DF", "DF", "MF", "MF", "MF", "MF", "FW", "FW",
+  ]);
   assert.deepEqual(match13.predictedLineups?.away.starters.map(({ name }) => name), [
-    "ホセ スアレス", "河野 貴志", "ダニエル ホール", "鳥海 晃司",
-    "日高 大", "マテウス インディオ", "津久井 匠海", "石尾 陸登",
-    "石川 大地", "杉山 直宏", "矢村 健",
+    "ホセ スアレス", "日高 大", "河野 貴志", "ダニエル ホール", "石尾 陸登",
+    "津久井 匠海", "田口 泰士", "マテウス インディオ", "杉山 直宏",
+    "石川 大地", "矢村 健",
   ]);
   assert.deepEqual(match13.predictedLineups?.away.starters.map(({ number }) => number), [
-    19, 28, 66, 24, 67, 25, 8, 39, 20, 18, 29,
+    19, 67, 28, 66, 39, 8, undefined, 25, 18, 20, 29,
+  ]);
+  assert.deepEqual(match13.predictedLineups?.away.starters.map(({ alternative }) => alternative), [
+    undefined, undefined, undefined, undefined, undefined,
+    undefined, "小林 祐介", undefined, undefined,
+    "エリソン", undefined,
   ]);
   assert.deepEqual(match13.availability?.likelyUnavailable, [
     {
