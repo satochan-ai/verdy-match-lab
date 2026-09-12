@@ -5,17 +5,20 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { BelezaSeasonHistory } from "@/components/match/BelezaSeasonHistory";
 import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
-import { belezaTeam, belezaMatch } from "@/lib/mock/beleza";
+import { belezaTeam } from "@/lib/mock/beleza";
 import { belezaFixtures, toBelezaSeasonHistoryEntry, toBelezaUpcomingMatch } from "@/lib/data/beleza-fixtures";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "@/lib/data/fixture-selectors";
+import type { CommonFixture } from "@/lib/types/fixture";
 
 /**
  * /beleza は BELEZA カテゴリーのトップページ。TOP TEAM（/top）と同じ情報設計で、
  * 「未来（NEXT MATCH / NEXT 5）→ 過去（LAST MATCH / SEASON HISTORY）」を分離して表示する。
  *
- * NEXT MATCH  … belezaUpcomingMatches[0]（今後の公式日程の先頭）
+ * NEXT MATCH  … belezaFixtures内の直近確定試合（現在表示中の1試合スナップショット含む）
  * NEXT 5      … belezaUpcomingMatches
- * LAST MATCH  … belezaMatch（直近の確定試合スナップショット）。詳細は /beleza/matches/[id] へ。
+ * LAST MATCH  … belezaFixturesのうちstatus:"finished"の最新1件。detailMatchIdがある場合のみ
+ *               /beleza/matches/[id] へリンクする（無い場合＝アーカイブ済みで詳細ページが
+ *               belezaMatchの座を明け渡した節は、誤ったリンク先を作らずリンク化しない）。
  *
  * LAST MATCH の finished 判定に resolveMatchStatus を毎リクエスト使うため静的prerenderにしない。
  */
@@ -133,25 +136,23 @@ export default function BelezaPage() {
             <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
               LAST MATCH
             </p>
-            <Link
-              href={`/beleza/matches/${lastFixture?.detailMatchId ?? belezaMatch.id}`}
-              className="mt-2 block border-t border-border py-2 text-[13px]"
-            >
-              <div className="flex items-center justify-between gap-2">
-                <span className="min-w-0 break-words text-text-primary">
-                  {lastFixture?.dateLabel}　{lastOpponentName}
-                </span>
-                <span className="ml-2 flex shrink-0 items-center gap-2">
-                  <span className="tabular-nums font-bold text-text-primary">
-                    {lastFixture?.score?.home}-{lastFixture?.score?.away}
-                  </span>
-                  <StatusBadge variant={lastResult} label={lastResult.toUpperCase()} />
-                </span>
+            {/*
+              detailMatchIdが無い試合（アーカイブ済みでbelezaMatchの座を明け渡した節）は
+              詳細ページを描画できない（/beleza/matches/[id]はbelezaMatchの1件のみ対応）ため、
+              belezaMatch.idへ誤ってリンクしないようリンク化しない（belezaMatch1と同じ既知の制約）。
+            */}
+            {lastFixture?.detailMatchId ? (
+              <Link
+                href={`/beleza/matches/${lastFixture.detailMatchId}`}
+                className="mt-2 block border-t border-border py-2 text-[13px]"
+              >
+                <LastMatchRow lastFixture={lastFixture} opponentName={lastOpponentName} lastResult={lastResult} />
+              </Link>
+            ) : (
+              <div className="mt-2 block border-t border-border py-2 text-[13px]">
+                <LastMatchRow lastFixture={lastFixture} opponentName={lastOpponentName} lastResult={lastResult} />
               </div>
-              <div className="mt-1">
-                <FixtureMetaLine meta={{ competition: lastFixture?.competition.name ?? "", roundLabel: lastFixture?.competition.round }} compact />
-              </div>
-            </Link>
+            )}
           </section>
         )}
 
@@ -163,5 +164,34 @@ export default function BelezaPage() {
         )}
       </div>
     </div>
+  );
+}
+
+function LastMatchRow({
+  lastFixture,
+  opponentName,
+  lastResult,
+}: {
+  lastFixture: CommonFixture | undefined;
+  opponentName: string;
+  lastResult: "win" | "draw" | "loss";
+}) {
+  return (
+    <>
+      <div className="flex items-center justify-between gap-2">
+        <span className="min-w-0 break-words text-text-primary">
+          {lastFixture?.dateLabel}　{opponentName}
+        </span>
+        <span className="ml-2 flex shrink-0 items-center gap-2">
+          <span className="tabular-nums font-bold text-text-primary">
+            {lastFixture?.score?.home}-{lastFixture?.score?.away}
+          </span>
+          <StatusBadge variant={lastResult} label={lastResult.toUpperCase()} />
+        </span>
+      </div>
+      <div className="mt-1">
+        <FixtureMetaLine meta={{ competition: lastFixture?.competition.name ?? "", roundLabel: lastFixture?.competition.round }} compact />
+      </div>
+    </>
   );
 }

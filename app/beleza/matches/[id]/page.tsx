@@ -10,7 +10,6 @@ import { BelezaLiveSection } from "@/components/match/BelezaLiveSection";
 import { resolveMatchStatus } from "@/lib/match/status";
 import {
   belezaTeam,
-  acNaganoTeam,
   belezaMatch,
   belezaHalfScores,
   belezaGoals,
@@ -21,8 +20,7 @@ import {
   belezaMatchStats,
   belezaActualLineup,
   belezaActualFormation,
-  acNaganoActualLineup,
-  acNaganoActualFormation,
+  inacKobeActualLineup,
   belezaPostMatchSummary,
 } from "@/lib/mock/beleza";
 
@@ -213,20 +211,15 @@ export default async function BelezaMatchDetailPage({
       {isFinished && (
         <section>
           <SectionHeader title="実際の並び" eyebrow="FORMATION" />
-          <div className="space-y-7 border-y border-border bg-surface px-3 py-4 lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
+          <div className="space-y-7 border-y border-border bg-surface px-3 py-4">
             <FormationPitch
               team={belezaTeam}
               lineup={belezaActualFormation}
               idPrefix="actual-formation"
             />
-            <FormationPitch
-              team={acNaganoTeam}
-              lineup={acNaganoActualFormation}
-              idPrefix="actual-formation"
-            />
           </div>
           <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
-            両チームの実際の並び（4-2-3-1）。試合終了後のスクリーンショットに基づく配置です。
+            ベレーザの実際の並び（3-4-2-1）。{opponentTeamStatsLabel(belezaMatch)}は開始時フォーメーションが公式に確認できていないため、フォーメーション図は未掲載です（スタメン・ベンチは下記MATCH RECORDに記載）。
           </p>
         </section>
       )}
@@ -242,8 +235,8 @@ export default async function BelezaMatchDetailPage({
           officialSourceLabel={belezaOfficialSourceLabel}
           actualLineups={
             belezaMatch.isBelezaHome
-              ? { home: belezaActualLineup, away: acNaganoActualLineup }
-              : { home: acNaganoActualLineup, away: belezaActualLineup }
+              ? { home: belezaActualLineup, away: inacKobeActualLineup }
+              : { home: inacKobeActualLineup, away: belezaActualLineup }
           }
         />
       )}

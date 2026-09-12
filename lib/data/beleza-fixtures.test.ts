@@ -9,7 +9,10 @@ const now = new Date("2026-08-30T00:00:00+09:00");
 test("BELEZA fixture collection is valid", () => {
   assert.equal(validateFixtures(belezaFixtures).length, 0);
   assert.equal(belezaFixtures.length, 7);
-  assert.equal(belezaFixtures.find((fixture) => fixture.id === "beleza-match-2")?.detailMatchId, "beleza-match-2");
+  // beleza-match-2 (AC長野) is archived: /beleza/matches/[id] now renders only the current
+  // snapshot (beleza-next-3, INAC), so the archived match no longer carries a detailMatchId.
+  assert.equal(belezaFixtures.find((fixture) => fixture.id === "beleza-match-2")?.detailMatchId, undefined);
+  assert.equal(belezaFixtures.find((fixture) => fixture.id === "beleza-next-3")?.detailMatchId, "beleza-next-3");
 });
 
 test("BELEZA NEXT is 09.05浦和 and NEXT5 excludes 08.29 finished", () => {
