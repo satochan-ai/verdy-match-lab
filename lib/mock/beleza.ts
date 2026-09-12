@@ -53,11 +53,7 @@ export const inacKobeTeam: Team = {
 /**
  * === クラシエカップ リーグステージ第1節（INAC神戸レオネッサ戦）：現在表示中の1試合 ===
  * IDは既存のNEXT5エントリ「beleza-next-3」をそのまま再利用する（重複作成しない）。
- * 試合結果・status・goals/cards/substitutions/matchStats/officialRecordはユーザーから
- * 未提供のため今回は変更しない：status: "scheduled"のままとし、resolveMatchStatus（
- * lib/match/status.ts）による自動scheduled/live判定に委ねる（finishedへは時間経過だけで
- * 自動遷移しない。公式結果登録まではkickoffAtを過ぎてもliveのまま留まる）。公式スタメン・
- * ベンチ・ベレーザのフォーメーションのみ、ユーザー提供情報に基づき登録する。
+ * WEリーグ公式試合記録（2026/9/12）に基づき、結果を確定登録する。
  */
 export const belezaMatch = {
   id: "beleza-next-3",
@@ -71,22 +67,41 @@ export const belezaMatch = {
   kickoffLabel: "18:00",
   kickoffAt: "2026-09-12T18:00:00+09:00",
   venue: "味の素フィールド西が丘",
-  status: "scheduled" as const,
+  status: "finished" as const,
   homeTeamName: belezaTeam.name,
   awayTeamName: inacKobeTeam.name,
   /** ベレーザ視点の勝敗判定用（今節はHOME）。 */
   isBelezaHome: true,
-  homeScore: null,
-  awayScore: null,
+  homeScore: 3,
+  awayScore: 2,
 };
 
-/** スコア・得点者・カード・交代・スタッツ・公式試合記録は今回未提供のため未設定（推測で埋めない）。 */
-export const belezaHalfScores: { firstHalf: string; secondHalf: string } | undefined = undefined;
-export const belezaGoals: MatchGoal[] = [];
-export const belezaCards: MatchCard[] = [];
-export const belezaSubstitutions: MatchSubstitution[] = [];
+export const belezaHalfScores = { firstHalf: "1-2", secondHalf: "2-0" };
+export const belezaGoals: MatchGoal[] = [
+  { minute: "3'", scorer: "山本 摩也", team: inacKobeTeam.name },
+  { minute: "7'", scorer: "久保田 真生", team: inacKobeTeam.name },
+  { minute: "45+2'", scorer: "須長 穂乃果", team: belezaTeam.name },
+  { minute: "55'", scorer: "式田 和", team: belezaTeam.name },
+  { minute: "87'", scorer: "土光 真代", team: belezaTeam.name },
+];
+export const belezaCards: MatchCard[] = [
+  { minute: "18'", player: "箕輪 千慧", team: inacKobeTeam.name, type: "yellow" },
+];
+export const belezaSubstitutions: MatchSubstitution[] = [
+  { minute: "46'", team: belezaTeam.name, playerOut: "伊藤 琴音", playerIn: "式田 和" },
+  { minute: "59'", team: inacKobeTeam.name, playerOut: "箕輪 千慧", playerIn: "大田 ありす" },
+  { minute: "59'", team: inacKobeTeam.name, playerOut: "髙瀬 愛実", playerIn: "道上 彩花" },
+  { minute: "59'", team: belezaTeam.name, playerOut: "安藤 梢", playerIn: "樋渡 百花" },
+  { minute: "62'", team: inacKobeTeam.name, playerOut: "山本 摩也", playerIn: "中平 怜那" },
+  { minute: "79'", team: belezaTeam.name, playerOut: "猶本 光", playerIn: "土光 真代" },
+  { minute: "79'", team: inacKobeTeam.name, playerOut: "金月 夏萌", playerIn: "北村 礼" },
+  { minute: "90+3'", team: belezaTeam.name, playerOut: "氏原 里穂菜", playerIn: "ダネル タン" },
+];
 export const belezaMatchStats: { beleza: { shots: number; freeKicks: number; corners: number }; opponent: { shots: number; freeKicks: number; corners: number } } | undefined = undefined;
-export const belezaOfficialRecord: OfficialMatchRecord | undefined = undefined;
+export const belezaOfficialRecord: OfficialMatchRecord = {
+  kickoff: "18:04", attendance: 2086, weather: "雨のち曇", temperature: "22.8℃", humidity: "80%",
+  sourceUrl: "https://weleague.jp/matches/2026091224/",
+};
 export const belezaOfficialSourceLabel = "WE LEAGUE Official Match Record";
 export const belezaPostMatchSummary = "";
 

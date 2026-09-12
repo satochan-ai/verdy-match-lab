@@ -32,13 +32,13 @@ export const belezaFixtures: CommonFixture[] = [
     detailMatchId: belezaMatch3.id,
   },
   {
-    // 現在表示中の1試合（クラシエカップ第1節・INAC神戸戦）。score/statusは未提供のため
-    // belezaMatch.statusをそのまま使う（推測でfinished/scoreを埋めない）。
+    // クラシエカップ第1節・INAC神戸戦の公式確定結果。
     id: belezaMatch.id, category: "beleza", teamName: belezaTeam.name,
     opponentName: belezaMatch.isBelezaHome ? belezaMatch.awayTeamName : belezaMatch.homeTeamName,
     competition: { name: belezaMatch.fixtureMeta.competition, round: belezaMatch.fixtureMeta.roundLabel },
     kickoffAt: belezaMatch.kickoffAt, kickoffStatus: "confirmed", dateLabel: belezaMatch.dateLabel,
     venue: belezaMatch.venue, isHome: belezaMatch.isBelezaHome, status: belezaMatch.status,
+    score: { home: belezaMatch.homeScore, away: belezaMatch.awayScore },
     detailMatchId: belezaMatch.id,
   },
   ...belezaUpcomingMatches.map((fixture, index) => ({
