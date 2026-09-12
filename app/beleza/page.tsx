@@ -9,6 +9,8 @@ import { belezaTeam } from "@/lib/mock/beleza";
 import { belezaFixtures, toBelezaSeasonHistoryEntry, toBelezaUpcomingMatch } from "@/lib/data/beleza-fixtures";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "@/lib/data/fixture-selectors";
 import type { CommonFixture } from "@/lib/types/fixture";
+import { resolveMatchStatus } from "@/lib/match/status";
+import { LiveMatchPanel } from "@/components/match/LiveMatchPanel";
 
 /**
  * /beleza は BELEZA カテゴリーのトップページ。TOP TEAM（/top）と同じ情報設計で、
@@ -32,6 +34,7 @@ export const metadata: Metadata = {
 export default function BelezaPage() {
   const now = new Date();
   const nextFixture = getNextFixture(belezaFixtures, now);
+  const liveFixture = belezaFixtures.find((fixture) => fixture.status === "scheduled" && fixture.kickoffAt && resolveMatchStatus({ status: "scheduled", kickoffAt: fixture.kickoffAt }, now) === "live");
   const nextDisplayFixture = nextFixture ? toBelezaUpcomingMatch(nextFixture) : undefined;
   const upcomingFixtures = getUpcomingFixtures(belezaFixtures, now, 5).map(toBelezaUpcomingMatch);
   const lastFixture = getLatestFinishedFixture(belezaFixtures);
@@ -64,6 +67,8 @@ export default function BelezaPage() {
         <h1 className="text-[15px] font-bold text-text-primary">BELEZA</h1>
         <span className="w-8" />
       </div>
+
+      {liveFixture && <LiveMatchPanel fixture={liveFixture} teamName={belezaTeam.name} />}
 
       {nextDisplayFixture && nextHomeName && nextAwayName ? (
         <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
