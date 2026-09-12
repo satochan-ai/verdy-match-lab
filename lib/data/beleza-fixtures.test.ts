@@ -28,6 +28,15 @@ test("BELEZA vs INAC official live lineups preserve confirmed counts and formati
   assert.equal(belezaFixtures.find((fixture) => fixture.id === "beleza-next-3")?.status, "finished");
 });
 
+test("BELEZA actual formation preserves the confirmed DF and MF horizontal order", () => {
+  assert.deepEqual(belezaActualFormation.starters.slice(1, 4).map((player) => `${player.number} ${player.name}`), [
+    "5 松田 紫野", "3 村松 智子", "32 松岡 瑛茉",
+  ]);
+  assert.deepEqual(belezaActualFormation.starters.slice(4, 8).map((player) => `${player.number} ${player.name}`), [
+    "7 北村 菜々美", "6 隅田 凜", "35 須長 穂乃果", "24 伊藤 琴音",
+  ]);
+});
+
 test("BELEZA season history entries carry detailMatchId through for mobile/desktop history links", () => {
   const history = getSeasonHistory(belezaFixtures).map(toBelezaSeasonHistoryEntry);
   assert.equal(history.length, 4);
