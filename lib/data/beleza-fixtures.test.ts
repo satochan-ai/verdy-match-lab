@@ -43,6 +43,20 @@ test("BELEZA LAST, HISTORY and 09.05 浦和 result are derived", () => {
   assert.equal(history.filter((fixture) => fixture.id === "beleza-match-3").length, 1);
 });
 
+test("BELEZA INAC戦 stays unfinished after kickoff time passes without an explicit finished status", () => {
+  // kickoffAt（09/12 18:00）を過ぎただけでは絶対にfinished扱いにしない
+  // （試合前後の時刻だけを理由にfinished扱いされていた不具合の再発防止）。
+  const wellAfterKickoff = new Date("2026-09-13T00:00:00+09:00");
+  const inac = belezaFixtures.find((fixture) => fixture.id === "beleza-next-3")!;
+  assert.equal(inac.status, "scheduled");
+  const last = getLatestFinishedFixture(belezaFixtures);
+  assert.equal(last?.opponentName, "三菱重工浦和レッズレディース");
+  assert.equal(last?.id, "beleza-match-3");
+  const history = getSeasonHistory(belezaFixtures);
+  assert.equal(history.some((fixture) => fixture.id === "beleza-next-3"), false);
+  assert.equal(getUpcomingFixtures(belezaFixtures, wellAfterKickoff, 5).some((fixture) => fixture.id === "beleza-next-3"), false);
+});
+
 test("finishing 09.12 automatically moves BELEZA NEXT, LAST and HISTORY", () => {
   const simulated = belezaFixtures.map((fixture) => fixture.id === "beleza-next-3"
     ? { ...fixture, status: "finished" as const, score: { home: 2, away: 0 } }
