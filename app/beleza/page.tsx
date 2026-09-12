@@ -137,9 +137,9 @@ export default function BelezaPage() {
               LAST MATCH
             </p>
             {/*
-              detailMatchIdが無い試合（アーカイブ済みでbelezaMatchの座を明け渡した節）は
-              詳細ページを描画できない（/beleza/matches/[id]はbelezaMatchの1件のみ対応）ため、
-              belezaMatch.idへ誤ってリンクしないようリンク化しない（belezaMatch1と同じ既知の制約）。
+              detailMatchIdが無い試合（現在表示中のbelezaMatchがまだ未終了で、直近終了試合が
+              別の節である場合など）は詳細ページを一意に特定できないため、belezaMatch.idへ
+              誤ってリンクしないようリンク化しない。
             */}
             {lastFixture?.detailMatchId ? (
               <Link
