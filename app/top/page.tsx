@@ -97,7 +97,7 @@ export default async function TopTeamPage() {
 
             <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2 lg:mt-5 lg:gap-6">
               <div className="min-w-0 text-right">
-                <p className="truncate text-[15px] font-extrabold leading-[1.15] text-text-primary lg:text-[36px]">
+                <p className="min-w-0 break-words text-[15px] font-extrabold leading-[1.15] text-text-primary lg:text-[36px]">
                   東京ヴェルディ
                 </p>
                 <p className="mt-0.5 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
@@ -108,7 +108,7 @@ export default async function TopTeamPage() {
                 VS
               </div>
               <div className="min-w-0 text-left">
-                <p className="truncate text-[15px] font-extrabold leading-[1.15] text-text-primary lg:text-[36px]">
+                <p className="min-w-0 break-words text-[15px] font-extrabold leading-[1.15] text-text-primary lg:text-[36px]">
                   {opponent.name}
                 </p>
                 <p className="mt-0.5 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
