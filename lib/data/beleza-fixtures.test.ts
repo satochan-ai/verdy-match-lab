@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "./fixture-selectors.ts";
 import { belezaFixtures, toBelezaSeasonHistoryEntry } from "./beleza-fixtures.ts";
+import { belezaActualLineup, belezaActualFormation, inacKobeActualLineup } from "../mock/beleza.ts";
 import { validateFixtures } from "./fixture-validation.ts";
 
 const now = new Date("2026-09-06T00:00:00+09:00");
@@ -15,6 +16,16 @@ test("BELEZA fixture collection is valid", () => {
   for (const id of ["beleza-match-1", "beleza-match-2", "beleza-match-3", "beleza-next-3"]) {
     assert.equal(belezaFixtures.find((fixture) => fixture.id === id)?.detailMatchId, id);
   }
+});
+
+test("BELEZA vs INAC official live lineups preserve confirmed counts and formation", () => {
+  assert.equal(belezaActualLineup.formation, "3-4-2-1");
+  assert.equal(Object.values(belezaActualLineup.starters).flat().length, 11);
+  assert.equal(Object.values(belezaActualLineup.bench).flat().length, 6);
+  assert.equal(Object.values(inacKobeActualLineup.starters).flat().length, 11);
+  assert.equal(Object.values(inacKobeActualLineup.bench).flat().length, 7);
+  assert.equal(belezaActualFormation.formation, "3-4-2-1");
+  assert.equal(belezaFixtures.find((fixture) => fixture.id === "beleza-next-3")?.status, "scheduled");
 });
 
 test("BELEZA season history entries carry detailMatchId through for mobile/desktop history links", () => {
