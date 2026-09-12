@@ -8,11 +8,13 @@ import { MatchRecord } from "@/components/match/MatchRecord";
 import { FormationPitch } from "@/components/match/PredictedFormation";
 import { BelezaOfficialLineup } from "@/components/match/BelezaOfficialLineup";
 import { BelezaLiveSection } from "@/components/match/BelezaLiveSection";
+import { BelezaLiveOfficialLineups } from "@/components/match/BelezaLiveOfficialLineups";
 import { resolveMatchStatus } from "@/lib/match/status";
 import type { MatchGoal, Team } from "@/types/domain";
 import {
   belezaTeam,
   acNaganoTeam,
+  inacKobeTeam,
   urawaTeam,
   jefChibaLadiesTeam,
   belezaMatch,
@@ -244,6 +246,15 @@ export default async function BelezaMatchDetailPage({
           matchId={belezaMatch.id}
           homeTeamName={belezaMatch.homeTeamName}
           awayTeamName={belezaMatch.awayTeamName}
+        />
+      )}
+      {isLive && (
+        <BelezaLiveOfficialLineups
+          belezaTeam={belezaTeam}
+          belezaLineup={belezaActualLineup}
+          belezaFormation={belezaActualFormation}
+          opponentTeam={inacKobeTeam}
+          opponentLineup={inacKobeActualLineup}
         />
       )}
       {isScheduled && (
