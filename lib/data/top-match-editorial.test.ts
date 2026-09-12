@@ -200,3 +200,37 @@ test("match-13 stores only the Tokyo Verdy Chiba pre-match prediction", () => {
   assert.equal(match13.substitutions, undefined);
   assert.equal(match13.matchStats, undefined);
 });
+
+test("match-13 pre-match editorial (strategies/focusPoints/matchNotes) treats Chiba's 4-4-2 as a hypothesis", () => {
+  assert.equal(match13.strategies.length, 3);
+  assert.deepEqual(match13.strategies.map(({ title }) => title), [
+    "千葉の2トップ脇から前進する",
+    "2シャドーを千葉の中盤背後へ",
+    "両WBの背後を使わせない",
+  ]);
+  assert.equal(match13.strategies.every(({ result }) => result === "pending"), true);
+
+  assert.equal(match13.focusPoints.length, 3);
+  assert.equal(match13.focusPoints.some((p) => p.startsWith("東京Vの3バック vs 千葉の前線")), true);
+  assert.equal(match13.focusPoints.some((p) => p.startsWith("内田・溝口の両WB")), true);
+  assert.equal(match13.focusPoints.some((p) => p.startsWith("7連戦最後の後半戦")), true);
+
+  assert.equal(match13.matchNotes.length, 5);
+
+  // 千葉の4-4-2はユーザー確認済みの公式情報ではなく試合前の仮説のため、断定表現を使っていないこと。
+  const editorialText = [
+    ...match13.strategies.flatMap(({ title, description }) => [title, description]),
+    ...match13.focusPoints,
+    ...match13.matchNotes,
+  ].join("\n");
+  for (const forbidden of ["千葉は4-4-2で来る", "千葉は必ず", "に違いない", "確実に千葉"]) {
+    assert.equal(editorialText.includes(forbidden), false, `unexpected assertive phrase: ${forbidden}`);
+  }
+  assert.equal(/千葉は[^、。]*(する|した|来る|使う|置く|残す)。/.test(editorialText), false);
+  assert.equal(editorialText.includes("4-4-2"), true);
+
+  // predictedLineups/availability等、editorial以外のフィールドに今回の変更でdiffが無いこと。
+  assert.equal(match13.predictedLineups?.away.formation, "4-4-2");
+  assert.equal(match13.predictedLineups?.away.starters.length, 11);
+  assert.equal(match13.availability?.likelyUnavailable.length, 2);
+});
