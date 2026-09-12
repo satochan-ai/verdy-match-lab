@@ -6,6 +6,7 @@ const match10 = matches.find((item) => item.id === "match-10")!;
 const match12 = matches.find((item) => item.id === "match-12")!;
 const match11 = matches.find((item) => item.id === "match-11")!;
 const match13 = matches.find((item) => item.id === "match-13")!;
+const match14 = matches.find((item) => item.id === "match-14")!;
 
 test("recent Tokyo Verdy actual lineups preserve official horizontal order", () => {
   const expected = {
@@ -236,4 +237,45 @@ test("match-13 pre-match editorial (strategies/focusPoints/matchNotes) treats Ch
   assert.equal(match13.predictedLineups?.away.formation, "4-4-2");
   assert.equal(match13.predictedLineups?.away.starters.length, 11);
   assert.equal(match13.availability?.likelyUnavailable.length, 2);
+});
+
+test("match-14 is the Urawa preview match: HOME=浦和レッズ / AWAY=東京ヴェルディ", () => {
+  assert.equal(match14.homeTeam.name, "浦和レッズ");
+  assert.equal(match14.awayTeam.name, "東京ヴェルディ");
+  assert.equal(match14.isVerdyHome, false);
+  assert.equal(match14.status, "scheduled");
+});
+
+test("match-14 registers only Urawa's headline predicted formation (3-4-2-1), no schema expansion for the 4-1-2-3 counter", () => {
+  assert.equal(match14.predictedLineups?.home.formation, "3-4-2-1");
+  assert.equal(match14.predictedLineups?.home.starters.length, 11);
+  // 背番号はユーザーが明示していないため、推測登録していないこと。
+  assert.equal(match14.predictedLineups?.home.starters.every((starter) => starter.number === undefined), true);
+  // alternativesの対象一致。
+  assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "安居 海渡")?.alternative, "植木 颯");
+  assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "渡邊 凌磨")?.alternative, "マテウス サヴィオ");
+  // 4-1-2-3対抗案は既存predictedLineups schemaへ別formationとして追加していないこと。
+  assert.notEqual(match14.predictedLineups?.home.formation, "4-1-2-3");
+});
+
+test("match-14 does not fabricate Tokyo Verdy's predicted lineup (registered in a later phase)", () => {
+  assert.equal(match14.predictedLineups?.away.starters.length, 0);
+});
+
+test("match-14 editorial (strategies/focusPoints/matchNotes) records the Seko-focused draft without asserting Urawa's formation as fact", () => {
+  assert.equal(match14.strategies.length, 3);
+  assert.deepEqual(match14.strategies.map(({ title }) => title), [
+    "瀬古を自由にさせない",
+    "金子・渡邊を前向きにさせない",
+    "小森への縦一本を簡単に入れさせない",
+  ]);
+  assert.equal(match14.strategies.every(({ result }) => result === "pending"), true);
+
+  assert.equal(match14.focusPoints.length, 3);
+  assert.equal(match14.focusPoints.some((p) => p.startsWith("浦和は3バックか4バックか")), true);
+  assert.equal(match14.focusPoints.some((p) => p.startsWith("瀬古を東京Vがどう見るか")), true);
+  assert.equal(match14.focusPoints.some((p) => p.startsWith("金子・渡邊・小森の距離")), true);
+
+  // 4-1-2-3対抗案はmatchNotesへドラフトとして保持されていること。
+  assert.equal(match14.matchNotes.some((note) => note.includes("4-1-2-3")), true);
 });

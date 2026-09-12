@@ -134,6 +134,9 @@ export const scheduleMatches: ScheduleMatch[] = [
     isVerdyHome: false,
     opponentName: "浦和レッズ",
     status: "scheduled",
+    // NEXT+1準備Phase：detailを先行作成（match-14）。NEXT MATCH/NEXT5の並びには影響しない
+    // （既存のkickoffAt順ソートは変更していない）。
+    detailMatchId: "match-14",
   },
   {
     id: "sched-levain-tosu",
