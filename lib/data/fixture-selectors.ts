@@ -1,4 +1,5 @@
 import type { CommonFixture, MatchCategory } from "../types/fixture";
+import { resolveMatchStatus } from "../match/status.ts";
 
 const timeOf = (value?: string) => {
   if (!value) return undefined;
@@ -11,7 +12,10 @@ const orderedUpcoming = (fixtures: readonly CommonFixture[], now: Date) => {
   const pendingFixtures: { fixture: CommonFixture; index: number }[] = [];
   fixtures.forEach((fixture, index) => {
     const time = timeOf(fixture.kickoffAt);
-    if (fixture.status === "scheduled" && fixture.kickoffStatus === "confirmed" && time !== undefined && time > now.getTime()) confirmed.push({ fixture, time, index });
+    const resolvedStatus = fixture.status === "scheduled" && fixture.kickoffAt
+      ? resolveMatchStatus({ status: "scheduled", kickoffAt: fixture.kickoffAt }, now)
+      : fixture.status;
+    if (resolvedStatus === "scheduled" && fixture.kickoffStatus === "confirmed" && time !== undefined && time > now.getTime()) confirmed.push({ fixture, time, index });
     else if (pending(fixture)) pendingFixtures.push({ fixture, index });
   });
   confirmed.sort((a, b) => a.time - b.time || a.index - b.index);

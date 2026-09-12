@@ -29,6 +29,17 @@ test("upcoming falls back to pending fixture when no confirmed future exists", (
   assert.equal(getNextFixture(fixtures, now)?.id, "pending");
 });
 
+test("NEXT includes future scheduled fixtures but excludes resolved live and finished fixtures", () => {
+  const fixtures = [
+    base({ id: "future-scheduled", kickoffAt: "2026-09-02T10:00:00Z" }),
+    base({ id: "live-after-kickoff", kickoffAt: "2026-08-29T10:00:00Z" }),
+    base({ id: "finished", status: "finished", kickoffAt: "2026-08-28T10:00:00Z", score: { home: 1, away: 0 } }),
+  ];
+  assert.deepEqual(getUpcomingFixtures(fixtures, now).map((fixture) => fixture.id), ["future-scheduled"]);
+  assert.equal(getLatestFinishedFixture(fixtures)?.id, "finished");
+  assert.equal(getLatestFinishedFixture(fixtures)?.id === "live-after-kickoff", false);
+});
+
 test("latest and season history return finished scored fixtures", () => {
   const fixtures = [
     base({ id: "top-old", status: "finished", kickoffAt: "2026-07-01T10:00:00Z", score: { home: 0, away: 1 } }),
