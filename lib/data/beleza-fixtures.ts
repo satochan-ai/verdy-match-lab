@@ -1,6 +1,6 @@
 import type { UpcomingFixture } from "../../types/domain";
 import type { CommonFixture } from "../types/fixture";
-import { belezaMatch, belezaMatch1, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
+import { belezaMatch, belezaMatch1, belezaMatch2, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
 
 export const belezaFixtures: CommonFixture[] = [
   {
@@ -10,17 +10,25 @@ export const belezaFixtures: CommonFixture[] = [
     venue: belezaMatch1.venue, isHome: true, status: "finished", score: { home: belezaMatch1.homeScore, away: belezaMatch1.awayScore },
   },
   {
+    id: belezaMatch2.id, category: "beleza", teamName: belezaTeam.name,
+    opponentName: belezaMatch2.homeTeamName, competition: { name: "2026/27 WEリーグ", round: "第2節" },
+    kickoffAt: belezaMatch2.kickoffAt, kickoffStatus: "confirmed", dateLabel: belezaMatch2.dateLabel,
+    venue: belezaMatch2.venue, isHome: belezaMatch2.isBelezaHome, status: "finished",
+    score: { home: belezaMatch2.homeScore, away: belezaMatch2.awayScore },
+    sourceUrl: "https://weleague.jp/matches/2026082925/",
+  },
+  {
     id: belezaMatch.id, category: "beleza", teamName: belezaTeam.name,
-    opponentName: belezaMatch.homeTeamName, competition: { name: "2026/27 WEリーグ", round: "第2節" },
+    opponentName: belezaMatch.homeTeamName, competition: { name: "2026/27 WEリーグ", round: "第3節" },
     kickoffAt: belezaMatch.kickoffAt, kickoffStatus: "confirmed", dateLabel: belezaMatch.dateLabel,
     venue: belezaMatch.venue, isHome: belezaMatch.isBelezaHome, status: "finished",
     score: { home: belezaMatch.homeScore, away: belezaMatch.awayScore }, detailMatchId: belezaMatch.id,
-    sourceUrl: "https://weleague.jp/matches/2026082925/",
+    sourceUrl: "https://www.verdy.co.jp/beleza/match/info/12026090516/result",
   },
   ...belezaUpcomingMatches.map((fixture, index) => ({
     id: fixture.id, category: "beleza" as const, teamName: belezaTeam.name, opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
-    kickoffAt: ["2026-09-05T18:00:00+09:00", "2026-09-12T18:00:00+09:00", "2026-09-19T16:00:00+09:00", "2026-09-23T14:00:00+09:00", "2026-09-27T18:00:00+09:00"][index],
+    kickoffAt: ["2026-09-12T18:00:00+09:00", "2026-09-19T16:00:00+09:00", "2026-09-23T14:00:00+09:00", "2026-09-27T18:00:00+09:00"][index],
     kickoffStatus: "confirmed" as const, dateLabel: fixture.dateLabel, venue: fixture.venue, isHome: fixture.isHome, status: "scheduled" as const,
   })),
 ];
