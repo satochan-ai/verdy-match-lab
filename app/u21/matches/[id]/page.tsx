@@ -49,11 +49,11 @@ export default async function U21MatchDetailPage({
     half_time: "ハーフタイム",
     finished: "試合終了",
   }[displayStatus];
-  const isFinished = displayStatus === "finished";
+  const isFinished = displayStatus === "finished" && u21Match.homeScore !== undefined && u21Match.awayScore !== undefined;
   const resultLabel =
-    u21Match.homeScore === u21Match.awayScore
+    isFinished && u21Match.homeScore === u21Match.awayScore
       ? "draw"
-      : u21Match.homeScore > u21Match.awayScore
+      : isFinished && u21Match.homeScore! > u21Match.awayScore!
       ? "win"
       : "loss";
 
