@@ -1,6 +1,6 @@
 import type { UpcomingFixture } from "../../types/domain";
 import type { CommonFixture } from "../types/fixture";
-import { belezaMatch, belezaMatch1, belezaMatch2, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
+import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
 
 export const belezaFixtures: CommonFixture[] = [
   {
@@ -10,6 +10,8 @@ export const belezaFixtures: CommonFixture[] = [
     venue: belezaMatch1.venue, isHome: true, status: "finished", score: { home: belezaMatch1.homeScore, away: belezaMatch1.awayScore },
   },
   {
+    // 第2節（AC長野）アーカイブ。詳細ページはbelezaMatchの1件のみを描画するため、
+    // 昇格後はdetailMatchIdを設定しない（belezaMatch1と同じ既知の制約）。
     id: belezaMatch2.id, category: "beleza", teamName: belezaTeam.name,
     opponentName: belezaMatch2.homeTeamName, competition: { name: "2026/27 WEリーグ", round: "第2節" },
     kickoffAt: belezaMatch2.kickoffAt, kickoffStatus: "confirmed", dateLabel: belezaMatch2.dateLabel,
@@ -18,17 +20,28 @@ export const belezaFixtures: CommonFixture[] = [
     sourceUrl: "https://weleague.jp/matches/2026082925/",
   },
   {
-    id: belezaMatch.id, category: "beleza", teamName: belezaTeam.name,
-    opponentName: belezaMatch.homeTeamName, competition: { name: "2026/27 WEリーグ", round: "第3節" },
-    kickoffAt: belezaMatch.kickoffAt, kickoffStatus: "confirmed", dateLabel: belezaMatch.dateLabel,
-    venue: belezaMatch.venue, isHome: belezaMatch.isBelezaHome, status: "finished",
-    score: { home: belezaMatch.homeScore, away: belezaMatch.awayScore }, detailMatchId: belezaMatch.id,
+    // 第3節（浦和）アーカイブ。同上の理由でdetailMatchIdを設定しない。
+    id: belezaMatch3.id, category: "beleza", teamName: belezaTeam.name,
+    opponentName: belezaMatch3.homeTeamName, competition: { name: "2026/27 WEリーグ", round: "第3節" },
+    kickoffAt: belezaMatch3.kickoffAt, kickoffStatus: "confirmed", dateLabel: belezaMatch3.dateLabel,
+    venue: belezaMatch3.venue, isHome: belezaMatch3.isBelezaHome, status: "finished",
+    score: { home: belezaMatch3.homeScore, away: belezaMatch3.awayScore },
     sourceUrl: "https://www.verdy.co.jp/beleza/match/info/12026090516/result",
+  },
+  {
+    // 現在表示中の1試合（クラシエカップ第1節・INAC神戸戦）。score/statusは未提供のため
+    // belezaMatch.statusをそのまま使う（推測でfinished/scoreを埋めない）。
+    id: belezaMatch.id, category: "beleza", teamName: belezaTeam.name,
+    opponentName: belezaMatch.isBelezaHome ? belezaMatch.awayTeamName : belezaMatch.homeTeamName,
+    competition: { name: belezaMatch.fixtureMeta.competition, round: belezaMatch.fixtureMeta.roundLabel },
+    kickoffAt: belezaMatch.kickoffAt, kickoffStatus: "confirmed", dateLabel: belezaMatch.dateLabel,
+    venue: belezaMatch.venue, isHome: belezaMatch.isBelezaHome, status: belezaMatch.status,
+    detailMatchId: belezaMatch.id,
   },
   ...belezaUpcomingMatches.map((fixture, index) => ({
     id: fixture.id, category: "beleza" as const, teamName: belezaTeam.name, opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
-    kickoffAt: ["2026-09-12T18:00:00+09:00", "2026-09-19T16:00:00+09:00", "2026-09-23T14:00:00+09:00", "2026-09-27T18:00:00+09:00"][index],
+    kickoffAt: ["2026-09-19T16:00:00+09:00", "2026-09-23T14:00:00+09:00", "2026-09-27T18:00:00+09:00"][index],
     kickoffStatus: "confirmed" as const, dateLabel: fixture.dateLabel, venue: fixture.venue, isHome: fixture.isHome, status: "scheduled" as const,
   })),
 ];

@@ -10,7 +10,6 @@ import { BelezaLiveSection } from "@/components/match/BelezaLiveSection";
 import { resolveMatchStatus } from "@/lib/match/status";
 import {
   belezaTeam,
-  urawaTeam,
   belezaMatch,
   belezaHalfScores,
   belezaGoals,
@@ -21,8 +20,7 @@ import {
   belezaMatchStats,
   belezaActualLineup,
   belezaActualFormation,
-  urawaActualLineup,
-  urawaActualFormation,
+  inacKobeActualLineup,
   belezaPostMatchSummary,
 } from "@/lib/mock/beleza";
 
@@ -210,24 +208,22 @@ export default async function BelezaMatchDetailPage({
         </section>
       )}
 
-      {/* formationが公式確認できていない節はFormationPitchを描画しない（推測でformationを補わない）。 */}
-      {isFinished && belezaActualFormation && urawaActualFormation && (
+      {/*
+        今節はベレーザのフォーメーションのみ公式に確認できている（相手は開始時フォーメーションが
+        未確認）。formationが公式確認できていないチームまで推測で補わないため、片側のみ表示する。
+      */}
+      {isFinished && (
         <section>
           <SectionHeader title="実際の並び" eyebrow="FORMATION" />
-          <div className="space-y-7 border-y border-border bg-surface px-3 py-4 lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
+          <div className="space-y-7 border-y border-border bg-surface px-3 py-4">
             <FormationPitch
               team={belezaTeam}
               lineup={belezaActualFormation}
               idPrefix="actual-formation"
             />
-            <FormationPitch
-              team={urawaTeam}
-              lineup={urawaActualFormation}
-              idPrefix="actual-formation"
-            />
           </div>
           <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
-            両チームの実際の並び（{belezaTeam.name}：{belezaActualFormation.formation}／{urawaTeam.name}：{urawaActualFormation.formation}）。公式確認済みの開始時フォーメーションに基づく配置です。
+            ベレーザの実際の並び（{belezaActualFormation.formation}）。{opponentTeamStatsLabel(belezaMatch)}は開始時フォーメーションが公式に確認できていないため、フォーメーション図は未掲載です（スタメン・ベンチは下記MATCH RECORDに記載）。
           </p>
         </section>
       )}
@@ -243,8 +239,8 @@ export default async function BelezaMatchDetailPage({
           officialSourceLabel={belezaOfficialSourceLabel}
           actualLineups={
             belezaMatch.isBelezaHome
-              ? { home: belezaActualLineup, away: urawaActualLineup }
-              : { home: urawaActualLineup, away: belezaActualLineup }
+              ? { home: belezaActualLineup, away: inacKobeActualLineup }
+              : { home: inacKobeActualLineup, away: belezaActualLineup }
           }
         />
       )}

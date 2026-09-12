@@ -42,14 +42,128 @@ export const urawaTeam: Team = {
 };
 
 /**
- * 第3節 三菱重工浦和レッズレディース戦。
- * 出典：東京ヴェルディベレーザ公式試合結果ページ
- * https://www.verdy.co.jp/beleza/match/info/12026090516/result （ユーザー確認）。
+ * INAC神戸レオネッサ（2026/27 WEリーグ クラシエカップ リーグステージ第1節 対戦相手）。
+ */
+export const inacKobeTeam: Team = {
+  id: "inac-kobe",
+  name: "INAC神戸レオネッサ",
+  isVerdy: false,
+};
+
+/**
+ * === クラシエカップ リーグステージ第1節（INAC神戸レオネッサ戦）：現在表示中の1試合 ===
+ * IDは既存のNEXT5エントリ「beleza-next-3」をそのまま再利用する（重複作成しない）。
+ * 試合結果・status・goals/cards/substitutions/matchStats/officialRecordはユーザーから
+ * 未提供のため今回は変更しない：status: "scheduled"のままとし、resolveMatchStatus（
+ * lib/match/status.ts）による自動live/finished判定に委ねる。公式スタメン・ベンチ・
+ * ベレーザのフォーメーションのみ、ユーザー提供情報に基づき登録する。
  */
 export const belezaMatch = {
+  id: "beleza-next-3",
+  competition: "2026/27 WEリーグ クラシエカップ リーグステージ第1節",
+  fixtureMeta: {
+    competition: "2026/27 WEリーグ クラシエカップ",
+    stage: "リーグステージ",
+    roundLabel: "第1節",
+  } satisfies FixtureMeta,
+  dateLabel: "09.12 SAT",
+  kickoffLabel: "18:00",
+  kickoffAt: "2026-09-12T18:00:00+09:00",
+  venue: "味の素フィールド西が丘",
+  status: "scheduled" as const,
+  homeTeamName: belezaTeam.name,
+  awayTeamName: inacKobeTeam.name,
+  /** ベレーザ視点の勝敗判定用（今節はHOME）。 */
+  isBelezaHome: true,
+  homeScore: null,
+  awayScore: null,
+};
+
+/** スコア・得点者・カード・交代・スタッツ・公式試合記録は今回未提供のため未設定（推測で埋めない）。 */
+export const belezaHalfScores: { firstHalf: string; secondHalf: string } | undefined = undefined;
+export const belezaGoals: MatchGoal[] = [];
+export const belezaCards: MatchCard[] = [];
+export const belezaSubstitutions: MatchSubstitution[] = [];
+export const belezaMatchStats: { beleza: { shots: number; freeKicks: number; corners: number }; opponent: { shots: number; freeKicks: number; corners: number } } | undefined = undefined;
+export const belezaOfficialRecord: OfficialMatchRecord | undefined = undefined;
+export const belezaOfficialSourceLabel = "WE LEAGUE Official Match Record";
+export const belezaPostMatchSummary = "";
+
+/**
+ * BELEZA 公式スタメン・ベンチ・フォーメーション（ユーザー提供、公式結果ページ確認済み）。
+ * 出典：https://www.verdy.co.jp/beleza/match/info/12026091224/result
+ */
+export const belezaActualLineup: ActualLineup = {
+  formation: "3-4-2-1",
+  starters: {
+    GK: ["1 野田 にな"],
+    DF: ["32 松岡 瑛茉", "3 村松 智子", "5 松田 紫野"],
+    MF: ["6 隅田 凜", "35 須長 穂乃果", "7 北村 菜々美", "24 伊藤 琴音", "13 氏原 里穂菜", "8 猶本 光"],
+    FW: ["40 安藤 梢"],
+  },
+  bench: {
+    GK: ["21 水口 茉優"],
+    DF: ["4 土光 真代", "22 井手 ひなた"],
+    MF: [],
+    FW: ["11 樋渡 百花", "25 ダネル タン", "38 式田 和"],
+  },
+};
+
+/**
+ * BELEZAクラシエカップ第1節の実際の並び。3-4-2-1のフォーメーション図表示に用いる。
+ * startersはFormationPitchが要求する順序（GK → DF3 → MF4 → シャドー2 → FW1）。
+ * 画面左→右の並びは公式開始時画像で確認できていないため、ユーザー提供リストの記載順を
+ * そのまま用いる（推測での左右入れ替えはしない）。選手11名・背番号・氏名・formationは
+ * belezaActualLineupと一致させ、変更しない。
+ */
+export const belezaActualFormation: PredictedLineup = {
+  formation: "3-4-2-1",
+  starters: [
+    { number: 1, name: "野田 にな", position: "GK" },
+    { number: 32, name: "松岡 瑛茉", position: "DF" },
+    { number: 3, name: "村松 智子", position: "DF" },
+    { number: 5, name: "松田 紫野", position: "DF" },
+    { number: 6, name: "隅田 凜", position: "MF" },
+    { number: 35, name: "須長 穂乃果", position: "MF" },
+    { number: 7, name: "北村 菜々美", position: "MF" },
+    { number: 24, name: "伊藤 琴音", position: "MF" },
+    { number: 13, name: "氏原 里穂菜", position: "MF" },
+    { number: 8, name: "猶本 光", position: "MF" },
+    { number: 40, name: "安藤 梢", position: "FW" },
+  ],
+};
+
+/**
+ * INAC神戸レオネッサ 公式スタメン・ベンチ（ユーザー提供、公式結果ページ確認済み）。
+ * ポジション区分（GK/DF/MF/FW）だけを根拠に4-3-3と断定できないため、開始時フォーメーションは
+ * 公式開始時画像等で別途確認できるまで未設定とする（formationはActualLineupのoptional項目）。
+ */
+export const inacKobeActualLineup: ActualLineup = {
+  starters: {
+    GK: ["1 田中 桃子"],
+    DF: ["22 万力 安純", "30 松浦 加奈", "5 三宅 史織", "18 金月 夏萌"],
+    MF: ["8 山本 摩也", "25 大熊 環", "40 岸田 優花"],
+    FW: ["17 箕輪 千慧", "11 髙瀬 愛実", "19 久保田 真生"],
+  },
+  bench: {
+    GK: ["99 船田 麻友"],
+    DF: ["44 北村 礼", "15 松尾 菜月"],
+    MF: ["35 榊 愛花", "20 大田 ありす"],
+    FW: ["39 中平 怜那", "16 道上 彩花"],
+  },
+};
+
+/**
+ * === 第3節（三菱重工浦和レッズレディース戦）アーカイブ ===
+ * クラシエカップ第1節（INAC神戸戦）が新たな「現在表示中の1試合」スナップショットに
+ * なったため、このファイルの他の定数群（belezaMatch等）から本節のデータを退避する。
+ * belezaMatch1／belezaMatch2の archive と同じ方針：値は変更せず、名称にMatch3サフィックス
+ * を付けて保持する。詳細ページ（/beleza/matches/[id]）はbelezaMatchの1件のみを描画する
+ * 設計のため、本節の詳細URL（beleza-match-3）は退避後は到達不能になる（既知の制約）。
+ */
+export const belezaMatch3 = {
   id: "beleza-match-3",
   competition: "2026／27 SOMPO WEリーグ 第3節",
-  /** fixture metadata統一表示用（大会名／節を分離）。既存のcompetition文字列は表示互換のため維持する。 */
   fixtureMeta: { competition: "2026/27 WEリーグ", roundLabel: "第3節" } satisfies FixtureMeta,
   dateLabel: "09.05 SAT",
   kickoffLabel: "18:05",
@@ -58,32 +172,24 @@ export const belezaMatch = {
   status: "finished" as const,
   homeTeamName: urawaTeam.name,
   awayTeamName: belezaTeam.name,
-  /** ベレーザ視点の勝敗判定用（今節はAWAY）。 */
   isBelezaHome: false,
   homeScore: 3,
   awayScore: 1,
 };
 
-/** 前半・後半のスコア推移（公式結果ページで確認済み）。 */
-export const belezaHalfScores: { firstHalf: string; secondHalf: string } | undefined = {
+export const belezaMatch3HalfScores = {
   firstHalf: "3-1",
   secondHalf: "0-0",
 };
 
-/** 得点記録（公式結果ページで確認済み・時系列順）。 */
-export const belezaGoals: MatchGoal[] = [
+export const belezaMatch3Goals: MatchGoal[] = [
   { minute: "4'", scorer: "榊原 琴乃", team: urawaTeam.name },
   { minute: "28'", scorer: "大西 若菜", team: urawaTeam.name },
   { minute: "37'", scorer: "伊藤 美紀", team: urawaTeam.name },
   { minute: "39'", scorer: "氏原 里穂菜", team: belezaTeam.name },
 ];
 
-/**
- * 公式試合結果ページ（ユーザー確認済みのアドレスバーURLをそのまま使用、推測で埋めない）。
- * 主審・副審・第4の審判は既存OfficialMatchRecord schemaにフィールドが無いため登録しない
- * （新規schema追加は今回対象外）。
- */
-export const belezaOfficialRecord: OfficialMatchRecord = {
+export const belezaMatch3OfficialRecord: OfficialMatchRecord = {
   kickoff: "18:05",
   attendance: 2770,
   weather: "晴",
@@ -91,22 +197,9 @@ export const belezaOfficialRecord: OfficialMatchRecord = {
   sourceUrl: "https://www.verdy.co.jp/beleza/match/info/12026090516/result",
 };
 
-/** MatchRecordのSOURCEリンク表示名（大会名がJ.LEAGUEではないため上書きする）。 */
-export const belezaOfficialSourceLabel = "WE LEAGUE Official Match Record";
+export const belezaMatch3Cards: MatchCard[] = [];
 
-/**
- * 警告・退場。公式結果ページの52分に松岡瑛茉のイベント表示があるが、このセッションは
- * ネットワークアクセスが制限されており、公式ページのアイコン／DOMでカード種別
- * （イエロー／レッド）を確認できなかった。推測でイエローと断定しないため、確認が
- * 取れるまで未登録のままにする（要フォローアップ：公式ページのアイコン確認）。
- */
-export const belezaCards: MatchCard[] = [];
-
-/**
- * 交代記録。公式結果ページで確認済み（46分は公式表記のとおりHT等へ変換していない）。
- * BELEZA→浦和の順、各チーム内は時系列順。
- */
-export const belezaSubstitutions: MatchSubstitution[] = [
+export const belezaMatch3Substitutions: MatchSubstitution[] = [
   { minute: "31'", team: belezaTeam.name, playerOut: "井手 ひなた", playerIn: "諸田 彩渚" },
   { minute: "46'", team: belezaTeam.name, playerOut: "安藤 梢", playerIn: "猶本 光" },
   { minute: "64'", team: belezaTeam.name, playerOut: "須長 穂乃果", playerIn: "伊藤 琴音" },
@@ -119,18 +212,12 @@ export const belezaSubstitutions: MatchSubstitution[] = [
   { minute: "89'", team: urawaTeam.name, playerOut: "伊藤 美紀", playerIn: "高塚 映奈" },
 ];
 
-/**
- * 公式記録スタッツ（シュート・FK・CK）。既存BELEZA stats schemaに存在する項目のみ登録する。
- * GK（セーブ数）・オフサイド・PKは既存schemaに項目が無いため追加しない
- * （新規schema追加は今回対象外）。
- */
-export const belezaMatchStats: { beleza: { shots: number; freeKicks: number; corners: number }; opponent: { shots: number; freeKicks: number; corners: number } } | undefined = {
+export const belezaMatch3Stats = {
   beleza: { shots: 8, freeKicks: 11, corners: 6 },
   opponent: { shots: 12, freeKicks: 5, corners: 6 },
 };
 
-/** BELEZA 公式スタメン・ベンチ（公式結果ページで確認済み）。 */
-export const belezaActualLineup: ActualLineup = {
+export const belezaMatch3ActualLineup: ActualLineup = {
   starters: {
     GK: ["1 野田 にな"],
     DF: ["22 井手 ひなた", "32 松岡 瑛茉", "3 村松 智子", "5 松田 紫野"],
@@ -163,7 +250,7 @@ export const urawaActualLineup: ActualLineup = {
 
 /**
  * 第3節の開始時formationはユーザー確認済み（ベレーザ4-2-3-1／浦和4-1-4-1）。
- * belezaActualLineup/urawaActualLineup（GK/DF/MF/FWのポジション区分）だけでは
+ * belezaMatch3ActualLineup/urawaActualLineup（GK/DF/MF/FWのポジション区分）だけでは
  * 4-2-3-1のボランチ2/前3や4-1-4-1のアンカー1/中盤4の行分割を表現できないため、
  * FormationPitchが要求する行順（GK→…→FW、各行内は左→右）でstartersを組み直す。
  * ベレーザの役割分け（ボランチ：隅田・須長／前3：北村・塩越・氏原／ストライカー：安藤）は
@@ -171,7 +258,7 @@ export const urawaActualLineup: ActualLineup = {
  * 同じ選手ロールをユーザー確認のうえ踏襲。浦和のアンカー（菊池 まりあ）はユーザー確認済み。
  * 左右の並びは登録済みポジション区分の順序をそのまま使用し、後日ユーザー調整可能。
  */
-export const belezaActualFormation: PredictedLineup | undefined = {
+export const belezaMatch3ActualFormation: PredictedLineup | undefined = {
   formation: "4-2-3-1",
   starters: [
     { number: 1, name: "野田 にな", position: "GK" },
@@ -205,10 +292,7 @@ export const urawaActualFormation: PredictedLineup | undefined = {
   ],
 };
 
-/**
- * POST MATCH summary。公式結果ページで確認できたスコア・得点のみを基に記述する。
- */
-export const belezaPostMatchSummary =
+export const belezaMatch3PostMatchSummary =
   "アウェイで三菱重工浦和レッズレディースと対戦。前半に3失点を許したが、39分に氏原里穂菜がゴールを返した。後半は無得点で終わり、1-3で敗れた。";
 
 /**
@@ -541,7 +625,7 @@ export const belezaSeasonHistory: BelezaSeasonHistoryEntry[] = [
     round: "第2節",
     homeTeamName: acNaganoTeam.name,
     awayTeamName: belezaTeam.name,
-    /** 確定結果を固定値として保持する（第3節以降のbelezaMatch更新で変わらないようにする）。 */
+    /** 確定結果を固定値として保持する（次節以降のbelezaMatch更新で変わらないようにする）。 */
     homeScore: 1,
     awayScore: 4,
     result: "win",
@@ -552,7 +636,7 @@ export const belezaSeasonHistory: BelezaSeasonHistoryEntry[] = [
     round: "第3節",
     homeTeamName: urawaTeam.name,
     awayTeamName: belezaTeam.name,
-    /** 確定結果を固定値として保持する（第4節以降のbelezaMatch更新で変わらないようにする）。 */
+    /** 確定結果を固定値として保持する（次節以降のbelezaMatch更新で変わらないようにする）。 */
     homeScore: 3,
     awayScore: 1,
     result: "loss",
@@ -561,23 +645,12 @@ export const belezaSeasonHistory: BelezaSeasonHistoryEntry[] = [
 
 /**
  * 第3節終了後のNEXT 5（公式日程のみ）。浦和戦はfinishedになったため一覧から外す。
+ * クラシエカップ第1節（INAC神戸戦）はbelezaMatch（現在表示中の1試合）へ昇格したため、
+ * 重複登録を避けるためこの一覧からは外す。
  * WEリーグとクラシエカップを大会横断で開催日時の早い順に並べる。
  * 会場は公式日程で確認できた場合のみ設定する（推測で埋めない）。
  */
 export const belezaUpcomingMatches: UpcomingFixture[] = [
-  {
-    id: "beleza-next-3",
-    dateLabel: "09.12 SAT",
-    kickoffLabel: "18:00",
-    fixtureMeta: {
-      competition: "2026/27 WEリーグ クラシエカップ",
-      stage: "リーグステージ",
-      roundLabel: "第1節",
-    },
-    isHome: true,
-    opponentName: "INAC神戸レオネッサ",
-    venue: "味の素フィールド西が丘",
-  },
   {
     id: "beleza-next-4",
     dateLabel: "09.19 SAT",
