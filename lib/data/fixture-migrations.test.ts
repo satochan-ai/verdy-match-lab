@@ -19,8 +19,12 @@ test("U-21 and BELEZA have unique IDs and stay within category boundaries", () =
 
 test("both categories keep NEXT5 capped at five with a past scheduled fixture excluded", () => {
   for (const fixtures of [u21Fixtures, belezaFixtures]) {
-    const pastScheduled = { ...fixtures[2], id: `${fixtures[0].category}-past`, kickoffAt: "2026-08-29T18:00:00+09:00" };
-    const extended = [...fixtures, pastScheduled, pastScheduled, pastScheduled];
+    const scheduledTemplate = fixtures.find((fixture) => fixture.status === "scheduled")!;
+    const pastScheduled = { ...scheduledTemplate, id: `${fixtures[0].category}-past`, kickoffAt: "2026-08-29T18:00:00+09:00" };
+    // 実データの残りfuture fixture数がカテゴリーによって5件未満の場合もあるため、
+    // 5件超を確実に用意するfuture paddingを追加してcap挙動を検証する。
+    const futurePadding = { ...scheduledTemplate, id: `${fixtures[0].category}-future-pad`, kickoffAt: "2026-12-31T18:00:00+09:00" };
+    const extended = [...fixtures, pastScheduled, pastScheduled, pastScheduled, futurePadding, futurePadding];
     assert.equal(getUpcomingFixtures(extended, now, 5).length, 5);
     assert.equal(getUpcomingFixtures(extended, now, 5).some((fixture) => fixture.id.endsWith("-past")), false);
   }
@@ -52,7 +56,7 @@ test("kickoff boundary includes 17:59 and excludes a still-scheduled 18:01 fixtu
 });
 
 test("two consecutive finishes update NEXT, LAST and HISTORY for both categories", () => {
-  const cases = [[u21Fixtures, ["u21-next-1", "u21-next-2"], "u21-next-3", "u21-next-2"], [belezaFixtures, ["beleza-next-2", "beleza-next-3"], "beleza-next-4", "beleza-next-3"]] as const;
+  const cases = [[u21Fixtures, ["u21-next-1", "u21-next-2"], "u21-next-3", "u21-next-2"], [belezaFixtures, ["beleza-next-3", "beleza-next-4"], "beleza-next-5", "beleza-next-4"]] as const;
   for (const [fixtures, finishedIds, nextId, lastId] of cases) {
     const simulated = withStatus(fixtures, finishedIds, "finished");
     assert.equal(getNextFixture(simulated, now)?.id, nextId);

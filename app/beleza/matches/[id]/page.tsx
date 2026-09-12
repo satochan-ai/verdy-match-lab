@@ -10,7 +10,7 @@ import { BelezaLiveSection } from "@/components/match/BelezaLiveSection";
 import { resolveMatchStatus } from "@/lib/match/status";
 import {
   belezaTeam,
-  acNaganoTeam,
+  urawaTeam,
   belezaMatch,
   belezaHalfScores,
   belezaGoals,
@@ -21,8 +21,8 @@ import {
   belezaMatchStats,
   belezaActualLineup,
   belezaActualFormation,
-  acNaganoActualLineup,
-  acNaganoActualFormation,
+  urawaActualLineup,
+  urawaActualFormation,
   belezaPostMatchSummary,
 } from "@/lib/mock/beleza";
 
@@ -210,7 +210,8 @@ export default async function BelezaMatchDetailPage({
         </section>
       )}
 
-      {isFinished && (
+      {/* formationが公式確認できていない節はFormationPitchを描画しない（推測でformationを補わない）。 */}
+      {isFinished && belezaActualFormation && urawaActualFormation && (
         <section>
           <SectionHeader title="実際の並び" eyebrow="FORMATION" />
           <div className="space-y-7 border-y border-border bg-surface px-3 py-4 lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
@@ -220,13 +221,13 @@ export default async function BelezaMatchDetailPage({
               idPrefix="actual-formation"
             />
             <FormationPitch
-              team={acNaganoTeam}
-              lineup={acNaganoActualFormation}
+              team={urawaTeam}
+              lineup={urawaActualFormation}
               idPrefix="actual-formation"
             />
           </div>
           <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
-            両チームの実際の並び（4-2-3-1）。試合終了後のスクリーンショットに基づく配置です。
+            両チームの実際の並び（{belezaActualFormation.formation}）。試合終了後のスクリーンショットに基づく配置です。
           </p>
         </section>
       )}
@@ -242,8 +243,8 @@ export default async function BelezaMatchDetailPage({
           officialSourceLabel={belezaOfficialSourceLabel}
           actualLineups={
             belezaMatch.isBelezaHome
-              ? { home: belezaActualLineup, away: acNaganoActualLineup }
-              : { home: acNaganoActualLineup, away: belezaActualLineup }
+              ? { home: belezaActualLineup, away: urawaActualLineup }
+              : { home: urawaActualLineup, away: belezaActualLineup }
           }
         />
       )}
