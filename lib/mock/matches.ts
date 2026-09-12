@@ -1165,8 +1165,8 @@ export const matches: Match[] = [
         starters: [
           { number: 19, name: "ホセ スアレス", position: "GK" },
           { number: 28, name: "河野 貴志", position: "DF" },
-          { number: 24, name: "鳥海 晃司", position: "DF" },
           { number: 66, name: "ダニエル ホール", position: "DF" },
+          { number: 24, name: "鳥海 晃司", position: "DF" },
           { number: 67, name: "日高 大", position: "MF" },
           { number: 25, name: "マテウス インディオ", position: "MF" },
           { number: 8, name: "津久井 匠海", position: "MF" },
