@@ -36,6 +36,20 @@ test("U-21 LAST and HISTORY are derived from the finished fixture", () => {
   assert.equal(toU21SeasonHistoryEntry(getLatestFinishedFixture(u21Fixtures)!).result, "loss");
 });
 
+test("U-21 09.12 U-21浦和 stays unfinished after kickoff time passes without an explicit finished status", () => {
+  // kickoffAt（09/12 18:00）を過ぎただけでは絶対にfinished扱いにしない
+  // （試合前後の時刻だけを理由にfinished扱いされていた不具合の再発防止）。
+  const wellAfterKickoff = new Date("2026-09-13T00:00:00+09:00");
+  const todayMatch = u21Fixtures.find((fixture) => fixture.id === "u21-next-1")!;
+  assert.equal(todayMatch.status, "scheduled");
+  const last = getLatestFinishedFixture(u21Fixtures);
+  assert.equal(last?.opponentName, "FC東京U-21");
+  assert.equal(last?.id, "u21-match-1");
+  const history = getSeasonHistory(u21Fixtures);
+  assert.equal(history.some((fixture) => fixture.id === "u21-next-1"), false);
+  assert.equal(getUpcomingFixtures(u21Fixtures, wellAfterKickoff, 5).some((fixture) => fixture.id === "u21-next-1"), false);
+});
+
 test("finishing 09.12 automatically moves NEXT, LAST and HISTORY", () => {
   const simulated = u21Fixtures.map((fixture) => fixture.id === "u21-next-1"
     ? { ...fixture, status: "finished" as const, score: fixture.isHome ? { home: 2, away: 1 } : { home: 1, away: 2 } }

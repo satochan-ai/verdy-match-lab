@@ -73,3 +73,53 @@ test("adapters preserve stored home/away score direction and derive DRAW", () =>
   const draw = { ...belezaFixtures.find((fixture) => fixture.id === "beleza-match-2")!, id: "draw", score: { home: 1, away: 1 } };
   assert.equal(toBelezaSeasonHistoryEntry(getSeasonHistory([draw])[0]).result, "draw");
 });
+
+/**
+ * 終了判定は必ずstatus === "finished"だけを根拠にすること。kickoffAtが過去に
+ * なっただけ（statusはまだ"scheduled"のまま）では、finished系selectorの対象に
+ * 入れてはならない（BELEZA/U-21で試合前後の時刻だけを理由にfinished扱いされた
+ * 不具合の再発防止）。TOP/U-21/BELEZA共通のfixture-selectors.tsを対象に検証する。
+ */
+test("Case A: scheduled + past kickoffAt never enters any finished selector", () => {
+  const base = u21Fixtures.slice(1, 2)[0];
+  const scheduledPastKickoff = {
+    ...base,
+    id: "scheduled-past-kickoff",
+    status: "scheduled" as const,
+    kickoffAt: "2020-01-01T00:00:00+09:00",
+    score: undefined,
+  };
+  const veryLateNow = new Date("2030-01-01T00:00:00+09:00");
+  assert.equal(getLatestFinishedFixture([scheduledPastKickoff]), undefined);
+  assert.deepEqual(getSeasonHistory([scheduledPastKickoff]), []);
+  // upcomingからも外れる（middle state）が、finishedへは絶対に落ちない。
+  assert.deepEqual(getUpcomingFixtures([scheduledPastKickoff], veryLateNow), []);
+  assert.equal(getNextFixture([scheduledPastKickoff], veryLateNow), undefined);
+});
+
+test("Case B: status finished enters the finished selectors regardless of kickoffAt", () => {
+  const base = u21Fixtures.slice(1, 2)[0];
+  const finishedFixture = {
+    ...base,
+    id: "explicitly-finished",
+    status: "finished" as const,
+    kickoffAt: "2026-09-12T18:00:00+09:00",
+    score: { home: 1, away: 0 },
+  };
+  assert.equal(getLatestFinishedFixture([finishedFixture])?.id, "explicitly-finished");
+  assert.equal(getSeasonHistory([finishedFixture]).some((fixture) => fixture.id === "explicitly-finished"), true);
+});
+
+test("Case C: scheduled + future kickoffAt enters the upcoming selector", () => {
+  const base = u21Fixtures.slice(1, 2)[0];
+  const futureScheduled = {
+    ...base,
+    id: "scheduled-future-kickoff",
+    status: "scheduled" as const,
+    kickoffAt: "2030-01-01T00:00:00+09:00",
+    score: undefined,
+  };
+  const beforeKickoff = new Date("2029-01-01T00:00:00+09:00");
+  assert.equal(getNextFixture([futureScheduled], beforeKickoff)?.id, "scheduled-future-kickoff");
+  assert.equal(getUpcomingFixtures([futureScheduled], beforeKickoff).some((fixture) => fixture.id === "scheduled-future-kickoff"), true);
+});
