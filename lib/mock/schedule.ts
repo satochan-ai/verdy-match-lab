@@ -123,6 +123,7 @@ export const scheduleMatches: ScheduleMatch[] = [
     isVerdyHome: true,
     opponentName: "ジェフユナイテッド千葉",
     status: "scheduled",
+    detailMatchId: "match-13",
   },
   {
     id: "sched-urawa",

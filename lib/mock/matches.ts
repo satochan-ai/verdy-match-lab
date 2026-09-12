@@ -1128,6 +1128,50 @@ export const matches: Match[] = [
     ],
   },
   {
+    // 第7節。試合前予想のみを保持し、公式記録・実際の先発は未登録のままにする。
+    id: "match-13",
+    homeTeam: verdy,
+    awayTeam: opponent("jef-united-chiba", "ジェフユナイテッド千葉"),
+    isVerdyHome: true,
+    kickoffAt: "2026-09-13T18:00:00+09:00",
+    venue: "味の素スタジアム",
+    status: "scheduled",
+    homeScore: null,
+    awayScore: null,
+    timeSegment: null,
+    fixtureMeta: { competition: "2026 J1リーグ", roundLabel: "第7節" },
+    verdyProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
+    opponentProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
+    predictedLineups: {
+      home: {
+        formation: "3-4-2-1",
+        starters: [
+          { number: 1, name: "マテウス", position: "GK" },
+          { number: 5, name: "井上 竜太", position: "DF" },
+          { number: 4, name: "林 尚輝", position: "DF", alternative: "佐古 真礼" },
+          { number: 15, name: "鈴木 海音", position: "DF" },
+          { number: 18, name: "溝口 修平", position: "MF" },
+          { number: 8, name: "齋藤 功佑", position: "MF" },
+          { number: 16, name: "平川 怜", position: "MF" },
+          { number: 22, name: "内田 陽介", position: "MF" },
+          { number: 14, name: "福田 湧矢", position: "MF", alternative: "キム ヒョンウ" },
+          { number: 71, name: "平尾 勇人", position: "MF", alternative: "熊取谷 一星" },
+          { number: 9, name: "染野 唯月", position: "FW" },
+        ],
+      },
+      // 型上必須の最小placeholder。千葉側の予想・欠場情報は未登録。
+      away: { formation: "情報準備中", starters: [] },
+    },
+    availability: {
+      likelyUnavailable: [{ team: "東京V", players: ["山見 大登", "吉田 泰授", "田邊 秀斗", "宮原 和也", "森田 晃樹", "寺沼 星文"] }],
+      suspensionNote: "なし",
+      ineligibleNote: "なし",
+    },
+    matchNotes: [],
+    focusPoints: [],
+    strategies: [],
+  },
+  {
     // ルヴァンカップ1回戦。Jリーグ公式試合記録で確認できた終了後の公式記録のみを保持する。
     id: "match-12",
     homeTeam: opponent("leylac-shiga", "レイラック滋賀FC"),
