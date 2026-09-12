@@ -46,9 +46,12 @@ test("postponed, cancelled, abandoned, live and half_time are excluded from all 
 
 test("TBD-only collections provide a provisional NEXT, while confirmed fixtures stay first", () => {
   const tbd = { ...u21Fixtures.at(-1)!, id: "tbd-only", kickoffAt: undefined, kickoffStatus: "date_range" as const };
+  // u21Fixtures[1]（u21-next-1）はU-21浦和戦の公式結果反映によりfinished化したため、
+  // ここでは依然scheduled/confirmedな別fixture（u21-next-2）を参照する。
+  const scheduledConfirmed = u21Fixtures.find((fixture) => fixture.status === "scheduled" && fixture.kickoffStatus === "confirmed")!;
   assert.equal(getNextFixture([tbd], now)?.id, "tbd-only");
-  assert.equal(getUpcomingFixtures([tbd, u21Fixtures[1]], now)[0].id, u21Fixtures[1].id);
-  assert.equal(getUpcomingFixtures([tbd, u21Fixtures[1]], now).at(-1)?.id, "tbd-only");
+  assert.equal(getUpcomingFixtures([tbd, scheduledConfirmed], now)[0].id, scheduledConfirmed.id);
+  assert.equal(getUpcomingFixtures([tbd, scheduledConfirmed], now).at(-1)?.id, "tbd-only");
 });
 
 test("kickoff boundary includes 17:59 and excludes a still-scheduled 18:01 fixture", () => {

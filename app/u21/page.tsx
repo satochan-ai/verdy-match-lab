@@ -66,8 +66,10 @@ export default function U21Page() {
 
   const lastFinished = lastFixture !== undefined;
   const lastOpponentName = lastFixture?.opponentName ?? "";
-  const u21Score = lastFixture?.score?.home ?? 0;
-  const opponentScore = lastFixture?.score?.away ?? 0;
+  // 勝敗はヴェルディ視点（isHome）で判定する。AWAY開催時にHOME得点をヴェルディの
+  // 得点と取り違えない（toU21SeasonHistoryEntryと同じ判定方式に揃える）。
+  const u21Score = (lastFixture?.isHome ? lastFixture?.score?.home : lastFixture?.score?.away) ?? 0;
+  const opponentScore = (lastFixture?.isHome ? lastFixture?.score?.away : lastFixture?.score?.home) ?? 0;
   const lastResult =
     u21Score === opponentScore ? "draw" : u21Score > opponentScore ? "win" : "loss";
 

@@ -16,11 +16,12 @@ test("U-21 fixture collection is valid and has one finished plus five upcoming f
   assert.equal(u21Fixtures.find((fixture) => fixture.id === "u21-next-1")?.detailMatchId, "u21-next-1");
 });
 
-test("U-21 NEXT is 09.12 U-21浦和 and NEXT 5 excludes finished", () => {
-  assert.equal(getNextFixture(u21Fixtures, now)?.opponentName, "U-21浦和レッズ");
+test("U-21 NEXT is 09.20 U-21清水 (U-21浦和戦finished後) and NEXT 5 excludes finished", () => {
+  assert.equal(getNextFixture(u21Fixtures, now)?.opponentName, "U-21清水エスパルス");
   const upcoming = getUpcomingFixtures(u21Fixtures, now, 5);
-  assert.equal(upcoming.length, 5);
+  assert.equal(upcoming.length, 4);
   assert.equal(upcoming.some((fixture) => fixture.status === "finished"), false);
+  assert.equal(upcoming.some((fixture) => fixture.id === "u21-next-1"), false);
 });
 
 test("U-21 TBD Nagoya remains after confirmed fixtures", () => {
@@ -30,24 +31,38 @@ test("U-21 TBD Nagoya remains after confirmed fixtures", () => {
   assert.equal(upcoming.at(-1)?.kickoffStatus, "date_range");
 });
 
-test("U-21 LAST and HISTORY are derived from the finished fixture", () => {
-  assert.equal(getLatestFinishedFixture(u21Fixtures)?.opponentName, "FC東京U-21");
-  assert.equal(getSeasonHistory(u21Fixtures).some((fixture) => fixture.id === "u21-match-1"), true);
-  assert.equal(toU21SeasonHistoryEntry(getLatestFinishedFixture(u21Fixtures)!).result, "loss");
+test("U-21 LAST and HISTORY reflect the finalized U-21浦和 result (U-21浦和 1-2 東京V)", () => {
+  const last = getLatestFinishedFixture(u21Fixtures);
+  assert.equal(last?.id, "u21-next-1");
+  assert.equal(last?.opponentName, "U-21浦和レッズ");
+  assert.deepEqual(last?.score, { home: 1, away: 2 });
+  assert.equal(toU21SeasonHistoryEntry(last!).result, "win");
+
+  const history = getSeasonHistory(u21Fixtures);
+  // 09/12浦和戦・08/22 FC東京戦の2件がSeason Historyに存在し、重複はない。
+  assert.equal(history.filter((fixture) => fixture.id === "u21-next-1").length, 1);
+  assert.equal(history.some((fixture) => fixture.id === "u21-match-1"), true);
 });
 
-test("U-21 09.12 U-21浦和 remains LIVE-only after kickoff without explicit finished status", () => {
-  // kickoffAt（09/12 18:00）を過ぎただけでは絶対にfinished扱いにしない
-  // （試合前後の時刻だけを理由にfinished扱いされていた不具合の再発防止）。
+test("U-21 09.12 U-21浦和 keeps its explicit finished status regardless of kickoffAt vs now", () => {
+  // statusは元データのfinishedをそのまま尊重する。kickoffAtを過ぎているかどうかで
+  // finished判定を左右しない（試合前後の時刻だけを理由にfinished扱いされていた
+  // 不具合の再発防止：時刻だけを理由に非finished扱いへ戻さないことも合わせて検証する）。
   const wellAfterKickoff = new Date("2026-09-13T00:00:00+09:00");
   const todayMatch = u21Fixtures.find((fixture) => fixture.id === "u21-next-1")!;
-  assert.equal(todayMatch.status, "scheduled");
+  assert.equal(todayMatch.status, "finished");
   const last = getLatestFinishedFixture(u21Fixtures);
-  assert.equal(last?.opponentName, "FC東京U-21");
-  assert.equal(last?.id, "u21-match-1");
-  const history = getSeasonHistory(u21Fixtures);
-  assert.equal(history.some((fixture) => fixture.id === "u21-next-1"), false);
+  assert.equal(last?.opponentName, "U-21浦和レッズ");
+  assert.equal(last?.id, "u21-next-1");
   assert.equal(getUpcomingFixtures(u21Fixtures, wellAfterKickoff, 5).some((fixture) => fixture.id === "u21-next-1"), false);
+});
+
+test("U-21 09.12 U-21浦和 result is a WIN for Verdy despite Verdy scoring on the AWAY side", () => {
+  // isVerdyHomeがfalse（アウェイ開催）のため、HOME得点(浦和=1)をヴェルディの得点と
+  // 取り違えて判定しないこと（AWAY=2がヴェルディの得点でVerdy視点はWIN）。
+  const last = getLatestFinishedFixture(u21Fixtures)!;
+  assert.equal(last.isHome, false);
+  assert.equal(toU21SeasonHistoryEntry(last).result, "win");
 });
 
 test("finishing 09.12 automatically moves NEXT, LAST and HISTORY", () => {

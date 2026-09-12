@@ -50,10 +50,14 @@ export default async function U21MatchDetailPage({
     finished: "試合終了",
   }[displayStatus];
   const isFinished = displayStatus === "finished" && u21Match.homeScore !== undefined && u21Match.awayScore !== undefined;
+  // 勝敗はヴェルディ視点（isVerdyHome）で判定する。ホーム/アウェイの得点をヴェルディ視点の
+  // スコアと取り違えない（AWAY開催時にHOME得点をヴェルディの得点と誤認しないため）。
+  const verdyScore = isFinished ? (u21Match.isVerdyHome ? u21Match.homeScore! : u21Match.awayScore!) : undefined;
+  const opponentScore = isFinished ? (u21Match.isVerdyHome ? u21Match.awayScore! : u21Match.homeScore!) : undefined;
   const resultLabel =
-    isFinished && u21Match.homeScore === u21Match.awayScore
+    isFinished && verdyScore === opponentScore
       ? "draw"
-      : isFinished && u21Match.homeScore! > u21Match.awayScore!
+      : isFinished && verdyScore! > opponentScore!
       ? "win"
       : "loss";
 

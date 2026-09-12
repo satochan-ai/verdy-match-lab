@@ -6,6 +6,7 @@ import {
   u21Goals,
   u21HomeOfficialLineup,
   u21Match,
+  u21OfficialRecord,
   u21Substitutions,
 } from "./u21.ts";
 
@@ -59,11 +60,39 @@ test("no formation is registered for either team's official lineup (not confirme
   assert.equal("formation" in u21AwayOfficialLineup, false);
 });
 
-test("U-21浦和レッズ match stays scheduled with no score/goals/cards/substitutions registered this phase", () => {
-  assert.equal(u21Match.status, "scheduled");
-  assert.equal(u21Match.homeScore, undefined);
-  assert.equal(u21Match.awayScore, undefined);
-  assert.deepEqual(u21Goals, []);
-  assert.deepEqual(u21Cards, []);
-  assert.deepEqual(u21Substitutions, []);
+test("U-21浦和レッズ match is finalized: HOME 1 - 2 AWAY (U-21浦和レッズ 1-2 東京ヴェルディU-21)", () => {
+  assert.equal(u21Match.status, "finished");
+  assert.equal(u21Match.homeTeamName, "U-21浦和レッズ");
+  assert.equal(u21Match.awayTeamName, "東京ヴェルディU-21");
+  assert.equal(u21Match.homeScore, 1);
+  assert.equal(u21Match.awayScore, 2);
+});
+
+test("U-21浦和レッズ match records all 3 goals in minute order", () => {
+  assert.equal(u21Goals.length, 3);
+  assert.deepEqual(u21Goals.map((goal) => [goal.minute, goal.scorer, goal.team]), [
+    ["30'", "宮﨑 叶", "U-21浦和レッズ"],
+    ["56'", "白井 亮丞", "東京ヴェルディU-21"],
+    ["71'", "山田 剛綺", "東京ヴェルディU-21"],
+  ]);
+});
+
+test("U-21浦和レッズ match records 2 yellow cards for 浦和 only, no red cards", () => {
+  assert.equal(u21Cards.length, 2);
+  assert.equal(u21Cards.every((card) => card.team === "U-21浦和レッズ" && card.type === "yellow"), true);
+  assert.equal(u21Cards.some((card) => card.type === "red"), false);
+});
+
+test("U-21浦和レッズ match records 5 substitutions: 浦和 2件 / 東京V 3件", () => {
+  assert.equal(u21Substitutions.length, 5);
+  assert.equal(u21Substitutions.filter((sub) => sub.team === "U-21浦和レッズ").length, 2);
+  assert.equal(u21Substitutions.filter((sub) => sub.team === "東京ヴェルディU-21").length, 3);
+});
+
+test("U-21浦和レッズ match official record has confirmed metadata only (no fabricated stats)", () => {
+  assert.equal(u21OfficialRecord?.kickoff, "18:03");
+  assert.equal(u21OfficialRecord?.attendance, 2531);
+  assert.equal(u21OfficialRecord?.weather, "曇");
+  assert.equal(u21OfficialRecord?.temperature, "23.2℃");
+  assert.equal(u21OfficialRecord?.humidity, "84%");
 });
