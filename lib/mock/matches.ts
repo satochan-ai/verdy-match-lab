@@ -1159,20 +1159,20 @@ export const matches: Match[] = [
           { number: 9, name: "染野 唯月", position: "FW" },
         ],
       },
-      // 千葉は東京Vの3バックに対して3バックを採用する傾向を踏まえた予想（公式スタメンではない）。
+      // 千葉予想は4-4-2（公式スタメンではない）。
       away: {
-        formation: "3-4-2-1",
+        formation: "4-4-2",
         starters: [
           { number: 19, name: "ホセ スアレス", position: "GK" },
+          { number: 67, name: "日高 大", position: "DF" },
           { number: 28, name: "河野 貴志", position: "DF" },
           { number: 66, name: "ダニエル ホール", position: "DF" },
-          { number: 24, name: "鳥海 晃司", position: "DF" },
-          { number: 67, name: "日高 大", position: "MF" },
-          { number: 25, name: "マテウス インディオ", position: "MF" },
+          { number: 39, name: "石尾 陸登", position: "DF" },
           { number: 8, name: "津久井 匠海", position: "MF" },
-          { number: 39, name: "石尾 陸登", position: "MF" },
-          { number: 20, name: "石川 大地", position: "MF" },
+          { name: "田口 泰士", position: "MF", alternative: "小林 祐介" },
+          { number: 25, name: "マテウス インディオ", position: "MF" },
           { number: 18, name: "杉山 直宏", position: "MF" },
+          { number: 20, name: "石川 大地", position: "FW", alternative: "エリソン" },
           { number: 29, name: "矢村 健", position: "FW" },
         ],
       },
