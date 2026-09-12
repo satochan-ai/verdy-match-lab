@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { u21Match } from "@/lib/mock/u21";
 import { u21Fixtures, toU21SeasonHistoryEntry, toU21UpcomingMatch } from "@/lib/data/u21-fixtures";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "@/lib/data/fixture-selectors";
 import { U21SeasonHistory } from "@/components/match/U21SeasonHistory";
@@ -8,6 +7,7 @@ import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
+import type { CommonFixture } from "@/lib/types/fixture";
 
 /**
  * /u21 は U-21 カテゴリーのトップページ。TOP TEAM（/top）・BELEZA（/beleza）と同じ情報設計で、
@@ -15,7 +15,9 @@ import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
  *
  * NEXT MATCH  … u21UpcomingMatches[0]（今後の公式日程の先頭）
  * NEXT 5      … u21UpcomingMatches
- * LAST MATCH  … u21Match（直近の確定試合スナップショット）。詳細は /u21/matches/[id] へ。
+ * LAST MATCH  … u21Fixturesのうちstatus:"finished"の最新1件。detailMatchIdがある場合の
+ *               み /u21/matches/[id] へリンクする（無い場合＝アーカイブ済みで詳細ページが
+ *               u21Matchの座を明け渡した節は、誤ったリンク先を作らずリンク化しない）。
  *
  * LAST MATCH の finished 判定に resolveMatchStatus を毎リクエスト使うため静的prerenderにしない。
  */
@@ -154,25 +156,23 @@ export default function U21Page() {
             <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
               LAST MATCH
             </p>
-            <Link
-              href={`/u21/matches/${lastFixture?.detailMatchId ?? u21Match.id}`}
-              className="mt-2 block border-t border-border py-2 text-[13px]"
-            >
-              <div className="flex items-center justify-between gap-2">
-                <span className="min-w-0 break-words text-text-primary">
-                  {lastFixture && formatMonthDay(lastFixture.kickoffAt!)}　{lastOpponentName}
-                </span>
-                <span className="ml-2 flex shrink-0 items-center gap-2">
-                  <span className="tabular-nums font-bold text-text-primary">
-                    {lastFixture?.score?.home}-{lastFixture?.score?.away}
-                  </span>
-                  <StatusBadge variant={lastResult} label={lastResult.toUpperCase()} />
-                </span>
+            {/*
+              detailMatchIdが無い試合（現在表示中の1試合がまだ未終了で、直近終了試合が
+              別の節である場合や、アーカイブ済みで詳細ページを描画できない場合など）は
+              詳細URLを一意に特定できないため、誤ったリンク先を作らずリンク化しない。
+            */}
+            {lastFixture?.detailMatchId ? (
+              <Link
+                href={`/u21/matches/${lastFixture.detailMatchId}`}
+                className="mt-2 block border-t border-border py-2 text-[13px]"
+              >
+                <LastMatchRow lastFixture={lastFixture} lastOpponentName={lastOpponentName} lastResult={lastResult} />
+              </Link>
+            ) : (
+              <div className="mt-2 block border-t border-border py-2 text-[13px]">
+                <LastMatchRow lastFixture={lastFixture} lastOpponentName={lastOpponentName} lastResult={lastResult} />
               </div>
-              <div className="mt-1">
-                <FixtureMetaLine meta={{ competition: lastFixture?.competition.name ?? "", roundLabel: lastFixture?.competition.round }} compact />
-              </div>
-            </Link>
+            )}
           </section>
         )}
 
@@ -184,5 +184,34 @@ export default function U21Page() {
         )}
       </div>
     </div>
+  );
+}
+
+function LastMatchRow({
+  lastFixture,
+  lastOpponentName,
+  lastResult,
+}: {
+  lastFixture: CommonFixture | undefined;
+  lastOpponentName: string;
+  lastResult: "win" | "draw" | "loss";
+}) {
+  return (
+    <>
+      <div className="flex items-center justify-between gap-2">
+        <span className="min-w-0 break-words text-text-primary">
+          {lastFixture && formatMonthDay(lastFixture.kickoffAt!)}　{lastOpponentName}
+        </span>
+        <span className="ml-2 flex shrink-0 items-center gap-2">
+          <span className="tabular-nums font-bold text-text-primary">
+            {lastFixture?.score?.home}-{lastFixture?.score?.away}
+          </span>
+          <StatusBadge variant={lastResult} label={lastResult.toUpperCase()} />
+        </span>
+      </div>
+      <div className="mt-1">
+        <FixtureMetaLine meta={{ competition: lastFixture?.competition.name ?? "", roundLabel: lastFixture?.competition.round }} compact />
+      </div>
+    </>
   );
 }

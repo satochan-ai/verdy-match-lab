@@ -1,26 +1,43 @@
 import type { UpcomingFixture } from "../../types/domain";
 import type { CommonFixture } from "../types/fixture";
-import { u21Match, u21UpcomingMatches } from "../mock/u21.ts";
+import { u21Match, u21Match1, u21UpcomingMatches } from "../mock/u21.ts";
 
 const TEAM_NAME = "東京ヴェルディU-21";
 const competition = "2026/27 U-21 Jリーグ";
 
 export const u21Fixtures: CommonFixture[] = [
   {
+    // EAST 第1節（FC東京U-21）アーカイブ。詳細ページはu21Matchの1件のみを描画するため、
+    // 昇格後はdetailMatchIdを設定しない（BELEZAのbelezaMatch1と同じ既知の制約）。
+    id: u21Match1.id,
+    category: "u21",
+    teamName: TEAM_NAME,
+    opponentName: u21Match1.awayTeamName,
+    competition: { name: competition, round: "EAST 第1節" },
+    kickoffAt: u21Match1.kickoffAt,
+    kickoffStatus: "confirmed",
+    dateLabel: "08.22",
+    venue: u21Match1.venue,
+    isHome: true,
+    status: "finished",
+    score: { home: u21Match1.homeScore, away: u21Match1.awayScore },
+    sourceUrl: "https://www.jleague.jp/match/u-21/2026/082229/",
+  },
+  {
+    // 現在表示中の1試合（東西リーグラウンド第2節・U-21浦和レッズ戦）。score/statusは
+    // 未提供のためu21Match.statusをそのまま使う（推測でfinished/scoreを埋めない）。
     id: u21Match.id,
     category: "u21",
     teamName: TEAM_NAME,
-    opponentName: u21Match.awayTeamName,
-    competition: { name: competition, round: "EAST 第1節" },
+    opponentName: u21Match.isVerdyHome ? u21Match.awayTeamName : u21Match.homeTeamName,
+    competition: { name: u21Match.fixtureMeta.competition, round: u21Match.fixtureMeta.roundLabel },
     kickoffAt: u21Match.kickoffAt,
     kickoffStatus: "confirmed",
-    dateLabel: "08.22",
+    dateLabel: "09.12",
     venue: u21Match.venue,
-    isHome: true,
-    status: "finished",
-    score: { home: u21Match.homeScore, away: u21Match.awayScore },
+    isHome: u21Match.isVerdyHome,
+    status: u21Match.status,
     detailMatchId: u21Match.id,
-    sourceUrl: "https://www.jleague.jp/match/u-21/2026/082229/",
   },
   ...u21UpcomingMatches.map((fixture, index) => ({
     id: fixture.id,
@@ -28,8 +45,8 @@ export const u21Fixtures: CommonFixture[] = [
     teamName: TEAM_NAME,
     opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
-    kickoffAt: ["2026-09-12T18:00:00+09:00", "2026-09-20T14:00:00+09:00", "2026-10-03T15:00:00+09:00", "2026-10-17T15:00:00+09:00", undefined][index],
-    kickoffStatus: index === 4 ? "date_range" as const : "confirmed" as const,
+    kickoffAt: ["2026-09-20T14:00:00+09:00", "2026-10-03T15:00:00+09:00", "2026-10-17T15:00:00+09:00", undefined][index],
+    kickoffStatus: index === 3 ? "date_range" as const : "confirmed" as const,
     dateLabel: fixture.dateLabel,
     isHome: fixture.isHome,
     status: "scheduled" as const,
