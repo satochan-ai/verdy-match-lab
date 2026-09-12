@@ -15,9 +15,9 @@ test("recent Tokyo Verdy actual lineups preserve official horizontal order", () 
       FW: ["7 松橋 優安", "9 染野 唯月", "14 福田 湧矢"],
     },
     "match-11": {
-      DF: ["5 井上 竜太", "15 鈴木 海音", "29 佐古 真礼"],
-      MF: ["8 齋藤 功佑", "16 平川 怜", "18 溝口 修平", "40 新井 悠太"],
-      FW: ["9 染野 唯月", "14 福田 湧矢", "71 平尾 勇人"],
+      DF: ["5 井上 竜太", "29 佐古 真礼", "15 鈴木 海音"],
+      MF: ["18 溝口 修平", "8 齋藤 功佑", "16 平川 怜", "40 新井 悠太"],
+      FW: ["14 福田 湧矢", "71 平尾 勇人", "9 染野 唯月"],
     },
     "match-12": {
       DF: ["36 松田 陸", "29 佐古 真礼", "22 内田 陽介"],
@@ -40,9 +40,9 @@ test("match-11 actual lineups match the official 0-minute formation order", () =
   assert.deepEqual(match11.actualLineups?.home.starters.MF, ["66 大畑 歩夢", "36 ジャクソン アーバイン", "10 田中 駿汰", "2 中村 拓海"]);
   assert.deepEqual(match11.actualLineups?.home.starters.FW, ["14 横山 夢樹", "41 小見 洋太", "11 チアゴ アンドラーデ"]);
   assert.equal(match11.actualLineups?.away.formation, "3-4-2-1");
-  assert.deepEqual(match11.actualLineups?.away.starters.DF, ["5 井上 竜太", "15 鈴木 海音", "29 佐古 真礼"]);
-  assert.deepEqual(match11.actualLineups?.away.starters.MF, ["8 齋藤 功佑", "16 平川 怜", "18 溝口 修平", "40 新井 悠太"]);
-  assert.deepEqual(match11.actualLineups?.away.starters.FW, ["9 染野 唯月", "14 福田 湧矢", "71 平尾 勇人"]);
+  assert.deepEqual(match11.actualLineups?.away.starters.DF, ["5 井上 竜太", "29 佐古 真礼", "15 鈴木 海音"]);
+  assert.deepEqual(match11.actualLineups?.away.starters.MF, ["18 溝口 修平", "8 齋藤 功佑", "16 平川 怜", "40 新井 悠太"]);
+  assert.deepEqual(match11.actualLineups?.away.starters.FW, ["14 福田 湧矢", "71 平尾 勇人", "9 染野 唯月"]);
 });
 
 test("match-12 stores the official Levain Cup record without editorial predictions", () => {
