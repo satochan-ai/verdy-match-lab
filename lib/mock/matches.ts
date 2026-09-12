@@ -1159,11 +1159,29 @@ export const matches: Match[] = [
           { number: 9, name: "染野 唯月", position: "FW" },
         ],
       },
-      // 型上必須の最小placeholder。千葉側の予想・欠場情報は未登録。
-      away: { formation: "情報準備中", starters: [] },
+      // 千葉は東京Vの3バックに対して3バックを採用する傾向を踏まえた予想（公式スタメンではない）。
+      away: {
+        formation: "3-4-2-1",
+        starters: [
+          { name: "ホセ スアレス", position: "GK" },
+          { name: "河野 貴志", position: "DF" },
+          { name: "鳥海 晃司", position: "DF" },
+          { name: "ダニエル ホール", position: "DF" },
+          { name: "日高 大", position: "MF" },
+          { name: "マテウス インディオ", position: "MF" },
+          { name: "津久井 匠海", position: "MF" },
+          { name: "石尾 陸登", position: "MF" },
+          { name: "石川 大地", position: "MF" },
+          { name: "杉山 直宏", position: "MF" },
+          { name: "矢村 健", position: "FW" },
+        ],
+      },
     },
     availability: {
-      likelyUnavailable: [{ team: "東京V", players: ["山見 大登", "吉田 泰授", "田邊 秀斗", "宮原 和也", "森田 晃樹", "寺沼 星文"] }],
+      likelyUnavailable: [
+        { team: "東京V", players: ["山見 大登", "吉田 泰授", "田邊 秀斗", "宮原 和也", "森田 晃樹", "寺沼 星文"] },
+        { team: "千葉", players: ["喜田 陽", "飯田 貴敬"] },
+      ],
       suspensionNote: "なし",
       ineligibleNote: "なし",
     },
