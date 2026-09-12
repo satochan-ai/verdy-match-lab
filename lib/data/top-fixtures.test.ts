@@ -51,6 +51,22 @@ test("TOP finishing simulations update NEXT and LAST without changing detail IDs
   assert.equal(topFixtures.find((fixture) => fixture.id === "sched-kashima")?.detailMatchId, "match-9");
 });
 
+test("TOP schedule links 浦和 (sched-urawa) to match-14 as a NEXT+1 preview, without promoting it to NEXT", () => {
+  const urawa = topFixtures.find((fixture) => fixture.id === "sched-urawa")!;
+  assert.equal(urawa.opponentName, "浦和レッズ");
+  assert.equal(urawa.detailMatchId, "match-14");
+  assert.equal(urawa.isHome, false);
+  // detailMatchIdはfixture全体で一意（重複登録なし）。
+  const detailIds = topFixtures.flatMap((fixture) => fixture.detailMatchId ? [fixture.detailMatchId] : []);
+  assert.equal(new Set(detailIds).size, detailIds.length);
+  // NEXTは引き続き千葉戦のまま、浦和戦をNEXTへ昇格させない。
+  assert.equal(getNextFixture(topFixtures, now)?.opponentName, "ジェフユナイテッド千葉");
+  const next5 = getUpcomingFixtures(topFixtures, now, 5);
+  assert.deepEqual(next5.map((fixture) => fixture.opponentName), [
+    "ジェフユナイテッド千葉", "浦和レッズ", "サガン鳥栖", "ガイナーレ鳥取", "サンフレッチェ広島",
+  ]);
+});
+
 test("TOP schedule can hold two future fixtures with detailMatchId at the same time (back-to-back detail pages)", () => {
   // 連戦時に「NEXT MATCH」「NEXT+1 MATCH」の2試合分を同時にdetail公開できることの回帰テスト。
   // 本番データ（scheduleMatches / matches[]）は変更せず、検証用のfixture配列でのみ確認する。

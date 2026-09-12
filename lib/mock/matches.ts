@@ -1128,6 +1128,86 @@ export const matches: Match[] = [
     ],
   },
   {
+    // 第8節。NEXT+1準備Phase：NEXTは千葉戦（match-13）のまま維持し、この試合は
+    // future scheduleからdetail linkで参照可能な先行準備ページとして扱う。
+    // 東京V側の予想スタメンは千葉戦終了後（starting XI・出場時間・交代・負傷・警告等を
+    // 確認してから）に別Phaseで登録するため、今回は空のまま推測登録しない。
+    id: "match-14",
+    homeTeam: opponent("urawa-reds", "浦和レッズ"),
+    awayTeam: verdy,
+    isVerdyHome: false,
+    kickoffAt: "2026-09-19T18:30:00+09:00",
+    venue: "埼玉スタジアム2002",
+    status: "scheduled",
+    homeScore: null,
+    awayScore: null,
+    timeSegment: null,
+    fixtureMeta: { competition: "2026 J1リーグ", roundLabel: "第8節" },
+    verdyProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
+    opponentProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
+    predictedLineups: {
+      // 浦和 本命予想（3-4-2-1）。背番号はユーザー未提示・既存データ未確認のため登録しない
+      // （推測禁止）。対抗案（4-1-2-3）は既存schemaが1試合1formationしか保持できないため
+      // ここでは登録せず、matchNotesへ編集部ドラフトとして残す。
+      home: {
+        formation: "3-4-2-1",
+        starters: [
+          { name: "西川 周作", position: "GK" },
+          { name: "根本 健太", position: "DF" },
+          { name: "宮本 優太", position: "DF" },
+          { name: "ダニーロ ボザ", position: "DF" },
+          { name: "長沼 洋一", position: "MF" },
+          { name: "安居 海渡", position: "MF", alternative: "植木 颯" },
+          { name: "瀬古 樹", position: "MF" },
+          { name: "林 幸多郎", position: "MF" },
+          { name: "渡邊 凌磨", position: "MF", alternative: "マテウス サヴィオ" },
+          { name: "金子 拓郎", position: "MF" },
+          { name: "小森 飛絢", position: "FW" },
+        ],
+      },
+      // 東京V側は千葉戦終了後に別Phaseで登録するため、今回は未登録のまま
+      // （空欄を埋める推測はしない）。
+      away: {
+        formation: "情報準備中",
+        starters: [],
+      },
+    },
+    matchNotes: [
+      "浦和が上向いてきたタイミングとして見ているのが瀬古加入後。単純に一人の加入だけで変わったというより、中央に瀬古が入ったことで中盤の役割が整理されてきたように見える。",
+      "3バックなら瀬古と安居の中央2枚。4バックなら瀬古がアンカーに入り、その前に安居や渡邊を置く形が考えられる。",
+      "システムが変わっても瀬古が中央の基準点になるという見方は変わらない。東京Vとしては、浦和が3バックか4バックかだけを見るより、瀬古をどこまで自由にさせないかが重要になりそうだ。",
+      "対抗案としては4-1-2-3も考えられる。並びは左から長沼洋一・根本健太・宮本優太・ダニーロ ボザ、アンカーに瀬古樹、インサイドは左から渡邊凌磨（南野遥海）・安居海渡（植木颯）、3トップは左からマテウス サヴィオ（南野遥海）・小森飛絢・金子拓郎という形が想定できる。フォーメーションが変わっても、瀬古が中盤の基準点になる点は変わらないと見ている。",
+    ],
+    focusPoints: [
+      "浦和は3バックか4バックか：鹿島戦では3バックを使った一方、4バックも十分に選択肢として残る。並びそのものより、瀬古や渡邊がどこに立つかを見たい。",
+      "瀬古を東京Vがどう見るか：浦和が上向いてきた中で中央の基準になっている瀬古。東京Vが誰を当て、どこまで自由にボールを持たせないかは大きな見どころ。",
+      "金子・渡邊・小森の距離：前の3人が近い距離でプレーできると浦和は一気に攻撃しやすくなる。東京Vとしては中央を使わせ続ける展開にはしたくない。",
+    ],
+    strategies: [
+      {
+        orderNo: 1,
+        title: "瀬古を自由にさせない",
+        description:
+          "浦和が3バックでも4バックでも、中央で瀬古に前を向かれると攻撃が動き出す。完全に消すというより、楽にボールを受けさせないことから始めたい。",
+        result: "pending",
+      },
+      {
+        orderNo: 2,
+        title: "金子・渡邊を前向きにさせない",
+        description:
+          "3バックならシャドーに入る可能性がある金子と渡邊。この2人が小森の近くで前を向くと厄介になる。小森だけではなく、その周りに入ってくる選手まで見ておきたい。",
+        result: "pending",
+      },
+      {
+        orderNo: 3,
+        title: "小森への縦一本を簡単に入れさせない",
+        description:
+          "浦和は中央から小森へ早めに入れ、そこから周りが出てくる形もある。最初の縦パスを簡単に通さず、その次のプレーまで遅らせたい。",
+        result: "pending",
+      },
+    ],
+  },
+  {
     // 第7節。試合前予想のみを保持し、公式記録・実際の先発は未登録のままにする。
     id: "match-13",
     homeTeam: verdy,
