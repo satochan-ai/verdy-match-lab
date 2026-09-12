@@ -227,7 +227,7 @@ export default async function BelezaMatchDetailPage({
             />
           </div>
           <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
-            両チームの実際の並び（{belezaActualFormation.formation}）。試合終了後のスクリーンショットに基づく配置です。
+            両チームの実際の並び（{belezaTeam.name}：{belezaActualFormation.formation}／{urawaTeam.name}：{urawaActualFormation.formation}）。公式確認済みの開始時フォーメーションに基づく配置です。
           </p>
         </section>
       )}

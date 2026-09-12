@@ -162,13 +162,48 @@ export const urawaActualLineup: ActualLineup = {
 };
 
 /**
- * 第3節は公式結果ページがStarting XIのポジション区分のみを示し、開始時formationを
- * 明示していない。ポジション人数だけから推測でformationを登録しないため、今節は
- * フォーメーション図（実際の並び）を未設定のままにする（belezaActualLineup/
- * urawaActualLineupのポジション区分自体は登録済み）。
+ * 第3節の開始時formationはユーザー確認済み（ベレーザ4-2-3-1／浦和4-1-4-1）。
+ * belezaActualLineup/urawaActualLineup（GK/DF/MF/FWのポジション区分）だけでは
+ * 4-2-3-1のボランチ2/前3や4-1-4-1のアンカー1/中盤4の行分割を表現できないため、
+ * FormationPitchが要求する行順（GK→…→FW、各行内は左→右）でstartersを組み直す。
+ * ベレーザの役割分け（ボランチ：隅田・須長／前3：北村・塩越・氏原／ストライカー：安藤）は
+ * 同一チームの既存前例（belezaMatch2ActualFormation、第2節AC長野戦アーカイブ）と
+ * 同じ選手ロールをユーザー確認のうえ踏襲。浦和のアンカー（菊池 まりあ）はユーザー確認済み。
+ * 左右の並びは登録済みポジション区分の順序をそのまま使用し、後日ユーザー調整可能。
  */
-export const belezaActualFormation: PredictedLineup | undefined = undefined;
-export const urawaActualFormation: PredictedLineup | undefined = undefined;
+export const belezaActualFormation: PredictedLineup | undefined = {
+  formation: "4-2-3-1",
+  starters: [
+    { number: 1, name: "野田 にな", position: "GK" },
+    { number: 22, name: "井手 ひなた", position: "DF" },
+    { number: 32, name: "松岡 瑛茉", position: "DF" },
+    { number: 3, name: "村松 智子", position: "DF" },
+    { number: 5, name: "松田 紫野", position: "DF" },
+    { number: 6, name: "隅田 凜", position: "MF" },
+    { number: 35, name: "須長 穂乃果", position: "MF" },
+    { number: 7, name: "北村 菜々美", position: "MF" },
+    { number: 19, name: "塩越 柚歩", position: "MF" },
+    { number: 13, name: "氏原 里穂菜", position: "MF" },
+    { number: 40, name: "安藤 梢", position: "FW" },
+  ],
+};
+
+export const urawaActualFormation: PredictedLineup | undefined = {
+  formation: "4-1-4-1",
+  starters: [
+    { number: 1, name: "池田 咲紀子", position: "GK" },
+    { number: 28, name: "櫻井 まどか", position: "DF" },
+    { number: 7, name: "高橋 はな", position: "DF" },
+    { number: 13, name: "長嶋 玲奈", position: "DF" },
+    { number: 30, name: "長尾 ののか", position: "DF" },
+    { number: 14, name: "菊池 まりあ", position: "MF" },
+    { number: 8, name: "榊原 琴乃", position: "MF" },
+    { number: 6, name: "加藤 千佳", position: "MF" },
+    { number: 5, name: "伊藤 美紀", position: "MF" },
+    { number: 16, name: "大西 若菜", position: "MF" },
+    { number: 19, name: "サンシャイン フォンテス", position: "FW" },
+  ],
+};
 
 /**
  * POST MATCH summary。公式結果ページで確認できたスコア・得点のみを基に記述する。
