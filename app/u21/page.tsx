@@ -8,6 +8,8 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import type { CommonFixture } from "@/lib/types/fixture";
+import { resolveMatchStatus } from "@/lib/match/status";
+import { LiveMatchPanel } from "@/components/match/LiveMatchPanel";
 
 /**
  * /u21 は U-21 カテゴリーのトップページ。TOP TEAM（/top）・BELEZA（/beleza）と同じ情報設計で、
@@ -45,6 +47,7 @@ function formatMonthDay(iso: string) {
 export default function U21Page() {
   const now = new Date();
   const nextFixture = getNextFixture(u21Fixtures, now);
+  const liveFixture = u21Fixtures.find((fixture) => fixture.status === "scheduled" && fixture.kickoffAt && resolveMatchStatus({ status: "scheduled", kickoffAt: fixture.kickoffAt }, now) === "live");
   const upcomingFixtures = getUpcomingFixtures(u21Fixtures, now, 5).map(toU21UpcomingMatch);
   const lastFixture = getLatestFinishedFixture(u21Fixtures);
   const history = getSeasonHistory(u21Fixtures).map(toU21SeasonHistoryEntry);
@@ -84,6 +87,8 @@ export default function U21Page() {
           ← 戻る
         </Link>
       </div>
+
+      {liveFixture && <LiveMatchPanel fixture={liveFixture} teamName={U21_TEAM_NAME} />}
 
       {nextDisplayFixture && nextHomeName && nextAwayName ? (
         <section className="border-y-2 border-l-4 border-fusion-black border-l-primary-green bg-primary-green/[0.04] px-4 py-5 lg:px-8 lg:py-7">
