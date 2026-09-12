@@ -32,9 +32,10 @@ function TeamLineup({ team, lineup }: { team: Team; lineup: PredictedLineup }) {
               {starter.number ?? "—"}
             </span>
             <span className="min-w-0 pl-1">
-              <span className="block truncate font-bold text-text-primary">{starter.name}</span>
+              {/* 正式名称を省略しない。break-keepでスペース位置を優先改行し、break-wordsを保険にする。 */}
+              <span className="block whitespace-normal break-keep break-words font-bold leading-tight text-text-primary">{starter.name}</span>
               {starter.alternative && (
-                <span className="block truncate text-[10px] font-normal text-text-secondary lg:text-[11px]">
+                <span className="block whitespace-normal break-keep break-words text-[10px] font-normal leading-tight text-text-secondary lg:text-[11px]">
                   別候補：{starter.alternative}
                 </span>
               )}
