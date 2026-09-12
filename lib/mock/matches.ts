@@ -1169,7 +1169,7 @@ export const matches: Match[] = [
           { number: 66, name: "ダニエル ホール", position: "DF" },
           { number: 39, name: "石尾 陸登", position: "DF" },
           { number: 8, name: "津久井 匠海", position: "MF" },
-          { name: "田口 泰士", position: "MF", alternative: "小林 祐介" },
+          { number: 4, name: "田口 泰士", position: "MF", alternative: "小林 祐介" },
           { number: 25, name: "マテウス インディオ", position: "MF" },
           { number: 18, name: "杉山 直宏", position: "MF" },
           { number: 20, name: "石川 大地", position: "FW", alternative: "エリソン" },

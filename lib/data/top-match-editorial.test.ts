@@ -176,7 +176,7 @@ test("match-13 stores only the Tokyo Verdy Chiba pre-match prediction", () => {
     "石川 大地", "矢村 健",
   ]);
   assert.deepEqual(match13.predictedLineups?.away.starters.map(({ number }) => number), [
-    19, 67, 28, 66, 39, 8, undefined, 25, 18, 20, 29,
+    19, 67, 28, 66, 39, 8, 4, 25, 18, 20, 29,
   ]);
   assert.deepEqual(match13.predictedLineups?.away.starters.map(({ alternative }) => alternative), [
     undefined, undefined, undefined, undefined, undefined,
