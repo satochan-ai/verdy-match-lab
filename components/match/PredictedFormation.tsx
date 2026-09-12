@@ -114,7 +114,12 @@ function PlayerMarker({
       >
         {player.number ?? "—"}
       </span>
-      <p className="mx-auto mt-0.5 max-w-[5.5rem] truncate text-[10px] font-bold leading-tight text-text-primary lg:max-w-[7.5rem] lg:text-[13px]">
+      {/*
+        正式名称を省略しない。truncateではなく折り返しで全文表示する。break-keepで
+        まず姓・名の間の半角/全角スペースを優先的な改行位置にし、それでも収まらない
+        場合のみbreak-wordsが文字単位で折り返す（カタカナ語中での不自然な分断を防ぐ）。
+      */}
+      <p className="mx-auto mt-0.5 max-w-[5.5rem] whitespace-normal break-keep break-words text-[10px] font-bold leading-tight text-text-primary lg:max-w-[7.5rem] lg:text-[13px]">
         {player.name}
       </p>
     </div>
