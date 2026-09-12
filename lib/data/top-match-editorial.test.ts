@@ -165,10 +165,23 @@ test("match-13 stores only the Tokyo Verdy Chiba pre-match prediction", () => {
     undefined, undefined, "佐古 真礼", undefined, undefined, undefined, undefined, undefined,
     "キム ヒョンウ", "熊取谷 一星", undefined,
   ]);
-  assert.deepEqual(match13.availability?.likelyUnavailable, [{
-    team: "東京V",
-    players: ["山見 大登", "吉田 泰授", "田邊 秀斗", "宮原 和也", "森田 晃樹", "寺沼 星文"],
-  }]);
+  assert.equal(match13.predictedLineups?.away.formation, "3-4-2-1");
+  assert.equal(match13.predictedLineups?.away.starters.length, 11);
+  assert.deepEqual(match13.predictedLineups?.away.starters.map(({ name }) => name), [
+    "ホセ スアレス", "河野 貴志", "鳥海 晃司", "ダニエル ホール",
+    "日高 大", "マテウス インディオ", "津久井 匠海", "石尾 陸登",
+    "石川 大地", "杉山 直宏", "矢村 健",
+  ]);
+  assert.deepEqual(match13.availability?.likelyUnavailable, [
+    {
+      team: "東京V",
+      players: ["山見 大登", "吉田 泰授", "田邊 秀斗", "宮原 和也", "森田 晃樹", "寺沼 星文"],
+    },
+    {
+      team: "千葉",
+      players: ["喜田 陽", "飯田 貴敬"],
+    },
+  ]);
   assert.equal(match13.actualLineups, undefined);
   assert.equal(match13.officialRecord, undefined);
   assert.equal(match13.goals, undefined);
