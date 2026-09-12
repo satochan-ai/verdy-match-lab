@@ -104,12 +104,15 @@ export const scheduleMatches: ScheduleMatch[] = [
   {
     id: "sched-levain-1st",
     competition: "levain_cup",
-    round: "1stラウンド",
+    round: "1回戦",
     kickoffAt: "2026-09-09T18:30:00+09:00",
     venue: "平和堂ＨＡＴＯスタジアム",
     isVerdyHome: false,
-    opponentName: "レイラック滋賀",
-    status: "scheduled",
+    opponentName: "レイラック滋賀FC",
+    status: "finished",
+    homeScore: 0,
+    awayScore: 1,
+    detailMatchId: "match-12",
   },
   {
     id: "sched-chiba",

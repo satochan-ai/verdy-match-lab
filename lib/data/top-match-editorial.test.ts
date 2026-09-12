@@ -3,6 +3,40 @@ import test from "node:test";
 import { matches } from "../mock/matches.ts";
 
 const match10 = matches.find((item) => item.id === "match-10")!;
+const match12 = matches.find((item) => item.id === "match-12")!;
+const match11 = matches.find((item) => item.id === "match-11")!;
+
+test("match-11 actual lineups match the official 0-minute formation order", () => {
+  assert.equal(match11.actualLineups?.home.formation, "3-4-2-1");
+  assert.deepEqual(match11.actualLineups?.home.starters.DF, ["4 井上 黎生人", "44 畠中 槙之輔", "27 ディオン クールズ"]);
+  assert.deepEqual(match11.actualLineups?.home.starters.MF, ["66 大畑 歩夢", "36 ジャクソン アーバイン", "10 田中 駿汰", "2 中村 拓海"]);
+  assert.deepEqual(match11.actualLineups?.home.starters.FW, ["14 横山 夢樹", "41 小見 洋太", "11 チアゴ アンドラーデ"]);
+  assert.equal(match11.actualLineups?.away.formation, "3-4-2-1");
+  assert.deepEqual(match11.actualLineups?.away.starters.DF, ["15 鈴木 海音", "29 佐古 真礼", "5 井上 竜太"]);
+  assert.deepEqual(match11.actualLineups?.away.starters.MF, ["40 新井 悠太", "16 平川 怜", "8 齋藤 功佑", "18 溝口 修平"]);
+  assert.deepEqual(match11.actualLineups?.away.starters.FW, ["71 平尾 勇人", "14 福田 湧矢", "9 染野 唯月"]);
+});
+
+test("match-12 stores the official Levain Cup record without editorial predictions", () => {
+  assert.equal(match12.status, "finished");
+  assert.deepEqual([match12.homeScore, match12.awayScore], [0, 1]);
+  assert.equal(match12.fixtureMeta?.roundLabel, "1回戦");
+  assert.equal(match12.actualLineups?.home.formation, "4-4-2");
+  assert.equal(match12.actualLineups?.away.formation, "3-4-2-1");
+  assert.equal(Object.values(match12.actualLineups!.home.starters).flat().length, 11);
+  assert.equal(Object.values(match12.actualLineups!.away.starters).flat().length, 11);
+  assert.equal(Object.values(match12.actualLineups!.home.bench).flat().length, 9);
+  assert.equal(Object.values(match12.actualLineups!.away.bench).flat().length, 9);
+  assert.equal(match12.substitutions?.filter((item) => item.team === "東京V").length, 4);
+  assert.equal(match12.substitutions?.filter((item) => item.team === "滋賀").length, 5);
+  assert.deepEqual(match12.goals, [{ minute: "90+5'", scorer: "キム ヒョンウ", team: "東京V" }]);
+  assert.equal(match12.officialRecord?.sourceUrl, "https://www.jleague.jp/match/leaguecup/2026/090904/");
+  assert.equal(match12.predictedLineups, undefined);
+  assert.deepEqual(match12.matchStats, {
+    home: { shots: 12, shotsOnTarget: 3, possession: "49%", passSuccessRate: "74%", offsides: 1, corners: 5, freeKicks: 15, yellowCards: 1, redCards: 0 },
+    away: { shots: 15, shotsOnTarget: 6, possession: "51%", passSuccessRate: "80%", offsides: 0, corners: 7, freeKicks: 15, yellowCards: 4, redCards: 0 },
+  });
+});
 
 test("match-10 carries the pre-match editorial layer", () => {
   assert.equal(match10.strategies.length, 3);
