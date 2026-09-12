@@ -5,6 +5,7 @@ import { matches } from "../mock/matches.ts";
 const match10 = matches.find((item) => item.id === "match-10")!;
 const match12 = matches.find((item) => item.id === "match-12")!;
 const match11 = matches.find((item) => item.id === "match-11")!;
+const match13 = matches.find((item) => item.id === "match-13")!;
 
 test("recent Tokyo Verdy actual lineups preserve official horizontal order", () => {
   const expected = {
@@ -147,4 +148,31 @@ test("match-10 substitutions match every official J.League change", () => {
     { minute: "31'", team: "神戸", playerIn: "鍬先 祐弥", playerOut: "飯野 七聖" },
     { minute: "44'", team: "神戸", playerIn: "川端 彪英", playerOut: "髙橋 壱晟" },
   ]);
+});
+
+test("match-13 stores only the Tokyo Verdy Chiba pre-match prediction", () => {
+  assert.equal(match13.status, "scheduled");
+  assert.deepEqual([match13.homeScore, match13.awayScore], [null, null]);
+  assert.equal(match13.fixtureMeta?.competition, "2026 J1リーグ");
+  assert.equal(match13.fixtureMeta?.roundLabel, "第7節");
+  assert.equal(match13.predictedLineups?.home.formation, "3-4-2-1");
+  assert.equal(match13.predictedLineups?.home.starters.length, 11);
+  assert.deepEqual(match13.predictedLineups?.home.starters.map(({ name }) => name), [
+    "マテウス", "井上 竜太", "林 尚輝", "鈴木 海音", "溝口 修平", "齋藤 功佑",
+    "平川 怜", "内田 陽介", "福田 湧矢", "平尾 勇人", "染野 唯月",
+  ]);
+  assert.deepEqual(match13.predictedLineups?.home.starters.map(({ alternative }) => alternative), [
+    undefined, undefined, "佐古 真礼", undefined, undefined, undefined, undefined, undefined,
+    "キム ヒョンウ", "熊取谷 一星", undefined,
+  ]);
+  assert.deepEqual(match13.availability?.likelyUnavailable, [{
+    team: "東京V",
+    players: ["山見 大登", "吉田 泰授", "田邊 秀斗", "宮原 和也", "森田 晃樹", "寺沼 星文"],
+  }]);
+  assert.equal(match13.actualLineups, undefined);
+  assert.equal(match13.officialRecord, undefined);
+  assert.equal(match13.goals, undefined);
+  assert.equal(match13.cards, undefined);
+  assert.equal(match13.substitutions, undefined);
+  assert.equal(match13.matchStats, undefined);
 });
