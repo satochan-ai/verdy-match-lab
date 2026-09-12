@@ -135,6 +135,38 @@ export const scheduleMatches: ScheduleMatch[] = [
     opponentName: "浦和レッズ",
     status: "scheduled",
   },
+  {
+    id: "sched-levain-tosu",
+    competition: "levain_cup",
+    // 東京ヴェルディ公式（https://www.verdy.co.jp/match/schedule/）で確認できた
+    // 「2026/27 Jリーグ ヤマザキビスケット ルヴァンカップ 1stラウンド」の「2回戦」。
+    round: "1stラウンド 2回戦",
+    kickoffAt: "2026-09-29T19:00:00+09:00",
+    venue: "駅前不動産スタジアム",
+    isVerdyHome: false,
+    opponentName: "サガン鳥栖",
+    status: "scheduled",
+  },
+  {
+    id: "sched-emperor-tottori",
+    competition: "emperor_cup",
+    round: "3回戦",
+    kickoffAt: "2026-10-07T19:00:00+09:00",
+    venue: "味の素スタジアム",
+    isVerdyHome: true,
+    opponentName: "ガイナーレ鳥取",
+    status: "scheduled",
+  },
+  {
+    id: "sched-hiroshima",
+    competition: "j1",
+    round: "第9節",
+    kickoffAt: "2026-10-11T15:00:00+09:00",
+    venue: "味の素スタジアム",
+    isVerdyHome: true,
+    opponentName: "サンフレッチェ広島",
+    status: "scheduled",
+  },
 ];
 
 export function getPreviousMatches(limit = 5): ScheduleMatch[] {
