@@ -172,6 +172,9 @@ test("match-13 stores only the Tokyo Verdy Chiba pre-match prediction", () => {
     "日高 大", "マテウス インディオ", "津久井 匠海", "石尾 陸登",
     "石川 大地", "杉山 直宏", "矢村 健",
   ]);
+  assert.deepEqual(match13.predictedLineups?.away.starters.map(({ number }) => number), [
+    19, 28, 24, 66, 67, 25, 8, 39, 20, 18, 29,
+  ]);
   assert.deepEqual(match13.availability?.likelyUnavailable, [
     {
       team: "東京V",
