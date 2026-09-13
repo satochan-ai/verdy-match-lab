@@ -154,7 +154,7 @@ test("match-10 substitutions match every official J.League change", () => {
   ]);
 });
 
-test("match-13 stores only the Tokyo Verdy Chiba pre-match prediction", () => {
+test("match-13 pre-match prediction is preserved alongside official lineups (in progress, not finished)", () => {
   assert.equal(match13.status, "scheduled");
   assert.deepEqual([match13.homeScore, match13.awayScore], [null, null]);
   assert.equal(match13.fixtureMeta?.competition, "2026 J1リーグ");
@@ -197,12 +197,52 @@ test("match-13 stores only the Tokyo Verdy Chiba pre-match prediction", () => {
       players: ["喜田 陽", "飯田 貴敬"],
     },
   ]);
-  assert.equal(match13.actualLineups, undefined);
+  // 試合中Phase：公式スタメン・ベンチ・開始フォーメーションは登録済みだが、
+  // score/goals/substitutions/cards/stats/officialRecord/finished statusは
+  // 試合終了後の別Phaseまで未登録のまま（今回は変更していない）。
+  assert.notEqual(match13.actualLineups, undefined);
   assert.equal(match13.officialRecord, undefined);
   assert.equal(match13.goals, undefined);
   assert.equal(match13.cards, undefined);
   assert.equal(match13.substitutions, undefined);
   assert.equal(match13.matchStats, undefined);
+});
+
+test("match-13 official starting lineups (Tokyo Verdy 3-4-2-1 / Chiba 4-4-2) match the official broadcast graphic", () => {
+  assert.equal(match13.actualLineups?.home.formation, "3-4-2-1");
+  assert.deepEqual(match13.actualLineups?.home.starters, {
+    GK: ["1 マテウス"],
+    DF: ["15 鈴木 海音", "4 林 尚輝", "5 井上 竜太"],
+    MF: ["40 新井 悠太", "8 齋藤 功佑", "16 平川 怜", "18 溝口 修平"],
+    FW: ["71 平尾 勇人", "14 福田 湧矢", "9 染野 唯月"],
+  });
+  const homeStarterCount = Object.values(match13.actualLineups!.home.starters).flat().length;
+  const homeBenchCount = Object.values(match13.actualLineups!.home.bench).flat().length;
+  assert.equal(homeStarterCount, 11);
+  assert.equal(homeBenchCount, 9);
+
+  assert.equal(match13.actualLineups?.away.formation, "4-4-2");
+  assert.deepEqual(match13.actualLineups?.away.starters, {
+    GK: ["19 ホセ スアレス"],
+    DF: ["67 日高 大", "24 鳥海 晃司", "66 ダニエル ホール", "39 石尾 陸登"],
+    MF: ["8 津久井 匠海", "25 マテウス インディオ", "5 小林 祐介", "18 杉山 直宏"],
+    FW: ["29 矢村 健", "20 石川 大地"],
+  });
+  const awayStarterCount = Object.values(match13.actualLineups!.away.starters).flat().length;
+  const awayBenchCount = Object.values(match13.actualLineups!.away.bench).flat().length;
+  assert.equal(awayStarterCount, 11);
+  assert.equal(awayBenchCount, 9);
+
+  // predictedLineupsのalternatives（林→佐古、平尾→キムヒョンウ等）はactualへ持ち込まない。
+  const actualNames = [
+    ...Object.values(match13.actualLineups!.home.starters).flat(),
+    ...Object.values(match13.actualLineups!.away.starters).flat(),
+  ].join("\n");
+  for (const alt of ["佐古 真礼", "キム ヒョンウ", "熊取谷 一星", "小林 祐介", "エリソン"]) {
+    // 小林 祐介は千葉の予想alternativeだが、実際は先発本人としてactualに含まれるため対象外。
+    if (alt === "小林 祐介") continue;
+    assert.equal(actualNames.includes(alt), false, `unexpected predicted alternative leaked into actual lineup: ${alt}`);
+  }
 });
 
 test("match-13 pre-match editorial (strategies/focusPoints/matchNotes) treats Chiba's 4-4-2 as a hypothesis", () => {
