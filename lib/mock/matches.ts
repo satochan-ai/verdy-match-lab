@@ -1208,16 +1208,18 @@ export const matches: Match[] = [
     ],
   },
   {
-    // 第7節。試合前予想のみを保持し、公式記録・実際の先発は未登録のままにする。
+    // 第7節。東京ヴェルディ公式結果ページ（ユーザー確認済み、
+    // https://www.verdy.co.jp/match/info/2026091302/result）で試合終了を確認し、
+    // 公式記録（スコア・得点・交代・警告）を反映する。
     id: "match-13",
     homeTeam: verdy,
     awayTeam: opponent("jef-united-chiba", "ジェフユナイテッド千葉"),
     isVerdyHome: true,
     kickoffAt: "2026-09-13T18:00:00+09:00",
     venue: "味の素スタジアム",
-    status: "scheduled",
-    homeScore: null,
-    awayScore: null,
+    status: "finished",
+    homeScore: 1,
+    awayScore: 1,
     timeSegment: null,
     fixtureMeta: { competition: "2026 J1リーグ", roundLabel: "第7節" },
     verdyProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
@@ -1302,6 +1304,41 @@ export const matches: Match[] = [
         },
       },
     },
+    // 公式試合記録（東京ヴェルディ公式）。シュート/GK(ゴールキック)/CK/FK/オフサイド/PKの
+    // 前半・後半・計の表は掲載されているが、TeamMatchStats必須項目のshotsOnTarget・
+    // possession・passSuccessRateがこの表には含まれていないため、matchStats自体は
+    // 登録しない（必須項目を0や推測で埋めない。match-8と同じ「未確認ならフィールド自体を
+    // 省略する」方針）。
+    officialRecord: {
+      kickoff: "18:04",
+      attendance: 15254,
+      weather: "曇",
+      temperature: "26.3℃",
+      sourceUrl: "https://www.verdy.co.jp/match/info/2026091302/result",
+    },
+    goals: [
+      { minute: "58'", scorer: "エリソン", team: "千葉" },
+      { minute: "90+2'", scorer: "林 尚輝", team: "東京V" },
+    ],
+    cards: [
+      { minute: "19'", player: "マテウス", team: "東京V", type: "yellow" },
+      { minute: "42'", player: "日高 大", team: "千葉", type: "yellow" },
+      { minute: "45+1'", player: "福田 湧矢", team: "東京V", type: "yellow" },
+      { minute: "52'", player: "石川 大地", team: "千葉", type: "yellow" },
+      { minute: "82'", player: "鳥海 晃司", team: "千葉", type: "yellow" },
+      { minute: "87'", player: "エリソン", team: "千葉", type: "yellow" },
+    ],
+    substitutions: [
+      { minute: "65'", team: "東京V", playerIn: "一美 和成", playerOut: "平尾 勇人" },
+      { minute: "73'", team: "東京V", playerIn: "熊取谷 一星", playerOut: "福田 湧矢" },
+      { minute: "73'", team: "東京V", playerIn: "食野 壮磨", playerOut: "齋藤 功佑" },
+      { minute: "87'", team: "東京V", playerIn: "松橋 優安", playerOut: "鈴木 海音" },
+      { minute: "46'", team: "千葉", playerIn: "エリソン", playerOut: "杉山 直宏" },
+      { minute: "73'", team: "千葉", playerIn: "河野 貴志", playerOut: "ダニエル ホール" },
+      { minute: "73'", team: "千葉", playerIn: "米倉 恒貴", playerOut: "日高 大" },
+      { minute: "83'", team: "千葉", playerIn: "呉屋 大翔", playerOut: "矢村 健" },
+      { minute: "90+2'", team: "千葉", playerIn: "田口 泰士", playerOut: "マテウス インディオ" },
+    ],
     matchNotes: [
       "千葉は前節で今季初勝利。対する東京Vは、まだリーグ戦で勝利がない。",
       "両チームとも直前にルヴァンカップを戦っていて、メンバーを入れ替えながらこの試合を迎える。",

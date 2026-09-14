@@ -122,7 +122,9 @@ export const scheduleMatches: ScheduleMatch[] = [
     venue: "味の素スタジアム",
     isVerdyHome: true,
     opponentName: "ジェフユナイテッド千葉",
-    status: "scheduled",
+    status: "finished",
+    homeScore: 1,
+    awayScore: 1,
     detailMatchId: "match-13",
   },
   {
