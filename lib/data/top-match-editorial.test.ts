@@ -154,9 +154,9 @@ test("match-10 substitutions match every official J.League change", () => {
   ]);
 });
 
-test("match-13 pre-match prediction is preserved alongside official lineups (in progress, not finished)", () => {
-  assert.equal(match13.status, "scheduled");
-  assert.deepEqual([match13.homeScore, match13.awayScore], [null, null]);
+test("match-13 pre-match prediction is preserved alongside the finished official result", () => {
+  assert.equal(match13.status, "finished");
+  assert.deepEqual([match13.homeScore, match13.awayScore], [1, 1]);
   assert.equal(match13.fixtureMeta?.competition, "2026 J1リーグ");
   assert.equal(match13.fixtureMeta?.roundLabel, "第7節");
   assert.equal(match13.predictedLineups?.home.formation, "3-4-2-1");
@@ -197,15 +197,51 @@ test("match-13 pre-match prediction is preserved alongside official lineups (in 
       players: ["喜田 陽", "飯田 貴敬"],
     },
   ]);
-  // 試合中Phase：公式スタメン・ベンチ・開始フォーメーションは登録済みだが、
-  // score/goals/substitutions/cards/stats/officialRecord/finished statusは
-  // 試合終了後の別Phaseまで未登録のまま（今回は変更していない）。
+  // 試合終了Phase：公式スタメン・ベンチ・開始フォーメーションに加え、公式結果
+  // （officialRecord/goals/cards/substitutions）も登録済み。
   assert.notEqual(match13.actualLineups, undefined);
-  assert.equal(match13.officialRecord, undefined);
-  assert.equal(match13.goals, undefined);
-  assert.equal(match13.cards, undefined);
-  assert.equal(match13.substitutions, undefined);
+  assert.notEqual(match13.officialRecord, undefined);
+  assert.notEqual(match13.goals, undefined);
+  assert.notEqual(match13.cards, undefined);
+  assert.notEqual(match13.substitutions, undefined);
+  // シュート数・CK・FK・オフサイド等の前後半/計表にはshotsOnTarget・possession等
+  // TeamMatchStats必須項目が掲載されていないため、matchStatsは今回も登録しない
+  // （必須項目を推測・0埋めしない）。
   assert.equal(match13.matchStats, undefined);
+});
+
+test("match-13 official result: HOME 1 - 1 AWAY draw, goals/cards/substitutions match the official match report", () => {
+  assert.equal(match13.officialRecord?.kickoff, "18:04");
+  assert.equal(match13.officialRecord?.attendance, 15254);
+  assert.equal(match13.officialRecord?.weather, "曇");
+  assert.equal(match13.officialRecord?.temperature, "26.3℃");
+  assert.equal(match13.officialRecord?.sourceUrl, "https://www.verdy.co.jp/match/info/2026091302/result");
+
+  assert.equal(match13.goals?.length, 2);
+  assert.deepEqual(match13.goals, [
+    { minute: "58'", scorer: "エリソン", team: "千葉" },
+    { minute: "90+2'", scorer: "林 尚輝", team: "東京V" },
+  ]);
+  // final scoreと得点件数が一致すること（HOME/AWAY逆転なし）。
+  const homeGoals = match13.goals!.filter((g) => g.team === "東京V").length;
+  const awayGoals = match13.goals!.filter((g) => g.team === "千葉").length;
+  assert.equal(homeGoals, match13.homeScore);
+  assert.equal(awayGoals, match13.awayScore);
+
+  assert.equal(match13.cards?.length, 6);
+  assert.equal(match13.cards?.every((c) => c.type === "yellow"), true);
+  assert.equal(match13.cards?.some((c) => c.type === "red"), false);
+  assert.equal(match13.cards?.filter((c) => c.team === "東京V").length, 2);
+  assert.equal(match13.cards?.filter((c) => c.team === "千葉").length, 4);
+
+  assert.equal(match13.substitutions?.length, 9);
+  const homeSubs = match13.substitutions!.filter((s) => s.team === "東京V");
+  const awaySubs = match13.substitutions!.filter((s) => s.team === "千葉");
+  assert.equal(homeSubs.length, 4);
+  assert.equal(awaySubs.length, 5);
+  // OUT/IN逆転なし（公式試合経過どおり）。
+  assert.equal(homeSubs.some((s) => s.playerOut === "平尾 勇人" && s.playerIn === "一美 和成"), true);
+  assert.equal(awaySubs.some((s) => s.playerOut === "マテウス インディオ" && s.playerIn === "田口 泰士"), true);
 });
 
 test("match-13 official starting lineups (Tokyo Verdy 3-4-2-1 / Chiba 4-4-2) match the official broadcast graphic", () => {
