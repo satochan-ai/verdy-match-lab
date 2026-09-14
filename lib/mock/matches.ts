@@ -1146,14 +1146,25 @@ export const matches: Match[] = [
     verdyProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
     opponentProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
     predictedLineups: {
-      // 浦和側は、案A（3-4-2-1）が3人目のCBを確定できず11人に満たないため、
-      // 「予想スタメン」として確定的に提示できる状態ではない（下記alternativeFormations
-      // のコメント参照）。11人未満のXIを予想スタメンとして表示しないため、home側は
-      // 東京V側と同じく「情報準備中」のまま保持し、比較可能な3案はすべて
-      // alternativeFormationsへ寄せる。
+      // 浦和 本命予想（3-4-2-1、案A）。ダニーロ ボザは岡山戦の負傷交代により欠場予定
+      // のため、3バック右CBにはユーザー確認済みの工藤 孝太を起用する（推測ではなく
+      // ユーザー確認情報）。左右順は元の並び（根本・宮本・ボザ）を維持し、ボザの枠に
+      // そのまま工藤を置く（勝手な左右反転はしていない）。
       home: {
-        formation: "情報準備中",
-        starters: [],
+        formation: "3-4-2-1",
+        starters: [
+          { name: "西川 周作", position: "GK" },
+          { name: "根本 健太", position: "DF" },
+          { name: "宮本 優太", position: "DF" },
+          { name: "工藤 孝太", position: "DF" },
+          { name: "長沼 洋一", position: "MF" },
+          { name: "安居 海渡", position: "MF", alternative: "植木 颯" },
+          { name: "瀬古 樹", position: "MF" },
+          { name: "林 幸多郎", position: "MF" },
+          { name: "渡邊 凌磨", position: "MF", alternative: "マテウス サヴィオ" },
+          { name: "金子 拓郎", position: "MF" },
+          { name: "小森 飛絢", position: "FW" },
+        ],
       },
       // 東京V予想（3-4-2-1）。match-13 actualLineups（東京V公式スタメン）をベースにした
       // 予想スタメン。alternativesはユーザーから対応関係が確認できていないため、
@@ -1179,17 +1190,16 @@ export const matches: Match[] = [
     // 比較表示する（新規追加のalternativeFormationsフィールド、他試合には影響しない）。
     alternativeFormations: [
       {
-        // 案A：3-4-2-1。ダニーロ ボザ欠場予定により3バック右CBの3人目が現時点で
-        // 確定できない（既存project data・岡山戦の実際の登録メンバー・ユーザー確認済み
-        // 候補のいずれにも根拠を持って置ける選手がいないことを確認済み）。推測でCBを
-        // 補うことはせず、10名の「構造案」として保持する（11人に満たないためFormationPitch
-        // では描画せず、確定的な「予想スタメン」としては扱わない）。
-        title: "案A：3-4-2-1（構造案・CB1名未定）",
+        // 案A：3-4-2-1。ダニーロ ボザ欠場予定に伴う3バック右CBには、ユーザー確認済みの
+        // 工藤 孝太を起用する（推測ではなくユーザー確認情報）。predictedLineups.homeと
+        // 同一の11名・同一の左右順を保持する。
+        title: "案A：3-4-2-1",
         formation: "3-4-2-1",
         starters: [
           { role: "GK", name: "西川 周作" },
           { role: "DF", name: "根本 健太" },
           { role: "DF", name: "宮本 優太" },
+          { role: "DF", name: "工藤 孝太" },
           { role: "WB", name: "長沼 洋一" },
           { role: "MF", name: "安居 海渡", alternative: "植木 颯" },
           { role: "MF", name: "瀬古 樹" },
@@ -1198,7 +1208,7 @@ export const matches: Match[] = [
           { role: "シャドー", name: "金子 拓郎" },
           { role: "CF", name: "小森 飛絢" },
         ],
-        note: "ダニーロ ボザの欠場予定により、3バック右CBの3人目は現時点で確定候補がなく未定。根拠のない選手を推測で補っていないため、この案は10名の構造案として扱う。",
+        note: "ダニーロ ボザの欠場予定を受け、3バック右CBには工藤 孝太を起用する。",
       },
       {
         title: "対抗案B：4-1-2-3",
