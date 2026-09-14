@@ -30,9 +30,10 @@ export function AlternativeFormationsList({
               {option.starters.map((starter, index) => (
                 <li
                   key={`${starter.role}-${starter.name}-${index}`}
-                  className="grid min-w-0 grid-cols-[3rem_minmax(0,1fr)] gap-x-2 text-[12px]"
+                  className="grid min-w-0 grid-cols-[3rem_1.5rem_minmax(0,1fr)] gap-x-2 text-[12px]"
                 >
                   <span className="font-bold text-text-secondary">{starter.role}</span>
+                  <span className="tabular-nums text-right text-text-secondary">{starter.number ?? "—"}</span>
                   <span className="min-w-0 break-words">
                     <span className="font-bold text-text-primary">{starter.name}</span>
                     {starter.alternative && (

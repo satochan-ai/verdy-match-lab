@@ -1149,39 +1149,43 @@ export const matches: Match[] = [
       // 浦和 本命予想（3-4-2-1、案A）。ダニーロ ボザは岡山戦の負傷交代により欠場予定
       // のため、3バック右CBにはユーザー確認済みの工藤 孝太を起用する（推測ではなく
       // ユーザー確認情報）。左右順は元の並び（根本・宮本・ボザ）を維持し、ボザの枠に
-      // そのまま工藤を置く（勝手な左右反転はしていない）。
+      // そのまま工藤を置く（勝手な左右反転はしていない）。背番号はユーザー確認済みの
+      // 値のみ登録する（推測で埋めない）。
       home: {
         formation: "3-4-2-1",
         starters: [
-          { name: "西川 周作", position: "GK" },
-          { name: "根本 健太", position: "DF" },
-          { name: "宮本 優太", position: "DF" },
-          { name: "工藤 孝太", position: "DF" },
-          { name: "長沼 洋一", position: "MF" },
-          { name: "安居 海渡", position: "MF", alternative: "植木 颯" },
-          { name: "瀬古 樹", position: "MF" },
-          { name: "林 幸多郎", position: "MF" },
-          { name: "渡邊 凌磨", position: "MF", alternative: "マテウス サヴィオ" },
-          { name: "金子 拓郎", position: "MF" },
-          { name: "小森 飛絢", position: "FW" },
+          { number: 1, name: "西川 周作", position: "GK", alternative: "福井 光輝（23）" },
+          { number: 5, name: "根本 健太", position: "DF" },
+          { number: 2, name: "宮本 優太", position: "DF" },
+          { number: 15, name: "工藤 孝太", position: "DF" },
+          { number: 88, name: "長沼 洋一", position: "MF" },
+          { number: 25, name: "安居 海渡", position: "MF", alternative: "植木 颯（37）" },
+          { number: 12, name: "瀬古 樹", position: "MF" },
+          { number: 18, name: "林 幸多郎", position: "MF", alternative: "山根 視来（6）" },
+          { number: 13, name: "渡邊 凌磨", position: "MF", alternative: "マテウス サヴィオ（10）" },
+          { number: 7, name: "金子 拓郎", position: "MF", alternative: "南野 遥海（42）" },
+          { number: 17, name: "小森 飛絢", position: "FW", alternative: "オナイウ 阿道（45）" },
         ],
       },
       // 東京V予想（3-4-2-1）。match-13 actualLineups（東京V公式スタメン）をベースにした
       // 予想スタメン。alternativesはユーザーから対応関係が確認できていないため、
       // 推測で大量に紐付けず今回は未設定のまま。
+      // FormationPitchの左右配置はstarters配列の並び順がそのまま画面左→右になるため
+      // （行内は反転されない）、画面左→右の目視結果に合わせて各行を並べ替えている
+      // （DF：井上・林・鈴木、MF：溝口・平川・齋藤・新井、シャドー：福田・平尾）。
       away: {
         formation: "3-4-2-1",
         starters: [
           { number: 1, name: "マテウス", position: "GK" },
-          { number: 15, name: "鈴木 海音", position: "DF" },
-          { number: 4, name: "林 尚輝", position: "DF" },
           { number: 5, name: "井上 竜太", position: "DF" },
-          { number: 40, name: "新井 悠太", position: "MF" },
-          { number: 8, name: "齋藤 功佑", position: "MF" },
-          { number: 16, name: "平川 怜", position: "MF" },
+          { number: 4, name: "林 尚輝", position: "DF" },
+          { number: 15, name: "鈴木 海音", position: "DF" },
           { number: 18, name: "溝口 修平", position: "MF" },
-          { number: 71, name: "平尾 勇人", position: "MF" },
+          { number: 16, name: "平川 怜", position: "MF" },
+          { number: 8, name: "齋藤 功佑", position: "MF" },
+          { number: 40, name: "新井 悠太", position: "MF" },
           { number: 14, name: "福田 湧矢", position: "MF" },
+          { number: 71, name: "平尾 勇人", position: "MF" },
           { number: 9, name: "染野 唯月", position: "FW" },
         ],
       },
@@ -1192,21 +1196,22 @@ export const matches: Match[] = [
       {
         // 案A：3-4-2-1。ダニーロ ボザ欠場予定に伴う3バック右CBには、ユーザー確認済みの
         // 工藤 孝太を起用する（推測ではなくユーザー確認情報）。predictedLineups.homeと
-        // 同一の11名・同一の左右順を保持する。
+        // 同一の11名・同一の左右順・同一の背番号を保持する（本命FormationPitchと
+        // このカードで選手名・背番号が食い違わないようにする）。
         title: "案A：3-4-2-1",
         formation: "3-4-2-1",
         starters: [
-          { role: "GK", name: "西川 周作" },
-          { role: "DF", name: "根本 健太" },
-          { role: "DF", name: "宮本 優太" },
-          { role: "DF", name: "工藤 孝太" },
-          { role: "WB", name: "長沼 洋一" },
-          { role: "MF", name: "安居 海渡", alternative: "植木 颯" },
-          { role: "MF", name: "瀬古 樹" },
-          { role: "WB", name: "林 幸多郎" },
-          { role: "シャドー", name: "渡邊 凌磨", alternative: "マテウス サヴィオ" },
-          { role: "シャドー", name: "金子 拓郎" },
-          { role: "CF", name: "小森 飛絢" },
+          { role: "GK", number: 1, name: "西川 周作", alternative: "福井 光輝（23）" },
+          { role: "DF", number: 5, name: "根本 健太" },
+          { role: "DF", number: 2, name: "宮本 優太" },
+          { role: "DF", number: 15, name: "工藤 孝太" },
+          { role: "WB", number: 88, name: "長沼 洋一" },
+          { role: "MF", number: 25, name: "安居 海渡", alternative: "植木 颯（37）" },
+          { role: "MF", number: 12, name: "瀬古 樹" },
+          { role: "WB", number: 18, name: "林 幸多郎", alternative: "山根 視来（6）" },
+          { role: "シャドー", number: 13, name: "渡邊 凌磨", alternative: "マテウス サヴィオ（10）" },
+          { role: "シャドー", number: 7, name: "金子 拓郎", alternative: "南野 遥海（42）" },
+          { role: "CF", number: 17, name: "小森 飛絢", alternative: "オナイウ 阿道（45）" },
         ],
         note: "ダニーロ ボザの欠場予定を受け、3バック右CBには工藤 孝太を起用する。",
       },

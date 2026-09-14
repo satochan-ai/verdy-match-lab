@@ -138,6 +138,8 @@ export interface AvailabilityInfo {
 export interface AlternativeFormationPosition {
   role: string;
   name: string;
+  /** ユーザー確認済みの背番号がある場合のみ設定する（推測で埋めない）。 */
+  number?: number;
   alternative?: string;
 }
 
