@@ -442,10 +442,35 @@ test("match-14 editorial (strategies/focusPoints/matchNotes) covers CB shortage 
   assert.equal(match14.focusPoints.some((p) => p.startsWith("瀬古がいる時間と、いなくなった後")), true);
   assert.equal(match14.focusPoints.some((p) => p.startsWith("南野をどこで使うか")), true);
 
-  assert.equal(match14.matchNotes.length, 5);
+  // 東京V前節（千葉戦）レビュー5段落＋既存の浦和側短評5段落を維持。
+  assert.equal(match14.matchNotes.length, 10);
   const editorialText = [...match14.matchNotes, ...match14.focusPoints].join("\n");
   // 瀬古のフル出場可否について断定表現を使っていないこと。
   for (const forbidden of ["必ず交代する", "90分は出られない", "絶対に", "確実に途中交代"]) {
     assert.equal(editorialText.includes(forbidden), false, `unexpected assertive phrase: ${forbidden}`);
   }
+});
+
+test("match-14 PRE-MATCH REVIEW opens with the Tokyo Verdy Chiba-match review, without touching predictedLineups/availability/match-13", () => {
+  const verdyReview = match14.matchNotes.slice(0, 5).join("\n");
+  assert.equal(verdyReview.includes("千葉戦"), true);
+  assert.equal(verdyReview.includes("一美"), true);
+  assert.equal(verdyReview.includes("4-4-2"), true);
+  assert.equal(verdyReview.includes("林") && verdyReview.includes("同点"), true);
+  assert.equal(verdyReview.includes("7戦未勝利"), true);
+  assert.equal(verdyReview.includes("初日") || verdyReview.includes("今季初勝利"), true);
+  // "初日"を使う場合は一般読者にも分かるよう"今季初勝利"の補足を必ず伴うこと。
+  if (verdyReview.includes("初日")) {
+    assert.equal(verdyReview.includes("今季初勝利"), true);
+  }
+
+  // 既存の浦和側短評（5段落）は削除せず、そのまま後ろに残っていること。
+  assert.equal(match14.matchNotes[5], "浦和は岡山戦で鹿島戦から先発を6人変更した。西川、金子、林は体調面で不透明な状況があり、渡邊もコンディションが万全とは言い切れない。一方で、ダニーロ・ボザは岡山戦で負傷交代しており、現時点では欠場を想定している。");
+
+  // 今回変更禁止のフィールドに影響がないこと。
+  assert.equal(match14.predictedLineups?.home.starters.length, 11);
+  assert.equal(match14.predictedLineups?.away.starters.length, 11);
+  assert.equal(match14.alternativeFormations?.length, 3);
+  assert.equal(match14.availability?.likelyUnavailable.length, 1);
+  assert.deepEqual(match14.availability?.likelyUnavailable[0], { team: "浦和", players: ["ダニーロ ボザ"] });
 });
