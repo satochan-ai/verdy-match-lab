@@ -8,6 +8,8 @@ import { StatusBadge } from "@/components/ui/StatusBadge";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
+import { LeagueStandingsTable } from "@/components/match/LeagueStandingsTable";
+import { j1Standings } from "@/lib/mock/standings";
 import { getMatchDayLabel } from "@/lib/match/display";
 
 export const metadata: Metadata = {
@@ -155,6 +157,8 @@ export default async function TopTeamPage() {
               <UpcomingFixtureList fixtures={topUpcoming} />
             </section>
           )}
+
+          <LeagueStandingsTable standings={j1Standings} highlightTeamName="東京ヴェルディ" />
         </div>
 
         <div className="mt-8 space-y-6 border-t border-border pt-6 lg:mt-0 lg:border-t-0 lg:pt-0">
