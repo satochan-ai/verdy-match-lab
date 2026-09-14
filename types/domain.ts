@@ -128,6 +128,26 @@ export interface AvailabilityInfo {
   ineligibleNote: string;
 }
 
+/**
+ * 対戦相手の対抗フォーメーション案（本命＝predictedLineups以外）。predictedLineupsは
+ * 1試合につきHOME/AWAY各1フォーメーションしか保持できないため、比較用の軽量な構造として
+ * 別フィールドに保持する。初回実装ではFormationPitch等のピッチ図描画は行わず、
+ * ポジション別の構造化リストとしてのみ表示するが、starters側の形はPredictedStarterに
+ * 近い形（role/name/alternative）にしておき、将来FormationPitch表示へ拡張しやすくする。
+ */
+export interface AlternativeFormationPosition {
+  role: string;
+  name: string;
+  alternative?: string;
+}
+
+export interface AlternativeFormation {
+  title: string;
+  formation: string;
+  starters: AlternativeFormationPosition[];
+  note?: string;
+}
+
 export type StrategyResult = "pending" | "hit" | "partial" | "miss";
 
 export interface Strategy {
@@ -177,6 +197,11 @@ export interface Match {
     home: PredictedLineup;
     away: PredictedLineup;
   };
+  /**
+   * 対戦相手の対抗フォーメーション案（本命以外）。既存試合ではpredictedLineupsを
+   * 配列化せず、この試合が未設定の場合は従来どおりの表示のまま変わらない。
+   */
+  alternativeFormations?: AlternativeFormation[];
   previousMatch?: PreviousMatch;
   availability?: AvailabilityInfo;
   /** この試合自体の得点記録。finished以降、公式結果が確認できた場合のみ設定する。 */

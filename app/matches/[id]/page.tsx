@@ -8,6 +8,7 @@ import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { StrategyList } from "@/components/match/StrategyList";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PredictedLineups } from "@/components/match/PredictedLineups";
+import { AlternativeFormationsList } from "@/components/match/AlternativeFormationsList";
 import { OfficialLineups } from "@/components/match/OfficialLineups";
 import { AvailabilityInfo } from "@/components/match/AvailabilityInfo";
 import { PreviousMatchSummary } from "@/components/match/PreviousMatchSummary";
@@ -56,6 +57,15 @@ export default async function MatchDetailPage({
       homeTeam={match.homeTeam}
       awayTeam={match.awayTeam}
       lineups={match.predictedLineups}
+    />
+  );
+
+  // 対戦相手の対抗フォーメーション案（本命＝predictedLineups以外）。未設定の試合は
+  // 従来どおりnullのまま、表示・型に影響しない。
+  const alternativeFormationsBlock = match.alternativeFormations && match.alternativeFormations.length > 0 && (
+    <AlternativeFormationsList
+      team={match.isVerdyHome ? match.awayTeam : match.homeTeam}
+      formations={match.alternativeFormations}
     />
   );
 
@@ -177,6 +187,7 @@ export default async function MatchDetailPage({
               {strategyBlock}
               {previewBlock}
               {predictedLineupsBlock}
+              {alternativeFormationsBlock}
               {officialLineupsBlock}
               {availabilityBlock}
               {previousMatchBlock}
@@ -193,6 +204,7 @@ export default async function MatchDetailPage({
                 {overviewBlock}
                 {fixtureInfoBlock}
                 {predictedLineupsBlock}
+                {alternativeFormationsBlock}
                 {officialLineupsBlock}
                 {availabilityBlock}
                 {previousMatchBlock}
