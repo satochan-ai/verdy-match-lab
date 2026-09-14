@@ -1146,25 +1146,14 @@ export const matches: Match[] = [
     verdyProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
     opponentProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
     predictedLineups: {
-      // 浦和 本命予想（3-4-2-1、案A）。ダニーロ ボザは岡山戦で負傷交代しており欠場予定
-      // のため先発から外す。代わりに新しいCBを推測で補うことはせず、現時点で確認できる
-      // 2名（根本・宮本）のみを保持する（starters10名。FormationPitchは11名constraintの
-      // ため図としては描画されないが、予想スタメンの一覧テキストとしては表示される）。
-      // 背番号はユーザー未提示・既存データ未確認のため登録しない（推測禁止）。
+      // 浦和側は、案A（3-4-2-1）が3人目のCBを確定できず11人に満たないため、
+      // 「予想スタメン」として確定的に提示できる状態ではない（下記alternativeFormations
+      // のコメント参照）。11人未満のXIを予想スタメンとして表示しないため、home側は
+      // 東京V側と同じく「情報準備中」のまま保持し、比較可能な3案はすべて
+      // alternativeFormationsへ寄せる。
       home: {
-        formation: "3-4-2-1",
-        starters: [
-          { name: "西川 周作", position: "GK" },
-          { name: "根本 健太", position: "DF" },
-          { name: "宮本 優太", position: "DF" },
-          { name: "長沼 洋一", position: "MF" },
-          { name: "安居 海渡", position: "MF", alternative: "植木 颯" },
-          { name: "瀬古 樹", position: "MF" },
-          { name: "林 幸多郎", position: "MF" },
-          { name: "渡邊 凌磨", position: "MF", alternative: "マテウス サヴィオ" },
-          { name: "金子 拓郎", position: "MF" },
-          { name: "小森 飛絢", position: "FW" },
-        ],
+        formation: "情報準備中",
+        starters: [],
       },
       // 東京V予想（3-4-2-1）。match-13 actualLineups（東京V公式スタメン）をベースにした
       // 予想スタメン。alternativesはユーザーから対応関係が確認できていないため、
@@ -1186,10 +1175,31 @@ export const matches: Match[] = [
         ],
       },
     },
-    // 対戦相手（浦和）の対抗フォーメーション案（本命＝predictedLineups.home以外）。
-    // CB事情（ボザ欠場予定）を踏まえた4バック案2種。ピッチ図ではなく構造化リストで
+    // 対戦相手（浦和）のフォーメーション案3件。ピッチ図ではなく構造化リストで
     // 比較表示する（新規追加のalternativeFormationsフィールド、他試合には影響しない）。
     alternativeFormations: [
+      {
+        // 案A：3-4-2-1。ダニーロ ボザ欠場予定により3バック右CBの3人目が現時点で
+        // 確定できない（既存project data・岡山戦の実際の登録メンバー・ユーザー確認済み
+        // 候補のいずれにも根拠を持って置ける選手がいないことを確認済み）。推測でCBを
+        // 補うことはせず、10名の「構造案」として保持する（11人に満たないためFormationPitch
+        // では描画せず、確定的な「予想スタメン」としては扱わない）。
+        title: "案A：3-4-2-1（構造案・CB1名未定）",
+        formation: "3-4-2-1",
+        starters: [
+          { role: "GK", name: "西川 周作" },
+          { role: "DF", name: "根本 健太" },
+          { role: "DF", name: "宮本 優太" },
+          { role: "WB", name: "長沼 洋一" },
+          { role: "MF", name: "安居 海渡", alternative: "植木 颯" },
+          { role: "MF", name: "瀬古 樹" },
+          { role: "WB", name: "林 幸多郎" },
+          { role: "シャドー", name: "渡邊 凌磨", alternative: "マテウス サヴィオ" },
+          { role: "シャドー", name: "金子 拓郎" },
+          { role: "CF", name: "小森 飛絢" },
+        ],
+        note: "ダニーロ ボザの欠場予定により、3バック右CBの3人目は現時点で確定候補がなく未定。根拠のない選手を推測で補っていないため、この案は10名の構造案として扱う。",
+      },
       {
         title: "対抗案B：4-1-2-3",
         formation: "4-1-2-3",
