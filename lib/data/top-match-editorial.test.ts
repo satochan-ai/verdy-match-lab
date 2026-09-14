@@ -322,11 +322,21 @@ test("match-14 is the Urawa preview match: HOME=浦和レッズ / AWAY=東京ヴ
   assert.equal(match14.status, "scheduled");
 });
 
-test("match-14 does not present an incomplete Urawa XI as predictedLineups.home (3人目のCBが未確定のため)", () => {
-  // 案A（3-4-2-1）は3人目のCBが確定できず11人に満たないため、predictedLineups.home
-  // としては確定的に提示しない（東京Vと同じ「情報準備中」のまま）。
-  assert.equal(match14.predictedLineups?.home.formation, "情報準備中");
-  assert.equal(match14.predictedLineups?.home.starters.length, 0);
+test("match-14 registers Urawa's headline predicted formation (3-4-2-1, 案A) with Kudo as the 3rd CB, not Danilo Boza", () => {
+  assert.equal(match14.predictedLineups?.home.formation, "3-4-2-1");
+  assert.equal(match14.predictedLineups?.home.starters.length, 11);
+  assert.equal(match14.predictedLineups?.home.starters.some((s) => s.name === "ダニーロ ボザ"), false);
+  // 3CB：根本・宮本・工藤（元のボザの枠へユーザー確認済みの工藤を配置。左右順は
+  // 既存の並び「根本・宮本・(3人目)」を維持し、勝手な左右反転はしていない）。
+  assert.deepEqual(
+    match14.predictedLineups?.home.starters.filter((s) => s.position === "DF").map((s) => s.name),
+    ["根本 健太", "宮本 優太", "工藤 孝太"],
+  );
+  // 背番号はユーザーが明示していないため、推測登録していないこと。
+  assert.equal(match14.predictedLineups?.home.starters.every((starter) => starter.number === undefined), true);
+  // alternativesの対象一致。
+  assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "安居 海渡")?.alternative, "植木 颯");
+  assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "渡邊 凌磨")?.alternative, "マテウス サヴィオ");
 });
 
 test("match-14 registers Tokyo Verdy's predicted lineup based on the finished Chiba match actual lineup (千葉戦終了後の別Phase)", () => {
@@ -345,15 +355,18 @@ test("match-14 registers 3 formation options (案A/B/C) via alternativeFormation
   assert.equal(match14.alternativeFormations?.length, 3);
   const [planA, planB, planC] = match14.alternativeFormations!;
 
-  // 案A：3-4-2-1。ダニーロ ボザ不在のまま10名の構造案として保持し、
-  // 推測で3人目のCBを補っていないこと。
+  // 案A：3-4-2-1。11名の正式な予想案として登録され、「構造案」等の文言は含まない。
+  assert.equal(planA.title, "案A：3-4-2-1");
+  assert.equal(planA.title.includes("構造案"), false);
+  assert.equal(planA.title.includes("未定"), false);
   assert.equal(planA.formation, "3-4-2-1");
-  assert.equal(planA.starters.length, 10);
+  assert.equal(planA.starters.length, 11);
   assert.equal(planA.starters.some((s) => s.name === "ダニーロ ボザ"), false);
-  assert.equal(planA.starters.filter((s) => s.role === "DF").length, 2);
-  assert.equal(planA.starters.every((s) => s.name !== undefined), true);
+  assert.equal(planA.starters.filter((s) => s.role === "DF").length, 3);
+  assert.equal(planA.starters.some((s) => s.name === "工藤 孝太" && s.role === "DF"), true);
   assert.equal(planA.starters.find((s) => s.name === "安居 海渡")?.alternative, "植木 颯");
   assert.equal(planA.starters.find((s) => s.name === "渡邊 凌磨")?.alternative, "マテウス サヴィオ");
+  assert.equal(planA.note?.includes("未定"), false);
 
   assert.equal(planB.formation, "4-1-2-3");
   assert.equal(planB.starters.length, 11);
@@ -365,20 +378,24 @@ test("match-14 registers 3 formation options (案A/B/C) via alternativeFormation
   assert.equal(planC.starters.every((s) => s.name !== "ダニーロ ボザ"), true);
   assert.equal(planC.starters.find((s) => s.name === "植木 颯")?.alternative, "安居 海渡");
 
-  // predictedLineups.homeはいずれの案も確定表示せず「情報準備中」のまま
-  // （11人に満たない案Aを確定的な予想スタメンとして表示しない）。
-  assert.equal(match14.predictedLineups?.home.formation, "情報準備中");
-  assert.equal(match14.predictedLineups?.home.starters.length, 0);
+  // 案AはpredictedLineups.homeと同一のformation/starters構成であること。
+  assert.equal(match14.predictedLineups?.home.formation, "3-4-2-1");
+  assert.equal(match14.predictedLineups?.home.starters.length, 11);
 });
 
-test("match-14 treats Danilo Boza as the sole 欠場予定, and does not mark 西川/金子/林 as unavailable", () => {
+test("match-14 treats Danilo Boza as the sole 欠場予定 even after Kudo fills the 3rd CB slot, and does not mark 西川/金子/林 as unavailable", () => {
   assert.equal(match14.availability?.likelyUnavailable.length, 1);
   assert.deepEqual(match14.availability?.likelyUnavailable[0], { team: "浦和", players: ["ダニーロ ボザ"] });
+  // ボザは案Aにも他のどの案にも先発復帰していないこと。
+  const allStarterNames = [
+    ...match14.predictedLineups!.home.starters.map((s) => s.name),
+    ...match14.alternativeFormations!.flatMap((plan) => plan.starters.map((s) => s.name)),
+  ];
+  assert.equal(allStarterNames.includes("ダニーロ ボザ"), false);
   // 西川・金子・林はいずれの案でも先発候補として維持（欠場確定扱いにしない）。
-  const allPlanNames = match14.alternativeFormations!.flatMap((plan) => plan.starters.map((s) => s.name));
-  assert.equal(allPlanNames.includes("西川 周作"), true);
-  assert.equal(allPlanNames.includes("金子 拓郎"), true);
-  assert.equal(allPlanNames.includes("林 幸多郎"), true);
+  assert.equal(allStarterNames.includes("西川 周作"), true);
+  assert.equal(allStarterNames.includes("金子 拓郎"), true);
+  assert.equal(allStarterNames.includes("林 幸多郎"), true);
 });
 
 test("match-14 editorial mentions 南野 as a multi-position candidate without registering him as a starter in two places at once", () => {
