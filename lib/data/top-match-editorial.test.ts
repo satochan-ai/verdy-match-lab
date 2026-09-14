@@ -322,23 +322,76 @@ test("match-14 is the Urawa preview match: HOME=浦和レッズ / AWAY=東京ヴ
   assert.equal(match14.status, "scheduled");
 });
 
-test("match-14 registers only Urawa's headline predicted formation (3-4-2-1), no schema expansion for the 4-1-2-3 counter", () => {
-  assert.equal(match14.predictedLineups?.home.formation, "3-4-2-1");
-  assert.equal(match14.predictedLineups?.home.starters.length, 11);
-  // 背番号はユーザーが明示していないため、推測登録していないこと。
-  assert.equal(match14.predictedLineups?.home.starters.every((starter) => starter.number === undefined), true);
-  // alternativesの対象一致。
-  assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "安居 海渡")?.alternative, "植木 颯");
-  assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "渡邊 凌磨")?.alternative, "マテウス サヴィオ");
-  // 4-1-2-3対抗案は既存predictedLineups schemaへ別formationとして追加していないこと。
-  assert.notEqual(match14.predictedLineups?.home.formation, "4-1-2-3");
+test("match-14 does not present an incomplete Urawa XI as predictedLineups.home (3人目のCBが未確定のため)", () => {
+  // 案A（3-4-2-1）は3人目のCBが確定できず11人に満たないため、predictedLineups.home
+  // としては確定的に提示しない（東京Vと同じ「情報準備中」のまま）。
+  assert.equal(match14.predictedLineups?.home.formation, "情報準備中");
+  assert.equal(match14.predictedLineups?.home.starters.length, 0);
 });
 
-test("match-14 does not fabricate Tokyo Verdy's predicted lineup (registered in a later phase)", () => {
-  assert.equal(match14.predictedLineups?.away.starters.length, 0);
+test("match-14 registers Tokyo Verdy's predicted lineup based on the finished Chiba match actual lineup (千葉戦終了後の別Phase)", () => {
+  assert.equal(match14.predictedLineups?.away.formation, "3-4-2-1");
+  assert.equal(match14.predictedLineups?.away.starters.length, 11);
+  assert.deepEqual(match14.predictedLineups?.away.starters.map(({ name }) => name), [
+    "マテウス", "鈴木 海音", "林 尚輝", "井上 竜太", "新井 悠太", "齋藤 功佑",
+    "平川 怜", "溝口 修平", "平尾 勇人", "福田 湧矢", "染野 唯月",
+  ]);
+  assert.deepEqual(match14.predictedLineups?.away.starters.map(({ number }) => number), [
+    1, 15, 4, 5, 40, 8, 16, 18, 71, 14, 9,
+  ]);
 });
 
-test("match-14 editorial (strategies/focusPoints/matchNotes) records the Seko-focused draft without asserting Urawa's formation as fact", () => {
+test("match-14 registers 3 formation options (案A/B/C) via alternativeFormations, not by expanding predictedLineups", () => {
+  assert.equal(match14.alternativeFormations?.length, 3);
+  const [planA, planB, planC] = match14.alternativeFormations!;
+
+  // 案A：3-4-2-1。ダニーロ ボザ不在のまま10名の構造案として保持し、
+  // 推測で3人目のCBを補っていないこと。
+  assert.equal(planA.formation, "3-4-2-1");
+  assert.equal(planA.starters.length, 10);
+  assert.equal(planA.starters.some((s) => s.name === "ダニーロ ボザ"), false);
+  assert.equal(planA.starters.filter((s) => s.role === "DF").length, 2);
+  assert.equal(planA.starters.every((s) => s.name !== undefined), true);
+  assert.equal(planA.starters.find((s) => s.name === "安居 海渡")?.alternative, "植木 颯");
+  assert.equal(planA.starters.find((s) => s.name === "渡邊 凌磨")?.alternative, "マテウス サヴィオ");
+
+  assert.equal(planB.formation, "4-1-2-3");
+  assert.equal(planB.starters.length, 11);
+  assert.equal(planB.starters.every((s) => s.name !== "ダニーロ ボザ"), true);
+  assert.equal(planB.starters.find((s) => s.name === "山根 視来")?.alternative, "林 幸多郎");
+
+  assert.equal(planC.formation, "4-2-3-1");
+  assert.equal(planC.starters.length, 11);
+  assert.equal(planC.starters.every((s) => s.name !== "ダニーロ ボザ"), true);
+  assert.equal(planC.starters.find((s) => s.name === "植木 颯")?.alternative, "安居 海渡");
+
+  // predictedLineups.homeはいずれの案も確定表示せず「情報準備中」のまま
+  // （11人に満たない案Aを確定的な予想スタメンとして表示しない）。
+  assert.equal(match14.predictedLineups?.home.formation, "情報準備中");
+  assert.equal(match14.predictedLineups?.home.starters.length, 0);
+});
+
+test("match-14 treats Danilo Boza as the sole 欠場予定, and does not mark 西川/金子/林 as unavailable", () => {
+  assert.equal(match14.availability?.likelyUnavailable.length, 1);
+  assert.deepEqual(match14.availability?.likelyUnavailable[0], { team: "浦和", players: ["ダニーロ ボザ"] });
+  // 西川・金子・林はいずれの案でも先発候補として維持（欠場確定扱いにしない）。
+  const allPlanNames = match14.alternativeFormations!.flatMap((plan) => plan.starters.map((s) => s.name));
+  assert.equal(allPlanNames.includes("西川 周作"), true);
+  assert.equal(allPlanNames.includes("金子 拓郎"), true);
+  assert.equal(allPlanNames.includes("林 幸多郎"), true);
+});
+
+test("match-14 editorial mentions 南野 as a multi-position candidate without registering him as a starter in two places at once", () => {
+  const editorialText = [...match14.matchNotes, ...match14.focusPoints].join("\n");
+  assert.equal(editorialText.includes("南野"), true);
+  // 同一alternativeFormations案の中で、南野を複数ポジションの確定starterに重複登録していない
+  // （いずれの案でもalternativeとしてのみ登場する）。
+  for (const plan of match14.alternativeFormations!) {
+    assert.equal(plan.starters.filter((s) => s.name === "南野 遥海").length, 0);
+  }
+});
+
+test("match-14 editorial (strategies/focusPoints/matchNotes) covers CB shortage / Seko's fitness / 南野 without over-asserting Urawa's formation", () => {
   assert.equal(match14.strategies.length, 3);
   assert.deepEqual(match14.strategies.map(({ title }) => title), [
     "瀬古を自由にさせない",
@@ -348,10 +401,14 @@ test("match-14 editorial (strategies/focusPoints/matchNotes) records the Seko-fo
   assert.equal(match14.strategies.every(({ result }) => result === "pending"), true);
 
   assert.equal(match14.focusPoints.length, 3);
-  assert.equal(match14.focusPoints.some((p) => p.startsWith("浦和は3バックか4バックか")), true);
-  assert.equal(match14.focusPoints.some((p) => p.startsWith("瀬古を東京Vがどう見るか")), true);
-  assert.equal(match14.focusPoints.some((p) => p.startsWith("金子・渡邊・小森の距離")), true);
+  assert.equal(match14.focusPoints.some((p) => p.startsWith("3バック継続か、4バックへ戻すか")), true);
+  assert.equal(match14.focusPoints.some((p) => p.startsWith("瀬古がいる時間と、いなくなった後")), true);
+  assert.equal(match14.focusPoints.some((p) => p.startsWith("南野をどこで使うか")), true);
 
-  // 4-1-2-3対抗案はmatchNotesへドラフトとして保持されていること。
-  assert.equal(match14.matchNotes.some((note) => note.includes("4-1-2-3")), true);
+  assert.equal(match14.matchNotes.length, 5);
+  const editorialText = [...match14.matchNotes, ...match14.focusPoints].join("\n");
+  // 瀬古のフル出場可否について断定表現を使っていないこと。
+  for (const forbidden of ["必ず交代する", "90分は出られない", "絶対に", "確実に途中交代"]) {
+    assert.equal(editorialText.includes(forbidden), false, `unexpected assertive phrase: ${forbidden}`);
+  }
 });
