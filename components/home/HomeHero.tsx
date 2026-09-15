@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import heroPhoto from "@/public/images/home/verdy-match-lab-hero.jpg";
+import { homeBrandDescription, homeCategoryDescription } from "@/components/home/home-copy";
 
 /**
  * 総合TOP（`/`）のfull-bleed Hero。
@@ -19,11 +20,11 @@ import heroPhoto from "@/public/images/home/verdy-match-lab-hero.jpg";
  * bodyの`overflow-x: clip`（globals.css）で切り取られるため横スクロールは発生しない。
  */
 export function HomeHero({
-  ctaHref,
-  ctaLabel,
+  primaryCta,
+  categoryCta,
 }: {
-  ctaHref: string;
-  ctaLabel: string;
+  primaryCta?: { href: string; label: string };
+  categoryCta: { href: string; label: string };
 }) {
   return (
     <section className="relative -mt-6 mx-[calc(50%-50vw)] overflow-hidden bg-primary-green text-shine-white md:-mt-8">
@@ -56,7 +57,7 @@ export function HomeHero({
       />
 
       {/* content layer */}
-      <div className="relative flex min-h-[52svh] flex-col justify-center px-4 py-14 md:min-h-[60vh] md:px-6 md:py-20 lg:min-h-[68vh] xl:px-8">
+      <div className="relative flex min-h-[50svh] flex-col justify-center px-4 py-12 md:min-h-[58vh] md:px-6 md:py-16 lg:min-h-[62vh] lg:py-18 xl:px-8">
         <div className="mx-auto w-full max-w-[1280px]">
           <p className="text-[11px] font-bold uppercase tracking-[0.32em] text-shine-white/90 md:text-[12px]">
             Verdy Match Lab
@@ -80,16 +81,30 @@ export function HomeHero({
             </p>
           </div>
 
-          <p className="mt-4 max-w-[30rem] text-[13px] leading-relaxed text-shine-white/90 md:mt-5 md:text-[15px]">
-            東京ヴェルディの3カテゴリーを、ファンの視点で追う非公式メディア。
+          <p className="mt-4 max-w-[34rem] text-[15px] font-bold leading-relaxed text-shine-white md:mt-5 md:text-[18px]">
+            {homeBrandDescription}
           </p>
 
-          <Link
-            href={ctaHref}
-            className="mt-8 inline-flex h-12 items-center justify-center bg-shine-white px-6 text-[14px] font-bold text-deep-green transition-colors duration-200 hover:bg-surface-tint focus-ring-inverse md:mt-10 md:h-[52px] md:px-8 md:text-[15px]"
-          >
-            {ctaLabel}
-          </Link>
+          <p className="mt-2 max-w-[30rem] text-[12px] leading-relaxed text-shine-white/90 md:text-[14px]">
+            {homeCategoryDescription}
+          </p>
+
+          <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-3 md:mt-8">
+            {primaryCta && (
+              <Link
+                href={primaryCta.href}
+                className="inline-flex h-12 items-center justify-center bg-shine-white px-6 text-[14px] font-bold text-deep-green transition-colors duration-200 hover:bg-surface-tint focus-ring-inverse md:h-[52px] md:px-8 md:text-[15px]"
+              >
+                {primaryCta.label}
+              </Link>
+            )}
+            <Link
+              href={categoryCta.href}
+              className="text-[13px] font-bold text-shine-white underline decoration-pioneer-gold decoration-2 underline-offset-4 transition-colors hover:text-surface-tint focus-ring-inverse md:text-[14px]"
+            >
+              {categoryCta.label} →
+            </Link>
+          </div>
         </div>
       </div>
     </section>
