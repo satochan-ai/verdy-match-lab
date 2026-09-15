@@ -1257,8 +1257,11 @@ export const matches: Match[] = [
       // 西川・金子・林は体調不良の可能性があるが欠場確定ではないため、ここには含めず
       // predictedLineups（starter本命として維持）とmatchNotesの「コンディション次第」
       // という表現でのみ扱う。
+      // 東京V：ユーザー確認済みの欠場予定6名。predictedLineups.awayの先発11名には
+      // 含まれていないことを確認済み（矛盾なし）。
       likelyUnavailable: [
         { team: "浦和", players: ["ダニーロ ボザ"] },
+        { team: "東京V", players: ["山見 大登", "吉田 泰授", "田邊 秀斗", "宮原 和也", "森田 晃樹", "寺沼 星文"] },
       ],
       suspensionNote: "なし",
       ineligibleNote: "なし",
