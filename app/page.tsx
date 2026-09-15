@@ -6,6 +6,7 @@ import { u21Fixtures, toU21UpcomingMatch } from "@/lib/data/u21-fixtures";
 import { topFixtures, toTopUpcomingFixture } from "@/lib/data/top-fixtures";
 import { getLatestFinishedFixture, getNextFixture } from "@/lib/data/fixture-selectors";
 import { HomeHero } from "@/components/home/HomeHero";
+import { HomeNextMatch } from "@/components/home/HomeNextMatch";
 import { CategoryHomeCard } from "@/components/match/CategoryHomeCard";
 import topTeamCardPhoto from "@/public/images/home/top-team-card.jpg";
 import belezaCardPhoto from "@/public/images/home/beleza-card.jpg";
@@ -99,13 +100,12 @@ export default async function Home() {
 
   return (
     <div className="space-y-10 lg:space-y-14">
-      {/*
-        HeroのCTAはTOP TEAMの次戦（getNextMatchが返す試合）へ直行する。U-21 / BELEZAの
-        UpcomingFixtureはISO日時を持たない表示用データのため、3カテゴリー横断での
-        「最も近いキックオフ」をデータから厳密に決定することはできない。fixtureデータを
-        変更しない方針のため、ここではTOP TEAMの次戦を導線先として固定する。
-      */}
-      <HomeHero ctaHref="#categories" ctaLabel="3カテゴリーを見る" />
+      <HomeHero
+        primaryCta={nextTopFixture?.detailMatchId ? { href: `/matches/${nextTopFixture.detailMatchId}`, label: "次の試合を見る" } : undefined}
+        categoryCta={{ href: "#categories", label: "3カテゴリーを見る" }}
+      />
+
+      <HomeNextMatch fixture={nextTopFixture} />
 
       <section id="categories">
         <div className="flex items-baseline gap-3">
