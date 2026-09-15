@@ -403,9 +403,11 @@ test("match-14 registers 3 formation options (案A/B/C) via alternativeFormation
   assert.equal(match14.predictedLineups?.home.starters.length, 11);
 });
 
-test("match-14 treats Danilo Boza as the sole 欠場予定 even after Kudo fills the 3rd CB slot, and does not mark 西川/金子/林 as unavailable", () => {
-  assert.equal(match14.availability?.likelyUnavailable.length, 1);
-  assert.deepEqual(match14.availability?.likelyUnavailable[0], { team: "浦和", players: ["ダニーロ ボザ"] });
+test("match-14 treats Danilo Boza as the sole 浦和 欠場予定 even after Kudo fills the 3rd CB slot, and does not mark 西川/金子/林 as unavailable", () => {
+  assert.deepEqual(
+    match14.availability?.likelyUnavailable.find((e) => e.team === "浦和"),
+    { team: "浦和", players: ["ダニーロ ボザ"] },
+  );
   // ボザは案Aにも他のどの案にも先発復帰していないこと。
   const allStarterNames = [
     ...match14.predictedLineups!.home.starters.map((s) => s.name),
@@ -416,6 +418,28 @@ test("match-14 treats Danilo Boza as the sole 欠場予定 even after Kudo fills
   assert.equal(allStarterNames.includes("西川 周作"), true);
   assert.equal(allStarterNames.includes("金子 拓郎"), true);
   assert.equal(allStarterNames.includes("林 幸多郎"), true);
+});
+
+test("match-14 registers 6 confirmed Tokyo Verdy unavailable players alongside 浦和's ダニーロ ボザ", () => {
+  assert.equal(match14.availability?.likelyUnavailable.length, 2);
+  assert.deepEqual(
+    match14.availability?.likelyUnavailable.find((e) => e.team === "東京V"),
+    {
+      team: "東京V",
+      players: ["山見 大登", "吉田 泰授", "田邊 秀斗", "宮原 和也", "森田 晃樹", "寺沼 星文"],
+    },
+  );
+  // 浦和側は維持されたまま。
+  assert.deepEqual(
+    match14.availability?.likelyUnavailable.find((e) => e.team === "浦和"),
+    { team: "浦和", players: ["ダニーロ ボザ"] },
+  );
+  // 東京V予想XI（predictedLineups.away）に、今回追加した欠場予定6名が
+  // 先発として含まれていないこと（矛盾チェック）。
+  const awayStarterNames = match14.predictedLineups!.away.starters.map((s) => s.name);
+  for (const unavailable of ["山見 大登", "吉田 泰授", "田邊 秀斗", "宮原 和也", "森田 晃樹", "寺沼 星文"]) {
+    assert.equal(awayStarterNames.includes(unavailable), false, `${unavailable} should not be in predictedLineups.away`);
+  }
 });
 
 test("match-14 editorial mentions 南野 as a multi-position candidate without registering him as a starter in two places at once", () => {
@@ -467,10 +491,8 @@ test("match-14 PRE-MATCH REVIEW opens with the Tokyo Verdy Chiba-match review, w
   // 既存の浦和側短評（5段落）は削除せず、そのまま後ろに残っていること。
   assert.equal(match14.matchNotes[5], "浦和は岡山戦で鹿島戦から先発を6人変更した。西川、金子、林は体調面で不透明な状況があり、渡邊もコンディションが万全とは言い切れない。一方で、ダニーロ・ボザは岡山戦で負傷交代しており、現時点では欠場を想定している。");
 
-  // 今回変更禁止のフィールドに影響がないこと。
+  // 今回（このPRE-MATCH REVIEW追加時点）変更禁止だったフィールドに影響がないこと。
   assert.equal(match14.predictedLineups?.home.starters.length, 11);
   assert.equal(match14.predictedLineups?.away.starters.length, 11);
   assert.equal(match14.alternativeFormations?.length, 3);
-  assert.equal(match14.availability?.likelyUnavailable.length, 1);
-  assert.deepEqual(match14.availability?.likelyUnavailable[0], { team: "浦和", players: ["ダニーロ ボザ"] });
 });
