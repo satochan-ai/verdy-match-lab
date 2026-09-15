@@ -74,10 +74,19 @@ export default async function TopTeamPage() {
         ← 戻る
       </Link>
 
-      <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
-        <div className="space-y-8 lg:space-y-10">
+      <header className="border-l-2 border-pioneer-gold pl-4 lg:pl-5">
+        <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep">TOP TEAM</p>
+        <h1 className="mt-1 text-[22px] font-extrabold tracking-tight text-text-primary lg:text-[28px]">
+          東京ヴェルディ TOP TEAM
+        </h1>
+        <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-text-secondary lg:text-[14px]">
+          TOP TEAMを、試合データと戦術で追う。次戦プレビュー、予想フォーメーション、試合結果、順位表まで。
+        </p>
+      </header>
+
+      <div className="space-y-8 lg:space-y-10">
               {nextFixture && fixture && opponent && dayLabel ? (
-          <section className="section-reveal border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
+          <section className="section-reveal border-y-2 border-fusion-black bg-surface-tint px-4 py-6 lg:px-10 lg:py-8">
             <div className="flex items-baseline justify-between gap-3">
               <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
                 NEXT MATCH
@@ -149,47 +158,39 @@ export default async function TopTeamPage() {
           </section>
           )}
 
-          {nextMatch && <StrategyList strategies={nextMatch.strategies} />}
+          <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
+            <div className="space-y-8">
+              {nextMatch && <StrategyList strategies={nextMatch.strategies} />}
+            </div>
+
+            <div className="space-y-6 border-t border-border pt-6 lg:border-t-0 lg:pt-0">
+              <section>
+                <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">LAST MATCH</p>
+                <Link href={`/matches/${recent.id}`} className="mt-2 block border-t border-border py-2 text-[13px]">
+                  <div className="flex items-center justify-between">
+                    <span className="min-w-0 truncate text-text-primary">
+                      {formatShortDate(recent.kickoffAt)}　{recentOpponent.name}
+                    </span>
+                    <span className="ml-2 flex shrink-0 items-center gap-2">
+                      <span className="tabular-nums font-bold text-text-primary">{recent.homeScore}-{recent.awayScore}</span>
+                      <StatusBadge variant={recentResult} />
+                    </span>
+                  </div>
+                  {recent.fixtureMeta && <div className="mt-1"><FixtureMetaLine meta={recent.fixtureMeta} compact /></div>}
+                </Link>
+              </section>
+              <Link href="/archive" className="block text-[12px] font-bold text-deep-green">過去の試合を見る →</Link>
+            </div>
+          </div>
 
           {topUpcoming.length > 0 && (
             <section>
               <SectionHeader title="NEXT 5" eyebrow="UPCOMING FIXTURES" />
-              <UpcomingFixtureList fixtures={topUpcoming} />
+              <UpcomingFixtureList fixtures={topUpcoming} variant="top" />
             </section>
           )}
 
           <LeagueStandingsTable standings={j1Standings} highlightTeamName="東京ヴェルディ" />
-        </div>
-
-        <div className="mt-8 space-y-6 border-t border-border pt-6 lg:mt-0 lg:border-t-0 lg:pt-0">
-          <section>
-            <p className="text-[10px] font-bold tracking-[0.15em] text-text-secondary">
-              LAST MATCH
-            </p>
-            <Link href={`/matches/${recent.id}`} className="mt-2 block border-t border-border py-2 text-[13px]">
-              <div className="flex items-center justify-between">
-                <span className="min-w-0 truncate text-text-primary">
-                  {formatShortDate(recent.kickoffAt)}　{recentOpponent.name}
-                </span>
-                <span className="ml-2 flex shrink-0 items-center gap-2">
-                  <span className="tabular-nums font-bold text-text-primary">
-                    {recent.homeScore}-{recent.awayScore}
-                  </span>
-                  <StatusBadge variant={recentResult} />
-                </span>
-              </div>
-              {recent.fixtureMeta && (
-                <div className="mt-1">
-                  <FixtureMetaLine meta={recent.fixtureMeta} compact />
-                </div>
-              )}
-            </Link>
-          </section>
-
-          <Link href="/archive" className="block text-[12px] font-bold text-deep-green">
-            過去の試合を見る →
-          </Link>
-        </div>
       </div>
     </div>
   );

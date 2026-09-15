@@ -40,11 +40,17 @@ function FixtureRow({ fixture, emphasize }: { fixture: UpcomingFixture; emphasiz
   );
 }
 
-export function UpcomingFixtureList({ fixtures }: { fixtures: UpcomingFixture[] }) {
+export function UpcomingFixtureList({
+  fixtures,
+  variant = "default",
+}: {
+  fixtures: UpcomingFixture[];
+  variant?: "default" | "top";
+}) {
   if (fixtures.length === 0) return null;
 
   return (
-    <ul className="border-y border-border">
+    <ul className={variant === "top" ? "space-y-2" : "border-y border-border"}>
       {fixtures.map((fixture, index) => (
         <FixtureRow key={fixture.id} fixture={fixture} emphasize={index === 0} />
       ))}
