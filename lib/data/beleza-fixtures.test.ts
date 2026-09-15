@@ -9,7 +9,7 @@ const now = new Date("2026-09-13T00:00:00+09:00");
 
 test("BELEZA fixture collection is valid", () => {
   assert.equal(validateFixtures(belezaFixtures).length, 0);
-  assert.equal(belezaFixtures.length, 7);
+  assert.equal(belezaFixtures.length, 9);
   // /beleza/matches/[id] now renders beleza-match-1/2/3 (archived) individually in addition
   // to the current snapshot (beleza-next-3, INAC), so every finished BELEZA match carries a
   // real (non-fabricated) detailMatchId equal to its own id.
@@ -46,9 +46,11 @@ test("BELEZA season history entries carry detailMatchId through for mobile/deskt
 test("BELEZA NEXT is 09.19 ちふれ and NEXT5 excludes finished fixtures", () => {
   assert.equal(getNextFixture(belezaFixtures, now)?.opponentName, "ちふれASエルフェン埼玉");
   const upcoming = getUpcomingFixtures(belezaFixtures, now, 5);
-  assert.equal(upcoming.length, 3);
+  assert.equal(upcoming.length, 5);
   assert.equal(upcoming.every((fixture) => fixture.status === "scheduled"), true);
-  assert.deepEqual(upcoming.map((fixture) => fixture.opponentName), ["ちふれASエルフェン埼玉", "アルビレックス新潟レディース", "セレッソ大阪ヤンマーレディース"]);
+  assert.deepEqual(upcoming.map((fixture) => fixture.opponentName), [
+    "ちふれASエルフェン埼玉", "アルビレックス新潟レディース", "セレッソ大阪ヤンマーレディース", "三菱重工浦和レッズレディース", "サンフレッチェ広島レジーナ",
+  ]);
 });
 
 test("BELEZA LAST, HISTORY and 09.05 浦和 result are derived", () => {

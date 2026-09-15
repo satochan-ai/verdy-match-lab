@@ -343,4 +343,16 @@ export const u21UpcomingMatches: UpcomingFixture[] = [
     isHome: true,
     opponentName: "U-21名古屋グランパス",
   },
+  {
+    id: "u21-next-6",
+    dateLabel: "11.22 SUN",
+    kickoffLabel: "14:00",
+    fixtureMeta: {
+      competition: "2026/27 U-21 Jリーグ",
+      stage: "交流戦ラウンド",
+      roundLabel: "第2節",
+    },
+    isHome: false,
+    opponentName: "U-21ガンバ大阪",
+  },
 ];

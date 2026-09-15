@@ -706,4 +706,30 @@ export const belezaUpcomingMatches: UpcomingFixture[] = [
     opponentName: "セレッソ大阪ヤンマーレディース",
     venue: "YANMAR HANASAKA STADIUM",
   },
+  {
+    id: "beleza-next-7",
+    dateLabel: "10.03 SAT",
+    kickoffLabel: "14:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ クラシエカップ",
+      stage: "リーグステージ",
+      roundLabel: "第5節",
+    },
+    isHome: false,
+    opponentName: "三菱重工浦和レッズレディース",
+    venue: "浦和駒場スタジアム",
+  },
+  {
+    id: "beleza-next-8",
+    dateLabel: "10.11 SUN",
+    kickoffLabel: "12:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ クラシエカップ",
+      stage: "リーグステージ",
+      roundLabel: "第6節",
+    },
+    isHome: true,
+    opponentName: "サンフレッチェ広島レジーナ",
+    venue: "AGFフィールド",
+  },
 ];

@@ -8,7 +8,7 @@ const now = new Date("2026-08-30T00:00:00+09:00");
 
 test("U-21 fixture collection is valid and has one finished plus five upcoming fixtures", () => {
   assert.equal(validateFixtures(u21Fixtures).length, 0);
-  assert.equal(u21Fixtures.length, 6);
+  assert.equal(u21Fixtures.length, 7);
   // u21-match-1 (FC東京) is archived: /u21/matches/[id] now renders only the current
   // snapshot (u21-next-1, U-21浦和レッズ), so the archived match no longer carries a
   // detailMatchId (same known constraint as BELEZA's belezaMatch1/2/3 archives).
@@ -19,13 +19,18 @@ test("U-21 fixture collection is valid and has one finished plus five upcoming f
 test("U-21 NEXT is 09.20 U-21清水 (U-21浦和戦finished後) and NEXT 5 excludes finished", () => {
   assert.equal(getNextFixture(u21Fixtures, now)?.opponentName, "U-21清水エスパルス");
   const upcoming = getUpcomingFixtures(u21Fixtures, now, 5);
-  assert.equal(upcoming.length, 4);
+  assert.equal(upcoming.length, 5);
   assert.equal(upcoming.some((fixture) => fixture.status === "finished"), false);
   assert.equal(upcoming.some((fixture) => fixture.id === "u21-next-1"), false);
 });
 
-test("U-21 TBD Nagoya remains after confirmed fixtures", () => {
+test("U-21 TBD Nagoya remains after confirmed fixtures (including the later-kickoff G大阪 fixture)", () => {
+  // 名古屋戦（TBD/date_range）は、G大阪戦（confirmed・11/22）より日付が後でも
+  // 未確定扱いとしてconfirmed群の末尾に留まる（時刻不明の試合を確定試合より前に出さない）。
   const upcoming = getUpcomingFixtures(u21Fixtures, now, 5);
+  assert.deepEqual(upcoming.map((fixture) => fixture.opponentName), [
+    "U-21清水エスパルス", "U-21川崎フロンターレ", "U-21ジュビロ磐田", "U-21ガンバ大阪", "U-21名古屋グランパス",
+  ]);
   assert.equal(upcoming.at(-1)?.opponentName, "U-21名古屋グランパス");
   assert.equal(upcoming.at(-1)?.kickoffAt, undefined);
   assert.equal(upcoming.at(-1)?.kickoffStatus, "date_range");
