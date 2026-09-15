@@ -49,7 +49,7 @@ export const u21Fixtures: CommonFixture[] = [
     teamName: TEAM_NAME,
     opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
-    kickoffAt: ["2026-09-20T14:00:00+09:00", "2026-10-03T15:00:00+09:00", "2026-10-17T15:00:00+09:00", undefined][index],
+    kickoffAt: ["2026-09-20T14:00:00+09:00", "2026-10-03T15:00:00+09:00", "2026-10-17T15:00:00+09:00", undefined, "2026-11-22T14:00:00+09:00"][index],
     kickoffStatus: index === 3 ? "date_range" as const : "confirmed" as const,
     dateLabel: fixture.dateLabel,
     isHome: fixture.isHome,
@@ -59,7 +59,7 @@ export const u21Fixtures: CommonFixture[] = [
 
 const toMeta = (fixture: CommonFixture) => ({
   competition: fixture.competition.name,
-  stage: fixture.id === "u21-next-5" ? "交流戦ラウンド" : "東西リーグラウンド",
+  stage: fixture.id === "u21-next-5" || fixture.id === "u21-next-6" ? "交流戦ラウンド" : "東西リーグラウンド",
   roundLabel: fixture.competition.round,
 });
 

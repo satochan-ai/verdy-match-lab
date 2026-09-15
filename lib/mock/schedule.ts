@@ -172,6 +172,16 @@ export const scheduleMatches: ScheduleMatch[] = [
     opponentName: "サンフレッチェ広島",
     status: "scheduled",
   },
+  {
+    id: "sched-fc-tokyo",
+    competition: "j1",
+    round: "第10節",
+    kickoffAt: "2026-10-17T14:00:00+09:00",
+    venue: "味の素スタジアム",
+    isVerdyHome: true,
+    opponentName: "FC東京",
+    status: "scheduled",
+  },
 ];
 
 export function getPreviousMatches(limit = 5): ScheduleMatch[] {

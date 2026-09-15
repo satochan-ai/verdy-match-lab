@@ -8,7 +8,7 @@ const now = new Date("2026-09-03T00:00:00+09:00");
 
 test("TOP schedule adapter produces valid CommonFixtures", () => {
   assert.equal(validateFixtures(topFixtures).length, 0);
-  assert.equal(topFixtures.length, 13);
+  assert.equal(topFixtures.length, 14);
   assert.deepEqual(topFixtures.find((fixture) => fixture.id === "sched-cerezo")?.score, { home: 0, away: 0 });
   assert.equal(topFixtures.find((fixture) => fixture.id === "sched-cerezo")?.detailMatchId, "match-11");
   assert.deepEqual(topFixtures.find((fixture) => fixture.id === "sched-kashima")?.score, { home: 0, away: 2 });
@@ -20,9 +20,9 @@ test("TOP NEXT5 spans every competition (J1 / Levain / Emperor's Cup), not J1 on
   assert.equal(getNextFixture(topFixtures, now)?.opponentName, "浦和レッズ");
   const next5 = getUpcomingFixtures(topFixtures, now, 5);
   assert.deepEqual(next5.map((fixture) => fixture.opponentName), [
-    "浦和レッズ", "サガン鳥栖", "ガイナーレ鳥取", "サンフレッチェ広島",
+    "浦和レッズ", "サガン鳥栖", "ガイナーレ鳥取", "サンフレッチェ広島", "FC東京",
   ]);
-  assert.equal(next5.length, 4);
+  assert.equal(next5.length, 5);
   // 日付昇順であること。
   const kickoffTimes = next5.map((fixture) => new Date(fixture.kickoffAt!).getTime());
   assert.deepEqual(kickoffTimes, [...kickoffTimes].sort((a, b) => a - b));
@@ -35,6 +35,7 @@ test("TOP NEXT5 spans every competition (J1 / Levain / Emperor's Cup), not J1 on
   assert.equal(next5.find((fixture) => fixture.opponentName === "サガン鳥栖")?.detailMatchId, undefined);
   assert.equal(next5.find((fixture) => fixture.opponentName === "ガイナーレ鳥取")?.detailMatchId, undefined);
   assert.equal(next5.find((fixture) => fixture.opponentName === "サンフレッチェ広島")?.detailMatchId, undefined);
+  assert.equal(next5.find((fixture) => fixture.opponentName === "FC東京")?.detailMatchId, undefined);
 });
 
 test("TOP LAST is 09.13 千葉 (finished) and finished fixtures never enter NEXT", () => {
