@@ -322,31 +322,33 @@ test("match-14 is the Urawa preview match: HOME=浦和レッズ / AWAY=東京ヴ
   assert.equal(match14.status, "scheduled");
 });
 
-test("match-14 registers Urawa's headline predicted formation (3-4-2-1, 案A) with Kudo as the 3rd CB and confirmed squad numbers", () => {
-  assert.equal(match14.predictedLineups?.home.formation, "3-4-2-1");
+test("match-14 registers Urawa's headline predicted formation (4-1-2-3) with confirmed squad numbers, promoted from the former alternative plan", () => {
+  assert.equal(match14.predictedLineups?.home.formation, "4-1-2-3");
   assert.equal(match14.predictedLineups?.home.starters.length, 11);
   assert.equal(match14.predictedLineups?.home.starters.some((s) => s.name === "ダニーロ ボザ"), false);
-  // 3CB：根本・宮本・工藤（元のボザの枠へユーザー確認済みの工藤を配置。左右順は
-  // 既存の並び「根本・宮本・(3人目)」を維持し、勝手な左右反転はしていない）。
+  // 4DF：長沼・根本・宮本・山根。左右順は既存alternativeFormations「対抗案B」時点の並びを維持。
   assert.deepEqual(
     match14.predictedLineups?.home.starters.filter((s) => s.position === "DF").map((s) => s.name),
-    ["根本 健太", "宮本 優太", "工藤 孝太"],
+    ["長沼 洋一", "根本 健太", "宮本 優太", "山根 視来"],
   );
-  // ユーザー確認済みの背番号一覧と一致すること。
+  // ユーザー確認済みの背番号一覧と一致すること（水沼 宏太のみ本ファイル内に背番号未確認）。
   const expectedNumbers: Record<string, number> = {
-    "西川 周作": 1, "根本 健太": 5, "宮本 優太": 2, "工藤 孝太": 15, "長沼 洋一": 88,
-    "安居 海渡": 25, "瀬古 樹": 12, "林 幸多郎": 18, "渡邊 凌磨": 13, "金子 拓郎": 7, "小森 飛絢": 17,
+    "西川 周作": 1, "長沼 洋一": 88, "根本 健太": 5, "宮本 優太": 2, "山根 視来": 6,
+    "瀬古 樹": 12, "渡邊 凌磨": 13, "安居 海渡": 25, "マテウス サヴィオ": 10, "小森 飛絢": 17, "金子 拓郎": 7,
   };
   for (const starter of match14.predictedLineups!.home.starters) {
     assert.equal(starter.number, expectedNumbers[starter.name], `unexpected number for ${starter.name}`);
   }
   // alternativesの対象一致（背番号込み）。
   assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "西川 周作")?.alternative, "福井 光輝（23）");
+  assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "山根 視来")?.alternative, "林 幸多郎（18）");
+  assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "渡邊 凌磨")?.alternative, "南野 遥海（42）");
   assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "安居 海渡")?.alternative, "植木 颯（37）");
-  assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "林 幸多郎")?.alternative, "山根 視来（6）");
-  assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "渡邊 凌磨")?.alternative, "マテウス サヴィオ（10）");
-  assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "金子 拓郎")?.alternative, "南野 遥海（42）");
+  assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "マテウス サヴィオ")?.alternative, "南野 遥海（42）");
   assert.equal(match14.predictedLineups?.home.starters.find((s) => s.name === "小森 飛絢")?.alternative, "オナイウ 阿道（45）");
+  // 水沼 宏太は本ファイル内に確認済みの背番号が存在しないため未設定のまま（推測で埋めない）。
+  const kanekoAlt = match14.predictedLineups?.home.starters.find((s) => s.name === "金子 拓郎")?.alternative;
+  assert.equal(kanekoAlt, "水沼 宏太（背番号未確認）");
 });
 
 test("match-14 registers Tokyo Verdy's predicted lineup with the correct on-screen left-to-right order", () => {
@@ -364,43 +366,42 @@ test("match-14 registers Tokyo Verdy's predicted lineup with the correct on-scre
   ]);
 });
 
-test("match-14 registers 3 formation options (案A/B/C) via alternativeFormations, not by expanding predictedLineups", () => {
+test("match-14 registers 3 formation options via alternativeFormations in priority order (本命4-1-2-3 / 対抗4-2-3-1 / 第3候補3-4-2-1), not by expanding predictedLineups", () => {
   assert.equal(match14.alternativeFormations?.length, 3);
-  const [planA, planB, planC] = match14.alternativeFormations!;
+  const [headline, runnerUp, thirdChoice] = match14.alternativeFormations!;
 
-  // 案A：3-4-2-1。11名の正式な予想案として登録され、「構造案」等の文言は含まない。
-  assert.equal(planA.title, "案A：3-4-2-1");
-  assert.equal(planA.title.includes("構造案"), false);
-  assert.equal(planA.title.includes("未定"), false);
-  assert.equal(planA.formation, "3-4-2-1");
-  assert.equal(planA.starters.length, 11);
-  assert.equal(planA.starters.some((s) => s.name === "ダニーロ ボザ"), false);
-  assert.equal(planA.starters.filter((s) => s.role === "DF").length, 3);
-  assert.equal(planA.starters.some((s) => s.name === "工藤 孝太" && s.role === "DF"), true);
-  assert.equal(planA.starters.find((s) => s.name === "安居 海渡")?.alternative, "植木 颯（37）");
-  assert.equal(planA.starters.find((s) => s.name === "渡邊 凌磨")?.alternative, "マテウス サヴィオ（10）");
-  assert.equal(planA.note?.includes("未定"), false);
-
-  // 本命FormationPitch（predictedLineups.home）と案Aカードで選手名・背番号が
-  // 食い違わないこと。
+  // 本命：4-1-2-3。predictedLineups.homeと同一のformation/starters構成であること
+  // （本命FormationPitchとこのカードで選手名・背番号が食い違わないこと）。
+  assert.equal(headline.title, "本命：4-1-2-3");
+  assert.equal(headline.formation, "4-1-2-3");
+  assert.equal(headline.starters.length, 11);
+  assert.equal(headline.starters.some((s) => s.name === "ダニーロ ボザ"), false);
   assert.deepEqual(
-    planA.starters.map((s) => [s.name, s.number]),
+    headline.starters.map((s) => [s.name, s.number]),
     match14.predictedLineups!.home.starters.map((s) => [s.name, s.number]),
   );
+  assert.equal(match14.predictedLineups?.home.formation, "4-1-2-3");
 
-  assert.equal(planB.formation, "4-1-2-3");
-  assert.equal(planB.starters.length, 11);
-  assert.equal(planB.starters.every((s) => s.name !== "ダニーロ ボザ"), true);
-  assert.equal(planB.starters.find((s) => s.name === "山根 視来")?.alternative, "林 幸多郎");
+  // 対抗：4-2-3-1（旧「対抗案C」）。選手構成は変更されていないこと。
+  assert.equal(runnerUp.title, "対抗：4-2-3-1");
+  assert.equal(runnerUp.formation, "4-2-3-1");
+  assert.equal(runnerUp.starters.length, 11);
+  assert.equal(runnerUp.starters.every((s) => s.name !== "ダニーロ ボザ"), true);
+  assert.equal(runnerUp.starters.find((s) => s.name === "植木 颯")?.alternative, "安居 海渡");
 
-  assert.equal(planC.formation, "4-2-3-1");
-  assert.equal(planC.starters.length, 11);
-  assert.equal(planC.starters.every((s) => s.name !== "ダニーロ ボザ"), true);
-  assert.equal(planC.starters.find((s) => s.name === "植木 颯")?.alternative, "安居 海渡");
-
-  // 案AはpredictedLineups.homeと同一のformation/starters構成であること。
-  assert.equal(match14.predictedLineups?.home.formation, "3-4-2-1");
-  assert.equal(match14.predictedLineups?.home.starters.length, 11);
+  // 第3候補：3-4-2-1（旧本命）。11名・工藤起用の説明は維持され、「構造案」「未定」等の
+  // 文言は含まない（過去の未確定表記へ後退していないこと）。
+  assert.equal(thirdChoice.title, "第3候補：3-4-2-1");
+  assert.equal(thirdChoice.title.includes("構造案"), false);
+  assert.equal(thirdChoice.title.includes("未定"), false);
+  assert.equal(thirdChoice.formation, "3-4-2-1");
+  assert.equal(thirdChoice.starters.length, 11);
+  assert.equal(thirdChoice.starters.some((s) => s.name === "ダニーロ ボザ"), false);
+  assert.equal(thirdChoice.starters.filter((s) => s.role === "DF").length, 3);
+  assert.equal(thirdChoice.starters.some((s) => s.name === "工藤 孝太" && s.role === "DF"), true);
+  assert.equal(thirdChoice.starters.find((s) => s.name === "安居 海渡")?.alternative, "植木 颯（37）");
+  assert.equal(thirdChoice.starters.find((s) => s.name === "渡邊 凌磨")?.alternative, "マテウス サヴィオ（10）");
+  assert.equal(thirdChoice.note?.includes("未定"), false);
 });
 
 test("match-14 treats Danilo Boza as the sole 浦和 欠場予定 even after Kudo fills the 3rd CB slot, and does not mark 西川/金子/林 as unavailable", () => {
@@ -462,7 +463,7 @@ test("match-14 editorial (strategies/focusPoints/matchNotes) covers CB shortage 
   assert.equal(match14.strategies.every(({ result }) => result === "pending"), true);
 
   assert.equal(match14.focusPoints.length, 3);
-  assert.equal(match14.focusPoints.some((p) => p.startsWith("3バック継続か、4バックへ戻すか")), true);
+  assert.equal(match14.focusPoints.some((p) => p.startsWith("4-1-2-3か4-2-3-1か")), true);
   assert.equal(match14.focusPoints.some((p) => p.startsWith("瀬古がいる時間と、いなくなった後")), true);
   assert.equal(match14.focusPoints.some((p) => p.startsWith("南野をどこで使うか")), true);
 
