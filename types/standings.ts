@@ -24,6 +24,12 @@ export interface LeagueStandingEntry {
   penaltyWins?: number;
   penaltyLosses?: number;
   regulationLosses?: number;
+  /**
+   * 直近の試合結果（例：U-21 東西リーグラウンド）。存在する結果のみを保持し、
+   * 消化試合数に満たない分を"-"やnullで埋めない。J1 STANDINGS等では未設定のまま
+   * （既存表示・型を壊さない）。
+   */
+  recentForm?: Array<"W" | "D" | "L">;
 }
 
 export interface LeagueStandings {

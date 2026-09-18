@@ -10,6 +10,8 @@ import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import type { CommonFixture } from "@/lib/types/fixture";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { LiveMatchPanel } from "@/components/match/LiveMatchPanel";
+import { LeagueStandingsTable } from "@/components/match/LeagueStandingsTable";
+import { u21EastStandings, u21WestStandings } from "@/lib/mock/u21-standings";
 
 /**
  * /u21 は U-21 カテゴリーのトップページ。TOP TEAM（/top）・BELEZA（/beleza）と同じ情報設計で、
@@ -189,6 +191,25 @@ export default function U21Page() {
             <U21SeasonHistory entries={history} />
           </section>
         )}
+      </div>
+
+      {/*
+        東西リーグラウンド順位表。東京VはEAST所属のためEASTを先に表示する。
+        WESTにはhighlightTeamNameが一致するクラブが存在しないため、強調行は出ない。
+      */}
+      <div className="space-y-8 border-t border-border pt-8">
+        <LeagueStandingsTable
+          standings={u21EastStandings}
+          highlightTeamName="U-21 東京ヴェルディ"
+          title="EAST"
+          eyebrow="EAST STANDINGS"
+        />
+        <LeagueStandingsTable
+          standings={u21WestStandings}
+          highlightTeamName="U-21 東京ヴェルディ"
+          title="WEST"
+          eyebrow="WEST STANDINGS"
+        />
       </div>
     </div>
   );

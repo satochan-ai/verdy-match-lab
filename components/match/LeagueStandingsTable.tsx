@@ -1,6 +1,23 @@
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import type { LeagueStandings } from "@/types/standings";
 
+const RECENT_FORM_STYLE: Record<"W" | "D" | "L", string> = {
+  W: "bg-primary-green text-white",
+  D: "border border-border text-text-secondary",
+  L: "bg-error text-white",
+};
+
+/** 直近の試合結果1件分の小さな丸バッジ（既存StatusBadgeと同じ配色、表セル用に小さく）。 */
+function RecentFormBadge({ result }: { result: "W" | "D" | "L" }) {
+  return (
+    <span
+      className={`inline-flex size-4 items-center justify-center rounded-full text-[9px] font-bold ${RECENT_FORM_STYLE[result]}`}
+    >
+      {result}
+    </span>
+  );
+}
+
 /**
  * リーグ／カップ順位表。デスクトップは全クラブのフルテーブル、モバイルは横スクロール
  * 前提の巨大tableにせず、優先度の高い列（順位・クラブ・勝点・試合数・得失点差）のみを
@@ -10,6 +27,9 @@ import type { LeagueStandings } from "@/types/standings";
  * entriesがregulationWins等（90分/PK戦の勝敗内訳）を持つ場合のみ、デスクトップ表の
  * 勝/分/敗列を90分勝/PK勝/PK敗/90分敗列へ切り替える（ノックアウト系カップ戦用）。
  * この内訳が無い既存のJ1 STANDINGS等は従来どおり勝/分/敗のまま変わらない。
+ *
+ * entriesがrecentForm（直近の試合結果、例：U-21東西リーグラウンド）を持つ場合のみ、
+ * デスクトップ表の末尾に「直近」列を追加する（モバイルには出さない）。
  */
 export function LeagueStandingsTable({
   standings,
@@ -23,6 +43,7 @@ export function LeagueStandingsTable({
   eyebrow?: string;
 }) {
   const isCupStyle = standings.entries.some((entry) => entry.regulationWins !== undefined);
+  const hasRecentForm = standings.entries.some((entry) => entry.recentForm !== undefined);
 
   return (
     <section>
@@ -53,6 +74,7 @@ export function LeagueStandingsTable({
               <th className="px-2 py-2 text-right font-bold">得点</th>
               <th className="px-2 py-2 text-right font-bold">失点</th>
               <th className="px-2 py-2 text-right font-bold">得失</th>
+              {hasRecentForm && <th className="px-2 py-2 text-right font-bold">直近</th>}
             </tr>
           </thead>
           <tbody>
@@ -90,6 +112,15 @@ export function LeagueStandingsTable({
                   <td className="tabular-nums px-2 py-2 text-right text-text-secondary">{entry.goalsFor}</td>
                   <td className="tabular-nums px-2 py-2 text-right text-text-secondary">{entry.goalsAgainst}</td>
                   <td className="tabular-nums px-2 py-2 text-right text-text-secondary">{entry.goalDifference}</td>
+                  {hasRecentForm && (
+                    <td className="px-2 py-2">
+                      <span className="flex justify-end gap-1">
+                        {entry.recentForm?.map((result, index) => (
+                          <RecentFormBadge key={index} result={result} />
+                        ))}
+                      </span>
+                    </td>
+                  )}
                 </tr>
               );
             })}
