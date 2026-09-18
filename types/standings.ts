@@ -13,6 +13,17 @@ export interface LeagueStandingEntry {
   goalsAgainst: number;
   goalDifference: number;
   points: number;
+  /**
+   * ノックアウト系カップ戦（例：WEリーグ クラシエカップ）でのみ設定する、90分/PK戦の
+   * 勝敗内訳。J1 STANDINGSのような通常リーグの表では未設定のまま
+   * （既存TOP standingsの表示・型を壊さない）。設定する場合は
+   * regulationWins + penaltyWins === wins、regulationLosses + penaltyLosses === losses
+   * を満たす値のみを登録する（推測で埋めない）。
+   */
+  regulationWins?: number;
+  penaltyWins?: number;
+  penaltyLosses?: number;
+  regulationLosses?: number;
 }
 
 export interface LeagueStandings {

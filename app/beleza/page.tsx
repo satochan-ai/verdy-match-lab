@@ -6,11 +6,13 @@ import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { BelezaSeasonHistory } from "@/components/match/BelezaSeasonHistory";
 import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
 import { belezaTeam } from "@/lib/mock/beleza";
+import { weLeagueStandings, kracieCupStandings } from "@/lib/mock/beleza-standings";
 import { belezaFixtures, toBelezaSeasonHistoryEntry, toBelezaUpcomingMatch } from "@/lib/data/beleza-fixtures";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "@/lib/data/fixture-selectors";
 import type { CommonFixture } from "@/lib/types/fixture";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { LiveMatchPanel } from "@/components/match/LiveMatchPanel";
+import { LeagueStandingsTable } from "@/components/match/LeagueStandingsTable";
 
 /**
  * /beleza は BELEZA カテゴリーのトップページ。TOP TEAM（/top）と同じ情報設計で、
@@ -167,6 +169,25 @@ export default function BelezaPage() {
             <BelezaSeasonHistory entries={history} />
           </section>
         )}
+      </div>
+
+      {/*
+        WEリーグ／WEリーグ クラシエカップの順位表。2つを縦に並べる（推奨A）。
+        新規のclient stateやタブ切替は導入しない。
+      */}
+      <div className="space-y-8 border-t border-border pt-8">
+        <LeagueStandingsTable
+          standings={weLeagueStandings}
+          highlightTeamName={belezaTeam.name}
+          title="WEリーグ"
+          eyebrow="WE LEAGUE STANDINGS"
+        />
+        <LeagueStandingsTable
+          standings={kracieCupStandings}
+          highlightTeamName={belezaTeam.name}
+          title="WEリーグ クラシエカップ"
+          eyebrow="KRACIE CUP STANDINGS"
+        />
       </div>
     </div>
   );
