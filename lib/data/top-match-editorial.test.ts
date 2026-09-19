@@ -315,11 +315,13 @@ test("match-13 pre-match editorial (strategies/focusPoints/matchNotes) treats Ch
   assert.equal(match13.availability?.likelyUnavailable.length, 2);
 });
 
-test("match-14 is the Urawa preview match: HOME=浦和レッズ / AWAY=東京ヴェルディ", () => {
+test("match-14 (finished) is the Urawa match: HOME=浦和レッズ / AWAY=東京ヴェルディ", () => {
   assert.equal(match14.homeTeam.name, "浦和レッズ");
   assert.equal(match14.awayTeam.name, "東京ヴェルディ");
   assert.equal(match14.isVerdyHome, false);
-  assert.equal(match14.status, "scheduled");
+  assert.equal(match14.status, "finished");
+  assert.equal(match14.homeScore, 3);
+  assert.equal(match14.awayScore, 1);
 });
 
 test("match-14 registers Urawa's headline predicted formation (4-1-2-3) with confirmed squad numbers, promoted from the former alternative plan", () => {
@@ -467,8 +469,9 @@ test("match-14 editorial (strategies/focusPoints/matchNotes) covers CB shortage 
   assert.equal(match14.focusPoints.some((p) => p.startsWith("瀬古がいる時間と、いなくなった後")), true);
   assert.equal(match14.focusPoints.some((p) => p.startsWith("南野をどこで使うか")), true);
 
-  // 東京V前節（千葉戦）レビュー5段落＋既存の浦和側短評5段落を維持。
-  assert.equal(match14.matchNotes.length, 10);
+  // 試合終了後は戦術軍師β「試合総括」の本文用に、matchNotesを1本のMATCH REVIEW文章へ置き換える
+  // （getPostMatchAnalysisがmatchNotes[0]のみを参照するため）。focusPoints/strategiesは維持する。
+  assert.equal(match14.matchNotes.length, 1);
   const editorialText = [...match14.matchNotes, ...match14.focusPoints].join("\n");
   // 瀬古のフル出場可否について断定表現を使っていないこと。
   for (const forbidden of ["必ず交代する", "90分は出られない", "絶対に", "確実に途中交代"]) {
@@ -476,24 +479,50 @@ test("match-14 editorial (strategies/focusPoints/matchNotes) covers CB shortage 
   }
 });
 
-test("match-14 PRE-MATCH REVIEW opens with the Tokyo Verdy Chiba-match review, without touching predictedLineups/availability/match-13", () => {
-  const verdyReview = match14.matchNotes.slice(0, 5).join("\n");
-  assert.equal(verdyReview.includes("千葉戦"), true);
-  assert.equal(verdyReview.includes("一美"), true);
-  assert.equal(verdyReview.includes("4-4-2"), true);
-  assert.equal(verdyReview.includes("林") && verdyReview.includes("同点"), true);
-  assert.equal(verdyReview.includes("7戦未勝利"), true);
-  assert.equal(verdyReview.includes("初日") || verdyReview.includes("今季初勝利"), true);
-  // "初日"を使う場合は一般読者にも分かるよう"今季初勝利"の補足を必ず伴うこと。
-  if (verdyReview.includes("初日")) {
-    assert.equal(verdyReview.includes("今季初勝利"), true);
-  }
+test("match-14 MATCH REVIEW reflects the finished result (3-1) without deleting predictedLineups/availability/alternativeFormations", () => {
+  const review = match14.matchNotes[0];
+  assert.equal(review.includes("0-3"), true);
+  assert.equal(review.includes("1-3"), true);
+  assert.equal(review.includes("サヴィオ"), true);
+  assert.equal(review.includes("南野"), true);
+  assert.equal(review.includes("新井"), true);
+  assert.equal(review.includes("一美"), true);
+  assert.equal(review.includes("4-4-2"), true);
+  assert.equal(review.includes("3-4-2-1"), true);
+  // 「最初から4-4-2だったら」という断定・仮定表現は使わず、選択肢として残す程度の表現にとどめること。
+  assert.equal(review.includes("今後の選択肢として残したい"), true);
+  assert.equal(review.includes("最初から4-4-2だったらどうなっていた"), false);
+  // 中断期間（ルヴァンカップ・天皇杯）の締めが含まれること。
+  assert.equal(review.includes("ルヴァンカップ"), true);
+  assert.equal(review.includes("天皇杯"), true);
 
-  // 既存の浦和側短評（5段落）は削除せず、そのまま後ろに残っていること。
-  assert.equal(match14.matchNotes[5], "浦和は岡山戦で鹿島戦から先発を6人変更した。西川、金子、林は体調面で不透明な状況があり、渡邊もコンディションが万全とは言い切れない。一方で、ダニーロ・ボザは岡山戦で負傷交代しており、現時点では欠場を想定している。");
-
-  // 今回（このPRE-MATCH REVIEW追加時点）変更禁止だったフィールドに影響がないこと。
+  // predictedLineups/alternativeFormations/availabilityは非表示になっても削除されていないこと
+  // （PRE_MATCHデータの保持）。
   assert.equal(match14.predictedLineups?.home.starters.length, 11);
   assert.equal(match14.predictedLineups?.away.starters.length, 11);
   assert.equal(match14.alternativeFormations?.length, 3);
+  assert.equal(match14.availability?.likelyUnavailable.length, 2);
+});
+
+test("match-14 records the 4 confirmed goals and the 3 substitutions in chronological order per team", () => {
+  assert.deepEqual(match14.goals, [
+    { minute: "24'", scorer: "マテウス サヴィオ", team: "浦和", assist: "金子 拓郎" },
+    { minute: "32'", scorer: "マテウス サヴィオ", team: "浦和" },
+    { minute: "44'", scorer: "南野 遥海", team: "浦和", assist: "植木 颯" },
+    { minute: "62'", scorer: "新井 悠太", team: "東京V", assist: "一美 和成" },
+  ]);
+  assert.deepEqual(match14.substitutions, [
+    { minute: "67'", team: "浦和", playerIn: "小森 飛絢", playerOut: "南野 遥海" },
+    { minute: "67'", team: "浦和", playerIn: "片山 瑛一", playerOut: "植木 颯" },
+    { minute: "46'", team: "東京V", playerIn: "一美 和成", playerOut: "平尾 勇人" },
+  ]);
+  assert.deepEqual(match14.officialRecord, {
+    attendance: 33652,
+    weather: "雨のち曇り",
+    temperature: "23.1℃",
+    humidity: "90%",
+  });
+  // actualLineupsは開始時点のフォーメーションのまま維持する（match-13と同じ既存方針）。
+  assert.equal(match14.actualLineups?.home.formation, "4-1-2-3");
+  assert.equal(match14.actualLineups?.away.formation, "3-4-2-1");
 });

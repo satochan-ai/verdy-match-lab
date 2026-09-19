@@ -135,9 +135,9 @@ export const scheduleMatches: ScheduleMatch[] = [
     venue: "埼玉スタジアム2002",
     isVerdyHome: false,
     opponentName: "浦和レッズ",
-    status: "scheduled",
-    // NEXT+1準備Phase：detailを先行作成（match-14）。NEXT MATCH/NEXT5の並びには影響しない
-    // （既存のkickoffAt順ソートは変更していない）。
+    status: "finished",
+    homeScore: 3,
+    awayScore: 1,
     detailMatchId: "match-14",
   },
   {
