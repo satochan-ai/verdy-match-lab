@@ -77,6 +77,18 @@ export function getPreMatchAnalysis(
     ? `${opponentName}の詳細情報がまだ登録されていないため、現在登録されている情報をもとに分析しています。`
     : undefined;
 
+  if (match.id === "match-14" && question === "caution") {
+    return {
+      sections: [
+        {
+          heading: "相手の注意点",
+          body:
+            "浦和は4-1-2-3。瀬古をアンカーに置き、両WGのマテウス サヴィオと金子、中央の南野を起点に前進してくる形。東京Vは瀬古への入口を制限しつつ、サヴィオ・金子を前向きにさせないことが重要になる。後半に小森が投入された場合は、背後への動きと縦への速い攻撃にも警戒したい。",
+        },
+      ],
+    };
+  }
+
   if (question === "highlight") {
     const attackText = stripTraitSuffix(match.verdyProfile.characteristics.attack);
     return {
