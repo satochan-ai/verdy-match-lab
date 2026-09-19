@@ -169,6 +169,104 @@ export const inacKobeActualLineup: ActualLineup = {
   },
 };
 
+/** 対戦相手（クラシエカップ リーグステージ第2節）。 */
+export const elfenTeam: Team = {
+  id: "chifure-elfen-saitama",
+  name: "ちふれASエルフェン埼玉",
+  isVerdy: false,
+};
+
+/**
+ * === クラシエカップ リーグステージ第2節（ちふれASエルフェン埼玉戦）：公式スタメン反映 ===
+ * IDは既存のNEXT5エントリ「beleza-next-4」をそのまま再利用する（重複作成しない）。
+ * belezaMatch（INAC神戸戦・現在表示中の1試合）はまだ試合終了の公式結果が確認できていない
+ * ため、ここでは昇格・上書きしない。この試合はscheduled/live状態のまま、
+ * /beleza/matches/beleza-next-4 という別ルートで公式スタメンのみ個別に描画する
+ * （belezaFixtures/NEXT5への影響なし。beleza-next-4はbelezaUpcomingMatchesに残したまま）。
+ * 試合結果（score・finished）は未確定のため設定しない（0-0等の仮入力もしない）。
+ */
+export const belezaElfenMatch = {
+  id: "beleza-next-4",
+  competition: "2026/27 WEリーグ クラシエカップ リーグステージ第2節",
+  fixtureMeta: {
+    competition: "2026/27 WEリーグ クラシエカップ",
+    stage: "リーグステージ",
+    roundLabel: "第2節",
+  } satisfies FixtureMeta,
+  dateLabel: "09.19 SAT",
+  kickoffLabel: "16:03",
+  kickoffAt: "2026-09-19T16:03:00+09:00",
+  venue: "熊谷スポーツ文化公園陸上競技場",
+  status: "scheduled" as const,
+  homeTeamName: elfenTeam.name,
+  awayTeamName: belezaTeam.name,
+  /** ベレーザ視点（今節はAWAY）。 */
+  isBelezaHome: false,
+};
+
+/**
+ * BELEZA 公式スタメン・ベンチ（ユーザー提供の公式メンバー表に基づく）。
+ * グループ分けは公式発表のポジション表記（GK/DF/MF/FW）をそのまま使用する
+ * （実際の3-4-2-1配置＝belezaElfenActualFormationとは別の区分）。
+ */
+export const belezaElfenActualLineup: ActualLineup = {
+  starters: {
+    GK: ["1 野田 にな"],
+    DF: ["32 松岡 瑛茉", "3 村松 智子", "5 松田 紫野"],
+    MF: ["6 隅田 凜", "35 須長 穂乃果"],
+    FW: ["38 式田 和", "24 伊藤 琴音", "7 北村 菜々美", "13 氏原 里穂菜", "11 樋渡 百花"],
+  },
+  bench: {
+    GK: ["21 水口 茉優"],
+    DF: ["4 土光 真代", "22 井手 ひなた"],
+    MF: [],
+    FW: ["25 ダネル タン", "40 安藤 梢", "36 中村 優那"],
+  },
+};
+
+/**
+ * BELEZAの実際の並び（ユーザー確認済み3-4-2-1）。startersはFormationPitchが要求する
+ * 順序（GK → DF3 → MF4 → シャドー2 → FW1）。各行は画面左→右の並びで、
+ * DF：松田・村松・松岡／MF：北村・隅田・須長・伊藤／シャドー：氏原・式田／CF：樋渡。
+ * 選手11名・背番号・氏名・formationはbelezaElfenActualLineupと一致させ、変更しない。
+ */
+export const belezaElfenActualFormation: PredictedLineup = {
+  formation: "3-4-2-1",
+  starters: [
+    { number: 1, name: "野田 にな", position: "GK" },
+    { number: 5, name: "松田 紫野", position: "DF" },
+    { number: 3, name: "村松 智子", position: "DF" },
+    { number: 32, name: "松岡 瑛茉", position: "DF" },
+    { number: 7, name: "北村 菜々美", position: "MF" },
+    { number: 6, name: "隅田 凜", position: "MF" },
+    { number: 35, name: "須長 穂乃果", position: "MF" },
+    { number: 24, name: "伊藤 琴音", position: "MF" },
+    { number: 13, name: "氏原 里穂菜", position: "MF" },
+    { number: 38, name: "式田 和", position: "MF" },
+    { number: 11, name: "樋渡 百花", position: "FW" },
+  ],
+};
+
+/**
+ * ちふれASエルフェン埼玉 公式スタメン・ベンチ（ユーザー提供の公式メンバー表に基づく）。
+ * 開始時フォーメーションは未確認のため推測せず、formationは設定しない
+ * （ActualLineup.formationはoptional）。FW控えは提供情報になし（0名のまま、推測補完しない）。
+ */
+export const elfenActualLineup: ActualLineup = {
+  starters: {
+    GK: ["51 山田 桜音"],
+    DF: ["4 平尾 愛穂", "20 岸 みのり", "32 三秋 祥子", "25 大髙 心"],
+    MF: ["16 栃谷 美羽", "5 瀬戸口 梢", "24 大曽根 由乃", "8 田中 結衣", "14 植村 祥子"],
+    FW: ["18 髙橋 雛"],
+  },
+  bench: {
+    GK: ["21 鹿島 彩莉"],
+    DF: ["13 佐久間 未稀"],
+    MF: ["37 梅月 万優子", "29 山下 朝子", "19 森中 陽菜", "17 木許 和心"],
+    FW: [],
+  },
+};
+
 /**
  * === 第3節（三菱重工浦和レッズレディース戦）アーカイブ ===
  * クラシエカップ第1節（INAC神戸戦）が新たな「現在表示中の1試合」スナップショットに
@@ -670,7 +768,8 @@ export const belezaUpcomingMatches: UpcomingFixture[] = [
   {
     id: "beleza-next-4",
     dateLabel: "09.19 SAT",
-    kickoffLabel: "16:00",
+    // 公式表記のキックオフ時刻（16:03）へ修正。他fixtureのkickoffLabelは変更しない。
+    kickoffLabel: "16:03",
     fixtureMeta: {
       competition: "2026/27 WEリーグ クラシエカップ",
       stage: "リーグステージ",

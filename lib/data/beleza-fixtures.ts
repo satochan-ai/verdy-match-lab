@@ -44,7 +44,8 @@ export const belezaFixtures: CommonFixture[] = [
   ...belezaUpcomingMatches.map((fixture, index) => ({
     id: fixture.id, category: "beleza" as const, teamName: belezaTeam.name, opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
-    kickoffAt: ["2026-09-19T16:00:00+09:00", "2026-09-23T14:00:00+09:00", "2026-09-27T18:00:00+09:00", "2026-10-03T14:00:00+09:00", "2026-10-11T12:00:00+09:00"][index],
+    // 09/19（beleza-next-4）のみ公式表記のキックオフ時刻（16:03）へ修正。他は変更しない。
+    kickoffAt: ["2026-09-19T16:03:00+09:00", "2026-09-23T14:00:00+09:00", "2026-09-27T18:00:00+09:00", "2026-10-03T14:00:00+09:00", "2026-10-11T12:00:00+09:00"][index],
     kickoffStatus: "confirmed" as const, dateLabel: fixture.dateLabel, venue: fixture.venue, isHome: fixture.isHome, status: "scheduled" as const,
   })),
 ];

@@ -23,7 +23,22 @@ function TeamLineup({ team, lineup, formation }: { team: Team; lineup: ActualLin
   );
 }
 
-export function BelezaLiveOfficialLineups({ belezaTeam, belezaLineup, belezaFormation, opponentTeam, opponentLineup }: { belezaTeam: Team; belezaLineup: ActualLineup; belezaFormation: { formation: string; starters: { number?: number; name: string; position: string }[] }; opponentTeam: Team; opponentLineup: ActualLineup }) {
+export function BelezaLiveOfficialLineups({
+  belezaTeam,
+  belezaLineup,
+  belezaFormation,
+  opponentTeam,
+  opponentLineup,
+  caption,
+}: {
+  belezaTeam: Team;
+  belezaLineup: ActualLineup;
+  belezaFormation: { formation: string; starters: { number?: number; name: string; position: string }[] };
+  opponentTeam: Team;
+  opponentLineup: ActualLineup;
+  /** 相手の開始時フォーメーション未確認である旨の注記。試合ごとに文言が変わるため呼び出し側で渡す。 */
+  caption: string;
+}) {
   return (
     <section>
       <SectionHeader title="公式スタメン" eyebrow="OFFICIAL LINEUP" />
@@ -31,7 +46,7 @@ export function BelezaLiveOfficialLineups({ belezaTeam, belezaLineup, belezaForm
         <TeamLineup team={belezaTeam} lineup={belezaLineup} formation={belezaFormation} />
         <TeamLineup team={opponentTeam} lineup={opponentLineup} />
       </div>
-      <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">公式発表されたStarting XI・ベンチを掲載しています。INAC神戸の開始時フォーメーションは未確認のため掲載していません。</p>
+      <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">{caption}</p>
     </section>
   );
 }
