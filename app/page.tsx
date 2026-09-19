@@ -114,7 +114,7 @@ export default async function Home() {
         categoryCta={{ href: "#categories", label: "3カテゴリーを見る" }}
       />
 
-      <HomeNextMatch fixture={nextTopFixture} />
+      <HomeNextMatch fixture={topCardFixture} />
 
       <section id="categories">
         <div className="flex items-baseline gap-3">
