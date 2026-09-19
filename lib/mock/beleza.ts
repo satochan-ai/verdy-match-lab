@@ -50,57 +50,52 @@ export const inacKobeTeam: Team = {
   isVerdy: false,
 };
 
+/** クラシエカップ第2節の対戦相手。 */
+export const elfenSaitamaTeam: Team = {
+  id: "elfen-saitama",
+  name: "ちふれASエルフェン埼玉",
+  isVerdy: false,
+};
+
 /**
  * === クラシエカップ リーグステージ第1節（INAC神戸レオネッサ戦）：現在表示中の1試合 ===
  * IDは既存のNEXT5エントリ「beleza-next-3」をそのまま再利用する（重複作成しない）。
  * WEリーグ公式試合記録（2026/9/12）に基づき、結果を確定登録する。
  */
 export const belezaMatch = {
-  id: "beleza-next-3",
-  competition: "2026/27 WEリーグ クラシエカップ リーグステージ第1節",
+  id: "beleza-next-4",
+  competition: "2026/27 WEリーグ クラシエカップ リーグステージ第2節",
   fixtureMeta: {
     competition: "2026/27 WEリーグ クラシエカップ",
     stage: "リーグステージ",
-    roundLabel: "第1節",
+    roundLabel: "第2節",
   } satisfies FixtureMeta,
-  dateLabel: "09.12 SAT",
-  kickoffLabel: "18:00",
-  kickoffAt: "2026-09-12T18:00:00+09:00",
-  venue: "味の素フィールド西が丘",
+  dateLabel: "09.19 SAT",
+  kickoffLabel: "16:03",
+  kickoffAt: "2026-09-19T16:03:00+09:00",
+  venue: "熊谷スポーツ文化公園陸上競技場",
   status: "finished" as const,
-  homeTeamName: belezaTeam.name,
-  awayTeamName: inacKobeTeam.name,
+  homeTeamName: elfenSaitamaTeam.name,
+  awayTeamName: belezaTeam.name,
   /** ベレーザ視点の勝敗判定用（今節はHOME）。 */
-  isBelezaHome: true,
-  homeScore: 3,
-  awayScore: 2,
+  isBelezaHome: false,
+  homeScore: 0,
+  awayScore: 1,
 };
 
-export const belezaHalfScores = { firstHalf: "1-2", secondHalf: "2-0" };
+export const belezaHalfScores = { firstHalf: "0-1", secondHalf: "0-0" };
 export const belezaGoals: MatchGoal[] = [
-  { minute: "3'", scorer: "山本 摩也", team: inacKobeTeam.name },
-  { minute: "7'", scorer: "久保田 真生", team: inacKobeTeam.name },
-  { minute: "45+2'", scorer: "須長 穂乃果", team: belezaTeam.name },
-  { minute: "55'", scorer: "式田 和", team: belezaTeam.name },
-  { minute: "87'", scorer: "土光 真代", team: belezaTeam.name },
+  { minute: "45+1'", scorer: "氏原 里穂菜", team: belezaTeam.name },
 ];
-export const belezaCards: MatchCard[] = [
-  { minute: "18'", player: "箕輪 千慧", team: inacKobeTeam.name, type: "yellow" },
-];
-export const belezaSubstitutions: MatchSubstitution[] = [
-  { minute: "46'", team: belezaTeam.name, playerOut: "伊藤 琴音", playerIn: "式田 和" },
-  { minute: "59'", team: inacKobeTeam.name, playerOut: "箕輪 千慧", playerIn: "大田 ありす" },
-  { minute: "59'", team: inacKobeTeam.name, playerOut: "髙瀬 愛実", playerIn: "道上 彩花" },
-  { minute: "59'", team: belezaTeam.name, playerOut: "安藤 梢", playerIn: "樋渡 百花" },
-  { minute: "62'", team: inacKobeTeam.name, playerOut: "山本 摩也", playerIn: "中平 怜那" },
-  { minute: "79'", team: belezaTeam.name, playerOut: "猶本 光", playerIn: "土光 真代" },
-  { minute: "79'", team: inacKobeTeam.name, playerOut: "金月 夏萌", playerIn: "北村 礼" },
-  { minute: "90+3'", team: belezaTeam.name, playerOut: "氏原 里穂菜", playerIn: "ダネル タン" },
-];
-export const belezaMatchStats: { beleza: { shots: number; freeKicks: number; corners: number }; opponent: { shots: number; freeKicks: number; corners: number } } | undefined = undefined;
+export const belezaCards: MatchCard[] = [];
+export const belezaSubstitutions: MatchSubstitution[] = [];
+export const belezaMatchStats = {
+  beleza: { shots: 15, freeKicks: 7, corners: 10 },
+  opponent: { shots: 7, freeKicks: 4, corners: 3 },
+};
 export const belezaOfficialRecord: OfficialMatchRecord = {
-  kickoff: "18:04", attendance: 2086, weather: "雨のち曇", temperature: "22.8℃", humidity: "80%",
-  sourceUrl: "https://weleague.jp/matches/2026091224/",
+  kickoff: "16:03", attendance: 784, weather: "曇", temperature: "25.9℃", humidity: "71%",
+  sourceUrl: "https://weleague.jp/matches/2026091922/",
 };
 export const belezaOfficialSourceLabel = "WE LEAGUE Official Match Record";
 export const belezaPostMatchSummary = "";
@@ -180,10 +175,7 @@ export const elfenTeam: Team = {
  * === クラシエカップ リーグステージ第2節（ちふれASエルフェン埼玉戦）：公式スタメン反映 ===
  * IDは既存のNEXT5エントリ「beleza-next-4」をそのまま再利用する（重複作成しない）。
  * belezaMatch（INAC神戸戦・現在表示中の1試合）はまだ試合終了の公式結果が確認できていない
- * ため、ここでは昇格・上書きしない。この試合はscheduled/live状態のまま、
- * /beleza/matches/beleza-next-4 という別ルートで公式スタメンのみ個別に描画する
- * （belezaFixtures/NEXT5への影響なし。beleza-next-4はbelezaUpcomingMatchesに残したまま）。
- * 試合結果（score・finished）は未確定のため設定しない（0-0等の仮入力もしない）。
+ * ため、ここでは公式スタメンを維持したまま試合終了結果を反映する。
  */
 export const belezaElfenMatch = {
   id: "beleza-next-4",
@@ -197,11 +189,28 @@ export const belezaElfenMatch = {
   kickoffLabel: "16:03",
   kickoffAt: "2026-09-19T16:03:00+09:00",
   venue: "熊谷スポーツ文化公園陸上競技場",
-  status: "scheduled" as const,
+  status: "finished" as const,
   homeTeamName: elfenTeam.name,
   awayTeamName: belezaTeam.name,
   /** ベレーザ視点（今節はAWAY）。 */
   isBelezaHome: false,
+  homeScore: 0,
+  awayScore: 1,
+};
+
+export const belezaElfenHalfScores = { firstHalf: "0-1", secondHalf: "0-0" };
+export const belezaElfenGoals: MatchGoal[] = [
+  { minute: "45+1'", scorer: "氏原 里穂菜", team: belezaTeam.name },
+];
+export const belezaElfenCards: MatchCard[] = [];
+export const belezaElfenSubstitutions: MatchSubstitution[] = [];
+export const belezaElfenStats = {
+  beleza: { shots: 15, freeKicks: 7, corners: 10 },
+  opponent: { shots: 7, freeKicks: 4, corners: 3 },
+};
+export const belezaElfenOfficialRecord: OfficialMatchRecord = {
+  kickoff: "16:03", attendance: 784, weather: "曇", temperature: "25.9℃", humidity: "71%",
+  sourceUrl: "https://weleague.jp/matches/2026091922/",
 };
 
 /**
@@ -759,11 +768,21 @@ export const belezaSeasonHistory: BelezaSeasonHistoryEntry[] = [
     awayScore: 1,
     result: "loss",
   },
+  {
+    id: "beleza-next-3",
+    dateLabel: "09.12",
+    round: "第1節",
+    homeTeamName: belezaTeam.name,
+    awayTeamName: inacKobeTeam.name,
+    homeScore: 3,
+    awayScore: 2,
+    result: "win",
+  },
 ];
 
 /**
- * 第3節終了後のNEXT 5（公式日程のみ）。浦和戦はfinishedになったため一覧から外す。
- * クラシエカップ第1節（INAC神戸戦）はbelezaMatch（現在表示中の1試合）へ昇格したため、
+ * 第2節終了後のNEXT 5（公式日程のみ）。EL埼玉戦はfinishedになったため一覧から外す。
+ * クラシエカップ第1節（INAC神戸戦）はSeason Historyへ移動したため、
  * 重複登録を避けるためこの一覧からは外す。
  * WEリーグとクラシエカップを大会横断で開催日時の早い順に並べる。
  * 会場は公式日程で確認できた場合のみ設定する（推測で埋めない）。

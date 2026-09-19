@@ -9,22 +9,21 @@ import {
   belezaMatch,
 } from "./beleza.ts";
 
-test("BELEZA vs エルフェン埼玉: fixture uses the reused beleza-next-4 id, official kickoff (16:03), and unconfirmed result", () => {
+test("BELEZA vs エルフェン埼玉: fixture uses the reused beleza-next-4 id and confirmed result", () => {
   assert.equal(belezaElfenMatch.id, "beleza-next-4");
   assert.equal(belezaElfenMatch.kickoffAt, "2026-09-19T16:03:00+09:00");
   assert.equal(belezaElfenMatch.venue, "熊谷スポーツ文化公園陸上競技場");
-  assert.equal(belezaElfenMatch.status, "scheduled");
+  assert.equal(belezaElfenMatch.status, "finished");
   assert.equal(belezaElfenMatch.isBelezaHome, false);
   assert.equal(belezaElfenMatch.homeTeamName, elfenTeam.name);
   assert.equal(belezaElfenMatch.awayTeamName, "日テレ・東京ヴェルディベレーザ");
-  // scoreフィールドを一切持たない（0-0等の仮入力をしていないことの確認）。
-  assert.equal("homeScore" in belezaElfenMatch, false);
-  assert.equal("awayScore" in belezaElfenMatch, false);
+  assert.equal(belezaElfenMatch.homeScore, 0);
+  assert.equal(belezaElfenMatch.awayScore, 1);
 });
 
-test("BELEZA vs エルフェン埼玉 does not overwrite belezaMatch (INAC神戸, current display)", () => {
-  assert.equal(belezaMatch.id, "beleza-next-3");
-  assert.notEqual(belezaMatch.id, belezaElfenMatch.id);
+test("BELEZA current snapshot advances to the finished EL埼玉 match", () => {
+  assert.equal(belezaMatch.id, "beleza-next-4");
+  assert.equal(belezaMatch.id, belezaElfenMatch.id);
 });
 
 test("BELEZA official lineup has 11 starters and 5 substitutes for the Elfen match (#36 中村 優那 corrected out to Elfen)", () => {

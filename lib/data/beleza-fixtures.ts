@@ -32,7 +32,14 @@ export const belezaFixtures: CommonFixture[] = [
     detailMatchId: belezaMatch3.id,
   },
   {
-    // クラシエカップ第1節・INAC神戸戦の公式確定結果。
+    // クラシエカップ第1節・INAC神戸戦の公式確定結果（Season History）。
+    id: "beleza-next-3", category: "beleza", teamName: belezaTeam.name,
+    opponentName: "INAC神戸レオネッサ", competition: { name: "2026/27 WEリーグ クラシエカップ", round: "第1節" },
+    kickoffAt: "2026-09-12T18:00:00+09:00", kickoffStatus: "confirmed", dateLabel: "09.12 SAT",
+    venue: "味の素フィールド西が丘", isHome: true, status: "finished", score: { home: 3, away: 2 },
+  },
+  {
+    // クラシエカップ第2節・EL埼玉戦の公式確定結果。
     id: belezaMatch.id, category: "beleza", teamName: belezaTeam.name,
     opponentName: belezaMatch.isBelezaHome ? belezaMatch.awayTeamName : belezaMatch.homeTeamName,
     competition: { name: belezaMatch.fixtureMeta.competition, round: belezaMatch.fixtureMeta.roundLabel },
@@ -41,11 +48,11 @@ export const belezaFixtures: CommonFixture[] = [
     score: { home: belezaMatch.homeScore, away: belezaMatch.awayScore },
     detailMatchId: belezaMatch.id,
   },
-  ...belezaUpcomingMatches.map((fixture, index) => ({
+  ...belezaUpcomingMatches.slice(1).map((fixture, index) => ({
     id: fixture.id, category: "beleza" as const, teamName: belezaTeam.name, opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
     // 09/19（beleza-next-4）のみ公式表記のキックオフ時刻（16:03）へ修正。他は変更しない。
-    kickoffAt: ["2026-09-19T16:03:00+09:00", "2026-09-23T14:00:00+09:00", "2026-09-27T18:00:00+09:00", "2026-10-03T14:00:00+09:00", "2026-10-11T12:00:00+09:00"][index],
+    kickoffAt: ["2026-09-23T14:00:00+09:00", "2026-09-27T18:00:00+09:00", "2026-10-03T14:00:00+09:00", "2026-10-11T12:00:00+09:00"][index],
     kickoffStatus: "confirmed" as const, dateLabel: fixture.dateLabel, venue: fixture.venue, isHome: fixture.isHome, status: "scheduled" as const,
   })),
 ];
