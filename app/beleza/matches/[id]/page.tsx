@@ -120,6 +120,7 @@ export default async function BelezaMatchDetailPage({
   const displayStatus = resolveMatchStatus(belezaMatch, new Date());
   const isFinished = displayStatus === "finished";
   const isLive = displayStatus === "live";
+  const isScheduled = displayStatus === "scheduled";
   const belezaScore = belezaMatch.isBelezaHome ? belezaMatch.homeScore : belezaMatch.awayScore;
   const opponentScore = belezaMatch.isBelezaHome ? belezaMatch.awayScore : belezaMatch.homeScore;
   const resultLabel =
@@ -705,7 +706,6 @@ function BelezaElfenDetail() {
   const displayStatus = resolveMatchStatus(belezaElfenMatch, new Date());
   const isFinished = displayStatus === "finished";
   const isLive = displayStatus === "live";
-  const isScheduled = displayStatus === "scheduled";
 
   return (
     <div className="space-y-8 pb-4">
