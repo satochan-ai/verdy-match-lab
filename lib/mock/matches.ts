@@ -1327,12 +1327,20 @@ export const matches: Match[] = [
       { minute: "44'", scorer: "南野 遥海", team: "浦和", assist: "植木 颯" },
       { minute: "62'", scorer: "新井 悠太", team: "東京V", assist: "一美 和成" },
     ],
+    // 公式記録どおり両チーム5人ずつ・全10交代を登録（ユーザー確認済み）。
     // 途中交代によるフォーメーション変更はactualLineups（開始時点のみ保持、match-13と
     // 同じ既存の方針）を書き換えず、matchNotes（試合総括）内の文章で表現する。
     substitutions: [
-      { minute: "67'", team: "浦和", playerIn: "小森 飛絢", playerOut: "南野 遥海" },
+      { minute: "58'", team: "浦和", playerIn: "稲垣 篤志", playerOut: "山根 視来" },
       { minute: "67'", team: "浦和", playerIn: "片山 瑛一", playerOut: "植木 颯" },
+      { minute: "67'", team: "浦和", playerIn: "小森 飛絢", playerOut: "南野 遥海" },
+      { minute: "80'", team: "浦和", playerIn: "サミュエル グスタフソン", playerOut: "マテウス サヴィオ" },
+      { minute: "80'", team: "浦和", playerIn: "長沼 洋一", playerOut: "安居 海渡" },
       { minute: "46'", team: "東京V", playerIn: "一美 和成", playerOut: "平尾 勇人" },
+      { minute: "58'", team: "東京V", playerIn: "柴戸 海", playerOut: "齋藤 功佑" },
+      { minute: "86'", team: "東京V", playerIn: "松橋 優安", playerOut: "鈴木 海音" },
+      { minute: "86'", team: "東京V", playerIn: "藤本 寛也", playerOut: "福田 湧矢" },
+      { minute: "89'", team: "東京V", playerIn: "熊取谷 一星", playerOut: "新井 悠太" },
     ],
     // 試合終了レビュー（ユーザー確認済みの試合内容）。戦術軍師β「試合総括」の
     // 本文（getPostMatchAnalysisはmatchNotes[0]のみを参照）にそのまま反映されるよう、
