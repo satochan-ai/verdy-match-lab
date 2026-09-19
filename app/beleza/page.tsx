@@ -13,6 +13,7 @@ import type { CommonFixture } from "@/lib/types/fixture";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { LiveMatchPanel } from "@/components/match/LiveMatchPanel";
 import { LeagueStandingsTable } from "@/components/match/LeagueStandingsTable";
+import { belezaElfenMatch } from "@/lib/mock/beleza";
 
 /**
  * /beleza は BELEZA カテゴリーのトップページ。TOP TEAM（/top）と同じ情報設計で、
@@ -113,6 +114,21 @@ export default function BelezaPage() {
             </p>
             {nextDisplayFixture.venue && (
               <p className="text-[12px] text-text-secondary">{nextDisplayFixture.venue}</p>
+            )}
+            {/*
+              detailMatchIdはbelezaUpcomingMatches由来のfixtureにはまだ設定されていないため、
+              対象NEXT MATCH（beleza-next-4／エルフェン埼玉戦）に限定してリンクを表示する。
+              nextFixture.idがbelezaElfenMatch.idと一致しない場合（NEXT MATCHが別の試合に
+              進んだ場合等）はリンクを出さない（存在しない詳細ページへ404で飛ばさない）。
+              CTA文言・スタイルはTOP（/top）の「試合詳細を見る」と同一にする。
+            */}
+            {nextFixture.id === belezaElfenMatch.id && (
+              <Link
+                href={`/beleza/matches/${belezaElfenMatch.id}`}
+                className="mt-3 flex h-12 w-full items-center justify-center bg-primary-green text-[14px] font-bold text-white lg:mt-4 lg:inline-flex lg:h-10 lg:w-auto lg:px-5"
+              >
+                試合詳細を見る
+              </Link>
             )}
           </div>
         </section>

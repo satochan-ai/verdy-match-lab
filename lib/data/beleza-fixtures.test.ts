@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "./fixture-selectors.ts";
 import { belezaFixtures, toBelezaSeasonHistoryEntry } from "./beleza-fixtures.ts";
-import { belezaActualLineup, belezaActualFormation, inacKobeActualLineup } from "../mock/beleza.ts";
+import { belezaActualLineup, belezaActualFormation, inacKobeActualLineup, belezaElfenMatch } from "../mock/beleza.ts";
 import { validateFixtures } from "./fixture-validation.ts";
 
 const now = new Date("2026-09-13T00:00:00+09:00");
@@ -48,6 +48,9 @@ test("BELEZA NEXT is 09.19 ちふれ (official kickoff 16:03) and NEXT5 excludes
   assert.equal(nextFixture?.opponentName, "ちふれASエルフェン埼玉");
   // 公式表記のキックオフ時刻（16:03）へ修正されていること。他fixtureは変更しない。
   assert.equal(nextFixture?.kickoffAt, "2026-09-19T16:03:00+09:00");
+  // /beleza のNEXT MATCH詳細CTA（app/beleza/page.tsx）は、この一致を条件に
+  // /beleza/matches/${belezaElfenMatch.id} へのリンクを表示する。
+  assert.equal(nextFixture?.id, belezaElfenMatch.id);
   const upcoming = getUpcomingFixtures(belezaFixtures, now, 5);
   assert.equal(upcoming.length, 5);
   assert.equal(upcoming.every((fixture) => fixture.status === "scheduled"), true);
