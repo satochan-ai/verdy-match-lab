@@ -89,6 +89,32 @@ export function getPreMatchAnalysis(
     };
   }
 
+  if (match.id === "match-14" && question === "highlight") {
+    return {
+      sections: [
+        {
+          heading: "今日の見どころ",
+          body:
+            "浦和は瀬古をアンカーに置く4-1-2-3。サヴィオと金子の両WG、中央の南野をどう抑えるかが東京V守備のポイントになる。東京Vは3-4-2-1を継続。瀬古へのパスコースを制限しながら、奪った後に染野、福田、平尾を使って浦和の4バックの背後を狙いたい。",
+        },
+      ],
+    };
+  }
+
+  if (match.id === "match-14" && question === "keyPlayers") {
+    return {
+      sections: [
+        {
+          heading: "今日のキーマン",
+          bullets: [
+            "浦和：瀬古 樹 #12 — 4-1-2-3のアンカーとして浦和の攻撃を組み立てる基準点。東京Vが瀬古への入口をどこまで制限できるかが、試合の流れを左右する。",
+            "東京V：染野 唯月 #9 — 前線の基準点としてボールを収め、福田・平尾やWBの攻撃参加を引き出したい。浦和のCBを押し下げられるかが東京Vの攻撃の鍵になる。",
+          ],
+        },
+      ],
+    };
+  }
+
   if (question === "highlight") {
     const attackText = stripTraitSuffix(match.verdyProfile.characteristics.attack);
     return {
