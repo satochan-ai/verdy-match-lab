@@ -27,11 +27,13 @@ test("BELEZA vs エルフェン埼玉 does not overwrite belezaMatch (INAC神戸
   assert.notEqual(belezaMatch.id, belezaElfenMatch.id);
 });
 
-test("BELEZA official lineup has 11 starters and 6 substitutes for the Elfen match", () => {
+test("BELEZA official lineup has 11 starters and 5 substitutes for the Elfen match (#36 中村 優那 corrected out to Elfen)", () => {
   const starters = Object.values(belezaElfenActualLineup.starters).flat();
   const bench = Object.values(belezaElfenActualLineup.bench).flat();
   assert.equal(starters.length, 11);
-  assert.equal(bench.length, 6);
+  // ユーザー確認済み訂正により#36 中村 優那をエルフェン側へ移動したため、
+  // ベレーザ控えは5名になる（人数合わせのための他選手の推測補完はしない）。
+  assert.equal(bench.length, 5);
   assert.deepEqual(belezaElfenActualLineup.starters, {
     GK: ["1 野田 にな"],
     DF: ["32 松岡 瑛茉", "3 村松 智子", "5 松田 紫野"],
@@ -42,8 +44,15 @@ test("BELEZA official lineup has 11 starters and 6 substitutes for the Elfen mat
     GK: ["21 水口 茉優"],
     DF: ["4 土光 真代", "22 井手 ひなた"],
     MF: [],
-    FW: ["25 ダネル タン", "40 安藤 梢", "36 中村 優那"],
+    FW: ["25 ダネル タン", "40 安藤 梢"],
   });
+});
+
+test("#36 中村 優那 belongs to エルフェン埼玉's bench, not BELEZA's", () => {
+  const belezaBench = Object.values(belezaElfenActualLineup.bench).flat();
+  const elfenBench = Object.values(elfenActualLineup.bench).flat();
+  assert.equal(belezaBench.some((p) => p.includes("中村 優那")), false);
+  assert.equal(elfenBench.some((p) => p === "36 中村 優那"), true);
 });
 
 test("BELEZA actual formation is 3-4-2-1 with screen left-to-right order matching user-confirmed placement", () => {
@@ -78,11 +87,12 @@ test("BELEZA actual formation squad numbers match the official lineup for every 
   }
 });
 
-test("エルフェン埼玉 official lineup has 11 starters and 6 substitutes, with no formation guessed", () => {
+test("エルフェン埼玉 official lineup has 11 starters and 7 substitutes (#36 中村 優那 corrected in), with no formation guessed", () => {
   const starters = Object.values(elfenActualLineup.starters).flat();
   const bench = Object.values(elfenActualLineup.bench).flat();
   assert.equal(starters.length, 11);
-  assert.equal(bench.length, 6);
+  // ユーザー確認済み訂正により#36 中村 優那が加わり、エルフェン控えは7名になる。
+  assert.equal(bench.length, 7);
   assert.equal(elfenActualLineup.formation, undefined);
   assert.deepEqual(elfenActualLineup.starters, {
     GK: ["51 山田 桜音"],
@@ -94,7 +104,7 @@ test("エルフェン埼玉 official lineup has 11 starters and 6 substitutes, w
     GK: ["21 鹿島 彩莉"],
     DF: ["13 佐久間 未稀"],
     MF: ["37 梅月 万優子", "29 山下 朝子", "19 森中 陽菜", "17 木許 和心"],
-    FW: [],
+    FW: ["36 中村 優那"],
   });
 });
 
