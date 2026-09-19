@@ -457,8 +457,8 @@ test("match-14 editorial (strategies/focusPoints/matchNotes) covers CB shortage 
   assert.equal(match14.strategies.length, 3);
   assert.deepEqual(match14.strategies.map(({ title }) => title), [
     "瀬古を自由にさせない",
-    "金子・渡邊を前向きにさせない",
-    "小森への縦一本を簡単に入れさせない",
+    "サヴィオ・金子を前向きにさせない",
+    "南野を抑え、小森投入にも備える",
   ]);
   assert.equal(match14.strategies.every(({ result }) => result === "pending"), true);
 
