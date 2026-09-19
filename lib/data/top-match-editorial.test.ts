@@ -504,7 +504,7 @@ test("match-14 MATCH REVIEW reflects the finished result (3-1) without deleting 
   assert.equal(match14.availability?.likelyUnavailable.length, 2);
 });
 
-test("match-14 records the 4 confirmed goals and the 3 substitutions in chronological order per team", () => {
+test("match-14 records the 4 confirmed goals and all 10 substitutions (5 per team) in chronological order per team", () => {
   assert.deepEqual(match14.goals, [
     { minute: "24'", scorer: "マテウス サヴィオ", team: "浦和", assist: "金子 拓郎" },
     { minute: "32'", scorer: "マテウス サヴィオ", team: "浦和" },
@@ -512,10 +512,19 @@ test("match-14 records the 4 confirmed goals and the 3 substitutions in chronolo
     { minute: "62'", scorer: "新井 悠太", team: "東京V", assist: "一美 和成" },
   ]);
   assert.deepEqual(match14.substitutions, [
-    { minute: "67'", team: "浦和", playerIn: "小森 飛絢", playerOut: "南野 遥海" },
+    { minute: "58'", team: "浦和", playerIn: "稲垣 篤志", playerOut: "山根 視来" },
     { minute: "67'", team: "浦和", playerIn: "片山 瑛一", playerOut: "植木 颯" },
+    { minute: "67'", team: "浦和", playerIn: "小森 飛絢", playerOut: "南野 遥海" },
+    { minute: "80'", team: "浦和", playerIn: "サミュエル グスタフソン", playerOut: "マテウス サヴィオ" },
+    { minute: "80'", team: "浦和", playerIn: "長沼 洋一", playerOut: "安居 海渡" },
     { minute: "46'", team: "東京V", playerIn: "一美 和成", playerOut: "平尾 勇人" },
+    { minute: "58'", team: "東京V", playerIn: "柴戸 海", playerOut: "齋藤 功佑" },
+    { minute: "86'", team: "東京V", playerIn: "松橋 優安", playerOut: "鈴木 海音" },
+    { minute: "86'", team: "東京V", playerIn: "藤本 寛也", playerOut: "福田 湧矢" },
+    { minute: "89'", team: "東京V", playerIn: "熊取谷 一星", playerOut: "新井 悠太" },
   ]);
+  assert.equal(match14.substitutions?.filter((s) => s.team === "浦和").length, 5);
+  assert.equal(match14.substitutions?.filter((s) => s.team === "東京V").length, 5);
   assert.deepEqual(match14.officialRecord, {
     attendance: 33652,
     weather: "雨のち曇り",
