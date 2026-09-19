@@ -69,6 +69,12 @@ import {
   belezaElfenActualLineup,
   belezaElfenActualFormation,
   elfenActualLineup,
+  belezaElfenHalfScores,
+  belezaElfenGoals,
+  belezaElfenCards,
+  belezaElfenSubstitutions,
+  belezaElfenStats,
+  belezaElfenOfficialRecord,
 } from "@/lib/mock/beleza";
 
 /**
@@ -114,7 +120,6 @@ export default async function BelezaMatchDetailPage({
   const displayStatus = resolveMatchStatus(belezaMatch, new Date());
   const isFinished = displayStatus === "finished";
   const isLive = displayStatus === "live";
-  const isScheduled = displayStatus === "scheduled";
   const belezaScore = belezaMatch.isBelezaHome ? belezaMatch.homeScore : belezaMatch.awayScore;
   const opponentScore = belezaMatch.isBelezaHome ? belezaMatch.awayScore : belezaMatch.homeScore;
   const resultLabel =
@@ -698,6 +703,7 @@ function BelezaMatch3Detail() {
  */
 function BelezaElfenDetail() {
   const displayStatus = resolveMatchStatus(belezaElfenMatch, new Date());
+  const isFinished = displayStatus === "finished";
   const isLive = displayStatus === "live";
   const isScheduled = displayStatus === "scheduled";
 
@@ -708,7 +714,7 @@ function BelezaElfenDetail() {
           ← 戻る
         </Link>
         <h1 className="text-[15px] font-bold text-text-primary">
-          {isLive ? "LIVE" : "BELEZA MATCH PREVIEW"}
+          {isFinished ? "試合終了" : isLive ? "LIVE" : "BELEZA MATCH PREVIEW"}
         </h1>
         <span className="w-8" />
       </div>
@@ -720,6 +726,7 @@ function BelezaElfenDetail() {
         <p className="mt-2 tabular-nums text-[15px] font-extrabold tracking-wide text-text-secondary lg:text-[17px]">
           {belezaElfenMatch.dateLabel}
         </p>
+        {isFinished && <div className="mt-2 flex justify-center"><StatusBadge variant="win" label="WIN" /></div>}
 
         {/* mobile: 正式名称を省略せず縦積みで表示する */}
         <div className="mt-4 flex flex-col items-center gap-1.5 text-center lg:hidden">
@@ -727,7 +734,9 @@ function BelezaElfenDetail() {
             {belezaElfenMatch.homeTeamName}
           </p>
           <p className="text-[10px] font-bold tracking-wide text-text-secondary">HOME</p>
-          <p className="py-1 text-[13px] font-extrabold text-fusion-black">VS</p>
+          <p className="tabular-nums py-1 text-[22px] font-extrabold text-text-primary">
+            {belezaElfenMatch.homeScore} - {belezaElfenMatch.awayScore}
+          </p>
           <p className="text-[16px] font-extrabold leading-snug text-text-primary">
             {belezaElfenMatch.awayTeamName}
           </p>
@@ -751,7 +760,9 @@ function BelezaElfenDetail() {
               </p>
               <p className="mt-0.5 text-[11px] font-bold tracking-wide text-text-secondary">HOME</p>
             </div>
-            <div className="px-4 text-[18px] font-extrabold text-fusion-black">VS</div>
+            <p className="tabular-nums px-4 text-[30px] font-extrabold text-text-primary">
+              {belezaElfenMatch.homeScore} - {belezaElfenMatch.awayScore}
+            </p>
             <div className="min-w-0 text-left">
               <p className="truncate text-[24px] font-extrabold leading-[1.15] text-text-primary">
                 {belezaElfenMatch.awayTeamName}
@@ -770,10 +781,13 @@ function BelezaElfenDetail() {
         </div>
       </section>
 
-      {isScheduled && (
-        <p className="text-[13px] text-text-secondary">
-          試合結果はまだ確定していません。公式発表されたStarting XI・ベンチのみ掲載しています。
-        </p>
+      {isFinished && (
+        <div className="border-y border-border py-3 text-center text-[12px] text-text-secondary">
+          前半 {belezaElfenHalfScores.firstHalf} ／ 後半 {belezaElfenHalfScores.secondHalf}
+          <ul className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1">
+            {belezaElfenGoals.map((goal) => <li key={`${goal.minute}-${goal.scorer}`} className="tabular-nums">{goal.minute} <span className="text-text-primary">{goal.scorer}</span>（{goal.team}）</li>)}
+          </ul>
+        </div>
       )}
 
       <BelezaLiveOfficialLineups
@@ -782,8 +796,10 @@ function BelezaElfenDetail() {
         belezaFormation={belezaElfenActualFormation}
         opponentTeam={elfenTeam}
         opponentLineup={elfenActualLineup}
-        caption="公式発表されたStarting XI・ベンチを掲載しています。ちふれASエルフェン埼玉の開始時フォーメーションは未確認のため掲載していません。試合結果（スコア）はまだ公式に確定していません。"
+        caption="公式発表されたStarting XI・ベンチを掲載しています。ちふれASエルフェン埼玉の開始時フォーメーションは未確認のため掲載していません。"
       />
+      {isFinished && <MatchRecord homeTeamName={belezaElfenMatch.homeTeamName} awayTeamName={belezaElfenMatch.awayTeamName} goals={belezaElfenGoals} cards={belezaElfenCards} substitutions={belezaElfenSubstitutions} officialRecord={belezaElfenOfficialRecord} officialSourceLabel={belezaOfficialSourceLabel} actualLineups={{ home: elfenActualLineup, away: belezaElfenActualLineup }} />}
+      {isFinished && <BelezaMatchStats belezaTeamName={belezaTeam.name} opponentTeamName={elfenTeam.name} stats={belezaElfenStats} />}
     </div>
   );
 }
