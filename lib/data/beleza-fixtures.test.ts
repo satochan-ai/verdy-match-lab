@@ -43,8 +43,11 @@ test("BELEZA season history entries carry detailMatchId through for mobile/deskt
   assert.equal(history.every((entry) => entry.detailMatchId === entry.id), true);
 });
 
-test("BELEZA NEXT is 09.19 ちふれ and NEXT5 excludes finished fixtures", () => {
-  assert.equal(getNextFixture(belezaFixtures, now)?.opponentName, "ちふれASエルフェン埼玉");
+test("BELEZA NEXT is 09.19 ちふれ (official kickoff 16:03) and NEXT5 excludes finished fixtures", () => {
+  const nextFixture = getNextFixture(belezaFixtures, now);
+  assert.equal(nextFixture?.opponentName, "ちふれASエルフェン埼玉");
+  // 公式表記のキックオフ時刻（16:03）へ修正されていること。他fixtureは変更しない。
+  assert.equal(nextFixture?.kickoffAt, "2026-09-19T16:03:00+09:00");
   const upcoming = getUpcomingFixtures(belezaFixtures, now, 5);
   assert.equal(upcoming.length, 5);
   assert.equal(upcoming.every((fixture) => fixture.status === "scheduled"), true);

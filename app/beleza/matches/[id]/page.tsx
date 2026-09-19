@@ -64,6 +64,11 @@ import {
   urawaActualLineup,
   urawaActualFormation,
   belezaMatch3PostMatchSummary,
+  elfenTeam,
+  belezaElfenMatch,
+  belezaElfenActualLineup,
+  belezaElfenActualFormation,
+  elfenActualLineup,
 } from "@/lib/mock/beleza";
 
 /**
@@ -95,6 +100,9 @@ export default async function BelezaMatchDetailPage({
   }
   if (id === belezaMatch3.id) {
     return <BelezaMatch3Detail />;
+  }
+  if (id === belezaElfenMatch.id) {
+    return <BelezaElfenDetail />;
   }
 
   // 上記いずれにも該当しないIDは404にする（TOP TEAMの /matches/[id] とはデータ構造が
@@ -255,6 +263,7 @@ export default async function BelezaMatchDetailPage({
           belezaFormation={belezaActualFormation}
           opponentTeam={inacKobeTeam}
           opponentLineup={inacKobeActualLineup}
+          caption="公式発表されたStarting XI・ベンチを掲載しています。INAC神戸の開始時フォーメーションは未確認のため掲載していません。"
         />
       )}
       {isScheduled && (
@@ -673,6 +682,107 @@ function BelezaMatch3Detail() {
         belezaTeamName={belezaTeamStatsLabel(belezaMatch3)}
         opponentTeamName={opponentTeamStatsLabel(belezaMatch3)}
         stats={belezaMatch3Stats}
+      />
+    </div>
+  );
+}
+
+/**
+ * クラシエカップ リーグステージ第2節（ちふれASエルフェン埼玉戦）詳細。
+ * belezaMatch（INAC神戸戦・現在表示中の1試合）は上書きせず、別ルートとして描画する
+ * （NEXT5/belezaFixturesには影響しない）。試合結果はまだ公式確定していないため、
+ * score・goals・cards・substitutions・POST MATCH SUMMARYは表示しない
+ * （resultLabel算出や0-0等の仮score表示もしない）。
+ * 公式発表されたStarting XI・ベンチは、resolveMatchStatusがscheduled/liveいずれの
+ * 場合でも掲載する（メンバー発表はキックオフ前後どちらでも事実として確定済みのため）。
+ */
+function BelezaElfenDetail() {
+  const displayStatus = resolveMatchStatus(belezaElfenMatch, new Date());
+  const isLive = displayStatus === "live";
+  const isScheduled = displayStatus === "scheduled";
+
+  return (
+    <div className="space-y-8 pb-4">
+      <div className="flex items-center justify-between">
+        <Link href="/beleza" className="text-[13px] font-bold text-deep-green">
+          ← 戻る
+        </Link>
+        <h1 className="text-[15px] font-bold text-text-primary">
+          {isLive ? "LIVE" : "BELEZA MATCH PREVIEW"}
+        </h1>
+        <span className="w-8" />
+      </div>
+
+      <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
+        <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
+          {belezaElfenMatch.competition}
+        </p>
+        <p className="mt-2 tabular-nums text-[15px] font-extrabold tracking-wide text-text-secondary lg:text-[17px]">
+          {belezaElfenMatch.dateLabel}
+        </p>
+
+        {/* mobile: 正式名称を省略せず縦積みで表示する */}
+        <div className="mt-4 flex flex-col items-center gap-1.5 text-center lg:hidden">
+          <p className="text-[16px] font-extrabold leading-snug text-text-primary">
+            {belezaElfenMatch.homeTeamName}
+          </p>
+          <p className="text-[10px] font-bold tracking-wide text-text-secondary">HOME</p>
+          <p className="py-1 text-[13px] font-extrabold text-fusion-black">VS</p>
+          <p className="text-[16px] font-extrabold leading-snug text-text-primary">
+            {belezaElfenMatch.awayTeamName}
+          </p>
+          <p className="text-[10px] font-bold tracking-wide text-text-secondary">AWAY</p>
+        </div>
+
+        <div className="mt-4 flex flex-col items-center gap-1 border-t border-border pt-3 text-center lg:hidden">
+          <p className="tabular-nums text-[15px] font-bold text-text-primary">
+            {belezaElfenMatch.kickoffLabel}{" "}
+            <span className="text-[11px] font-bold text-text-secondary">KICK OFF</span>
+          </p>
+          <p className="text-[12px] text-text-secondary">{belezaElfenMatch.venue}</p>
+        </div>
+
+        {/* desktop: 既存の横並びレイアウトを維持 */}
+        <div className="hidden lg:block">
+          <div className="mt-5 grid grid-cols-[1fr_auto_1fr] items-center gap-6">
+            <div className="min-w-0 text-right">
+              <p className="truncate text-[24px] font-extrabold leading-[1.15] text-text-primary">
+                {belezaElfenMatch.homeTeamName}
+              </p>
+              <p className="mt-0.5 text-[11px] font-bold tracking-wide text-text-secondary">HOME</p>
+            </div>
+            <div className="px-4 text-[18px] font-extrabold text-fusion-black">VS</div>
+            <div className="min-w-0 text-left">
+              <p className="truncate text-[24px] font-extrabold leading-[1.15] text-text-primary">
+                {belezaElfenMatch.awayTeamName}
+              </p>
+              <p className="mt-0.5 text-[11px] font-bold tracking-wide text-text-secondary">AWAY</p>
+            </div>
+          </div>
+
+          <div className="mt-6 flex items-baseline justify-between text-left">
+            <p className="tabular-nums text-[16px] font-bold text-text-primary">
+              {belezaElfenMatch.kickoffLabel}{" "}
+              <span className="text-[12px] font-bold text-text-secondary">KICK OFF</span>
+            </p>
+            <p className="text-[12px] text-text-secondary">{belezaElfenMatch.venue}</p>
+          </div>
+        </div>
+      </section>
+
+      {isScheduled && (
+        <p className="text-[13px] text-text-secondary">
+          試合結果はまだ確定していません。公式発表されたStarting XI・ベンチのみ掲載しています。
+        </p>
+      )}
+
+      <BelezaLiveOfficialLineups
+        belezaTeam={belezaTeam}
+        belezaLineup={belezaElfenActualLineup}
+        belezaFormation={belezaElfenActualFormation}
+        opponentTeam={elfenTeam}
+        opponentLineup={elfenActualLineup}
+        caption="公式発表されたStarting XI・ベンチを掲載しています。ちふれASエルフェン埼玉の開始時フォーメーションは未確認のため掲載していません。試合結果（スコア）はまだ公式に確定していません。"
       />
     </div>
   );
