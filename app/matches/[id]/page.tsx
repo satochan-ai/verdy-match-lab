@@ -52,7 +52,10 @@ export default async function MatchDetailPage({
     />
   );
 
-  const predictedLineupsBlock = match.predictedLineups && (
+  // match-14は公式スタメン（actualLineups）反映済みのため、PREDICTED LINEUP／
+  // FORMATION OPTIONSを非表示にする（predictedLineups/alternativeFormationsの
+  // データ自体は削除しない）。他試合の表示条件は変更しない。
+  const predictedLineupsBlock = match.id !== "match-14" && match.predictedLineups && (
     <PredictedLineups
       homeTeam={match.homeTeam}
       awayTeam={match.awayTeam}
@@ -62,7 +65,7 @@ export default async function MatchDetailPage({
 
   // 対戦相手の対抗フォーメーション案（本命＝predictedLineups以外）。未設定の試合は
   // 従来どおりnullのまま、表示・型に影響しない。
-  const alternativeFormationsBlock = match.alternativeFormations && match.alternativeFormations.length > 0 && (
+  const alternativeFormationsBlock = match.id !== "match-14" && match.alternativeFormations && match.alternativeFormations.length > 0 && (
     <AlternativeFormationsList
       team={match.isVerdyHome ? match.awayTeam : match.homeTeam}
       formations={match.alternativeFormations}
