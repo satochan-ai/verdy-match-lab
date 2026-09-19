@@ -5,6 +5,7 @@ import { belezaFixtures, toBelezaUpcomingMatch } from "@/lib/data/beleza-fixture
 import { u21Fixtures, toU21UpcomingMatch } from "@/lib/data/u21-fixtures";
 import { topFixtures, toTopUpcomingFixture } from "@/lib/data/top-fixtures";
 import { getLatestFinishedFixture, getNextFixture } from "@/lib/data/fixture-selectors";
+import { resolveMatchStatus } from "@/lib/match/status";
 import { HomeHero } from "@/components/home/HomeHero";
 import { HomeNextMatch } from "@/components/home/HomeNextMatch";
 import { CategoryHomeCard } from "@/components/match/CategoryHomeCard";
@@ -20,23 +21,31 @@ export default async function Home() {
   const now = new Date();
   const recentTopMatch = await getRecentFinishedMatchSummary();
   const nextTopFixture = getNextFixture(topFixtures, now);
+  // NEXT selectorは維持しつつ、キックオフ後も「本日のカード」に同じ試合を表示する。
+  const liveTopFixture = topFixtures.find(
+    (fixture) =>
+      fixture.status === "scheduled" &&
+      fixture.kickoffAt &&
+      resolveMatchStatus({ status: "scheduled", kickoffAt: fixture.kickoffAt }, now) === "live",
+  );
+  const topCardFixture = liveTopFixture ?? nextTopFixture;
 
   // 3カテゴリーとも resolveCategoryCardState() で
   // LIVE → NEXT MATCH → LAST RESULT → EMPTY の同一ルールで状態を決める。
   // データ構造が異なるため、各カテゴリーのデータを共通ビューへ変換してから渡す
   // （Match型への統一はしない）。
 
-  const topDisplayFixture = nextTopFixture ? toTopUpcomingFixture(nextTopFixture) : undefined;
+  const topDisplayFixture = topCardFixture ? toTopUpcomingFixture(topCardFixture) : undefined;
   const topCardState = resolveCategoryCardState({
     now,
-    focus: nextTopFixture?.kickoffAt ? { status: "scheduled", kickoffAt: nextTopFixture.kickoffAt } : undefined,
-    nextFixture: nextTopFixture
+    focus: topCardFixture?.kickoffAt ? { status: "scheduled", kickoffAt: topCardFixture.kickoffAt } : undefined,
+    nextFixture: topCardFixture
       ? {
-          opponentName: nextTopFixture.opponentName,
+          opponentName: topCardFixture.opponentName,
           dateLabel: topDisplayFixture?.dateLabel,
           kickoffLabel: topDisplayFixture?.kickoffLabel,
-          homeAway: nextTopFixture.isHome ? "HOME" : "AWAY",
-          fixtureMeta: { competition: nextTopFixture.competition.name, roundLabel: nextTopFixture.competition.round },
+          homeAway: topCardFixture.isHome ? "HOME" : "AWAY",
+          fixtureMeta: { competition: topCardFixture.competition.name, roundLabel: topCardFixture.competition.round },
         }
       : undefined,
     lastResult:
