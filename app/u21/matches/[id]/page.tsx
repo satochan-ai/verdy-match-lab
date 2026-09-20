@@ -9,6 +9,13 @@ import {
   u21Goals,
   u21Cards,
   u21Substitutions,
+  u21Match1,
+  u21Match1HomeOfficialLineup,
+  u21Match1AwayOfficialLineup,
+  u21Match1OfficialRecord,
+  u21Match1Goals,
+  u21Match1Cards,
+  u21Match1Substitutions,
   u21ShimizuMatch,
   u21ShimizuHomeOfficialLineup,
   u21ShimizuAwayOfficialLineup,
@@ -44,14 +51,19 @@ export default async function U21MatchDetailPage({
 
   // 現状 U-21 の詳細データは u21Match の1件のみ。該当しないIDは404にする
   // （TOP TEAMの /matches/[id] とはデータ構造が別のため共通化しない）。
-  if (id !== u21Match.id && id !== u21ShimizuMatch.id) {
+  if (id !== u21Match.id && id !== u21ShimizuMatch.id && id !== u21Match1.id) {
     notFound();
   }
 
   const isShimizu = id === u21ShimizuMatch.id;
-  const match = isShimizu ? u21ShimizuMatch : u21Match;
-  const homeLineup = isShimizu ? u21ShimizuHomeOfficialLineup : u21HomeOfficialLineup;
-  const awayLineup = isShimizu ? u21ShimizuAwayOfficialLineup : u21AwayOfficialLineup;
+  const isFctokyo = id === u21Match1.id;
+  const match = isShimizu ? u21ShimizuMatch : isFctokyo ? u21Match1 : u21Match;
+  const homeLineup = isShimizu ? u21ShimizuHomeOfficialLineup : isFctokyo ? u21Match1HomeOfficialLineup : u21HomeOfficialLineup;
+  const awayLineup = isShimizu ? u21ShimizuAwayOfficialLineup : isFctokyo ? u21Match1AwayOfficialLineup : u21AwayOfficialLineup;
+  const goals = isFctokyo ? u21Match1Goals : isShimizu ? [] : u21Goals;
+  const cards = isFctokyo ? u21Match1Cards : isShimizu ? [] : u21Cards;
+  const substitutions = isFctokyo ? u21Match1Substitutions : isShimizu ? [] : u21Substitutions;
+  const officialRecord = isFctokyo ? u21Match1OfficialRecord : isShimizu ? undefined : u21OfficialRecord;
 
   const displayStatus = resolveMatchStatus(match, new Date());
   const statusLabel = {
@@ -194,10 +206,10 @@ export default async function U21MatchDetailPage({
         <MatchRecord
           homeTeamName={match.homeTeamName}
           awayTeamName={match.awayTeamName}
-          goals={u21Goals}
-          cards={u21Cards}
-          substitutions={u21Substitutions}
-          officialRecord={u21OfficialRecord}
+          goals={goals}
+          cards={cards}
+          substitutions={substitutions}
+          officialRecord={officialRecord}
         />
       )}
     </div>

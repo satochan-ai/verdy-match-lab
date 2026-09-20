@@ -9,10 +9,7 @@ const now = new Date("2026-08-30T00:00:00+09:00");
 test("U-21 fixture collection is valid and has one finished plus five upcoming fixtures", () => {
   assert.equal(validateFixtures(u21Fixtures).length, 0);
   assert.equal(u21Fixtures.length, 7);
-  // u21-match-1 (FC東京) is archived: /u21/matches/[id] now renders only the current
-  // snapshot (u21-next-1, U-21浦和レッズ), so the archived match no longer carries a
-  // detailMatchId (same known constraint as BELEZA's belezaMatch1/2/3 archives).
-  assert.equal(u21Fixtures.find((fixture) => fixture.id === "u21-match-1")?.detailMatchId, undefined);
+  assert.equal(u21Fixtures.find((fixture) => fixture.id === "u21-match-1")?.detailMatchId, "u21-match-1");
   assert.equal(u21Fixtures.find((fixture) => fixture.id === "u21-next-1")?.detailMatchId, "u21-next-1");
 });
 
