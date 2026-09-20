@@ -1,15 +1,32 @@
 import { StatusBadge } from "@/components/ui/StatusBadge";
-import type { U21SeasonHistoryEntry } from "@/lib/mock/u21";
+import Link from "next/link";
+import type { U21SeasonHistoryView } from "@/lib/data/u21-fixtures";
 
 /**
  * U-21の今季試合履歴（RECENT表示）。今季のみを蓄積する軽量リストで、
  * TOP TEAMのMATCH SCHEDULEとは独立したU-21専用の最小コンポーネント。
  */
-export function U21SeasonHistory({ entries }: { entries: U21SeasonHistoryEntry[] }) {
+export function U21SeasonHistory({ entries }: { entries: U21SeasonHistoryView[] }) {
   return (
     <ul className="divide-y divide-border border-y border-border">
       {entries.map((entry, index) => (
         <li key={entry.id} className="flex items-center gap-3 py-3 text-[13px]">
+          {entry.detailMatchId ? (
+            <Link href={`/u21/matches/${entry.detailMatchId}`} className="flex min-w-0 flex-1 items-center gap-3">
+              <HistoryRow entry={entry} index={index} />
+            </Link>
+          ) : (
+            <HistoryRow entry={entry} index={index} />
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function HistoryRow({ entry, index }: { entry: U21SeasonHistoryView; index: number }) {
+  return (
+    <>
           <span className="shrink-0 text-[11px] font-bold text-text-secondary">
             RECENT {index + 1}
           </span>
@@ -19,8 +36,6 @@ export function U21SeasonHistory({ entries }: { entries: U21SeasonHistoryEntry[]
           </span>
           <span className="shrink-0 text-[10px] font-bold text-text-secondary">{entry.round}</span>
           <StatusBadge variant={entry.result} />
-        </li>
-      ))}
-    </ul>
+    </>
   );
 }
