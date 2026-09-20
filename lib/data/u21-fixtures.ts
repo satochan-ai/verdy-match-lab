@@ -81,6 +81,7 @@ export const toU21UpcomingMatch = (fixture: CommonFixture): UpcomingFixture => (
 
 export type U21SeasonHistoryView = {
   id: string;
+  detailMatchId?: string;
   dateLabel: string;
   round: string;
   homeTeamName: string;
@@ -98,6 +99,7 @@ export const toU21SeasonHistoryEntry = (fixture: CommonFixture): U21SeasonHistor
   const opponentScore = fixture.isHome ? score.away : score.home;
   return {
     id: fixture.id,
+    detailMatchId: fixture.detailMatchId,
     dateLabel: fixture.dateLabel ?? "TBD",
     round: fixture.competition.round ?? "",
     homeTeamName,
