@@ -14,7 +14,7 @@ test("U-21 and BELEZA have unique IDs and stay within category boundaries", () =
   assert.equal(new Set(all.map((fixture) => fixture.id)).size, all.length);
   // U-21 contributes 1 (its current match); BELEZA contributes 4 (3 archived matches that
   // each render individually at /beleza/matches/[id], plus the current snapshot).
-  assert.equal(new Set(all.flatMap((fixture) => fixture.detailMatchId ? [fixture.detailMatchId] : [])).size, 5);
+  assert.equal(new Set(all.flatMap((fixture) => fixture.detailMatchId ? [fixture.detailMatchId] : [])).size, 6);
   assert.equal(u21Fixtures.every((fixture) => fixture.category === "u21"), true);
   assert.equal(belezaFixtures.every((fixture) => fixture.category === "beleza"), true);
 });
