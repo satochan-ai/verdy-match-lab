@@ -6,6 +6,7 @@ import type {
   MatchSubstitution,
   OfficialMatchRecord,
   UpcomingFixture,
+  PredictedLineup,
 } from "@/types/domain";
 
 /**
@@ -169,6 +170,28 @@ export const u21ShimizuAwayOfficialLineup: U21OfficialLineup = {
   },
   bench: { GK: ["30 佐々木 智太郎"], DF: ["63 品竹 友哉", "66 大垣 徹平"], MF: ["57 鈴木 晴智", "61 河波 飛和"], FW: ["64 遠藤 優空", "60 佐野 丈梓"] },
 };
+
+/** U-21清水戦の東京V予想フォーメーション候補（公式配置ではない）。 */
+export const u21ShimizuPredictedFormationOptions: PredictedLineup[] = [
+  {
+    formation: "3-4-2-1",
+    starters: [
+      { name: "中村", position: "GK" },
+      { name: "佐古", position: "DF" }, { name: "山本", position: "DF" }, { name: "松田", position: "DF" },
+      { name: "松橋", position: "MF" }, { name: "仲山", position: "MF" }, { name: "食野", position: "MF" }, { name: "今井", position: "MF" },
+      { name: "熊取谷", position: "MF" }, { name: "白井", position: "MF" }, { name: "山田", position: "FW" },
+    ],
+  },
+  {
+    formation: "4-4-2",
+    starters: [
+      { name: "中村", position: "GK" },
+      { name: "松橋", position: "DF" }, { name: "佐古", position: "DF" }, { name: "松田", position: "DF" }, { name: "今井", position: "DF" },
+      { name: "仲山", position: "MF" }, { name: "食野", position: "MF" }, { name: "山本", position: "MF" }, { name: "熊取谷", position: "MF" },
+      { name: "白井", position: "FW" }, { name: "山田", position: "FW" },
+    ],
+  },
+];
 
 /**
  * === 東西リーグラウンド EAST 第1節（FC東京U-21戦）アーカイブ ===
