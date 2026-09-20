@@ -22,6 +22,7 @@ export const u21Fixtures: CommonFixture[] = [
     status: "finished",
     score: { home: u21Match1.homeScore, away: u21Match1.awayScore },
     sourceUrl: "https://www.jleague.jp/match/u-21/2026/082229/",
+    detailMatchId: u21Match1.id,
   },
   {
     // 現在表示中の1試合（東西リーグラウンド第2節・U-21浦和レッズ戦）。公式結果確認済みの
