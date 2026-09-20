@@ -141,7 +141,7 @@ export const u21AwayOfficialLineup: U21OfficialLineup = {
 /** 東西リーグラウンド EAST 第3節（U-21清水エスパルス戦）公式ラインアップ。 */
 export const u21ShimizuMatch = {
   id: "u21-next-2",
-  status: "scheduled" as MatchStatus,
+  status: "finished" as MatchStatus,
   competition: "2026／27Ｕ-21Ｊリーグ 東西リーグラウンド EAST 第3節",
   kickoffAt: "2026-09-20T14:03:00+09:00",
   kickoffLabel: "14:03",
@@ -150,9 +150,32 @@ export const u21ShimizuMatch = {
   isVerdyHome: true,
   homeTeamName: "東京ヴェルディU-21",
   awayTeamName: "U-21清水エスパルス",
-  homeScore: undefined as number | undefined,
-  awayScore: undefined as number | undefined,
+  homeScore: 4 as number | undefined,
+  awayScore: 2 as number | undefined,
 };
+
+export const u21ShimizuOfficialRecord: OfficialMatchRecord = {
+  kickoff: "14:03",
+  attendance: 487,
+  weather: "雨",
+  temperature: "23.7℃",
+  humidity: "80%",
+};
+
+export const u21ShimizuGoals: MatchGoal[] = [
+  { minute: "6'", scorer: "鈴木 奎吾", team: "U-21清水エスパルス" },
+  { minute: "12'", scorer: "熊取谷 一星", team: "東京ヴェルディU-21" },
+  { minute: "18'", scorer: "山田 剛綺", team: "東京ヴェルディU-21" },
+  { minute: "52'", scorer: "小澤 煌志", team: "U-21清水エスパルス" },
+  { minute: "60'", scorer: "山田 剛綺", team: "東京ヴェルディU-21" },
+  { minute: "67'", scorer: "大藤 颯太", team: "東京ヴェルディU-21" },
+];
+
+// 同時刻の複数交代はIN/OUTの個別対応が確定できないため登録せず、
+// 公式資料から一対一で確認できる75分の交代のみ保持する。
+export const u21ShimizuSubstitutions: MatchSubstitution[] = [
+  { minute: "75'", team: "東京ヴェルディU-21", playerIn: "田邉 秀斗", playerOut: "白井 亮丞" },
+];
 
 export const u21ShimizuHomeOfficialLineup: U21OfficialLineup = {
   starters: {

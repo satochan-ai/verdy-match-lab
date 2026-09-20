@@ -54,7 +54,8 @@ export const u21Fixtures: CommonFixture[] = [
     kickoffStatus: index === 3 ? "date_range" as const : "confirmed" as const,
     dateLabel: fixture.dateLabel,
     isHome: fixture.isHome,
-    status: "scheduled" as const,
+    status: fixture.id === u21ShimizuMatch.id ? u21ShimizuMatch.status : "scheduled" as const,
+    ...(fixture.id === u21ShimizuMatch.id ? { score: { home: u21ShimizuMatch.homeScore, away: u21ShimizuMatch.awayScore } } : {}),
     ...(fixture.id === u21ShimizuMatch.id ? { detailMatchId: u21ShimizuMatch.id } : {}),
   })),
 ];
