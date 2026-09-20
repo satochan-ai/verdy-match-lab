@@ -55,7 +55,7 @@ test("TBD-only collections provide a provisional NEXT, while confirmed fixtures 
 });
 
 test("kickoff boundary includes 17:59 and excludes a still-scheduled 18:01 fixture", () => {
-  const kickoff = { ...u21Fixtures[2], id: "boundary", kickoffAt: "2026-09-12T18:00:00+09:00" };
+  const kickoff = { ...u21Fixtures[3], id: "boundary", kickoffAt: "2026-09-12T18:00:00+09:00" };
   assert.equal(getNextFixture([kickoff], new Date("2026-09-12T17:59:00+09:00"))?.id, "boundary");
   assert.equal(getNextFixture([kickoff], new Date("2026-09-12T18:01:00+09:00")), undefined);
 });
