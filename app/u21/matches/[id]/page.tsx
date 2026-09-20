@@ -12,12 +12,15 @@ import {
   u21ShimizuMatch,
   u21ShimizuHomeOfficialLineup,
   u21ShimizuAwayOfficialLineup,
+  u21ShimizuPredictedFormationOptions,
 } from "@/lib/mock/u21";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { U21LiveSection } from "@/components/match/U21LiveSection";
 import { U21OfficialLineups } from "@/components/match/U21OfficialLineups";
 import { MatchRecord } from "@/components/match/MatchRecord";
 import { StatusBadge } from "@/components/ui/StatusBadge";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { FormationPitch } from "@/components/match/PredictedFormation";
 
 /**
  * U-21の個別試合詳細（現在は u21Match のスナップショット1件のみ）。
@@ -163,6 +166,29 @@ export default async function U21MatchDetailPage({
         homeLineup={homeLineup}
         awayLineup={awayLineup}
       />
+
+      {isShimizu && (
+        <section>
+          <SectionHeader title="予想フォーメーション候補" eyebrow="PREDICTED FORMATION OPTIONS" />
+          <div className="space-y-6 border-y border-border bg-surface px-3 py-3 lg:grid lg:grid-cols-2 lg:gap-6 lg:space-y-0">
+            {u21ShimizuPredictedFormationOptions.map((lineup, index) => (
+              <div key={lineup.formation}>
+                <p className="mb-2 text-[12px] font-bold text-text-secondary">
+                  {index === 0 ? "第一候補" : "第二候補"}
+                </p>
+                <FormationPitch
+                  team={{ id: "verdy-u21", name: "東京ヴェルディU-21", isVerdy: true }}
+                  lineup={lineup}
+                  idPrefix={`u21-predicted-${index}`}
+                />
+              </div>
+            ))}
+          </div>
+          <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
+            試合前の予想です。公式・実際のフォーメーションではありません。
+          </p>
+        </section>
+      )}
 
       {isFinished && (
         <MatchRecord
