@@ -176,19 +176,19 @@ export const u21ShimizuPredictedFormationOptions: PredictedLineup[] = [
   {
     formation: "3-4-2-1",
     starters: [
-      { name: "中村", position: "GK" },
-      { name: "佐古", position: "DF" }, { name: "山本", position: "DF" }, { name: "松田", position: "DF" },
-      { name: "松橋", position: "MF" }, { name: "仲山", position: "MF" }, { name: "食野", position: "MF" }, { name: "今井", position: "MF" },
-      { name: "熊取谷", position: "MF" }, { name: "白井", position: "MF" }, { name: "山田", position: "FW" },
+      { number: 41, name: "中村 圭佑", position: "GK" },
+      { number: 79, name: "佐古 真礼", position: "DF" }, { number: 28, name: "山本 丈偉", position: "DF" }, { number: 83, name: "松田 陸", position: "DF" },
+      { number: 96, name: "松橋 優安", position: "MF" }, { number: 24, name: "仲山 獅恩", position: "MF" }, { number: 89, name: "食野 壮磨", position: "MF" }, { number: 42, name: "今井 健人", position: "MF" },
+      { number: 90, name: "熊取谷 一星", position: "MF" }, { number: 27, name: "白井 亮丞", position: "MF" }, { number: 84, name: "山田 剛綺", position: "FW" },
     ],
   },
   {
     formation: "4-4-2",
     starters: [
-      { name: "中村", position: "GK" },
-      { name: "松橋", position: "DF" }, { name: "佐古", position: "DF" }, { name: "松田", position: "DF" }, { name: "今井", position: "DF" },
-      { name: "仲山", position: "MF" }, { name: "食野", position: "MF" }, { name: "山本", position: "MF" }, { name: "熊取谷", position: "MF" },
-      { name: "白井", position: "FW" }, { name: "山田", position: "FW" },
+      { number: 41, name: "中村 圭佑", position: "GK" },
+      { number: 96, name: "松橋 優安", position: "DF" }, { number: 79, name: "佐古 真礼", position: "DF" }, { number: 83, name: "松田 陸", position: "DF" }, { number: 42, name: "今井 健人", position: "DF" },
+      { number: 24, name: "仲山 獅恩", position: "MF" }, { number: 89, name: "食野 壮磨", position: "MF" }, { number: 28, name: "山本 丈偉", position: "MF" }, { number: 90, name: "熊取谷 一星", position: "MF" },
+      { number: 27, name: "白井 亮丞", position: "FW" }, { number: 84, name: "山田 剛綺", position: "FW" },
     ],
   },
 ];
