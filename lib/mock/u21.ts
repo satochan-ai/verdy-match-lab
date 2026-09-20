@@ -137,6 +137,39 @@ export const u21AwayOfficialLineup: U21OfficialLineup = {
   },
 };
 
+/** 東西リーグラウンド EAST 第3節（U-21清水エスパルス戦）公式ラインアップ。 */
+export const u21ShimizuMatch = {
+  id: "u21-next-2",
+  status: "scheduled" as MatchStatus,
+  competition: "2026／27Ｕ-21Ｊリーグ 東西リーグラウンド EAST 第3節",
+  kickoffAt: "2026-09-20T14:03:00+09:00",
+  kickoffLabel: "14:03",
+  scheduleNote: undefined as string | undefined,
+  venue: "AGFフィールド",
+  isVerdyHome: true,
+  homeTeamName: "東京ヴェルディU-21",
+  awayTeamName: "U-21清水エスパルス",
+  homeScore: undefined as number | undefined,
+  awayScore: undefined as number | undefined,
+};
+
+export const u21ShimizuHomeOfficialLineup: U21OfficialLineup = {
+  starters: {
+    GK: ["41 中村 圭佑"], DF: ["83 松田 陸", "79 佐古 真礼"],
+    MF: ["28 山本 丈偉", "42 今井 健人", "89 食野 壮磨", "24 仲山 獅恩"],
+    FW: ["90 熊取谷 一星", "27 白井 亮丞", "84 山田 剛綺", "96 松橋 優安"],
+  },
+  bench: { GK: ["91 名和 優太朗"], DF: ["82 田邉 秀斗"], MF: ["30 川村 楽人"], FW: ["51 大藤 颯太", "80 キム ヒョンウ", "60 佐野 丈梓"] },
+};
+
+export const u21ShimizuAwayOfficialLineup: U21OfficialLineup = {
+  starters: {
+    GK: ["71 猪越 優惟"], DF: ["39 日髙 華杜", "20 オム ジュヨン", "70 高木 践", "27 針生 涼太"],
+    MF: ["41 鈴木 奎吾", "55 杉山 琥二郎", "62 小澤 煌志"], FW: ["33 土居 佑至", "58 澤田 卓磨", "97 大畑 凜生"],
+  },
+  bench: { GK: ["30 佐々木 智太郎"], DF: ["63 品竹 友哉", "66 大垣 徹平"], MF: ["57 鈴木 晴智", "61 河波 飛和"], FW: ["64 遠藤 優空"] },
+};
+
 /**
  * === 東西リーグラウンド EAST 第1節（FC東京U-21戦）アーカイブ ===
  * 第2節（U-21浦和レッズ戦）が新たな「現在表示中の1試合」スナップショットになったため、
