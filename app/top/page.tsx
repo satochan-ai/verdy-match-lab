@@ -11,6 +11,7 @@ import { UpcomingFixtureList } from "@/components/match/UpcomingFixtureList";
 import { LeagueStandingsTable } from "@/components/match/LeagueStandingsTable";
 import { j1Standings } from "@/lib/mock/standings";
 import { getMatchDayLabel } from "@/lib/match/display";
+import { OpponentRecentMatches } from "@/components/match/OpponentRecentMatches";
 import { resolveMatchStatus } from "@/lib/match/status";
 
 export const metadata: Metadata = {
@@ -168,6 +169,10 @@ export default async function TopTeamPage() {
 
           <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start lg:gap-10">
             <div className="space-y-8">
+              {nextFixture?.opponentRecentMatches && (
+                <OpponentRecentMatches matches={nextFixture.opponentRecentMatches} />
+              )}
+
               {nextMatch && <StrategyList strategies={nextMatch.strategies} />}
             </div>
 

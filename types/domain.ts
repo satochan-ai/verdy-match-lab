@@ -293,4 +293,15 @@ export interface ScheduleMatch {
   awayScore?: number | null;
   /** 詳細Matchが存在する試合のみ設定する。未設定の行はリンクしない。 */
   detailMatchId?: string;
+  opponentRecentMatches?: OpponentRecentMatch[];
+}
+
+export interface OpponentRecentMatch {
+  date: string;
+  competition: string;
+  homeAway: "H" | "A";
+  opponent: string;
+  scoreFor: number;
+  scoreAgainst: number;
+  result: "W" | "D" | "L";
 }
