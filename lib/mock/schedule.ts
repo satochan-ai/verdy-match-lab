@@ -151,6 +151,13 @@ export const scheduleMatches: ScheduleMatch[] = [
     isVerdyHome: false,
     opponentName: "サガン鳥栖",
     status: "scheduled",
+    opponentRecentMatches: [
+      { date: "2026-08-29", competition: "J2", homeAway: "A", opponent: "横浜FC", scoreFor: 2, scoreAgainst: 2, result: "D" },
+      { date: "2026-09-02", competition: "ルヴァン杯", homeAway: "A", opponent: "奈良クラブ", scoreFor: 2, scoreAgainst: 1, result: "W" },
+      { date: "2026-09-05", competition: "J2", homeAway: "H", opponent: "宮崎", scoreFor: 2, scoreAgainst: 0, result: "W" },
+      { date: "2026-09-12", competition: "J2", homeAway: "A", opponent: "今治", scoreFor: 0, scoreAgainst: 1, result: "L" },
+      { date: "2026-09-19", competition: "J2", homeAway: "H", opponent: "いわき", scoreFor: 1, scoreAgainst: 3, result: "L" },
+    ],
   },
   {
     id: "sched-emperor-tottori",

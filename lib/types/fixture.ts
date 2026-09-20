@@ -1,3 +1,5 @@
+import type { OpponentRecentMatch } from "@/types/domain";
+
 export type MatchCategory = "top" | "u21" | "beleza";
 export type FixtureStatus = "scheduled" | "live" | "half_time" | "finished" | "postponed" | "cancelled" | "abandoned";
 export type KickoffStatus = "confirmed" | "tbd" | "date_range";
@@ -17,4 +19,5 @@ export type CommonFixture = {
   score?: FixtureScore;
   detailMatchId?: string;
   sourceUrl?: string;
+  opponentRecentMatches?: OpponentRecentMatch[];
 };
