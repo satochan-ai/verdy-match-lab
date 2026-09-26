@@ -150,8 +150,8 @@ export const u21ShimizuMatch = {
   isVerdyHome: true,
   homeTeamName: "東京ヴェルディU-21",
   awayTeamName: "U-21清水エスパルス",
-  homeScore: 4 as number | undefined,
-  awayScore: 2 as number | undefined,
+  homeScore: 4,
+  awayScore: 2,
 };
 
 export const u21ShimizuOfficialRecord: OfficialMatchRecord = {
