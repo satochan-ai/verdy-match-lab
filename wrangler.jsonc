@@ -1,0 +1,18 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": ".open-next/worker.js",
+	"name": "verdy-match-lab",
+	"compatibility_date": "2026-09-25",
+	"compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"images": {
+		// next/image の最適化を Cloudflare Images binding で処理する
+		// see https://opennext.js.org/cloudflare/howtos/image
+		"binding": "IMAGES"
+	}
+	// DATABASE_URL は secret として設定する（このファイルや vars に値を書かない）。
+	// 未設定の場合は既存の isDbConfigured() により mock fallback で動作する。
+}
