@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // Cloudflare Workers build output (OpenNext / wrangler):
     ".open-next/**",
     ".wrangler/**",
+    // Local recovery backup (untracked; contains saved conflict markers):
+    ".local-recovery-backup/**",
   ]),
 ]);
 
