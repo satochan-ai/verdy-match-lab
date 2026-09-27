@@ -1,6 +1,6 @@
 import type { UpcomingFixture } from "../../types/domain";
 import type { CommonFixture } from "../types/fixture";
-import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
+import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, belezaMatch5, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
 
 export const belezaFixtures: CommonFixture[] = [
   {
@@ -48,11 +48,30 @@ export const belezaFixtures: CommonFixture[] = [
     score: { home: belezaMatch.homeScore, away: belezaMatch.awayScore },
     detailMatchId: belezaMatch.id,
   },
+  {
+    // クラシエカップ第3節・新潟L戦の公式確定結果。/beleza/matches/beleza-match-4 で個別に描画される。
+    id: belezaMatch4.id, category: "beleza", teamName: belezaTeam.name,
+    opponentName: belezaMatch4.isBelezaHome ? belezaMatch4.awayTeamName : belezaMatch4.homeTeamName,
+    competition: { name: belezaMatch4.fixtureMeta.competition, round: belezaMatch4.fixtureMeta.roundLabel },
+    kickoffAt: belezaMatch4.kickoffAt, kickoffStatus: "confirmed", dateLabel: belezaMatch4.dateLabel,
+    venue: belezaMatch4.venue, isHome: belezaMatch4.isBelezaHome, status: belezaMatch4.status,
+    score: { home: belezaMatch4.homeScore, away: belezaMatch4.awayScore },
+    detailMatchId: belezaMatch4.id,
+  },
+  {
+    // クラシエカップ第4節・C大阪戦の公式確定結果。/beleza/matches/beleza-match-5 で個別に描画される。
+    id: belezaMatch5.id, category: "beleza", teamName: belezaTeam.name,
+    opponentName: belezaMatch5.isBelezaHome ? belezaMatch5.awayTeamName : belezaMatch5.homeTeamName,
+    competition: { name: belezaMatch5.fixtureMeta.competition, round: belezaMatch5.fixtureMeta.roundLabel },
+    kickoffAt: belezaMatch5.kickoffAt, kickoffStatus: "confirmed", dateLabel: belezaMatch5.dateLabel,
+    venue: belezaMatch5.venue, isHome: belezaMatch5.isBelezaHome, status: belezaMatch5.status,
+    score: { home: belezaMatch5.homeScore, away: belezaMatch5.awayScore },
+    detailMatchId: belezaMatch5.id,
+  },
   ...belezaUpcomingMatches.slice(1).map((fixture, index) => ({
     id: fixture.id, category: "beleza" as const, teamName: belezaTeam.name, opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
-    // 09/19（beleza-next-4）のみ公式表記のキックオフ時刻（16:03）へ修正。他は変更しない。
-    kickoffAt: ["2026-09-23T14:00:00+09:00", "2026-09-27T18:00:00+09:00", "2026-10-03T14:00:00+09:00", "2026-10-11T12:00:00+09:00"][index],
+    kickoffAt: ["2026-10-03T14:00:00+09:00", "2026-10-11T12:00:00+09:00"][index],
     kickoffStatus: "confirmed" as const, dateLabel: fixture.dateLabel, venue: fixture.venue, isHome: fixture.isHome, status: "scheduled" as const,
   })),
 ];

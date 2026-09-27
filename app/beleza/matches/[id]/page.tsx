@@ -75,6 +75,22 @@ import {
   belezaElfenSubstitutions,
   belezaElfenStats,
   belezaElfenOfficialRecord,
+  belezaMatch4,
+  belezaMatch4HalfScores,
+  belezaMatch4Goals,
+  belezaMatch4OfficialRecord,
+  belezaMatch4Cards,
+  belezaMatch4Substitutions,
+  belezaMatch4Stats,
+  belezaMatch4ActualLineup,
+  belezaMatch5,
+  belezaMatch5HalfScores,
+  belezaMatch5Goals,
+  belezaMatch5OfficialRecord,
+  belezaMatch5Cards,
+  belezaMatch5Substitutions,
+  belezaMatch5Stats,
+  belezaMatch5ActualLineup,
 } from "@/lib/mock/beleza";
 
 /**
@@ -109,6 +125,12 @@ export default async function BelezaMatchDetailPage({
   }
   if (id === belezaElfenMatch.id) {
     return <BelezaElfenDetail />;
+  }
+  if (id === belezaMatch4.id) {
+    return <BelezaMatch4Detail />;
+  }
+  if (id === belezaMatch5.id) {
+    return <BelezaMatch5Detail />;
   }
 
   // 上記いずれにも該当しないIDは404にする（TOP TEAMの /matches/[id] とはデータ構造が
@@ -800,6 +822,123 @@ function BelezaElfenDetail() {
       />
       {isFinished && <MatchRecord homeTeamName={belezaElfenMatch.homeTeamName} awayTeamName={belezaElfenMatch.awayTeamName} goals={belezaElfenGoals} cards={belezaElfenCards} substitutions={belezaElfenSubstitutions} officialRecord={belezaElfenOfficialRecord} officialSourceLabel={belezaOfficialSourceLabel} actualLineups={{ home: elfenActualLineup, away: belezaElfenActualLineup }} />}
       {isFinished && <BelezaMatchStats belezaTeamName={belezaTeam.name} opponentTeamName={elfenTeam.name} stats={belezaElfenStats} />}
+    </div>
+  );
+}
+
+/**
+ * クラシエカップ リーグステージ第3節（アルビレックス新潟レディース戦）詳細。
+ * 相手（新潟L）側のStarting XI・ベンチ・開始時フォーメーションは今回未提供のため、
+ * ベレーザ側のみMATCH RECORDのSTARTING XIに掲載する（推測で埋めない）。
+ * 開始時フォーメーションはベレーザ側も未提供のため、FORMATION区画自体を出さない。
+ */
+function BelezaMatch4Detail() {
+  const belezaScore = belezaMatch4.isBelezaHome ? belezaMatch4.homeScore : belezaMatch4.awayScore;
+  const opponentScore = belezaMatch4.isBelezaHome ? belezaMatch4.awayScore : belezaMatch4.homeScore;
+  const resultLabel = belezaScore === opponentScore ? "draw" : belezaScore > opponentScore ? "win" : "loss";
+
+  return (
+    <div className="space-y-8 pb-4">
+      <div className="flex items-center justify-between">
+        <Link href="/beleza" className="text-[13px] font-bold text-deep-green">
+          ← 戻る
+        </Link>
+        <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+        <span className="w-8" />
+      </div>
+
+      <ArchivedMatchHero
+        competition={belezaMatch4.competition}
+        dateLabel={belezaMatch4.dateLabel}
+        resultLabel={resultLabel}
+        homeTeamName={belezaMatch4.homeTeamName}
+        awayTeamName={belezaMatch4.awayTeamName}
+        homeScore={belezaMatch4.homeScore}
+        awayScore={belezaMatch4.awayScore}
+        kickoffLabel={belezaMatch4.kickoffLabel}
+        venue={belezaMatch4.venue}
+        halfScores={belezaMatch4HalfScores}
+        goals={belezaMatch4Goals}
+      />
+
+      <MatchRecord
+        homeTeamName={belezaMatch4.homeTeamName}
+        awayTeamName={belezaMatch4.awayTeamName}
+        goals={belezaMatch4Goals}
+        cards={belezaMatch4Cards}
+        substitutions={belezaMatch4Substitutions}
+        officialRecord={belezaMatch4OfficialRecord}
+        officialSourceLabel="WE LEAGUE Official Match Record"
+        actualLineups={
+          belezaMatch4.isBelezaHome
+            ? { home: belezaMatch4ActualLineup }
+            : { away: belezaMatch4ActualLineup }
+        }
+      />
+
+      <BelezaMatchStats
+        belezaTeamName={belezaTeamStatsLabel(belezaMatch4)}
+        opponentTeamName={opponentTeamStatsLabel(belezaMatch4)}
+        stats={belezaMatch4Stats}
+      />
+    </div>
+  );
+}
+
+/**
+ * クラシエカップ リーグステージ第4節（セレッソ大阪ヤンマーレディース戦）詳細。
+ * 相手（C大阪）側のStarting XI・ベンチ・開始時フォーメーションは今回未提供のため、
+ * ベレーザ側のみMATCH RECORDのSTARTING XIに掲載する（推測で埋めない）。
+ */
+function BelezaMatch5Detail() {
+  const belezaScore = belezaMatch5.isBelezaHome ? belezaMatch5.homeScore : belezaMatch5.awayScore;
+  const opponentScore = belezaMatch5.isBelezaHome ? belezaMatch5.awayScore : belezaMatch5.homeScore;
+  const resultLabel = belezaScore === opponentScore ? "draw" : belezaScore > opponentScore ? "win" : "loss";
+
+  return (
+    <div className="space-y-8 pb-4">
+      <div className="flex items-center justify-between">
+        <Link href="/beleza" className="text-[13px] font-bold text-deep-green">
+          ← 戻る
+        </Link>
+        <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+        <span className="w-8" />
+      </div>
+
+      <ArchivedMatchHero
+        competition={belezaMatch5.competition}
+        dateLabel={belezaMatch5.dateLabel}
+        resultLabel={resultLabel}
+        homeTeamName={belezaMatch5.homeTeamName}
+        awayTeamName={belezaMatch5.awayTeamName}
+        homeScore={belezaMatch5.homeScore}
+        awayScore={belezaMatch5.awayScore}
+        kickoffLabel={belezaMatch5.kickoffLabel}
+        venue={belezaMatch5.venue}
+        halfScores={belezaMatch5HalfScores}
+        goals={belezaMatch5Goals}
+      />
+
+      <MatchRecord
+        homeTeamName={belezaMatch5.homeTeamName}
+        awayTeamName={belezaMatch5.awayTeamName}
+        goals={belezaMatch5Goals}
+        cards={belezaMatch5Cards}
+        substitutions={belezaMatch5Substitutions}
+        officialRecord={belezaMatch5OfficialRecord}
+        officialSourceLabel="WE LEAGUE Official Match Record"
+        actualLineups={
+          belezaMatch5.isBelezaHome
+            ? { home: belezaMatch5ActualLineup }
+            : { away: belezaMatch5ActualLineup }
+        }
+      />
+
+      <BelezaMatchStats
+        belezaTeamName={belezaTeamStatsLabel(belezaMatch5)}
+        opponentTeamName={opponentTeamStatsLabel(belezaMatch5)}
+        stats={belezaMatch5Stats}
+      />
     </div>
   );
 }

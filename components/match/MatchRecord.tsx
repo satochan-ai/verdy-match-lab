@@ -227,9 +227,14 @@ export function MatchRecord({
   officialRecord?: OfficialMatchRecord;
   /** OFFICIAL MATCH INFOのSOURCEリンク表示名。大会が異なる場合に上書きする（未指定時はJ.LEAGUE表記）。 */
   officialSourceLabel?: string;
-  actualLineups?: { home: ActualLineup; away: ActualLineup };
+  /**
+   * 相手側のStarting XIが今回未提供の場合など、片側のみ確認できているケースを
+   * 推測で埋めずに表示できるよう、home/awayをそれぞれoptionalにする。
+   */
+  actualLineups?: { home?: ActualLineup; away?: ActualLineup };
 }) {
-  if (!goals?.length && !cards?.length && !substitutions?.length && !matchStats && !officialRecord && !actualLineups) return null;
+  const hasActualLineups = actualLineups?.home !== undefined || actualLineups?.away !== undefined;
+  if (!goals?.length && !cards?.length && !substitutions?.length && !matchStats && !officialRecord && !hasActualLineups) return null;
 
   return (
     <section>
@@ -289,13 +294,13 @@ export function MatchRecord({
 
         {matchStats && <MatchStatsSection homeTeamName={homeTeamName} awayTeamName={awayTeamName} stats={matchStats} />}
 
-        {actualLineups && (
+        {hasActualLineups && (
           <div className="space-y-4 pt-3">
             <p className="text-[11px] font-bold tracking-[0.08em] text-text-primary">
               STARTING XI / 実際のスタメン
             </p>
-            <TeamActualLineup teamLabel={homeTeamName} lineup={actualLineups.home} />
-            <TeamActualLineup teamLabel={awayTeamName} lineup={actualLineups.away} />
+            {actualLineups?.home && <TeamActualLineup teamLabel={homeTeamName} lineup={actualLineups.home} />}
+            {actualLineups?.away && <TeamActualLineup teamLabel={awayTeamName} lineup={actualLineups.away} />}
           </div>
         )}
       </div>
