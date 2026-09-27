@@ -8,6 +8,7 @@ import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { StrategyList } from "@/components/match/StrategyList";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PredictedLineups } from "@/components/match/PredictedLineups";
+import { VerdyLineupOptions } from "@/components/match/VerdyLineupOptions";
 import { AlternativeFormationsList } from "@/components/match/AlternativeFormationsList";
 import { OfficialLineups } from "@/components/match/OfficialLineups";
 import { AvailabilityInfo } from "@/components/match/AvailabilityInfo";
@@ -72,6 +73,16 @@ export default async function MatchDetailPage({
     />
   );
 
+  // 自チーム側の予想スタメン複数案（相手側の予想スタメンが未提供の試合専用）。
+  // predictedLineupsとは独立したフィールドで、両方設定された試合は無い前提だが、
+  // 念のためpredictedLineupsが無い試合でのみ表示する（表示の重複を避ける）。
+  const verdyLineupOptionsBlock = !match.predictedLineups && match.verdyLineupOptions && match.verdyLineupOptions.length > 0 && (
+    <VerdyLineupOptions
+      team={match.isVerdyHome ? match.homeTeam : match.awayTeam}
+      options={match.verdyLineupOptions}
+    />
+  );
+
   return (
     <div className="space-y-6 pb-4">
       <div className="flex items-center justify-between">
@@ -85,7 +96,12 @@ export default async function MatchDetailPage({
       {displayStatus === "scheduled" && (() => {
         const hasPreMatchContent =
           match.strategies.length > 0 ||
-          Boolean(match.predictedLineups || match.availability || match.previousMatch);
+          Boolean(
+            match.predictedLineups ||
+              match.availability ||
+              match.previousMatch ||
+              (match.verdyLineupOptions && match.verdyLineupOptions.length > 0),
+          );
 
         const overviewBlock = (
           <div>
@@ -190,6 +206,7 @@ export default async function MatchDetailPage({
               {strategyBlock}
               {previewBlock}
               {predictedLineupsBlock}
+              {verdyLineupOptionsBlock}
               {alternativeFormationsBlock}
               {officialLineupsBlock}
               {availabilityBlock}
@@ -207,6 +224,7 @@ export default async function MatchDetailPage({
                 {overviewBlock}
                 {fixtureInfoBlock}
                 {predictedLineupsBlock}
+                {verdyLineupOptionsBlock}
                 {alternativeFormationsBlock}
                 {officialLineupsBlock}
                 {availabilityBlock}
@@ -261,6 +279,7 @@ export default async function MatchDetailPage({
 
           <div className="mt-8 lg:col-start-1 lg:mt-6">
             {predictedLineupsBlock}
+            {verdyLineupOptionsBlock}
           </div>
 
           <div className="mt-8 lg:col-start-1 lg:mt-6">

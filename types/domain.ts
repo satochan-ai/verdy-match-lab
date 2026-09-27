@@ -150,6 +150,20 @@ export interface AlternativeFormation {
   note?: string;
 }
 
+/**
+ * 自チーム（東京V）の予想スタメンが複数案あり、かつ相手側の予想スタメンが
+ * 未確定・未提供の試合向けの軽量な構造。predictedLineups（HOME/AWAY必須ペア）は
+ * 相手側の予想も揃っている試合専用のため、相手側を推測で埋めたくない試合では
+ * こちらを使う。FormationPitchでの描画に使えるよう、中身はPredictedLineupそのもの。
+ */
+export interface LineupOption {
+  /** 案のラベル。例："第1案"。 */
+  label: string;
+  lineup: PredictedLineup;
+  /** 断定を避けた注記（任意）。 */
+  note?: string;
+}
+
 export type StrategyResult = "pending" | "hit" | "partial" | "miss";
 
 export interface Strategy {
@@ -204,6 +218,12 @@ export interface Match {
    * 配列化せず、この試合が未設定の場合は従来どおりの表示のまま変わらない。
    */
   alternativeFormations?: AlternativeFormation[];
+  /**
+   * 自チーム（東京V）側の予想スタメン複数案。相手側の予想スタメンが未提供の試合で、
+   * predictedLineups（HOME/AWAY必須ペア）を使わずに複数案を表示するための専用フィールド。
+   * 通常のpredictedLineupsが設定されている試合には影響しない。
+   */
+  verdyLineupOptions?: LineupOption[];
   previousMatch?: PreviousMatch;
   availability?: AvailabilityInfo;
   /** この試合自体の得点記録。finished以降、公式結果が確認できた場合のみ設定する。 */

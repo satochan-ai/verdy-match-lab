@@ -1379,6 +1379,72 @@ export const matches: Match[] = [
     ],
   },
   {
+    // ルヴァンカップ1stラウンド2回戦（サガン鳥栖）。9/19浦和戦（match-14）から中10日、
+    // 9/29ルヴァン→10/3 U21→10/7天皇杯→10/11 J1という連戦を控える。城福浩監督は中断後に
+    // メンバーを一度リセットして考える趣旨の発言をしているため、直近リーグ戦の先発を
+    // そのまま踏襲する単純な予想ではなく、トップ戦力・ローテーション・U21との振り分けを
+    // 踏まえた2案（ユーザー提供）として登録する。相手（鳥栖）側の予想スタメンは今回未提供の
+    // ため、predictedLineups（HOME/AWAY必須ペア）ではなくverdyLineupOptionsを使う。
+    id: "match-15",
+    homeTeam: opponent("sagan-tosu", "サガン鳥栖"),
+    awayTeam: verdy,
+    isVerdyHome: false,
+    kickoffAt: "2026-09-29T19:00:00+09:00",
+    venue: "駅前不動産スタジアム",
+    status: "scheduled",
+    homeScore: null,
+    awayScore: null,
+    timeSegment: null,
+    fixtureMeta: { competition: "ルヴァン", roundLabel: "1stラウンド 2回戦" },
+    verdyProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
+    opponentProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
+    matchNotes: [],
+    focusPoints: [],
+    strategies: [],
+    verdyLineupOptions: [
+      {
+        label: "第1案",
+        note: "直近の連戦・ローテーションを踏まえた予想の一案。実際の先発とは異なる場合がある。",
+        lineup: {
+          formation: "3-4-2-1",
+          starters: [
+            { number: 21, name: "長沢 祐弥", position: "GK" },
+            { number: 5, name: "井上 竜太", position: "DF" },
+            { number: 29, name: "佐古 真礼", position: "DF" },
+            { number: 15, name: "鈴木 海音", position: "DF" },
+            { number: 18, name: "溝口 修平", position: "MF" },
+            { number: 2, name: "柴戸 海", position: "MF" },
+            { number: 8, name: "齋藤 功佑", position: "MF" },
+            { number: 40, name: "新井 悠太", position: "MF" },
+            { number: 19, name: "藤本 寛也", position: "シャドー" },
+            { number: 17, name: "キム ヒョンウ", position: "シャドー" },
+            { number: 33, name: "一美 和成", position: "CF" },
+          ],
+        },
+      },
+      {
+        label: "第2案",
+        note: "トップ戦力・ローテーション・U21との振り分けを踏まえた、もう一つの案。実際の先発とは異なる場合がある。",
+        lineup: {
+          formation: "3-4-2-1",
+          starters: [
+            { number: 21, name: "長沢 祐弥", position: "GK" },
+            { number: 5, name: "井上 竜太", position: "DF" },
+            { number: 29, name: "佐古 真礼", position: "DF" },
+            { number: 22, name: "内田 陽介", position: "DF" },
+            { number: 7, name: "松橋 優安", position: "MF" },
+            { number: 2, name: "柴戸 海", position: "MF" },
+            { number: 16, name: "平川 怜", position: "MF" },
+            { number: 40, name: "新井 悠太", position: "MF" },
+            { number: 38, name: "神田 奏真", position: "シャドー" },
+            { number: 24, name: "仲山 獅恩", position: "シャドー" },
+            { number: 33, name: "一美 和成", position: "CF" },
+          ],
+        },
+      },
+    ],
+  },
+  {
     // 第7節。東京ヴェルディ公式結果ページ（ユーザー確認済み、
     // https://www.verdy.co.jp/match/info/2026091302/result）で試合終了を確認し、
     // 公式記録（スコア・得点・交代・警告）を反映する。

@@ -151,6 +151,8 @@ export const scheduleMatches: ScheduleMatch[] = [
     isVerdyHome: false,
     opponentName: "サガン鳥栖",
     status: "scheduled",
+    // 予想スタメン2案（match-15.verdyLineupOptions）を持つ詳細ページへ紐付ける。
+    detailMatchId: "match-15",
     opponentRecentMatches: [
       { date: "2026-08-29", competition: "J2", homeAway: "A", opponent: "横浜FC", scoreFor: 2, scoreAgainst: 2, result: "D" },
       { date: "2026-09-02", competition: "ルヴァン杯", homeAway: "A", opponent: "奈良クラブ", scoreFor: 2, scoreAgainst: 1, result: "W" },

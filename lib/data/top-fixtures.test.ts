@@ -31,8 +31,9 @@ test("TOP NEXT5 spans every competition (J1 / Levain / Emperor's Cup), not J1 on
   assert.ok(competitionNames.includes("ルヴァン"));
   assert.ok(competitionNames.includes("天皇杯 JFA 第106回全日本サッカー選手権大会"));
   assert.ok(competitionNames.includes("2026 J1リーグ"));
-  // 新規追加分にdetailMatchIdを推測で付与していないこと。
-  assert.equal(next5.find((fixture) => fixture.opponentName === "サガン鳥栖")?.detailMatchId, undefined);
+  // サガン鳥栖戦は予想スタメン2案（match-15）が登録済みのためdetailMatchIdを持つ。
+  // 他の推測データが無い未確定分には引き続き付与していないこと。
+  assert.equal(next5.find((fixture) => fixture.opponentName === "サガン鳥栖")?.detailMatchId, "match-15");
   assert.equal(next5.find((fixture) => fixture.opponentName === "ガイナーレ鳥取")?.detailMatchId, undefined);
   assert.equal(next5.find((fixture) => fixture.opponentName === "サンフレッチェ広島")?.detailMatchId, undefined);
   assert.equal(next5.find((fixture) => fixture.opponentName === "FC東京")?.detailMatchId, undefined);
