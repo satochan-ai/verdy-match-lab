@@ -1411,7 +1411,7 @@ export const matches: Match[] = [
       assistantReferees: ["塩津 祐介", "阿部 将茂"],
       fourthOfficial: "山口 大輔",
     },
-    // 鳥栖側の並びは提供順のまま（画面左→右は未確認）。提供データ内に背番号#13が2名
+    // 鳥栖側の並びは提供順のまま（画面左→右は未確認）。鳥栖ベンチに背番号#13が2名
     // （城定 幹大／山田 剛綺）あるが、番号だけを根拠に補正せず提供どおり保持している。
     actualLineups: {
       home: {
@@ -1425,7 +1425,7 @@ export const matches: Match[] = [
         bench: {
           GK: ["31 藤嶋 栄介"],
           DF: ["4 今津 佑太", "28 吉田 真那斗", "44 阿部 海大"],
-          MF: ["13 城定 幹大"],
+          MF: ["13 城定 幹大", "41 松岡 響祈", "47 伊澤 璃来"],
           FW: ["11 塩浜 遼", "13 山田 剛綺", "42 合戸 晴矢"],
         },
       },
@@ -1440,7 +1440,7 @@ export const matches: Match[] = [
         bench: {
           GK: ["21 長沢 祐弥"],
           DF: ["5 井上 竜太", "18 溝口 修平"],
-          MF: ["7 松橋 優安", "16 平川 怜", "28 山本 丈偉", "41 松岡 響祈", "47 伊澤 璃来"],
+          MF: ["7 松橋 優安", "16 平川 怜", "28 山本 丈偉"],
           FW: ["25 熊取谷 一星", "27 白井 亮丞"],
         },
       },
@@ -1457,8 +1457,9 @@ export const matches: Match[] = [
       { minute: "58'", player: "新井 悠太", team: "東京V", type: "yellow" },
       { minute: "90+4'", player: "福田 湧矢", team: "東京V", type: "yellow" },
     ],
-    // 鳥栖側の交代は、提供表の左右列が混在していた61'（OUT 芳野 凱斗）・86'（OUT 松本 凪生）
-    // の2件でIN選手の列対応を確認できなかったため、推測せず保留（登録しない）。
+    // 控え・交代の所属は公式情報に基づき修正済み：#47 伊澤 璃来・#41 松岡 響祈は鳥栖所属
+    // （当初は提供表の左右列混在で東京V控えと誤読していた）。#28 山本 丈偉・#27 白井 亮丞・
+    // #25 熊取谷 一星・#16 平川 怜・#18 溝口 修平・#5 井上 竜太は東京V所属。
     // 東京V側の91'交代は延長を含むためそのまま記録。
     substitutions: [
       { minute: "57'", team: "東京V", playerIn: "山本 丈偉", playerOut: "柴戸 海" },
@@ -1470,6 +1471,8 @@ export const matches: Match[] = [
       { minute: "37'", team: "鳥栖", playerIn: "合戸 晴矢", playerOut: "鈴木 大馳" },
       { minute: "46'", team: "鳥栖", playerIn: "塩浜 遼", playerOut: "坂本 亘基" },
       { minute: "61'", team: "鳥栖", playerIn: "吉田 真那斗", playerOut: "中原 輝" },
+      { minute: "61'", team: "鳥栖", playerIn: "伊澤 璃来", playerOut: "芳野 凱斗" },
+      { minute: "86'", team: "鳥栖", playerIn: "松岡 響祈", playerOut: "松本 凪生" },
       { minute: "101'", team: "鳥栖", playerIn: "城定 幹大", playerOut: "山内 翔" },
     ],
     // home=サガン鳥栖 / away=東京V。警告数は提供スタッツのとおり（鳥栖3・東京V3）。
