@@ -150,8 +150,11 @@ export const scheduleMatches: ScheduleMatch[] = [
     venue: "駅前不動産スタジアム",
     isVerdyHome: false,
     opponentName: "サガン鳥栖",
-    status: "scheduled",
-    // 予想スタメン2案（match-15.verdyLineupOptions）を持つ詳細ページへ紐付ける。
+    // 延長戦の末 サガン鳥栖 2-1 東京V（スコアは延長を含む最終スコア）。
+    status: "finished",
+    homeScore: 2,
+    awayScore: 1,
+    // 予想スタメン2案と公式結果を持つ詳細ページ（match-15）へ紐付ける。
     detailMatchId: "match-15",
     opponentRecentMatches: [
       { date: "2026-08-29", competition: "J2", homeAway: "A", opponent: "横浜FC", scoreFor: 2, scoreAgainst: 2, result: "D" },

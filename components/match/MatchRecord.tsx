@@ -151,6 +151,9 @@ function OfficialInfo({
     record.weather && `天候 ${record.weather}`,
     record.temperature && `気温 ${record.temperature}`,
     record.humidity && `湿度 ${record.humidity}`,
+    record.referee && `主審 ${record.referee}`,
+    record.assistantReferees?.length && `副審 ${record.assistantReferees.join("・")}`,
+    record.fourthOfficial && `第4の審判 ${record.fourthOfficial}`,
   ].filter(Boolean);
 
   if (items.length === 0 && !record.sourceUrl) return null;

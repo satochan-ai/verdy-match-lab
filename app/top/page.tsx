@@ -75,7 +75,13 @@ export default async function TopTeamPage() {
       : "loss";
 
   const fixture = displayFixture?.kickoffAt ? formatMatchday(displayFixture.kickoffAt) : null;
-  const dayLabel = liveFixture ? { kind: "live" as const } : nextMatch ? getMatchDayLabel(nextMatch, now) : null;
+  // 表示中のNEXT fixture（topFixtures由来）から直接決める。scheduledなMatch行（nextMatch）が
+  // 無い期間でも、NEXT MATCHの日数表示が空状態にならないようにする。
+  const dayLabel = liveFixture
+    ? { kind: "live" as const }
+    : displayFixture?.kickoffAt
+      ? getMatchDayLabel({ status: "scheduled", kickoffAt: displayFixture.kickoffAt }, now)
+      : null;
 
   return (
     <div className="space-y-6">

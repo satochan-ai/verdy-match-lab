@@ -54,6 +54,9 @@ export function MatchScoreboard({
           ) : (
             <p className="text-[15px] font-extrabold text-fusion-black lg:text-[20px]">VS</p>
           )}
+          {match.status === "finished" && match.extraTime && (
+            <p className="mt-1.5 text-[11px] font-bold text-text-secondary lg:text-[12px]">延長戦の結果</p>
+          )}
         </div>
 
         <div className="text-center lg:min-w-0 lg:text-left">

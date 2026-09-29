@@ -1391,14 +1391,98 @@ export const matches: Match[] = [
     isVerdyHome: false,
     kickoffAt: "2026-09-29T19:00:00+09:00",
     venue: "駅前不動産スタジアム",
-    status: "scheduled",
-    homeScore: null,
-    awayScore: null,
+    status: "finished",
+    // 延長戦を含む最終スコア（サガン鳥栖 2-1 東京V）。
+    homeScore: 2,
+    awayScore: 1,
+    extraTime: true,
     timeSegment: null,
     fixtureMeta: { competition: "ルヴァン", roundLabel: "1stラウンド 2回戦" },
+    // 試合終了後の公式記録（ユーザー提供）。actualLineups/goals等は予想（verdyLineupOptions）
+    // とは独立して保持し、予想を公式スタメンで上書きしない。sourceUrlは未提供のため設定しない。
+    // 審判情報はユーザー提供のとおり記録。
+    officialRecord: {
+      kickoff: "19:00",
+      attendance: 2658,
+      weather: "晴れ",
+      temperature: "23.5℃",
+      humidity: "84%",
+      referee: "上田 益也",
+      assistantReferees: ["塩津 祐介", "阿部 将茂"],
+      fourthOfficial: "山口 大輔",
+    },
+    // 鳥栖側の並びは提供順のまま（画面左→右は未確認）。提供データ内に背番号#13が2名
+    // （城定 幹大／山田 剛綺）あるが、番号だけを根拠に補正せず提供どおり保持している。
+    actualLineups: {
+      home: {
+        formation: "3-4-2-1",
+        starters: {
+          GK: ["12 松原 颯汰"],
+          DF: ["26 安藤 寿岐", "37 森下 怜哉", "3 神山 京右"],
+          MF: ["7 坂本 亘基", "24 山内 翔", "2 松本 凪生", "43 芳野 凱斗"],
+          FW: ["16 西澤 健太", "20 中原 輝", "10 鈴木 大馳"],
+        },
+        bench: {
+          GK: ["31 藤嶋 栄介"],
+          DF: ["4 今津 佑太", "28 吉田 真那斗", "44 阿部 海大"],
+          MF: ["13 城定 幹大"],
+          FW: ["11 塩浜 遼", "13 山田 剛綺", "42 合戸 晴矢"],
+        },
+      },
+      away: {
+        formation: "3-4-2-1",
+        starters: {
+          GK: ["1 マテウス"],
+          DF: ["15 鈴木 海音", "29 佐古 真礼", "4 林 尚輝"],
+          MF: ["40 新井 悠太", "8 齋藤 功佑", "2 柴戸 海", "14 福田 湧矢"],
+          FW: ["38 神田 奏真", "19 藤本 寛也", "9 染野 唯月"],
+        },
+        bench: {
+          GK: ["21 長沢 祐弥"],
+          DF: ["5 井上 竜太", "18 溝口 修平"],
+          MF: ["7 松橋 優安", "16 平川 怜", "28 山本 丈偉", "41 松岡 響祈", "47 伊澤 璃来"],
+          FW: ["25 熊取谷 一星", "27 白井 亮丞"],
+        },
+      },
+    },
+    goals: [
+      { minute: "52'", scorer: "塩浜 遼", team: "鳥栖" },
+      { minute: "60'", scorer: "藤本 寛也", team: "東京V" },
+      { minute: "107'", scorer: "塩浜 遼", team: "鳥栖" },
+    ],
+    cards: [
+      { minute: "19'", player: "森下 怜哉", team: "鳥栖", type: "yellow" },
+      { minute: "118'", player: "西澤 健太", team: "鳥栖", type: "yellow" },
+      { minute: "31'", player: "佐古 真礼", team: "東京V", type: "yellow" },
+      { minute: "58'", player: "新井 悠太", team: "東京V", type: "yellow" },
+      { minute: "90+4'", player: "福田 湧矢", team: "東京V", type: "yellow" },
+    ],
+    // 鳥栖側の交代は、提供表の左右列が混在していた61'（OUT 芳野 凱斗）・86'（OUT 松本 凪生）
+    // の2件でIN選手の列対応を確認できなかったため、推測せず保留（登録しない）。
+    // 東京V側の91'交代は延長を含むためそのまま記録。
+    substitutions: [
+      { minute: "57'", team: "東京V", playerIn: "山本 丈偉", playerOut: "柴戸 海" },
+      { minute: "57'", team: "東京V", playerIn: "白井 亮丞", playerOut: "神田 奏真" },
+      { minute: "79'", team: "東京V", playerIn: "平川 怜", playerOut: "齋藤 功佑" },
+      { minute: "79'", team: "東京V", playerIn: "熊取谷 一星", playerOut: "藤本 寛也" },
+      { minute: "86'", team: "東京V", playerIn: "溝口 修平", playerOut: "新井 悠太" },
+      { minute: "91'", team: "東京V", playerIn: "井上 竜太", playerOut: "林 尚輝" },
+      { minute: "37'", team: "鳥栖", playerIn: "合戸 晴矢", playerOut: "鈴木 大馳" },
+      { minute: "46'", team: "鳥栖", playerIn: "塩浜 遼", playerOut: "坂本 亘基" },
+      { minute: "61'", team: "鳥栖", playerIn: "吉田 真那斗", playerOut: "中原 輝" },
+      { minute: "101'", team: "鳥栖", playerIn: "城定 幹大", playerOut: "山内 翔" },
+    ],
+    // home=サガン鳥栖 / away=東京V。警告数は提供スタッツのとおり（鳥栖3・東京V3）。
+    // 個別の警告選手を確認できたのは鳥栖2名・東京V3名。
+    matchStats: {
+      home: { shots: 18, shotsOnTarget: 6, possession: "45%", passSuccessRate: "84%", offsides: 1, corners: 4, freeKicks: 15, yellowCards: 3, redCards: 0 },
+      away: { shots: 19, shotsOnTarget: 5, possession: "55%", passSuccessRate: "87%", offsides: 4, corners: 7, freeKicks: 19, yellowCards: 3, redCards: 0 },
+    },
     verdyProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
     opponentProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
-    matchNotes: [],
+    matchNotes: [
+      "52分に塩浜遼が先制、60分に藤本寛也が同点ゴールを挙げたが、延長107分に塩浜遼が決勝点を挙げ、鳥栖が2-1で勝利した。",
+    ],
     focusPoints: [],
     strategies: [],
     verdyLineupOptions: [

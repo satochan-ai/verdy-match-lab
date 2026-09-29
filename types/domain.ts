@@ -108,6 +108,12 @@ export interface OfficialMatchRecord {
   weather?: string;
   temperature?: string;
   humidity?: string;
+  /** 主審。公式記録で確認できた場合のみ設定する。 */
+  referee?: string;
+  /** 副審。公式記録で確認できた場合のみ設定する。 */
+  assistantReferees?: string[];
+  /** 第4の審判。公式記録で確認できた場合のみ設定する。 */
+  fourthOfficial?: string;
   sourceUrl?: string;
 }
 
@@ -206,6 +212,11 @@ export interface Match {
   status: MatchStatus;
   homeScore: number | null;
   awayScore: number | null;
+  /**
+   * 延長戦を含む結果の場合のみtrue（homeScore/awayScoreは延長を含む最終スコア）。
+   * 90分で決着した試合・未設定の試合は従来どおりの表示のまま変わらない。
+   */
+  extraTime?: boolean;
   timeSegment: TimeSegment | null;
   verdyProfile: TeamProfile;
   opponentProfile: TeamProfile;
