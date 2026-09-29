@@ -25,7 +25,7 @@ test("match-15 official Tokyo Verdy lineup is 3-4-2-1 and stays separate from th
     "40 新井 悠太", "8 齋藤 功佑", "2 柴戸 海", "14 福田 湧矢",
     "38 神田 奏真", "19 藤本 寛也", "9 染野 唯月",
   ]);
-  assert.equal(Object.values(away.bench).flat().length, 8);
+  assert.equal(Object.values(away.bench).flat().length, 9);
   // 予想2案は公式スタメンで上書きされず、predictedLineups（HOME/AWAY必須ペア）にも入れていない。
   assert.equal(match.verdyLineupOptions?.length, 2);
   assert.equal(match.predictedLineups, undefined);
@@ -35,17 +35,19 @@ test("match-15 official Tokyo Verdy lineup is 3-4-2-1 and stays separate from th
   );
 });
 
-test("match-15 Saga Tosu lineup is 3-4-2-1 with 11 starters and provided bench incl. #47 伊澤 璃来 / #41 松岡 響祈 (duplicate #13 kept as provided)", () => {
+test("match-15 Saga Tosu lineup is 3-4-2-1 with 11 starters and provided bench incl. #47 伊澤 璃来 / #41 松岡 響祈 (#13 exists on both teams)", () => {
   const home = match.actualLineups!.home;
   assert.equal(home.formation, "3-4-2-1");
   assert.equal(Object.values(home.starters).flat().length, 11);
-  assert.equal(Object.values(home.bench).flat().length, 10);
+  assert.equal(Object.values(home.bench).flat().length, 9);
   assert.ok(home.bench.MF.includes("47 伊澤 璃来") && home.bench.MF.includes("41 松岡 響祈"));
   const away = match.actualLineups!.away;
   assert.deepEqual(Object.values(away.bench).flat(), [
-    "21 長沢 祐弥", "5 井上 竜太", "18 溝口 修平", "7 松橋 優安", "16 平川 怜", "28 山本 丈偉", "25 熊取谷 一星", "27 白井 亮丞",
+    "21 長沢 祐弥", "5 井上 竜太", "18 溝口 修平", "7 松橋 優安", "16 平川 怜", "28 山本 丈偉", "13 山田 剛綺", "25 熊取谷 一星", "27 白井 亮丞",
   ]);
-  assert.equal(Object.values(home.bench).flat().filter((player) => player.startsWith("13 ")).length, 2);
+  assert.deepEqual(Object.values(home.bench).flat().filter((player) => player.startsWith("13 ")), ["13 城定 幹大"]);
+  assert.deepEqual(Object.values(away.bench).flat().filter((player) => player.startsWith("13 ")), ["13 山田 剛綺"]);
+  assert.equal(Object.values(home.bench).flat().some((player) => player.includes("山田 剛綺")), false);
 });
 
 test("match-15 substitutions: Verdy 6 (incl. 91') and Tosu 6, each IN player belongs to that team's bench", () => {
