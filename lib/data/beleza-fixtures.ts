@@ -73,6 +73,7 @@ export const belezaFixtures: CommonFixture[] = [
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
     kickoffAt: ["2026-10-03T14:00:00+09:00", "2026-10-11T12:00:00+09:00"][index],
     kickoffStatus: "confirmed" as const, dateLabel: fixture.dateLabel, venue: fixture.venue, isHome: fixture.isHome, status: "scheduled" as const,
+    ...(fixture.id === "beleza-next-7" ? { detailMatchId: fixture.id } : {}),
   })),
 ];
 

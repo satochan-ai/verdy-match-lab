@@ -91,6 +91,10 @@ import {
   belezaMatch5Substitutions,
   belezaMatch5Stats,
   belezaMatch5ActualLineup,
+  belezaUrawaCupMatch,
+  belezaUrawaCupActualLineup,
+  urawaCupActualLineup,
+  belezaUrawaCupOfficialRecord,
 } from "@/lib/mock/beleza";
 
 /**
@@ -113,6 +117,10 @@ export default async function BelezaMatchDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+
+  if (id === belezaUrawaCupMatch.id) {
+    return <BelezaUrawaCupDetail />;
+  }
 
   if (id === belezaMatch1.id) {
     return <BelezaMatch1Detail />;
@@ -510,6 +518,44 @@ function TwoTeamFormationSection({
       </div>
       <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">{caption}</p>
     </section>
+  );
+}
+
+/** 浦和カップ戦の公式メンバー。結果と開始時フォーメーションは未登録。 */
+function BelezaUrawaCupDetail() {
+  const match = belezaUrawaCupMatch;
+  const displayStatus = resolveMatchStatus(match, new Date());
+  return (
+    <div className="space-y-8 pb-4">
+      <div className="flex items-center justify-between">
+        <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+        <h1 className="text-[15px] font-bold text-text-primary">{displayStatus === "live" ? "LIVE" : "試合前"}</h1>
+        <span className="w-8" />
+      </div>
+      <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
+        <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep">{match.competition}</p>
+        <p className="mt-2 tabular-nums text-[15px] font-extrabold text-text-secondary">{match.dateLabel}</p>
+        <div className="mt-4 flex flex-col items-center gap-1.5 text-center">
+          <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{match.homeTeamName}</p>
+          <p className="text-[10px] font-bold text-text-secondary">HOME</p>
+          <p className="py-1 text-[13px] font-extrabold text-fusion-black">VS</p>
+          <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{match.awayTeamName}</p>
+          <p className="text-[10px] font-bold text-text-secondary">AWAY</p>
+        </div>
+        <div className="mt-4 border-t border-border pt-3 text-center">
+          <p className="tabular-nums text-[15px] font-bold text-text-primary">{match.kickoffLabel} KICK OFF</p>
+          <p className="mt-1 text-[12px] text-text-secondary">{match.venue}</p>
+        </div>
+      </section>
+      <BelezaLiveOfficialLineups
+        belezaTeam={belezaTeam}
+        belezaLineup={belezaUrawaCupActualLineup}
+        opponentTeam={urawaTeam}
+        opponentLineup={urawaCupActualLineup}
+        caption="公式発表されたStarting XI・ベンチです。両チームの開始時フォーメーションは未確認のため掲載していません。"
+      />
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName} officialRecord={belezaUrawaCupOfficialRecord} />
+    </div>
   );
 }
 

@@ -33,7 +33,7 @@ export function BelezaLiveOfficialLineups({
 }: {
   belezaTeam: Team;
   belezaLineup: ActualLineup;
-  belezaFormation: { formation: string; starters: { number?: number; name: string; position: string }[] };
+  belezaFormation?: { formation: string; starters: { number?: number; name: string; position: string }[] };
   opponentTeam: Team;
   opponentLineup: ActualLineup;
   /** 相手の開始時フォーメーション未確認である旨の注記。試合ごとに文言が変わるため呼び出し側で渡す。 */

@@ -981,6 +981,56 @@ export const belezaSeasonHistory: BelezaSeasonHistoryEntry[] = [
  * WEリーグとクラシエカップを大会横断で開催日時の早い順に並べる。
  * 会場は公式日程で確認できた場合のみ設定する（推測で埋めない）。
  */
+/** 10/3浦和戦：ユーザー提供の公式メンバーのみ。結果・交代・実配置は未登録。 */
+export const belezaUrawaCupMatch = {
+  id: "beleza-next-7",
+  status: "scheduled" as const,
+  competition: "2026/27 WEリーグ クラシエカップ リーグステージ 第5節",
+  kickoffAt: "2026-10-03T14:00:00+09:00",
+  kickoffLabel: "14:00",
+  dateLabel: "10.03 SAT",
+  venue: "浦和駒場スタジアム",
+  isBelezaHome: false,
+  homeTeamName: urawaTeam.name,
+  awayTeamName: belezaTeam.name,
+};
+
+export const belezaUrawaCupOfficialRecord: OfficialMatchRecord = {
+  referee: "田澤 友梨奈",
+  assistantReferees: ["吉永 真紀", "岩本 毬花"],
+  fourthOfficial: "吉田 知弘",
+};
+
+export const belezaUrawaCupActualLineup: ActualLineup = {
+  starters: {
+    GK: ["21 水口 茉優"],
+    DF: ["2 青木 夕菜", "3 村松 智子", "32 松岡 瑛茉"],
+    MF: ["14 眞城 美春", "35 須長 穂乃果", "38 式田 和", "8 猶本 光", "7 北村 菜々美", "17 朝生 珠実"],
+    FW: ["11 樋渡 百花"],
+  },
+  bench: {
+    GK: ["41 加登脇 心羽"],
+    DF: ["4 土光 真代", "22 井手 ひなた"],
+    MF: ["6 隅田 凜", "18 松永 未夢"],
+    FW: ["13 氏原 里穂菜", "20 小林 里歌子"],
+  },
+};
+
+export const urawaCupActualLineup: ActualLineup = {
+  starters: {
+    GK: ["1 池田 咲紀子"],
+    DF: ["13 長嶋 玲奈", "7 高橋 はな", "2 エスタ マイ キス", "30 長尾 ののか"],
+    MF: ["14 菊池 まりあ", "26 丹野 凜々香", "6 加藤 千佳", "5 伊藤 美紀", "16 大西 若菜"],
+    FW: ["19 サンシャイン フォンテス"],
+  },
+  bench: {
+    GK: ["12 福田 史織"],
+    DF: [],
+    MF: ["8 榊原 琴乃", "18 柴田 華絵", "20 高塚 映奈", "21 タンチュリエ ローリー", "28 櫻井 まどか"],
+    FW: ["11 川船 暁海"],
+  },
+};
+
 export const belezaUpcomingMatches: UpcomingFixture[] = [
   {
     id: "beleza-next-4",

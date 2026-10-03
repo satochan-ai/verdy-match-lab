@@ -12,9 +12,9 @@ const withStatus = (fixtures: readonly CommonFixture[], ids: readonly string[], 
 test("U-21 and BELEZA have unique IDs and stay within category boundaries", () => {
   const all = [...u21Fixtures, ...belezaFixtures];
   assert.equal(new Set(all.map((fixture) => fixture.id)).size, all.length);
-  // U-21 contributes 4; BELEZA contributes 6 (5 archived matches that each render
-  // individually at /beleza/matches/[id], plus the current snapshot).
-  assert.equal(new Set(all.flatMap((fixture) => fixture.detailMatchId ? [fixture.detailMatchId] : [])).size, 10);
+  // U-21 contributes 4; BELEZA contributes 7 (5 archived matches that each render
+  // individually at /beleza/matches/[id], plus the current snapshot and 浦和カップ戦).
+  assert.equal(new Set(all.flatMap((fixture) => fixture.detailMatchId ? [fixture.detailMatchId] : [])).size, 11);
   assert.equal(u21Fixtures.every((fixture) => fixture.category === "u21"), true);
   assert.equal(belezaFixtures.every((fixture) => fixture.category === "beleza"), true);
 });
