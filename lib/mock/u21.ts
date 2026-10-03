@@ -216,6 +216,52 @@ export const u21ShimizuPredictedFormationOptions: PredictedLineup[] = [
   },
 ];
 
+/** 10/3川崎戦：ユーザー提供の公式スタメン・控え。試合前のため結果・実配置は未登録。 */
+export const u21KawasakiMatch = {
+  id: "u21-next-3",
+  status: "scheduled" as MatchStatus,
+  competition: "2026／27Ｕ-21Ｊリーグ 東西リーグラウンド EAST 第4節",
+  kickoffAt: "2026-10-03T15:03:00+09:00",
+  kickoffLabel: "15:03",
+  scheduleNote: undefined as string | undefined,
+  venue: "Uvanceとどろきスタジアム by Fujitsu",
+  isVerdyHome: false,
+  homeTeamName: "U-21川崎フロンターレ",
+  awayTeamName: "東京ヴェルディU-21",
+  homeScore: undefined,
+  awayScore: undefined,
+};
+
+export const u21KawasakiHomeOfficialLineup: U21OfficialLineup = {
+  starters: {
+    GK: ["33 イ クンヒョン"],
+    DF: ["30 野田 裕人", "35 對馬 羽琉", "2 松長根 悠仁", "31 渡邉 拓眞"],
+    MF: ["26 由井 航太", "25 山市 秀翔", "24 武内 勇人", "20 持山 匡佑", "34 長 璃喜"],
+    FW: ["93 カイキ ケイロス"],
+  },
+  bench: {
+    GK: ["21 小村 風人"],
+    DF: ["37 上野 煌士郎", "39 藤田 明日翔"],
+    MF: ["16 木村 風斗", "32 加藤 昊"],
+    FW: ["11 小林 悠", "36 廣瀬 寧生"],
+  },
+};
+
+export const u21KawasakiAwayOfficialLineup: U21OfficialLineup = {
+  starters: {
+    GK: ["41 中村 圭佑"],
+    DF: ["83 松田 陸", "82 田邉 秀斗"],
+    MF: ["28 山本 丈偉", "89 食野 壮磨", "24 仲山 獅恩", "42 今井 健人"],
+    FW: ["27 白井 亮丞", "38 神田 奏真", "84 山田 剛綺", "94 松橋 優安"],
+  },
+  bench: {
+    GK: ["91 高居 丈流"],
+    DF: ["92 原田 爽潤"],
+    MF: ["30 川村 楽人", "87 下吉 洸平"],
+    FW: ["51 大藤 颯太", "80 キム ヒョンウ", "90 熊取谷 一星"],
+  },
+};
+
 /**
  * === 東西リーグラウンド EAST 第1節（FC東京U-21戦）アーカイブ ===
  * 第2節（U-21浦和レッズ戦）が新たな「現在表示中の1試合」スナップショットになったため、
@@ -389,7 +435,7 @@ export const u21UpcomingMatches: UpcomingFixture[] = [
   {
     id: "u21-next-3",
     dateLabel: "10.03 SAT",
-    kickoffLabel: "15:00",
+    kickoffLabel: u21KawasakiMatch.kickoffLabel,
     fixtureMeta: {
       competition: "2026/27 U-21 Jリーグ",
       stage: "東西リーグラウンド",

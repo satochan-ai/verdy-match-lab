@@ -1,6 +1,6 @@
 import type { UpcomingFixture } from "../../types/domain";
 import type { CommonFixture } from "../types/fixture";
-import { u21Match, u21Match1, u21ShimizuMatch, u21UpcomingMatches } from "../mock/u21.ts";
+import { u21Match, u21Match1, u21ShimizuMatch, u21KawasakiMatch, u21UpcomingMatches } from "../mock/u21.ts";
 
 const TEAM_NAME = "東京ヴェルディU-21";
 const competition = "2026/27 U-21 Jリーグ";
@@ -50,13 +50,14 @@ export const u21Fixtures: CommonFixture[] = [
     teamName: TEAM_NAME,
     opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
-    kickoffAt: ["2026-09-20T14:03:00+09:00", "2026-10-03T15:00:00+09:00", "2026-10-17T15:00:00+09:00", undefined, "2026-11-22T14:00:00+09:00"][index],
+    kickoffAt: ["2026-09-20T14:03:00+09:00", u21KawasakiMatch.kickoffAt, "2026-10-17T15:00:00+09:00", undefined, "2026-11-22T14:00:00+09:00"][index],
     kickoffStatus: index === 3 ? "date_range" as const : "confirmed" as const,
     dateLabel: fixture.dateLabel,
     isHome: fixture.isHome,
     status: fixture.id === u21ShimizuMatch.id ? u21ShimizuMatch.status : "scheduled" as const,
     ...(fixture.id === u21ShimizuMatch.id ? { score: { home: u21ShimizuMatch.homeScore, away: u21ShimizuMatch.awayScore } } : {}),
     ...(fixture.id === u21ShimizuMatch.id ? { detailMatchId: u21ShimizuMatch.id } : {}),
+    ...(fixture.id === u21KawasakiMatch.id ? { detailMatchId: u21KawasakiMatch.id, venue: u21KawasakiMatch.venue } : {}),
   })),
 ];
 
