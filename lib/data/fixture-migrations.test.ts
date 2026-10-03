@@ -63,11 +63,11 @@ test("kickoff boundary includes 17:59 and excludes a still-scheduled 18:01 fixtu
 
 test("two consecutive finishes update NEXT, LAST and HISTORY for both categories", () => {
   // U-21: finishedIdsの2件がそのままLAST/HISTORY直近2件になる。
-  // BELEZA: finishedIds（INAC神戸戦・EL埼玉戦）より後に新潟L戦・C大阪戦がすでにfinished
+  // BELEZA: finishedIds（INAC神戸戦・EL埼玉戦）より後に浦和カップ戦・C大阪戦がすでにfinished
   // として実データに存在するため、LAST/HISTORY直近2件はそちら（より新しい確定結果）になる。
   const cases = [
     { fixtures: u21Fixtures, finishedIds: ["u21-next-1", "u21-next-2"], nextId: "u21-next-3", lastId: "u21-next-2", historyTop2: ["u21-next-2", "u21-next-1"] },
-    { fixtures: belezaFixtures, finishedIds: ["beleza-next-3", "beleza-next-4"], nextId: "beleza-next-7", lastId: "beleza-match-5", historyTop2: ["beleza-match-5", "beleza-match-4"] },
+    { fixtures: belezaFixtures, finishedIds: ["beleza-next-3", "beleza-next-4"], nextId: "beleza-next-8", lastId: "beleza-next-7", historyTop2: ["beleza-next-7", "beleza-match-5"] },
   ] as const;
   for (const { fixtures, finishedIds, nextId, lastId, historyTop2 } of cases) {
     const simulated = withStatus(fixtures, finishedIds, "finished");

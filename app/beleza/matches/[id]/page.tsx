@@ -95,6 +95,9 @@ import {
   belezaUrawaCupActualLineup,
   urawaCupActualLineup,
   belezaUrawaCupOfficialRecord,
+  belezaUrawaCupHalfScores,
+  belezaUrawaCupGoals,
+  belezaUrawaCupSubstitutions,
 } from "@/lib/mock/beleza";
 
 /**
@@ -521,15 +524,14 @@ function TwoTeamFormationSection({
   );
 }
 
-/** 浦和カップ戦の公式メンバー。結果と開始時フォーメーションは未登録。 */
+/** 浦和カップ戦の公式結果・メンバー。開始時フォーメーションは未確認。 */
 function BelezaUrawaCupDetail() {
   const match = belezaUrawaCupMatch;
-  const displayStatus = resolveMatchStatus(match, new Date());
   return (
     <div className="space-y-8 pb-4">
       <div className="flex items-center justify-between">
         <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
-        <h1 className="text-[15px] font-bold text-text-primary">{displayStatus === "live" ? "LIVE" : "試合前"}</h1>
+        <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
         <span className="w-8" />
       </div>
       <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
@@ -538,7 +540,7 @@ function BelezaUrawaCupDetail() {
         <div className="mt-4 flex flex-col items-center gap-1.5 text-center">
           <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{match.homeTeamName}</p>
           <p className="text-[10px] font-bold text-text-secondary">HOME</p>
-          <p className="py-1 text-[13px] font-extrabold text-fusion-black">VS</p>
+          <p className="py-1 tabular-nums text-[26px] font-extrabold text-text-primary">{match.homeScore} - {match.awayScore}</p>
           <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{match.awayTeamName}</p>
           <p className="text-[10px] font-bold text-text-secondary">AWAY</p>
         </div>
@@ -547,6 +549,10 @@ function BelezaUrawaCupDetail() {
           <p className="mt-1 text-[12px] text-text-secondary">{match.venue}</p>
         </div>
       </section>
+      <div className="text-center">
+        <StatusBadge variant="loss" label="LOSS" />
+        <p className="mt-2 text-[12px] text-text-secondary">前半 {belezaUrawaCupHalfScores.firstHalf} ／ 後半 {belezaUrawaCupHalfScores.secondHalf}</p>
+      </div>
       <BelezaLiveOfficialLineups
         belezaTeam={belezaTeam}
         belezaLineup={belezaUrawaCupActualLineup}
@@ -554,7 +560,7 @@ function BelezaUrawaCupDetail() {
         opponentLineup={urawaCupActualLineup}
         caption="公式発表されたStarting XI・ベンチです。両チームの開始時フォーメーションは未確認のため掲載していません。"
       />
-      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName} officialRecord={belezaUrawaCupOfficialRecord} />
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName} goals={belezaUrawaCupGoals} substitutions={belezaUrawaCupSubstitutions} officialRecord={belezaUrawaCupOfficialRecord} />
     </div>
   );
 }

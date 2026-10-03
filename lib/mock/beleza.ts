@@ -981,21 +981,50 @@ export const belezaSeasonHistory: BelezaSeasonHistoryEntry[] = [
  * WEリーグとクラシエカップを大会横断で開催日時の早い順に並べる。
  * 会場は公式日程で確認できた場合のみ設定する（推測で埋めない）。
  */
-/** 10/3浦和戦：ユーザー提供の公式メンバーのみ。結果・交代・実配置は未登録。 */
+/** 10/3浦和戦：ユーザー提供の公式確定結果。開始時フォーメーションは未確認。 */
 export const belezaUrawaCupMatch = {
   id: "beleza-next-7",
-  status: "scheduled" as const,
+  status: "finished" as const,
   competition: "2026/27 WEリーグ クラシエカップ リーグステージ 第5節",
-  kickoffAt: "2026-10-03T14:00:00+09:00",
-  kickoffLabel: "14:00",
+  kickoffAt: "2026-10-03T14:03:00+09:00",
+  kickoffLabel: "14:03",
   dateLabel: "10.03 SAT",
   venue: "浦和駒場スタジアム",
   isBelezaHome: false,
   homeTeamName: urawaTeam.name,
   awayTeamName: belezaTeam.name,
+  homeScore: 4,
+  awayScore: 2,
 };
 
+export const belezaUrawaCupHalfScores = { firstHalf: "4-2", secondHalf: "0-0" };
+
+export const belezaUrawaCupGoals: MatchGoal[] = [
+  { minute: "2'", scorer: "加藤 千佳", team: urawaTeam.name },
+  { minute: "11'", scorer: "猶本 光", team: belezaTeam.name },
+  { minute: "13'", scorer: "丹野 凜々香", team: urawaTeam.name },
+  { minute: "25'", scorer: "大西 若菜", team: urawaTeam.name },
+  { minute: "40'", scorer: "サンシャイン フォンテス", team: urawaTeam.name },
+  { minute: "45'", scorer: "式田 和", team: belezaTeam.name },
+];
+
+// 浦和82分に2交代あり。OUT/INの対応未確定のため未収録。
+export const belezaUrawaCupSubstitutions: MatchSubstitution[] = [
+  { minute: "46'", team: belezaTeam.name, playerOut: "須長 穂乃果", playerIn: "氏原 里穂菜" },
+  { minute: "60'", team: belezaTeam.name, playerOut: "朝生 珠実", playerIn: "小林 里歌子" },
+  { minute: "63'", team: urawaTeam.name, playerOut: "サンシャイン フォンテス", playerIn: "川船 暁海" },
+  { minute: "71'", team: urawaTeam.name, playerOut: "加藤 千佳", playerIn: "榊原 琴乃" },
+  { minute: "71'", team: urawaTeam.name, playerOut: "大西 若菜", playerIn: "柴田 華絵" },
+  { minute: "74'", team: belezaTeam.name, playerOut: "村松 智子", playerIn: "井手 ひなた" },
+  { minute: "74'", team: belezaTeam.name, playerOut: "猶本 光", playerIn: "松永 未夢" },
+];
+
 export const belezaUrawaCupOfficialRecord: OfficialMatchRecord = {
+  kickoff: "14:03",
+  attendance: 1651,
+  weather: "晴",
+  temperature: "23.7℃",
+  humidity: "55%",
   referee: "田澤 友梨奈",
   assistantReferees: ["吉永 真紀", "岩本 毬花"],
   fourthOfficial: "吉田 知弘",

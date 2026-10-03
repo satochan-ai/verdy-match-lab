@@ -1,6 +1,6 @@
 import type { UpcomingFixture } from "../../types/domain";
 import type { CommonFixture } from "../types/fixture";
-import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, belezaMatch5, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
+import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, belezaMatch5, belezaUrawaCupMatch, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
 
 export const belezaFixtures: CommonFixture[] = [
   {
@@ -73,7 +73,12 @@ export const belezaFixtures: CommonFixture[] = [
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
     kickoffAt: ["2026-10-03T14:00:00+09:00", "2026-10-11T12:00:00+09:00"][index],
     kickoffStatus: "confirmed" as const, dateLabel: fixture.dateLabel, venue: fixture.venue, isHome: fixture.isHome, status: "scheduled" as const,
-    ...(fixture.id === "beleza-next-7" ? { detailMatchId: fixture.id } : {}),
+    ...(fixture.id === belezaUrawaCupMatch.id ? {
+      detailMatchId: fixture.id,
+      kickoffAt: belezaUrawaCupMatch.kickoffAt,
+      status: belezaUrawaCupMatch.status,
+      score: { home: belezaUrawaCupMatch.homeScore, away: belezaUrawaCupMatch.awayScore },
+    } : {}),
   })),
 ];
 
