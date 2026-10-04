@@ -57,7 +57,12 @@ export const u21Fixtures: CommonFixture[] = [
     status: fixture.id === u21ShimizuMatch.id ? u21ShimizuMatch.status : "scheduled" as const,
     ...(fixture.id === u21ShimizuMatch.id ? { score: { home: u21ShimizuMatch.homeScore, away: u21ShimizuMatch.awayScore } } : {}),
     ...(fixture.id === u21ShimizuMatch.id ? { detailMatchId: u21ShimizuMatch.id } : {}),
-    ...(fixture.id === u21KawasakiMatch.id ? { detailMatchId: u21KawasakiMatch.id, venue: u21KawasakiMatch.venue } : {}),
+    ...(fixture.id === u21KawasakiMatch.id ? {
+      detailMatchId: u21KawasakiMatch.id,
+      venue: u21KawasakiMatch.venue,
+      status: u21KawasakiMatch.status,
+      score: { home: u21KawasakiMatch.homeScore, away: u21KawasakiMatch.awayScore },
+    } : {}),
   })),
 ];
 

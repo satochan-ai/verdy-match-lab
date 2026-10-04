@@ -26,6 +26,10 @@ import {
   u21KawasakiMatch,
   u21KawasakiHomeOfficialLineup,
   u21KawasakiAwayOfficialLineup,
+  u21KawasakiGoals,
+  u21KawasakiCards,
+  u21KawasakiSubstitutions,
+  u21KawasakiOfficialRecord,
 } from "@/lib/mock/u21";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { U21LiveSection } from "@/components/match/U21LiveSection";
@@ -67,10 +71,10 @@ export default async function U21MatchDetailPage({
   const match = isKawasaki ? u21KawasakiMatch : isShimizu ? u21ShimizuMatch : isFctokyo ? u21Match1 : u21Match;
   const homeLineup = isKawasaki ? u21KawasakiHomeOfficialLineup : isShimizu ? u21ShimizuHomeOfficialLineup : isFctokyo ? u21Match1HomeOfficialLineup : u21HomeOfficialLineup;
   const awayLineup = isKawasaki ? u21KawasakiAwayOfficialLineup : isShimizu ? u21ShimizuAwayOfficialLineup : isFctokyo ? u21Match1AwayOfficialLineup : u21AwayOfficialLineup;
-  const goals = isKawasaki ? [] : isFctokyo ? u21Match1Goals : isShimizu ? u21ShimizuGoals : u21Goals;
-  const cards = isKawasaki ? [] : isFctokyo ? u21Match1Cards : isShimizu ? [] : u21Cards;
-  const substitutions = isKawasaki ? [] : isFctokyo ? u21Match1Substitutions : isShimizu ? u21ShimizuSubstitutions : u21Substitutions;
-  const officialRecord = isKawasaki ? undefined : isFctokyo ? u21Match1OfficialRecord : isShimizu ? u21ShimizuOfficialRecord : u21OfficialRecord;
+  const goals = isKawasaki ? u21KawasakiGoals : isFctokyo ? u21Match1Goals : isShimizu ? u21ShimizuGoals : u21Goals;
+  const cards = isKawasaki ? u21KawasakiCards : isFctokyo ? u21Match1Cards : isShimizu ? [] : u21Cards;
+  const substitutions = isKawasaki ? u21KawasakiSubstitutions : isFctokyo ? u21Match1Substitutions : isShimizu ? u21ShimizuSubstitutions : u21Substitutions;
+  const officialRecord = isKawasaki ? u21KawasakiOfficialRecord : isFctokyo ? u21Match1OfficialRecord : isShimizu ? u21ShimizuOfficialRecord : u21OfficialRecord;
 
   const displayStatus = resolveMatchStatus(match, new Date());
   const statusLabel = {

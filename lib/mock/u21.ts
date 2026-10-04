@@ -216,10 +216,10 @@ export const u21ShimizuPredictedFormationOptions: PredictedLineup[] = [
   },
 ];
 
-/** 10/3川崎戦：ユーザー提供の公式スタメン・控え。試合前のため結果・実配置は未登録。 */
+/** 10/3川崎戦：ユーザー提供の公式確定結果。開始時フォーメーションは未確認。 */
 export const u21KawasakiMatch = {
   id: "u21-next-3",
-  status: "scheduled" as MatchStatus,
+  status: "finished" as MatchStatus,
   competition: "2026／27Ｕ-21Ｊリーグ 東西リーグラウンド EAST 第4節",
   kickoffAt: "2026-10-03T15:03:00+09:00",
   kickoffLabel: "15:03",
@@ -228,8 +228,40 @@ export const u21KawasakiMatch = {
   isVerdyHome: false,
   homeTeamName: "U-21川崎フロンターレ",
   awayTeamName: "東京ヴェルディU-21",
-  homeScore: undefined,
-  awayScore: undefined,
+  homeScore: 4,
+  awayScore: 1,
+};
+
+export const u21KawasakiGoals: MatchGoal[] = [
+  { minute: "5'", scorer: "持山 匡佑", team: u21KawasakiMatch.homeTeamName },
+  { minute: "14'", scorer: "持山 匡佑", team: u21KawasakiMatch.homeTeamName },
+  { minute: "39'", scorer: "神田 奏真", team: u21KawasakiMatch.awayTeamName },
+  { minute: "78'", scorer: "山市 秀翔", team: u21KawasakiMatch.homeTeamName },
+  { minute: "83'", scorer: "小林 悠", team: u21KawasakiMatch.homeTeamName },
+];
+
+// 東京V62・79分、川崎64分は同時刻複数交代。OUT/INの対応未確定のため未収録。
+export const u21KawasakiSubstitutions: MatchSubstitution[] = [
+  { minute: "22'", team: u21KawasakiMatch.awayTeamName, playerOut: "山田 剛綺", playerIn: "高居 丈流" },
+  { minute: "46'", team: u21KawasakiMatch.homeTeamName, playerOut: "持山 匡佑", playerIn: "加藤 昊" },
+  { minute: "66'", team: u21KawasakiMatch.homeTeamName, playerOut: "武内 勇人", playerIn: "廣瀬 寧生" },
+  { minute: "76'", team: u21KawasakiMatch.homeTeamName, playerOut: "カイキ ケイロス", playerIn: "小林 悠" },
+];
+
+export const u21KawasakiCards: MatchCard[] = [
+  { player: "中村 圭佑", team: u21KawasakiMatch.awayTeamName, type: "red" },
+  // 由井航太は警告2枚による退場。既存型はsecond-yellowを区別できないためredで保持。
+  { player: "由井 航太", team: u21KawasakiMatch.homeTeamName, type: "red" },
+  { player: "山市 秀翔", team: u21KawasakiMatch.homeTeamName, type: "yellow" },
+  { player: "川村 楽人", team: u21KawasakiMatch.awayTeamName, type: "yellow" },
+];
+
+export const u21KawasakiOfficialRecord: OfficialMatchRecord = {
+  kickoff: "15:03",
+  attendance: 9474,
+  weather: "曇のち晴",
+  temperature: "22.8℃",
+  humidity: "56%",
 };
 
 export const u21KawasakiHomeOfficialLineup: U21OfficialLineup = {

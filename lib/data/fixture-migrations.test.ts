@@ -56,17 +56,17 @@ test("TBD-only collections provide a provisional NEXT, while confirmed fixtures 
 });
 
 test("kickoff boundary includes 17:59 and excludes a still-scheduled 18:01 fixture", () => {
-  const kickoff = { ...u21Fixtures[3], id: "boundary", kickoffAt: "2026-09-12T18:00:00+09:00" };
+  const kickoff = { ...u21Fixtures.find((fixture) => fixture.id === "u21-next-4")!, id: "boundary", kickoffAt: "2026-09-12T18:00:00+09:00" };
   assert.equal(getNextFixture([kickoff], new Date("2026-09-12T17:59:00+09:00"))?.id, "boundary");
   assert.equal(getNextFixture([kickoff], new Date("2026-09-12T18:01:00+09:00")), undefined);
 });
 
 test("two consecutive finishes update NEXT, LAST and HISTORY for both categories", () => {
-  // U-21: finishedIdsの2件がそのままLAST/HISTORY直近2件になる。
+  // U-21: より新しい川崎戦と清水戦がLAST/HISTORY直近2件になる。
   // BELEZA: finishedIds（INAC神戸戦・EL埼玉戦）より後に浦和カップ戦・C大阪戦がすでにfinished
   // として実データに存在するため、LAST/HISTORY直近2件はそちら（より新しい確定結果）になる。
   const cases = [
-    { fixtures: u21Fixtures, finishedIds: ["u21-next-1", "u21-next-2"], nextId: "u21-next-3", lastId: "u21-next-2", historyTop2: ["u21-next-2", "u21-next-1"] },
+    { fixtures: u21Fixtures, finishedIds: ["u21-next-1", "u21-next-2"], nextId: "u21-next-4", lastId: "u21-next-3", historyTop2: ["u21-next-3", "u21-next-2"] },
     { fixtures: belezaFixtures, finishedIds: ["beleza-next-3", "beleza-next-4"], nextId: "beleza-next-8", lastId: "beleza-next-7", historyTop2: ["beleza-next-7", "beleza-match-5"] },
   ] as const;
   for (const { fixtures, finishedIds, nextId, lastId, historyTop2 } of cases) {
