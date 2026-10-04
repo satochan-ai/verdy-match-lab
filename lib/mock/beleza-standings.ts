@@ -28,7 +28,7 @@ export const weLeagueStandings: LeagueStandings = {
 
 /**
  * 2026/27 WEリーグ クラシエカップ リーグステージ 順位表。
- * 出典：ユーザー提供の公式順位表データ（一次入力、2026/09/27 19:57時点）。
+ * 出典：ユーザー提供の公式順位表データ（一次入力、2026/10/03 16:06時点）。
  * 90分勝/PK勝/PK負/敗の列解釈は既存の数値構造（wins = regulationWins + penaltyWins、
  * losses = regulationLosses + penaltyLosses、draws = 0）を踏襲し、提供された勝点との
  * 整合（90分勝×3 + PK勝×2 + PK負×1 + 敗×0）を確認済み。公式ページの列名が確認できた
@@ -37,19 +37,19 @@ export const weLeagueStandings: LeagueStandings = {
  */
 export const kracieCupStandings: LeagueStandings = {
   competition: "2026/27 WEリーグ クラシエカップ",
-  asOfLabel: "2026/09/27 19:57 現在",
+  asOfLabel: "2026/10/03 16:06 現在",
   entries: [
     { rank: 1, teamName: "ジェフ千葉レディース", played: 4, wins: 4, draws: 0, losses: 0, goalsFor: 8, goalsAgainst: 5, goalDifference: 3, points: 11, regulationWins: 3, penaltyWins: 1, penaltyLosses: 0, regulationLosses: 0 },
     { rank: 2, teamName: "ノジマステラ神奈川相模原", played: 4, wins: 3, draws: 0, losses: 1, goalsFor: 7, goalsAgainst: 2, goalDifference: 5, points: 10, regulationWins: 3, penaltyWins: 0, penaltyLosses: 1, regulationLosses: 0 },
-    { rank: 3, teamName: "日テレ・東京ヴェルディベレーザ", played: 4, wins: 3, draws: 0, losses: 1, goalsFor: 9, goalsAgainst: 6, goalDifference: 3, points: 9, regulationWins: 3, penaltyWins: 0, penaltyLosses: 0, regulationLosses: 1 },
-    { rank: 4, teamName: "RB大宮アルディージャWOMEN", played: 4, wins: 2, draws: 0, losses: 2, goalsFor: 6, goalsAgainst: 4, goalDifference: 2, points: 7, regulationWins: 2, penaltyWins: 0, penaltyLosses: 1, regulationLosses: 1 },
-    { rank: 5, teamName: "ちふれASエルフェン埼玉", played: 4, wins: 3, draws: 0, losses: 1, goalsFor: 5, goalsAgainst: 5, goalDifference: 0, points: 7, regulationWins: 1, penaltyWins: 2, penaltyLosses: 0, regulationLosses: 1 },
-    { rank: 6, teamName: "マイナビ仙台", played: 4, wins: 2, draws: 0, losses: 2, goalsFor: 4, goalsAgainst: 4, goalDifference: 0, points: 7, regulationWins: 2, penaltyWins: 0, penaltyLosses: 1, regulationLosses: 1 },
-    { rank: 7, teamName: "サンフレッチェ広島レジーナ", played: 4, wins: 2, draws: 0, losses: 2, goalsFor: 6, goalsAgainst: 5, goalDifference: 1, points: 6, regulationWins: 2, penaltyWins: 0, penaltyLosses: 0, regulationLosses: 2 },
-    { rank: 8, teamName: "セレッソ大阪ヤンマーレディース", played: 4, wins: 2, draws: 0, losses: 2, goalsFor: 7, goalsAgainst: 7, goalDifference: 0, points: 6, regulationWins: 2, penaltyWins: 0, penaltyLosses: 0, regulationLosses: 2 },
-    { rank: 9, teamName: "アルビレックス新潟レディース", played: 4, wins: 2, draws: 0, losses: 2, goalsFor: 5, goalsAgainst: 6, goalDifference: -1, points: 5, regulationWins: 1, penaltyWins: 1, penaltyLosses: 0, regulationLosses: 2 },
-    { rank: 10, teamName: "三菱重工浦和レッズレディース", played: 4, wins: 1, draws: 0, losses: 3, goalsFor: 6, goalsAgainst: 6, goalDifference: 0, points: 4, regulationWins: 1, penaltyWins: 0, penaltyLosses: 1, regulationLosses: 2 },
-    { rank: 11, teamName: "INAC神戸レオネッサ", played: 4, wins: 0, draws: 0, losses: 4, goalsFor: 5, goalsAgainst: 11, goalDifference: -6, points: 0, regulationWins: 0, penaltyWins: 0, penaltyLosses: 0, regulationLosses: 4 },
-    { rank: 12, teamName: "AC長野パルセイロ・レディース", played: 4, wins: 0, draws: 0, losses: 4, goalsFor: 0, goalsAgainst: 7, goalDifference: -7, points: 0, regulationWins: 0, penaltyWins: 0, penaltyLosses: 0, regulationLosses: 4 },
+    { rank: 3, teamName: "サンフレッチェ広島レジーナ", played: 5, wins: 3, draws: 0, losses: 2, goalsFor: 9, goalsAgainst: 5, goalDifference: 4, points: 9, regulationWins: 3, penaltyWins: 0, penaltyLosses: 0, regulationLosses: 2 },
+    { rank: 4, teamName: "日テレ・東京ヴェルディベレーザ", played: 5, wins: 3, draws: 0, losses: 2, goalsFor: 11, goalsAgainst: 10, goalDifference: 1, points: 9, regulationWins: 3, penaltyWins: 0, penaltyLosses: 0, regulationLosses: 2 },
+    { rank: 5, teamName: "マイナビ仙台", played: 5, wins: 2, draws: 0, losses: 3, goalsFor: 4, goalsAgainst: 4, goalDifference: 0, points: 8, regulationWins: 2, penaltyWins: 0, penaltyLosses: 2, regulationLosses: 1 },
+    { rank: 6, teamName: "三菱重工浦和レッズレディース", played: 5, wins: 2, draws: 0, losses: 3, goalsFor: 10, goalsAgainst: 8, goalDifference: 2, points: 7, regulationWins: 2, penaltyWins: 0, penaltyLosses: 1, regulationLosses: 2 },
+    { rank: 7, teamName: "RB大宮アルディージャWOMEN", played: 4, wins: 2, draws: 0, losses: 2, goalsFor: 6, goalsAgainst: 4, goalDifference: 2, points: 7, regulationWins: 2, penaltyWins: 0, penaltyLosses: 1, regulationLosses: 1 },
+    { rank: 8, teamName: "ちふれASエルフェン埼玉", played: 4, wins: 3, draws: 0, losses: 1, goalsFor: 5, goalsAgainst: 5, goalDifference: 0, points: 7, regulationWins: 1, penaltyWins: 2, penaltyLosses: 0, regulationLosses: 1 },
+    { rank: 9, teamName: "セレッソ大阪ヤンマーレディース", played: 4, wins: 2, draws: 0, losses: 2, goalsFor: 7, goalsAgainst: 7, goalDifference: 0, points: 6, regulationWins: 2, penaltyWins: 0, penaltyLosses: 0, regulationLosses: 2 },
+    { rank: 10, teamName: "アルビレックス新潟レディース", played: 4, wins: 2, draws: 0, losses: 2, goalsFor: 5, goalsAgainst: 6, goalDifference: -1, points: 5, regulationWins: 1, penaltyWins: 1, penaltyLosses: 0, regulationLosses: 2 },
+    { rank: 11, teamName: "INAC神戸レオネッサ", played: 5, wins: 1, draws: 0, losses: 4, goalsFor: 5, goalsAgainst: 11, goalDifference: -6, points: 2, regulationWins: 0, penaltyWins: 1, penaltyLosses: 0, regulationLosses: 4 },
+    { rank: 12, teamName: "AC長野パルセイロ・レディース", played: 5, wins: 0, draws: 0, losses: 5, goalsFor: 0, goalsAgainst: 10, goalDifference: -10, points: 0, regulationWins: 0, penaltyWins: 0, penaltyLosses: 0, regulationLosses: 5 },
   ],
 };
