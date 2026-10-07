@@ -62,6 +62,24 @@ export interface PreviousMatchGoal {
 /** Matchの自試合の得点記録。前節参照用のPreviousMatchGoalと同一形状のため型を共有する。 */
 export type MatchGoal = PreviousMatchGoal;
 
+/** PK戦のキッカー1人分の結果。orderは蹴った順（1始まり）。 */
+export interface PenaltyKickResult {
+  order: number;
+  player: string;
+  result: "goal" | "miss";
+}
+
+/**
+ * PK戦の結果。homeScore/awayScoreはPKスコア（試合本体のスコアとは別）。
+ * キッカー個別結果（homeKicks/awayKicks）は公式で確認できた場合のみ設定する。
+ */
+export interface PenaltyShootout {
+  homeScore: number;
+  awayScore: number;
+  homeKicks?: PenaltyKickResult[];
+  awayKicks?: PenaltyKickResult[];
+}
+
 export interface MatchCard {
   /** 公式結果ページで確認できた場合のみ設定する。未確認ならundefinedのまま。 */
   minute?: string;
@@ -218,7 +236,7 @@ export interface Match {
    */
   extraTime?: boolean;
   extraTimeScore?: { home: number; away: number };
-  penaltyShootout?: { homeScore: number; awayScore: number };
+  penaltyShootout?: PenaltyShootout;
   timeSegment: TimeSegment | null;
   verdyProfile: TeamProfile;
   opponentProfile: TeamProfile;

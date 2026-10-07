@@ -19,7 +19,7 @@ test("Tottori finish advances TOP selectors and preserves separate extra-time an
   const record = matches.find((match) => match.id === "sched-emperor-tottori")!;
   assert.deepEqual([record.homeScore, record.awayScore], [0, 0]);
   assert.deepEqual(record.extraTimeScore, { home: 0, away: 0 });
-  assert.deepEqual(record.penaltyShootout, { homeScore: 3, awayScore: 4 });
+  assert.deepEqual([record.penaltyShootout?.homeScore, record.penaltyShootout?.awayScore], [3, 4]);
   assert.equal(getMatchResult(record), "win");
   assert.equal(record.actualLineups?.away.formation, "3-4-1-2");
   assert.deepEqual(record.actualLineups?.away.starters.FW, ["27 白井 亮丞", "9 染野 唯月"]);

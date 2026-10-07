@@ -19,7 +19,24 @@ export const matches: Match[] = [
     awayScore: 0,
     extraTime: true,
     extraTimeScore: { home: 0, away: 0 },
-    penaltyShootout: { homeScore: 3, awayScore: 4 },
+    penaltyShootout: {
+      homeScore: 3,
+      awayScore: 4,
+      homeKicks: [
+        { order: 1, player: "本保 奏希", result: "miss" },
+        { order: 2, player: "荒井 涼", result: "miss" },
+        { order: 3, player: "田制 裕作", result: "goal" },
+        { order: 4, player: "二階堂 正哉", result: "goal" },
+        { order: 5, player: "橋本 清太郎", result: "goal" },
+      ],
+      awayKicks: [
+        { order: 1, player: "染野 唯月", result: "goal" },
+        { order: 2, player: "神田 奏真", result: "goal" },
+        { order: 3, player: "福田 湧矢", result: "miss" },
+        { order: 4, player: "山本 丈偉", result: "goal" },
+        { order: 5, player: "食野 壮磨", result: "goal" },
+      ],
+    },
     goals: [],
     substitutions: [
       { minute: "HT", team: "東京V", playerOut: "平川 怜", playerIn: "食野 壮磨" },

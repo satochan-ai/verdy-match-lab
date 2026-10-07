@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getMatchDetail } from "@/lib/data/matches";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { MatchScoreboard } from "@/components/match/MatchScoreboard";
+import { PenaltyShootoutDetail } from "@/components/match/PenaltyShootoutDetail";
 import { MatchMeta } from "@/components/match/MatchMeta";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { StrategyList } from "@/components/match/StrategyList";
@@ -275,6 +276,7 @@ export default async function MatchDetailPage({
               </div>
             )}
             <MatchScoreboard match={displayMatch} />
+            <PenaltyShootoutDetail match={displayMatch} />
           </div>
 
           <div className="mt-8 lg:col-start-1 lg:mt-6">
