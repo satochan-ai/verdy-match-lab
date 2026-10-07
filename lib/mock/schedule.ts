@@ -171,9 +171,11 @@ export const scheduleMatches: ScheduleMatch[] = [
     round: "3回戦",
     kickoffAt: "2026-10-07T19:00:00+09:00",
     venue: "味の素スタジアム",
-    isVerdyHome: true,
+    isVerdyHome: false,
     opponentName: "ガイナーレ鳥取",
-    status: "scheduled",
+    status: "finished",
+    homeScore: 0,
+    awayScore: 0,
   },
   {
     id: "sched-hiroshima",

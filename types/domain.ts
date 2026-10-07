@@ -217,6 +217,8 @@ export interface Match {
    * 90分で決着した試合・未設定の試合は従来どおりの表示のまま変わらない。
    */
   extraTime?: boolean;
+  extraTimeScore?: { home: number; away: number };
+  penaltyShootout?: { homeScore: number; awayScore: number };
   timeSegment: TimeSegment | null;
   verdyProfile: TeamProfile;
   opponentProfile: TeamProfile;

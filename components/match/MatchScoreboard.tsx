@@ -57,6 +57,15 @@ export function MatchScoreboard({
           {match.status === "finished" && match.extraTime && (
             <p className="mt-1.5 text-[11px] font-bold text-text-secondary lg:text-[12px]">延長戦の結果</p>
           )}
+          {match.status === "finished" && match.extraTimeScore && (
+            <p className="text-[12px]">延長戦 {match.extraTimeScore.home}-{match.extraTimeScore.away}</p>
+          )}
+          {match.status === "finished" && match.penaltyShootout && (
+            <div className="mt-2 text-center text-[12px] font-bold">
+              <p>PK戦 {match.penaltyShootout.homeScore}-{match.penaltyShootout.awayScore}</p>
+              <p>{match.penaltyShootout.homeScore > match.penaltyShootout.awayScore ? match.homeTeam.name : match.awayTeam.name}勝利 / WIN</p>
+            </div>
+          )}
         </div>
 
         <div className="text-center lg:min-w-0 lg:text-left">

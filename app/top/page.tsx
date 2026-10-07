@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getMatchResult } from "@/lib/match/result";
 import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
 import { topFixtures, toTopUpcomingFixture } from "@/lib/data/top-fixtures";
 import { getNextFixture, getUpcomingFixtures } from "@/lib/data/fixture-selectors";
@@ -66,13 +67,7 @@ export default async function TopTeamPage() {
     ? { name: displayFixture.opponentName }
     : null;
   const recentOpponent = recent.isVerdyHome ? recent.awayTeam : recent.homeTeam;
-  const recentResult =
-    recent.homeScore! === recent.awayScore!
-      ? "draw"
-      : (recent.isVerdyHome && recent.homeScore! > recent.awayScore!) ||
-        (!recent.isVerdyHome && recent.awayScore! > recent.homeScore!)
-      ? "win"
-      : "loss";
+  const recentResult = getMatchResult(recent);
 
   const fixture = displayFixture?.kickoffAt ? formatMatchday(displayFixture.kickoffAt) : null;
   // 表示中のNEXT fixture（topFixtures由来）から直接決める。scheduledなMatch行（nextMatch）が
@@ -192,6 +187,7 @@ export default async function TopTeamPage() {
                     </span>
                     <span className="ml-2 flex shrink-0 items-center gap-2">
                       <span className="tabular-nums font-bold text-text-primary">{recent.homeScore}-{recent.awayScore}</span>
+                      {recent.penaltyShootout && <span className="text-[12px]">PK {recent.penaltyShootout.homeScore}-{recent.penaltyShootout.awayScore}</span>}
                       <StatusBadge variant={recentResult} />
                     </span>
                   </div>

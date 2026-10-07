@@ -9,27 +9,49 @@ function opponent(id: string, name: string) {
 export const matches: Match[] = [
   {
     id: "sched-emperor-tottori",
-    homeTeam: verdy,
-    awayTeam: opponent("gainare-tottori", "ガイナーレ鳥取"),
-    isVerdyHome: true,
+    homeTeam: opponent("gainare-tottori", "ガイナーレ鳥取"),
+    awayTeam: verdy,
+    isVerdyHome: false,
     kickoffAt: "2026-10-07T19:00:00+09:00",
     venue: "味の素スタジアム",
-    status: "scheduled",
-    homeScore: null,
-    awayScore: null,
+    status: "finished",
+    homeScore: 0,
+    awayScore: 0,
+    extraTime: true,
+    extraTimeScore: { home: 0, away: 0 },
+    penaltyShootout: { homeScore: 3, awayScore: 4 },
+    goals: [],
+    substitutions: [
+      { minute: "HT", team: "東京V", playerOut: "平川 怜", playerIn: "食野 壮磨" },
+      { minute: "HT", team: "東京V", playerOut: "溝口 修平", playerIn: "新井 悠太" },
+      { minute: "56'", team: "東京V", playerOut: "藤本 寛也", playerIn: "山本 丈偉" },
+      { minute: "84'", team: "東京V", playerOut: "齋藤 功佑", playerIn: "神田 奏真" },
+      { minute: "84'", team: "東京V", playerOut: "白井 亮丞", playerIn: "仲山 獅恩" },
+      { minute: "延長前半開始", team: "東京V", playerOut: "松田 陸", playerIn: "鈴木 海音" },
+      { minute: "67'", team: "鳥取", playerOut: "東條 敦輝", playerIn: "本保 奏希" },
+      { minute: "67'", team: "鳥取", playerOut: "三木 直土", playerIn: "吉田 伊吹" },
+      { minute: "75'", team: "鳥取", playerOut: "ムン ミン", playerIn: "荒井 涼" },
+      { minute: "80'", team: "鳥取", playerOut: "金浦 真樹", playerIn: "二階堂 正哉" },
+      { minute: "80'", team: "鳥取", playerOut: "河村 匠", playerIn: "橋本 清太郎" },
+      { minute: "96'", team: "鳥取", playerOut: "藤田 一途", playerIn: "田制 裕作" },
+    ],
+    cards: [
+      { minute: "17'", team: "東京V", player: "藤本 寛也", type: "yellow" },
+      { minute: "37'", team: "東京V", player: "松田 陸", type: "yellow" },
+    ],
     timeSegment: null,
     fixtureMeta: {
       competition: "天皇杯 JFA 第106回全日本サッカー選手権大会",
       roundLabel: "3回戦",
     },
     actualLineups: {
-      home: {
-        formation: "3-4-2-1",
+      away: {
+        formation: "3-4-1-2",
         starters: {
           GK: ["1 マテウス"],
           DF: ["29 佐古 真礼", "4 林 尚輝", "36 松田 陸"],
-          MF: ["18 溝口 修平", "8 齋藤 功佑", "16 平川 怜", "14 福田 湧矢", "27 白井 亮丞", "19 藤本 寛也"],
-          FW: ["9 染野 唯月"],
+          MF: ["18 溝口 修平", "8 齋藤 功佑", "16 平川 怜", "14 福田 湧矢", "19 藤本 寛也"],
+          FW: ["27 白井 亮丞", "9 染野 唯月"],
         },
         bench: {
           GK: ["21 長沢 祐弥"],
@@ -38,7 +60,7 @@ export const matches: Match[] = [
           FW: ["38 神田 奏真", "51 大藤 颯太"],
         },
       },
-      away: {
+      home: {
         formation: "3-1-4-2",
         starters: {
           GK: ["88 バーンズ アントン"],
