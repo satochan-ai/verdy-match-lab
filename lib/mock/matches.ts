@@ -8,6 +8,60 @@ function opponent(id: string, name: string) {
 
 export const matches: Match[] = [
   {
+    id: "sched-emperor-tottori",
+    homeTeam: verdy,
+    awayTeam: opponent("gainare-tottori", "ガイナーレ鳥取"),
+    isVerdyHome: true,
+    kickoffAt: "2026-10-07T19:00:00+09:00",
+    venue: "味の素スタジアム",
+    status: "scheduled",
+    homeScore: null,
+    awayScore: null,
+    timeSegment: null,
+    fixtureMeta: {
+      competition: "天皇杯 JFA 第106回全日本サッカー選手権大会",
+      roundLabel: "3回戦",
+    },
+    actualLineups: {
+      home: {
+        formation: "3-4-2-1",
+        starters: {
+          GK: ["1 マテウス"],
+          DF: ["29 佐古 真礼", "4 林 尚輝", "36 松田 陸"],
+          MF: ["18 溝口 修平", "8 齋藤 功佑", "16 平川 怜", "14 福田 湧矢", "27 白井 亮丞", "19 藤本 寛也"],
+          FW: ["9 染野 唯月"],
+        },
+        bench: {
+          GK: ["21 長沢 祐弥"],
+          DF: ["15 鈴木 海音"],
+          MF: ["20 食野 壮磨", "24 仲山 獅恩", "28 山本 丈偉", "30 川村 楽人", "40 新井 悠太"],
+          FW: ["38 神田 奏真", "51 大藤 颯太"],
+        },
+      },
+      // 鳥取の公式メンバー・formationは資料未提供のため未登録。
+      away: {
+        starters: { GK: [], DF: [], MF: [], FW: [] },
+        bench: { GK: [], DF: [], MF: [], FW: [] },
+      },
+    },
+    // 未提供の戦術プロフィール・予想データは補完しない。
+    verdyProfile: {
+      formation: "",
+      characteristics: { attack: "", defense: "" },
+      keyPlayers: [],
+      recentTrend: "",
+    },
+    opponentProfile: {
+      formation: "",
+      characteristics: { attack: "", defense: "" },
+      keyPlayers: [],
+      recentTrend: "",
+    },
+    matchNotes: [],
+    focusPoints: [],
+    strategies: [],
+  },
+  {
     id: "match-1",
     homeTeam: verdy,
     awayTeam: opponent("kashiwa-reysol", "柏レイソル"),

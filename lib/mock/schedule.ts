@@ -166,6 +166,7 @@ export const scheduleMatches: ScheduleMatch[] = [
   },
   {
     id: "sched-emperor-tottori",
+    detailMatchId: "sched-emperor-tottori",
     competition: "emperor_cup",
     round: "3回戦",
     kickoffAt: "2026-10-07T19:00:00+09:00",

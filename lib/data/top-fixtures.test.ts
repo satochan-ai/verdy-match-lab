@@ -35,8 +35,9 @@ test("TOP NEXT5 spans every competition (J1 / Levain / Emperor's Cup), not J1 on
   assert.ok(competitionNames.includes("2026 J1リーグ"));
   // サガン鳥栖戦（match-15）はfinished化しNEXT5から外れるが、detailMatchIdは維持される。
   assert.equal(topFixtures.find((fixture) => fixture.id === "sched-levain-tosu")?.detailMatchId, "match-15");
-  // 他の推測データが無い未確定分には引き続き付与していないこと。
-  assert.equal(next5.find((fixture) => fixture.opponentName === "ガイナーレ鳥取")?.detailMatchId, undefined);
+  // 公式メンバーを登録した鳥取戦は既存fixture IDの詳細へ接続する。
+  assert.equal(next5.find((fixture) => fixture.opponentName === "ガイナーレ鳥取")?.detailMatchId, "sched-emperor-tottori");
+  // 詳細データ未登録のfixtureには引き続き付与しない。
   assert.equal(next5.find((fixture) => fixture.opponentName === "サンフレッチェ広島")?.detailMatchId, undefined);
   assert.equal(next5.find((fixture) => fixture.opponentName === "FC東京")?.detailMatchId, undefined);
 });
