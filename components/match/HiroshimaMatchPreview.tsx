@@ -1,5 +1,6 @@
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import type { CommonFixture } from "@/lib/types/fixture";
+import { TeamPerspective } from "@/components/match/TeamPerspective";
 
 const keyPoints = [
   { no: "01", title: "新監督の選手起用", text: "選考がフラットとされる中、従来の序列から変化があるか。" },
@@ -25,6 +26,7 @@ function formatKickoff(iso: string) {
 export function HiroshimaMatchPreview({ fixture }: { fixture: CommonFixture }) {
   return (
     <section aria-labelledby="hiroshima-preview-title" className="space-y-5 border-y border-border bg-surface px-4 py-5 lg:px-6 lg:py-6">
+      <TeamPerspective label="MATCH PREVIEW" verdy={<div className="space-y-5">
       <div>
         <SectionHeader title="新体制の初陣。相馬ヴェルディはどう変わるのか" eyebrow="MATCH PREVIEW" />
         <p className="inline-block border border-deep-green px-2 py-0.5 text-[11px] font-bold text-deep-green">試合前時点の独自プレビュー</p>
@@ -70,6 +72,18 @@ export function HiroshimaMatchPreview({ fixture }: { fixture: CommonFixture }) {
         試合日程・会場：
         <a href="https://www.verdy.co.jp/match/schedule/" target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">東京ヴェルディ公式 試合日程</a>
       </p>
+      </div>} hiroshima={
+        <div className="space-y-4 border-t-2 border-purple-700 bg-purple-50 p-4 lg:p-6">
+          <SectionHeader title="サンフレッチェ広島視点｜新体制の東京Vをどう攻略するか" eyebrow="MATCH PREVIEW" />
+          <div className="space-y-3 text-[14px] leading-relaxed text-text-primary">
+            <p>相馬直樹新監督を迎えた東京ヴェルディとのアウェイゲーム。広島にとっては、相手の選手起用やフォーメーションが読みづらい一戦となる。</p>
+            <p>東京Vが4-4-2を採用する場合、広島は両ウイングバックを高い位置に押し上げ、サイドで優位な状況を作りたい。一方、3-4-1-2を採用する場合は、ウイングバックの背後や3バックの間をどう攻略するかが重要になる。</p>
+            <p>攻撃では、予想先発のアレーを起点に、加藤陸次樹と鈴木章斗の2シャドーがどう連動するか。守備では、東京Vの染野唯月と一美和成の2トップに対し、3バックの距離感と中央のカバーが鍵となる。</p>
+            <p>新体制の東京Vがどのような布陣で臨むのかを見極めながら、広島がサイド攻撃と前線の連係を発揮できるかが注目される。</p>
+          </div>
+          <p className="text-[13px] font-bold leading-relaxed text-purple-900">本プレビューは試合前時点の広島側の予想布陣を前提とするVerdy Match Lab独自の分析です。クラブの公式見解や、実際の起用・戦術を示すものではありません。</p>
+        </div>
+      } />
     </section>
   );
 }

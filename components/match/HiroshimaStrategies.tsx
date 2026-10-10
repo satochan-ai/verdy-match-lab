@@ -1,6 +1,7 @@
 import type { Strategy } from "@/types/domain";
 import { StrategyList } from "@/components/match/StrategyList";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { TeamPerspective } from "@/components/match/TeamPerspective";
 
 // 公式試合データとは別の、試合前時点の独自戦術提案。
 const verdy: Strategy[] = [
@@ -18,14 +19,14 @@ export function HiroshimaStrategies() {
   return (
     <section aria-label="軍師の三策（東京V／広島）" className="space-y-4">
       <SectionHeader title="軍師の三策" eyebrow="MATCH PLAN / 2026.10.11" variant="emphasis" />
-      <div className="grid gap-6 lg:grid-cols-2">
+      <TeamPerspective label="軍師の三策" verdy={
         <div className="min-w-0 border-t-2 border-primary-green bg-surface-tint px-4 py-5">
           <StrategyList strategies={verdy} title="東京ヴェルディ視点" />
         </div>
-        <div className="min-w-0 border-t-2 border-purple-700 bg-purple-50 px-4 py-5">
+      } hiroshima={<div className="min-w-0 border-t-2 border-purple-700 bg-purple-50 px-4 py-5">
           <StrategyList strategies={hiroshima} title="サンフレッチェ広島視点" opponent />
         </div>
-      </div>
+      } />
       <p className="text-[13px] font-bold leading-relaxed text-text-secondary">
         ※軍師の三策はVerdy Match Lab独自の戦術提案です。両クラブの公式見解や実際の試合指示を示すものではありません。
       </p>
