@@ -44,6 +44,46 @@ const predictions = [
   },
 ] satisfies { label: string; formation: string; rows: PredictionPlayer[][] }[];
 
+const hiroshimaRows: PredictionPlayer[][] = [
+  [{ name: "セバスティアン・アレー", role: "CF", alternative: "鮎川" }],
+  [{ name: "加藤 陸次樹", role: "左シャドー" }, { name: "鈴木 章斗", role: "右シャドー" }],
+  [
+    { name: "東 俊希", role: "左WB" },
+    { name: "川辺 駿", role: "ボランチ" },
+    { name: "松本 泰志", role: "ボランチ" },
+    { name: "新井 直人", role: "右WB" },
+  ],
+  [{ name: "佐々木 翔", role: "左CB" }, { name: "荒木 隼人", role: "中央CB" }, { name: "中野 就斗", role: "右CB" }],
+  [{ name: "大迫 敬介", role: "GK" }],
+];
+
+function PredictionPitch({ rows, opponent = false }: { rows: PredictionPlayer[][]; opponent?: boolean }) {
+  const line = opponent ? "border-purple-700/30" : "border-primary-green/30";
+  return (
+    <div className={`relative overflow-hidden border-2 px-1 py-6 lg:px-3 ${opponent ? "border-purple-800 bg-purple-50" : "border-deep-green bg-surface-tint"}`}>
+      <div aria-hidden="true" className={`pointer-events-none absolute inset-2 border ${line}`} />
+      <div aria-hidden="true" className={`pointer-events-none absolute inset-x-2 top-1/2 border-t ${line}`} />
+      <div aria-hidden="true" className={`pointer-events-none absolute left-1/2 top-1/2 size-16 -translate-x-1/2 -translate-y-1/2 rounded-full border ${line}`} />
+      <div aria-hidden="true" className={`pointer-events-none absolute inset-x-[25%] top-2 h-8 border-x border-b ${line}`} />
+      <div aria-hidden="true" className={`pointer-events-none absolute inset-x-[25%] bottom-2 h-8 border-x border-t ${line}`} />
+      <div className="relative grid min-h-[480px] content-between gap-6 lg:min-h-[520px]">
+        {rows.map((row, index) => (
+          <div key={index} className="grid items-start gap-1" style={{ gridTemplateColumns: `repeat(${row.length}, minmax(0, 1fr))` }}>
+            {row.map((player) => (
+              <div key={player.name} className="min-w-0 text-center">
+                <span aria-hidden="true" className={`mx-auto block size-5 rounded-full ${opponent ? "bg-purple-700" : "bg-primary-green"}`} />
+                <p className={`mt-1 text-[10px] font-bold lg:text-[12px] ${opponent ? "text-purple-900" : "text-deep-green"}`}>{player.role}</p>
+                <p className="break-keep break-words text-[12px] font-extrabold leading-snug text-text-primary lg:text-[15px]">{player.name}</p>
+                {player.alternative && <p className="mt-1 break-keep break-words text-[11px] leading-snug text-text-secondary lg:text-[12px]">{opponent ? `（${player.alternative}）` : `（対抗：${player.alternative}）`}</p>}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export function HiroshimaPredictions() {
   return (
     <section aria-label="相馬新監督初陣・広島戦予想スタメン" className="space-y-4">
@@ -57,30 +97,18 @@ export function HiroshimaPredictions() {
             <h3 className="mb-2 flex justify-between gap-3 text-[16px] font-extrabold text-deep-green">
               <span>{prediction.label}</span><span>{prediction.formation}</span>
             </h3>
-            <div className="relative overflow-hidden border-2 border-deep-green bg-surface-tint px-1 py-6 lg:px-3">
-              <div aria-hidden="true" className="pointer-events-none absolute inset-2 border border-primary-green/30" />
-              <div aria-hidden="true" className="pointer-events-none absolute inset-x-2 top-1/2 border-t border-primary-green/30" />
-              <div aria-hidden="true" className="pointer-events-none absolute left-1/2 top-1/2 size-16 -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary-green/30" />
-              <div aria-hidden="true" className="pointer-events-none absolute inset-x-[25%] top-2 h-8 border-x border-b border-primary-green/30" />
-              <div aria-hidden="true" className="pointer-events-none absolute inset-x-[25%] bottom-2 h-8 border-x border-t border-primary-green/30" />
-              <div className="relative grid min-h-[480px] content-between gap-6 lg:min-h-[520px]">
-                {prediction.rows.map((row, index) => (
-                  <div key={index} className="grid items-start gap-1" style={{ gridTemplateColumns: `repeat(${row.length}, minmax(0, 1fr))` }}>
-                    {row.map((player) => (
-                      <div key={player.name} className="min-w-0 text-center">
-                        <span aria-hidden="true" className="mx-auto block size-5 rounded-full bg-primary-green" />
-                        <p className="mt-1 text-[10px] font-bold text-deep-green lg:text-[12px]">{player.role}</p>
-                        <p className="break-keep break-words text-[12px] font-extrabold leading-snug text-text-primary lg:text-[15px]">{player.name}</p>
-                        {player.alternative && <p className="mt-1 break-keep break-words text-[11px] leading-snug text-text-secondary lg:text-[12px]">（対抗：{player.alternative}）</p>}
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
+            <PredictionPitch rows={prediction.rows} />
           </article>
         ))}
       </div>
+      <section aria-labelledby="hiroshima-opponent-title" className="space-y-3 border-t border-border pt-5">
+        <h3 id="hiroshima-opponent-title" className="text-[18px] font-extrabold text-purple-900">サンフレッチェ広島 予想スタメン</h3>
+        <p className="text-[14px] font-bold text-purple-900">3-4-2-1｜独自予想</p>
+        <div className="mx-auto max-w-[596px]">
+          <PredictionPitch rows={hiroshimaRows} opponent />
+        </div>
+        <p className="text-[12px] leading-relaxed text-text-secondary">CFのスタメン対抗候補：鮎川 峻。出場可能性やコンディションを確定する情報ではありません。</p>
+      </section>
       <p className="text-[13px] font-bold leading-relaxed text-deep-green">
         ※掲載内容はVerdy Match Labによる非公式の独自予想です。クラブ発表のスターティングメンバーではありません。括弧内はスタメン対抗候補です。
       </p>
