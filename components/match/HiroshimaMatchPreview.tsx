@@ -1,6 +1,7 @@
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import type { CommonFixture } from "@/lib/types/fixture";
 import { TeamPerspective } from "@/components/match/TeamPerspective";
+import { j1Standings } from "@/lib/mock/standings";
 
 const keyPoints = [
   { no: "01", title: "新監督の選手起用", text: "選考がフラットとされる中、従来の序列から変化があるか。" },
@@ -21,7 +22,7 @@ function formatKickoff(iso: string) {
  * 広島戦（sched-hiroshima）の試合前プレビュー。公式の試合情報（日程・会場）は既存のfixtureから出し、
  * 見立て・注目点はVerdy Match Labの独自分析として区別する。勝敗・スコアの予想や、
  * 出場・先発を確定する記述は含めない。試合開始後も「試合前時点」の表記を残す。
- * 順位・成績は既存の順位表スナップショットが試合前の最新値と一致しないため掲載しない。
+ * 順位・成績はJ1順位表と同じ試合前スナップショットを参照する。
  */
 export function HiroshimaMatchPreview({ fixture }: { fixture: CommonFixture }) {
   return (
@@ -84,6 +85,15 @@ export function HiroshimaMatchPreview({ fixture }: { fixture: CommonFixture }) {
           <p className="text-[13px] font-bold leading-relaxed text-purple-900">本プレビューは試合前時点の広島側の予想布陣を前提とするVerdy Match Lab独自の分析です。クラブの公式見解や、実際の起用・戦術を示すものではありません。</p>
         </div>
       } />
+      <div className="space-y-2 border-t border-border pt-4" aria-label="試合前の順位・成績">
+        <p className="text-[12px] font-bold text-text-secondary">2026年10月9日時点の試合前情報（{j1Standings.asOfLabel}）</p>
+        {j1Standings.entries.filter((entry) => entry.teamName === "東京ヴェルディ" || entry.teamName === "サンフレッチェ広島").map((entry) => (
+          <p key={entry.teamName} className="text-[13px] leading-relaxed text-text-primary">
+            {entry.teamName}：{entry.rank}位・勝点{entry.points} ／ {entry.played}試合 {entry.wins}勝{entry.draws}分{entry.losses}敗 ／ 得点{entry.goalsFor}・失点{entry.goalsAgainst}
+          </p>
+        ))}
+        <a href={j1Standings.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-[12px] font-bold text-deep-green underline">Jリーグ公式順位表</a>
+      </div>
     </section>
   );
 }
