@@ -6,17 +6,19 @@ export function StrategyList({
   strategies,
   showResult,
   title = "軍師の三策",
+  opponent = false,
 }: {
   strategies: Strategy[];
   showResult?: boolean;
   title?: string;
+  opponent?: boolean;
 }) {
   return (
     <section className="section-reveal">
       <SectionHeader title={title} eyebrow="MATCH PLAN" variant="emphasis" />
       <ul className="strategy-reveal-list divide-y divide-border border-y border-border">
         {strategies.map((s) => (
-          <StrategyItem key={s.orderNo} strategy={s} showResult={showResult} />
+          <StrategyItem key={s.orderNo} strategy={s} showResult={showResult} opponent={opponent} />
         ))}
       </ul>
     </section>

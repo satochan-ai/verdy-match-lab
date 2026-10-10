@@ -18,6 +18,7 @@ import { OpponentRecentMatches } from "@/components/match/OpponentRecentMatches"
 import { resolveMatchStatus } from "@/lib/match/status";
 import { HiroshimaPredictions } from "@/components/match/HiroshimaPredictions";
 import { HiroshimaMatchPreview } from "@/components/match/HiroshimaMatchPreview";
+import { HiroshimaStrategies } from "@/components/match/HiroshimaStrategies";
 
 export const metadata: Metadata = {
   title: "東京ヴェルディ TOP TEAM | Verdy Match Lab",
@@ -239,6 +240,8 @@ export default async function TopTeamPage() {
           </section>
 
           {hiroshimaFixture && <HiroshimaMatchPreview fixture={hiroshimaFixture} />}
+
+          <HiroshimaStrategies />
 
           <HiroshimaPredictions />
 

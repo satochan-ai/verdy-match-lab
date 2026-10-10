@@ -31,13 +31,15 @@ const RESULT_CLASS: Record<StrategyResult, string> = {
 export function StrategyItem({
   strategy,
   showResult,
+  opponent = false,
 }: {
   strategy: Strategy;
   showResult?: boolean;
+  opponent?: boolean;
 }) {
   return (
     <li className="grid grid-cols-[2.25rem_minmax(0,1fr)] gap-3 py-5 lg:grid-cols-[2.75rem_minmax(0,1fr)] lg:gap-5 lg:py-6">
-      <p className="tabular-nums text-right text-[20px] font-extrabold leading-none text-primary-green lg:text-[24px]">
+      <p className={`tabular-nums text-right text-[20px] font-extrabold leading-none lg:text-[24px] ${opponent ? "text-purple-700" : "text-primary-green"}`}>
         {String(strategy.orderNo).padStart(2, "0")}
       </p>
       <div className="min-w-0 border-l border-border pl-3 lg:pl-4">
