@@ -8,7 +8,7 @@ const now = new Date("2026-09-03T00:00:00+09:00");
 
 test("TOP schedule adapter produces valid CommonFixtures", () => {
   assert.equal(validateFixtures(topFixtures).length, 0);
-  assert.equal(topFixtures.length, 14);
+  assert.equal(topFixtures.length, 18);
   assert.deepEqual(topFixtures.find((fixture) => fixture.id === "sched-cerezo")?.score, { home: 0, away: 0 });
   assert.equal(topFixtures.find((fixture) => fixture.id === "sched-cerezo")?.detailMatchId, "match-11");
   assert.deepEqual(topFixtures.find((fixture) => fixture.id === "sched-kashima")?.score, { home: 0, away: 2 });
@@ -22,9 +22,10 @@ test("TOP NEXT5 spans every competition (J1 / Levain / Emperor's Cup), not J1 on
   assert.equal(getNextFixture(beforeTottoriFinish, now)?.opponentName, "ガイナーレ鳥取");
   const next5 = getUpcomingFixtures(beforeTottoriFinish, now, 5);
   assert.deepEqual(next5.map((fixture) => fixture.opponentName), [
-    "ガイナーレ鳥取", "サンフレッチェ広島", "FC東京",
+    "ガイナーレ鳥取", "サンフレッチェ広島", "FC東京", "横浜F・マリノス", "アビスパ福岡",
   ]);
-  assert.equal(next5.length, 3);
+  assert.equal(next5.length, 5);
+  assert.equal(new Set(next5.map((fixture) => fixture.id)).size, 5);
   // 日付昇順であること。
   const kickoffTimes = next5.map((fixture) => new Date(fixture.kickoffAt!).getTime());
   assert.deepEqual(kickoffTimes, [...kickoffTimes].sort((a, b) => a - b));
@@ -83,4 +84,20 @@ test("TOP schedule can hold two future fixtures with detailMatchId at the same t
   const next5 = getUpcomingFixtures(withTwoFutureDetails, now, 5);
   assert.equal(next5[0]?.detailMatchId, "match-14-plus-1-test");
   assert.equal(next5[1]?.detailMatchId, "match-14-plus-2-test");
+});
+
+test("TOP NEXT5 on 2026-10-10 follows the official schedule (広島 / FC東京 / 横浜FM / 福岡 / 長崎)", () => {
+  const today = new Date("2026-10-10T16:00:00+09:00");
+  const next5 = getUpcomingFixtures(topFixtures, today, 5);
+  assert.deepEqual(next5.map((fixture) => `${fixture.kickoffAt}|${fixture.opponentName}|${fixture.isHome ? "H" : "A"}|${fixture.competition.round}|${fixture.venue}`), [
+    "2026-10-11T15:00:00+09:00|サンフレッチェ広島|H|第9節|味の素スタジアム",
+    "2026-10-17T14:00:00+09:00|FC東京|H|第10節|味の素スタジアム",
+    "2026-10-21T19:00:00+09:00|横浜F・マリノス|A|第11節|ＭＵＦＧスタジアム",
+    "2026-10-24T15:00:00+09:00|アビスパ福岡|H|第12節|味の素スタジアム",
+    "2026-11-01T14:00:00+09:00|V・ファーレン長崎|A|第13節|PEACE STADIUM Connected by SoftBank",
+  ]);
+  assert.equal(getNextFixture(topFixtures, today)?.id, next5[0].id);
+  assert.equal(new Set(next5.map((fixture) => fixture.id)).size, 5);
+  assert.equal(next5.every((fixture) => fixture.status === "scheduled" && fixture.score === undefined), true);
+  assert.equal(getLatestFinishedFixture(topFixtures)?.opponentName, "ガイナーレ鳥取");
 });

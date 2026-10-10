@@ -1101,4 +1101,66 @@ export const belezaUpcomingMatches: UpcomingFixture[] = [
     opponentName: "サンフレッチェ広島レジーナ",
     venue: "AGFフィールド",
   },
+  // 以下のWEリーグ戦は東京ヴェルディ公式カレンダー（https://www.verdy.co.jp/beleza/calendar/ ・2026-10-10確認）
+  // の確定日程。ホーム／アウェイは会場（AGFフィールド・味の素フィールド西が丘＝ホーム）から判定。
+  {
+    id: "beleza-next-9",
+    dateLabel: "10.18 SUN",
+    kickoffLabel: "14:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第4節",
+    },
+    isHome: false,
+    opponentName: "サンフレッチェ広島レジーナ",
+    venue: "エディオンピースウイング広島",
+  },
+  {
+    id: "beleza-next-10",
+    dateLabel: "10.24 SAT",
+    kickoffLabel: "12:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第6節",
+    },
+    isHome: true,
+    opponentName: "ちふれASエルフェン埼玉",
+    venue: "AGFフィールド",
+  },
+  {
+    id: "beleza-next-11",
+    dateLabel: "10.28 WED",
+    kickoffLabel: "18:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第5節",
+    },
+    isHome: true,
+    opponentName: "セレッソ大阪ヤンマーレディース",
+    venue: "味の素フィールド西が丘",
+  },
+  {
+    id: "beleza-next-12",
+    dateLabel: "10.31 SAT",
+    kickoffLabel: "15:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第7節",
+    },
+    isHome: true,
+    opponentName: "RB大宮アルディージャWOMEN",
+    venue: "味の素フィールド西が丘",
+  },
+  {
+    id: "beleza-next-13",
+    dateLabel: "11.07 SAT",
+    kickoffLabel: "14:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第8節",
+    },
+    isHome: false,
+    opponentName: "ノジマステラ神奈川相模原",
+    venue: "相模原ギオンスタジアム",
+  },
 ];

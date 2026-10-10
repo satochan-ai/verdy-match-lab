@@ -9,7 +9,7 @@ const now = new Date("2026-09-13T00:00:00+09:00");
 
 test("BELEZA fixture collection is valid", () => {
   assert.equal(validateFixtures(belezaFixtures).length, 0);
-  assert.equal(belezaFixtures.length, 9);
+  assert.equal(belezaFixtures.length, 14);
   // /beleza/matches/[id] now renders beleza-match-1/2/3/4/5 (archived) individually in addition
   // to the current snapshot (beleza-next-4, EL埼玉), so every finished BELEZA match carries a
   // real (non-fabricated) detailMatchId equal to its own id.
@@ -50,11 +50,22 @@ test("BELEZA NEXT advances after the finished 10.03 浦和 match", () => {
   // /beleza/matches/${belezaElfenMatch.id} へのリンクを表示する。
   assert.notEqual(nextFixture?.id, belezaElfenMatch.id);
   const upcoming = getUpcomingFixtures(belezaFixtures, now, 5);
-  assert.equal(upcoming.length, 1);
+  // 公式カレンダー（2026-10-10確認）の確定日程で、NEXT5が5件埋まる。
+  assert.equal(upcoming.length, 5);
   assert.equal(upcoming.every((fixture) => fixture.status === "scheduled"), true);
-  assert.deepEqual(upcoming.map((fixture) => fixture.opponentName), [
-    "サンフレッチェ広島レジーナ",
+  assert.deepEqual(upcoming.map((fixture) => fixture.kickoffAt), [
+    "2026-10-11T12:00:00+09:00", "2026-10-18T14:00:00+09:00", "2026-10-24T12:00:00+09:00",
+    "2026-10-28T18:00:00+09:00", "2026-10-31T15:00:00+09:00",
   ]);
+  assert.deepEqual(upcoming.map((fixture) => `${fixture.opponentName}|${fixture.competition.round}|${fixture.isHome ? "H" : "A"}|${fixture.venue}`), [
+    "サンフレッチェ広島レジーナ|第6節|H|AGFフィールド",
+    "サンフレッチェ広島レジーナ|第4節|A|エディオンピースウイング広島",
+    "ちふれASエルフェン埼玉|第6節|H|AGFフィールド",
+    "セレッソ大阪ヤンマーレディース|第5節|H|味の素フィールド西が丘",
+    "RB大宮アルディージャWOMEN|第7節|H|味の素フィールド西が丘",
+  ]);
+  assert.equal(new Set(upcoming.map((fixture) => fixture.id)).size, 5);
+  assert.equal(getNextFixture(belezaFixtures, now)?.id, upcoming[0].id);
 });
 
 test("BELEZA LAST, HISTORY and 10.03 浦和 result are derived", () => {

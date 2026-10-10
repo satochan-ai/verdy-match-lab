@@ -71,8 +71,9 @@ export const belezaFixtures: CommonFixture[] = [
   ...belezaUpcomingMatches.slice(1).map((fixture, index) => ({
     id: fixture.id, category: "beleza" as const, teamName: belezaTeam.name, opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
-    kickoffAt: ["2026-10-03T14:00:00+09:00", "2026-10-11T12:00:00+09:00"][index],
+    kickoffAt: ["2026-10-03T14:00:00+09:00", "2026-10-11T12:00:00+09:00", "2026-10-18T14:00:00+09:00", "2026-10-24T12:00:00+09:00", "2026-10-28T18:00:00+09:00", "2026-10-31T15:00:00+09:00", "2026-11-07T14:00:00+09:00"][index],
     kickoffStatus: "confirmed" as const, dateLabel: fixture.dateLabel, venue: fixture.venue, isHome: fixture.isHome, status: "scheduled" as const,
+    ...(fixture.id === belezaUrawaCupMatch.id ? {} : { sourceUrl: "https://www.verdy.co.jp/beleza/calendar/" }),
     ...(fixture.id === belezaUrawaCupMatch.id ? {
       detailMatchId: fixture.id,
       kickoffAt: belezaUrawaCupMatch.kickoffAt,

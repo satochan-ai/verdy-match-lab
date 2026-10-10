@@ -50,10 +50,12 @@ export const u21Fixtures: CommonFixture[] = [
     teamName: TEAM_NAME,
     opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
-    kickoffAt: ["2026-09-20T14:03:00+09:00", u21KawasakiMatch.kickoffAt, "2026-10-17T15:00:00+09:00", undefined, "2026-11-22T14:00:00+09:00"][index],
-    kickoffStatus: index === 3 ? "date_range" as const : "confirmed" as const,
+    kickoffAt: ["2026-09-20T14:03:00+09:00", u21KawasakiMatch.kickoffAt, "2026-10-17T15:00:00+09:00", "2026-11-01T13:00:00+09:00", "2026-11-22T14:00:00+09:00", "2026-11-29T13:00:00+09:00", "2026-12-06T13:00:00+09:00", "2026-12-12T13:00:00+09:00"][index],
+    kickoffStatus: "confirmed" as const,
     dateLabel: fixture.dateLabel,
     isHome: fixture.isHome,
+    ...(fixture.venue ? { venue: fixture.venue } : {}),
+    ...(fixture.id === u21ShimizuMatch.id || fixture.id === u21KawasakiMatch.id ? {} : { sourceUrl: "https://www.verdy.co.jp/beleza/news/15080" }),
     status: fixture.id === u21ShimizuMatch.id ? u21ShimizuMatch.status : "scheduled" as const,
     ...(fixture.id === u21ShimizuMatch.id ? { score: { home: u21ShimizuMatch.homeScore, away: u21ShimizuMatch.awayScore } } : {}),
     ...(fixture.id === u21ShimizuMatch.id ? { detailMatchId: u21ShimizuMatch.id } : {}),
@@ -68,7 +70,7 @@ export const u21Fixtures: CommonFixture[] = [
 
 const toMeta = (fixture: CommonFixture) => ({
   competition: fixture.competition.name,
-  stage: fixture.id === "u21-next-5" || fixture.id === "u21-next-6" ? "交流戦ラウンド" : "東西リーグラウンド",
+  stage: ["u21-next-5", "u21-next-6", "u21-next-7", "u21-next-8", "u21-next-9"].includes(fixture.id) ? "交流戦ラウンド" : "東西リーグラウンド",
   roundLabel: fixture.competition.round,
 });
 

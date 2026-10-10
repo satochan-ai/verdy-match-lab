@@ -197,6 +197,48 @@ export const scheduleMatches: ScheduleMatch[] = [
     opponentName: "FC東京",
     status: "scheduled",
   },
+  // 第11節以降は東京ヴェルディ公式「2026/27シーズン試合一覧」
+  // （https://www.verdy.co.jp/match/schedule/）で2026-10-10に確認した確定日程。
+  {
+    id: "sched-yokohama-fm",
+    competition: "j1",
+    round: "第11節",
+    kickoffAt: "2026-10-21T19:00:00+09:00",
+    venue: "ＭＵＦＧスタジアム",
+    isVerdyHome: false,
+    opponentName: "横浜F・マリノス",
+    status: "scheduled",
+  },
+  {
+    id: "sched-fukuoka",
+    competition: "j1",
+    round: "第12節",
+    kickoffAt: "2026-10-24T15:00:00+09:00",
+    venue: "味の素スタジアム",
+    isVerdyHome: true,
+    opponentName: "アビスパ福岡",
+    status: "scheduled",
+  },
+  {
+    id: "sched-nagasaki",
+    competition: "j1",
+    round: "第13節",
+    kickoffAt: "2026-11-01T14:00:00+09:00",
+    venue: "PEACE STADIUM Connected by SoftBank",
+    isVerdyHome: false,
+    opponentName: "V・ファーレン長崎",
+    status: "scheduled",
+  },
+  {
+    id: "sched-shimizu",
+    competition: "j1",
+    round: "第14節",
+    kickoffAt: "2026-11-07T13:00:00+09:00",
+    venue: "ＩＡＩスタジアム日本平",
+    isVerdyHome: false,
+    opponentName: "清水エスパルス",
+    status: "scheduled",
+  },
 ];
 
 export function getPreviousMatches(limit = 5): ScheduleMatch[] {

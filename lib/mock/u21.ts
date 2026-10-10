@@ -447,9 +447,9 @@ export const u21SeasonHistory: U21SeasonHistoryEntry[] = [
 
 /**
  * 第2節終了後のNEXT 5（公式日程のみ）。U-21浦和レッズ戦はu21Match（現在表示中の1試合）へ
- * 昇格したため、重複登録を避けるためこの一覧からは外す。日時未確定の試合（交流戦）は
- * 単一の日付を確定させず、dateLabelを範囲表記、kickoffLabelを"TBD"とする。会場は
- * 公式確認できた場合のみ設定する。
+ * 昇格したため、重複登録を避けるためこの一覧からは外す。交流戦ラウンドの日程は公式発表
+ * （2026-10-10確認）で確定済み。2027年開催分（日程候補のみ・会場未定）は登録しない。
+ * 会場は公式確認できた場合のみ設定する。
  */
 export const u21UpcomingMatches: UpcomingFixture[] = [
   {
@@ -487,11 +487,12 @@ export const u21UpcomingMatches: UpcomingFixture[] = [
     },
     isHome: false,
     opponentName: "U-21ジュビロ磐田",
+    venue: "大久保G",
   },
   {
     id: "u21-next-5",
-    dateLabel: "10.31 - 11.02",
-    kickoffLabel: "TBD",
+    dateLabel: "11.01 SUN",
+    kickoffLabel: "13:00",
     fixtureMeta: {
       competition: "2026/27 U-21 Jリーグ",
       stage: "交流戦ラウンド",
@@ -499,6 +500,7 @@ export const u21UpcomingMatches: UpcomingFixture[] = [
     },
     isHome: true,
     opponentName: "U-21名古屋グランパス",
+    venue: "AGFフィールド",
   },
   {
     id: "u21-next-6",
@@ -511,5 +513,35 @@ export const u21UpcomingMatches: UpcomingFixture[] = [
     },
     isHome: false,
     opponentName: "U-21ガンバ大阪",
+    venue: "パナソニック スタジアム 吹田",
+  },
+  // 以下はU-21 Jリーグ日程（https://www.verdy.co.jp/beleza/news/15080 ・9/3更新、2026-10-10確認）
+  // の確定日程。ホーム／アウェイは会場（AGFフィールド・味の素フィールド西が丘＝ホーム）から判定。
+  {
+    id: "u21-next-7",
+    dateLabel: "11.29 SUN",
+    kickoffLabel: "13:00",
+    fixtureMeta: { competition: "2026/27 U-21 Jリーグ", stage: "交流戦ラウンド", roundLabel: "第3節" },
+    isHome: true,
+    opponentName: "U-21ヴィッセル神戸",
+    venue: "味の素フィールド西が丘",
+  },
+  {
+    id: "u21-next-8",
+    dateLabel: "12.06 SUN",
+    kickoffLabel: "13:00",
+    fixtureMeta: { competition: "2026/27 U-21 Jリーグ", stage: "交流戦ラウンド", roundLabel: "第4節" },
+    isHome: false,
+    opponentName: "U-21V・ファーレン長崎",
+    venue: "PEACE STADIUM Connected by SoftBank",
+  },
+  {
+    id: "u21-next-9",
+    dateLabel: "12.12 SAT",
+    kickoffLabel: "13:00",
+    fixtureMeta: { competition: "2026/27 U-21 Jリーグ", stage: "交流戦ラウンド", roundLabel: "第5節" },
+    isHome: true,
+    opponentName: "U-21ファジアーノ岡山",
+    venue: "AGFフィールド",
   },
 ];
