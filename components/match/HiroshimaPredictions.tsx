@@ -2,6 +2,17 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 
 type PredictionPlayer = { name: string; role: string; alternative?: string };
 
+// 2026/27公式選手一覧で照合。未確認の選手は番号を表示しない。
+// https://www.verdy.co.jp/team/ / https://www.sanfrecce.co.jp/team/top-players
+const shirtNumbers: Record<string, number | undefined> = {
+  "マテウス": 1, "溝口 修平": 18, "佐古 真礼": 29, "林 尚輝": 4,
+  "鈴木 海音": 15, "新井 悠太": 40, "齋藤 功佑": 8, "柴戸 海": 2,
+  "藤本 寛也": 19, "染野 唯月": 9, "一美 和成": 33, "福田 湧矢": 14,
+  "大迫 敬介": 1, "佐々木 翔": 19, "荒木 隼人": 4, "中野 就斗": 15,
+  "東 俊希": 7, "川辺 駿": 6, "松本 泰志": 14, "新井 直人": 5,
+  "加藤 陸次樹": 11, "鈴木 章斗": 10, "セバスティアン・アレー": 22,
+};
+
 const goalkeeper: PredictionPlayer = { name: "マテウス", role: "GK" };
 const forwards: PredictionPlayer[] = [
   { name: "染野 唯月", role: "FW" },
@@ -71,7 +82,9 @@ function PredictionPitch({ rows, opponent = false }: { rows: PredictionPlayer[][
           <div key={index} className="grid items-start gap-1" style={{ gridTemplateColumns: `repeat(${row.length}, minmax(0, 1fr))` }}>
             {row.map((player) => (
               <div key={player.name} className="min-w-0 text-center">
-                <span aria-hidden="true" className={`mx-auto block size-5 rounded-full ${opponent ? "bg-purple-700" : "bg-primary-green"}`} />
+                <span className={`mx-auto flex size-7 items-center justify-center rounded-full text-[12px] font-extrabold text-white lg:size-9 lg:text-[14px] ${opponent ? "bg-purple-700" : "bg-primary-green"}`}>
+                  {shirtNumbers[player.name] ?? ""}
+                </span>
                 <p className={`mt-1 text-[10px] font-bold lg:text-[12px] ${opponent ? "text-purple-900" : "text-deep-green"}`}>{player.role}</p>
                 <p className="break-keep break-words text-[12px] font-extrabold leading-snug text-text-primary lg:text-[15px]">{player.name}</p>
                 {player.alternative && <p className="mt-1 break-keep break-words text-[11px] leading-snug text-text-secondary lg:text-[12px]">{opponent ? `（${player.alternative}）` : `（対抗：${player.alternative}）`}</p>}
