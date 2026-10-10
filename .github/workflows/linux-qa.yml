@@ -27,6 +27,8 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run lint
+      - name: Generate Next.js types for a clean checkout
+        run: npx next typegen
       - run: npx tsc --noEmit --incremental false
       - run: npm run build
       - run: npm run cf:build
