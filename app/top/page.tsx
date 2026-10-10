@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
+import somaAnalysis from "@/public/images/soma-naoki-tactical-analysis-20261008.png";
 import { getMatchResult } from "@/lib/match/result";
 import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
 import { topFixtures, toTopUpcomingFixture } from "@/lib/data/top-fixtures";
@@ -204,6 +206,33 @@ export default async function TopTeamPage() {
               <UpcomingFixtureList fixtures={topUpcoming} variant="top" />
             </section>
           )}
+
+          <section aria-labelledby="soma-feature-title" className="space-y-4 border-y border-border bg-surface px-4 py-5 lg:px-6 lg:py-6">
+            <div>
+              <p className="text-[11px] font-bold tracking-[0.15em] text-pioneer-gold-deep">MANAGER FEATURE</p>
+              <h2 id="soma-feature-title" className="mt-1 text-[20px] font-extrabold leading-snug text-text-primary lg:text-[24px]">
+                相馬直樹新監督特集｜4-4-2を軸に東京Vはどう変わる？
+              </h2>
+              <p className="mt-2 text-[14px] text-text-secondary">新体制の戦術と選手起用を考察</p>
+            </div>
+            <a href="/images/soma-naoki-tactical-analysis-20261008.png" target="_blank" rel="noopener noreferrer" className="block" aria-label="相馬直樹監督の戦術分析画像を原寸で開く（新しいタブ）">
+              <Image src={somaAnalysis} alt="相馬直樹監督の2026年10月8日就任、鹿児島2025年の4-4-2採用実績と、東京Vでの非公式の起用・戦術予想を整理した図" className="h-auto w-full" sizes="(min-width: 1280px) 1200px, 100vw" />
+            </a>
+            <p className="text-[12px] text-text-secondary">画像を選ぶと原寸で開きます。小さい文字は拡大してご覧ください。</p>
+            <p className="text-[14px] leading-relaxed text-text-primary">
+              相馬直樹新監督の就任を受け、過去の4-4-2採用傾向と戦術的な特徴を整理しました。東京ヴェルディの現有戦力を踏まえ、染野唯月と一美和成の2トップ、藤本寛也の右サイド、新井悠太の左サイドなどを独自に予想しています。
+            </p>
+            <p className="text-[13px] font-bold leading-relaxed text-deep-green">
+              本特集は非公式の独自分析・予想です。実際の起用やフォーメーションを示す公式情報ではありません。
+            </p>
+            <p className="text-[12px] leading-relaxed text-text-secondary">
+              就任情報はクラブ公式発表、鹿児島2025年の38試合・18勝12分8敗はFootball LABを参照しています。4-4-2はFootball LABによる試合開始時の独自判定です。プレス・守備組織・縦攻撃・4-2-2-2への可変は当サイトの分析・予想で、監督の確定的な方針ではありません。
+            </p>
+            <div className="flex flex-wrap gap-x-5 gap-y-2 text-[13px]">
+              <a href="https://www.verdy.co.jp/news/15277" target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">東京ヴェルディ公式：監督就任のお知らせ</a>
+              <a href="https://www.football-lab.jp/kufc/formation?year=2025" target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">Football LAB：鹿児島2025年フォーメーション</a>
+            </div>
+          </section>
 
           <LeagueStandingsTable standings={j1Standings} highlightTeamName="東京ヴェルディ" />
       </div>
