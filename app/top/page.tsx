@@ -16,6 +16,7 @@ import { j1Standings } from "@/lib/mock/standings";
 import { getMatchDayLabel } from "@/lib/match/display";
 import { OpponentRecentMatches } from "@/components/match/OpponentRecentMatches";
 import { resolveMatchStatus } from "@/lib/match/status";
+import { HiroshimaPredictions } from "@/components/match/HiroshimaPredictions";
 
 export const metadata: Metadata = {
   title: "東京ヴェルディ TOP TEAM | Verdy Match Lab",
@@ -233,6 +234,8 @@ export default async function TopTeamPage() {
               <a href="https://www.football-lab.jp/kufc/formation?year=2025" target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">Football LAB：鹿児島2025年フォーメーション</a>
             </div>
           </section>
+
+          <HiroshimaPredictions />
 
           <LeagueStandingsTable standings={j1Standings} highlightTeamName="東京ヴェルディ" />
       </div>
