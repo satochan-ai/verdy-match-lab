@@ -17,6 +17,7 @@ import { getMatchDayLabel } from "@/lib/match/display";
 import { OpponentRecentMatches } from "@/components/match/OpponentRecentMatches";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { HiroshimaPredictions } from "@/components/match/HiroshimaPredictions";
+import { HiroshimaMatchPreview } from "@/components/match/HiroshimaMatchPreview";
 
 export const metadata: Metadata = {
   title: "東京ヴェルディ TOP TEAM | Verdy Match Lab",
@@ -55,6 +56,8 @@ export default async function TopTeamPage() {
     getRecentFinishedMatchSummary(),
   ]);
   const now = new Date();
+  // 広島戦プレビューは試合開始後も「試合前時点」として残すため、NEXTではなくidで固定して参照する。
+  const hiroshimaFixture = topFixtures.find((fixture) => fixture.id === "sched-hiroshima");
   const nextFixture = getNextFixture(topFixtures, now);
   const liveFixture = topFixtures.find(
     (fixture) =>
@@ -234,6 +237,8 @@ export default async function TopTeamPage() {
               <a href="https://www.football-lab.jp/kufc/formation?year=2025" target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">Football LAB：鹿児島2025年フォーメーション</a>
             </div>
           </section>
+
+          {hiroshimaFixture && <HiroshimaMatchPreview fixture={hiroshimaFixture} />}
 
           <HiroshimaPredictions />
 
