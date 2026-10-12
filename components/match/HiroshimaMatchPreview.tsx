@@ -1,7 +1,7 @@
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import type { CommonFixture } from "@/lib/types/fixture";
 import { TeamPerspective } from "@/components/match/TeamPerspective";
-import { j1Standings } from "@/lib/mock/standings";
+import { hiroshimaPreMatchStandings as j1Standings } from "@/lib/mock/standings";
 
 const keyPoints = [
   { no: "01", title: "新監督の選手起用", text: "選考がフラットとされる中、従来の序列から変化があるか。" },

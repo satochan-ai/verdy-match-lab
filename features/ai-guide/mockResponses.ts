@@ -1,3 +1,4 @@
+import { hiroshimaReview } from "../../lib/mock/top-hiroshima-result.ts";
 import type {
   Match,
   ScoreSituation,
@@ -639,6 +640,12 @@ function describeFinalResult(match: Match, opponentName: string): string {
 }
 
 export function getPostMatchAnalysis(match: Match): AnalysisReport {
+  if (match.id === "sched-hiroshima") {
+    return { sections: [
+      { heading: "相馬新体制の初陣、広島に0-2で敗戦", bullets: hiroshimaReview },
+      { heading: "確認済み試合情報", bullets: match.matchNotes },
+    ] };
+  }
   const opponentName = match.isVerdyHome ? match.awayTeam.name : match.homeTeam.name;
   const anchorStrategy = match.strategies[0];
   const intro = anchorStrategy

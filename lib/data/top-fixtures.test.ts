@@ -1,10 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { getLatestFinishedFixture, getNextFixture, getUpcomingFixtures } from "./fixture-selectors.ts";
-import { topFixtures } from "./top-fixtures.ts";
+import { topFixtures as currentTopFixtures } from "./top-fixtures.ts";
 import { validateFixtures } from "./fixture-validation.ts";
 
 const now = new Date("2026-09-03T00:00:00+09:00");
+
+// 鳥取戦終了時点の履歴検証。広島戦の結果登録後も当時のselector条件を再現する。
+const topFixtures = currentTopFixtures.map((fixture) => fixture.id === "sched-hiroshima" ? { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-11T15:00:00+09:00" } : fixture);
 
 test("TOP schedule adapter produces valid CommonFixtures", () => {
   assert.equal(validateFixtures(topFixtures).length, 0);
