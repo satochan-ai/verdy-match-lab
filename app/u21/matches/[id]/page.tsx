@@ -133,9 +133,9 @@ export default async function U21MatchDetailPage({
           </div>
         </div>
 
-        {isFinished && u21Goals.length > 0 && (
+        {isFinished && goals.length > 0 && (
           <ul className="mt-3 flex flex-wrap justify-center gap-x-3 gap-y-1 border-t border-border pt-3 text-[12px] text-text-secondary">
-            {u21Goals.map((goal) => (
+            {goals.map((goal) => (
               <li key={`${goal.minute}-${goal.scorer}`} className="tabular-nums">
                 {goal.minute} <span className="text-text-primary">{goal.scorer}</span>
               </li>
