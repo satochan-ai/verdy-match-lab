@@ -18,6 +18,7 @@ import { OpponentRecentMatches } from "@/components/match/OpponentRecentMatches"
 import { resolveMatchStatus } from "@/lib/match/status";
 import { HiroshimaPredictions } from "@/components/match/HiroshimaPredictions";
 import { HiroshimaMatchPreview } from "@/components/match/HiroshimaMatchPreview";
+import { shouldShowHiroshimaPreContent } from "@/lib/match/hiroshima-content";
 import { HiroshimaStrategies } from "@/components/match/HiroshimaStrategies";
 
 export const metadata: Metadata = {
@@ -57,7 +58,7 @@ export default async function TopTeamPage() {
     getRecentFinishedMatchSummary(),
   ]);
   const now = new Date();
-  // 広島戦プレビューは試合開始後も「試合前時点」として残すため、NEXTではなくidで固定して参照する。
+  // 広島戦専用コンテンツ（データは保持）は、表示中のNEXT/LIVEが広島戦のときだけ次戦エリアに出す。
   const hiroshimaFixture = topFixtures.find((fixture) => fixture.id === "sched-hiroshima");
   const nextFixture = getNextFixture(topFixtures, now);
   const liveFixture = topFixtures.find(
@@ -67,6 +68,7 @@ export default async function TopTeamPage() {
       resolveMatchStatus({ status: "scheduled", kickoffAt: fixture.kickoffAt }, now) === "live",
   );
   const displayFixture = liveFixture ?? nextFixture;
+  const showHiroshimaPreContent = shouldShowHiroshimaPreContent(displayFixture);
   const topUpcoming = getUpcomingFixtures(topFixtures, now, 5).map(toTopUpcomingFixture);
   // nextMatchがnull（scheduledな試合が未登録）の場合は、過去試合を出さずに
   // 「次戦情報準備中」の空状態を表示する。LAST MATCH / NEXT 5は独立して表示する。
@@ -239,11 +241,15 @@ export default async function TopTeamPage() {
             </div>
           </section>
 
-          {hiroshimaFixture && <HiroshimaMatchPreview fixture={hiroshimaFixture} />}
+          {showHiroshimaPreContent && (
+            <>
+              {hiroshimaFixture && <HiroshimaMatchPreview fixture={hiroshimaFixture} />}
 
-          <HiroshimaStrategies />
+              <HiroshimaStrategies />
 
-          <HiroshimaPredictions />
+              <HiroshimaPredictions />
+            </>
+          )}
 
           <LeagueStandingsTable standings={j1Standings} highlightTeamName="東京ヴェルディ" />
       </div>
