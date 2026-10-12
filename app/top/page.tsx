@@ -52,6 +52,9 @@ function formatShortDate(iso: string) {
   return `${d.getMonth() + 1}/${d.getDate()}`;
 }
 
+/** LIVE/NEXTの判定がnowに依存するため、静的prerenderにせず毎リクエスト描画する。 */
+export const dynamic = "force-dynamic";
+
 export default async function TopTeamPage() {
   const [nextMatch, recent] = await Promise.all([
     getNextMatch(),

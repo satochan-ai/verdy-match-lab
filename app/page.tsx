@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   description: "東京ヴェルディを、TOP TEAM・U-21・BELEZAの3カテゴリーから追う。",
 };
 
+/** LIVE/NEXTの判定がnowに依存するため、静的prerenderにせず毎リクエスト描画する。 */
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const now = new Date();
   const recentTopMatch = await getRecentFinishedMatchSummary();
