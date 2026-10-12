@@ -1164,3 +1164,50 @@ export const belezaUpcomingMatches: UpcomingFixture[] = [
     venue: "相模原ギオンスタジアム",
   },
 ];
+
+/** 10/11 クラシエカップ第6節。クラブ公式の試合経過で81分の対応も確認済み。 */
+export const reginaTeam: Team = { id: "hiroshima-regina", name: "サンフレッチェ広島レジーナ", isVerdy: false };
+export const belezaReginaMatch = {
+  id: "beleza-next-8", competition: "2026/27 WEリーグ クラシエカップ リーグステージ第6節",
+  dateLabel: "10.11 SUN", kickoffLabel: "12:04", kickoffAt: "2026-10-11T12:04:00+09:00",
+  venue: "AGFフィールド", status: "finished" as const, isBelezaHome: true,
+  homeTeamName: belezaTeam.name, awayTeamName: reginaTeam.name, homeScore: 3, awayScore: 1,
+};
+export const belezaReginaHalfScores = { firstHalf: "2-0", secondHalf: "1-1" };
+export const belezaReginaGoals: MatchGoal[] = [
+  { minute: "5'", scorer: "土光 真代", team: belezaTeam.name },
+  { minute: "23'", scorer: "氏原 里穂菜", team: belezaTeam.name },
+  { minute: "90'", scorer: "李 誠雅", team: reginaTeam.name },
+  { minute: "90+3'", scorer: "眞城 美春", team: belezaTeam.name },
+];
+export const belezaReginaSubstitutions: MatchSubstitution[] = [
+  { minute: "46'", team: belezaTeam.name, playerOut: "樋渡 百花", playerIn: "小林 里歌子" },
+  { minute: "46'", team: reginaTeam.name, playerOut: "松本 茉奈加", playerIn: "小川 愛" },
+  { minute: "56'", team: belezaTeam.name, playerOut: "式田 和", playerIn: "北村 菜々美" },
+  { minute: "63'", team: reginaTeam.name, playerOut: "中嶋 淑乃", playerIn: "李 誠雅" },
+  { minute: "71'", team: reginaTeam.name, playerOut: "柳瀬 楓菜", playerIn: "伊藤 めぐみ" },
+  { minute: "81'", team: belezaTeam.name, playerOut: "猶本 光", playerIn: "松永 未夢" },
+  { minute: "81'", team: belezaTeam.name, playerOut: "氏原 里穂菜", playerIn: "井手 ひなた" },
+  { minute: "81'", team: reginaTeam.name, playerOut: "古賀 花野", playerIn: "瀧澤 千聖" },
+  { minute: "81'", team: reginaTeam.name, playerOut: "左山 桃子", playerIn: "島袋 奈美恵" },
+  { minute: "90'", team: belezaTeam.name, playerOut: "松岡 瑛茉", playerIn: "安藤 梢" },
+];
+export const belezaReginaOfficialRecord: OfficialMatchRecord = {
+  kickoff: "12:04", attendance: 1362, weather: "晴", temperature: "29.3℃", humidity: "34%",
+  sourceUrl: "https://www.verdy.co.jp/beleza/match/info/12026101115/result",
+};
+export const belezaReginaStats = { beleza: { shots: 10, freeKicks: 9, corners: 5 }, opponent: { shots: 14, freeKicks: 7, corners: 3 } };
+export const belezaReginaActualLineup: ActualLineup = {
+  starters: { GK: ["21 水口 茉優"], DF: ["32 松岡 瑛茉", "4 土光 真代", "17 朝生 珠実"], MF: ["6 隅田 凜", "19 塩越 柚歩", "8 猶本 光", "14 眞城 美春"], FW: ["38 式田 和", "11 樋渡 百花", "13 氏原 里穂菜"] },
+  bench: { GK: ["31 遠藤 有紗"], DF: ["22 井手 ひなた"], MF: ["7 北村 菜々美", "18 松永 未夢"], FW: ["20 小林 里歌子", "25 ダネル タン", "40 安藤 梢"] },
+};
+export const reginaActualLineup: ActualLineup = {
+  starters: { GK: ["32 石田 ひなは"], DF: ["38 嶋田 華", "4 朝倉 加奈子", "6 左山 桃子", "15 藤生 菜摘"], MF: ["18 渡邊 真衣", "23 柳瀬 楓菜", "16 早間 美空"], FW: ["14 松本 茉奈加", "28 古賀 花野", "11 中嶋 淑乃"] },
+  bench: { GK: ["22 藤田 七海"], DF: ["3 呉屋 絵理子"], MF: ["7 伊藤 めぐみ", "8 小川 愛", "10 瀧澤 千聖", "20 島袋 奈美恵"], FW: ["30 李 誠雅"] },
+};
+export const belezaReginaReview = [
+  "日テレ・東京ヴェルディベレーザは、WEリーグクラシエカップ第6節でサンフレッチェ広島レジーナと対戦し、3-1で勝利した。",
+  "開始5分に土光真代の得点で先制すると、23分には氏原里穂菜が追加点を奪い、2点をリードして前半を終了。",
+  "後半90分に李誠雅の得点で1点を返されたものの、90+3分に眞城美春が得点し、3-1で試合を終えた。",
+  "広島にシュート数で上回られながらも、ベレーザが3得点を挙げて勝利した一戦となった。",
+];

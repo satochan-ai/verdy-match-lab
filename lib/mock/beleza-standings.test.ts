@@ -44,21 +44,21 @@ test("Kracie Cup standings hold exactly 12 clubs with unique ranks (no ties this
   assert.equal(new Set(ranks).size, ranks.length);
 });
 
-test("Kracie Cup standings register 日テレ・東京ヴェルディベレーザ at 4th with the official values", () => {
+test("Kracie Cup standings register 日テレ・東京ヴェルディベレーザ at 2nd with the official values", () => {
   const belezaEntries = kracieCupStandings.entries.filter((entry) => entry.teamName === "日テレ・東京ヴェルディベレーザ");
   assert.equal(belezaEntries.length, 1);
   assert.deepEqual(belezaEntries[0], {
-    rank: 4,
+    rank: 2,
     teamName: "日テレ・東京ヴェルディベレーザ",
-    played: 5,
-    wins: 3,
+    played: 6,
+    wins: 4,
     draws: 0,
     losses: 2,
-    goalsFor: 11,
-    goalsAgainst: 10,
-    goalDifference: 1,
-    points: 9,
-    regulationWins: 3,
+    goalsFor: 14,
+    goalsAgainst: 11,
+    goalDifference: 3,
+    points: 12,
+    regulationWins: 4,
     penaltyWins: 0,
     penaltyLosses: 0,
     regulationLosses: 2,
@@ -77,5 +77,5 @@ test("Kracie Cup standings entries are internally consistent (regulation/PK brea
 });
 
 test("Kracie Cup standings expose the as-of label", () => {
-  assert.equal(kracieCupStandings.asOfLabel, "2026/10/03 16:06 現在");
+  assert.equal(kracieCupStandings.asOfLabel, "2026/10/12 08:36 現在（公式速報）");
 });

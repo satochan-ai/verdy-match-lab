@@ -1,6 +1,6 @@
 import type { UpcomingFixture } from "../../types/domain";
 import type { CommonFixture } from "../types/fixture";
-import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, belezaMatch5, belezaUrawaCupMatch, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
+import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, belezaMatch5, belezaUrawaCupMatch, belezaReginaMatch, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
 
 export const belezaFixtures: CommonFixture[] = [
   {
@@ -79,6 +79,12 @@ export const belezaFixtures: CommonFixture[] = [
       kickoffAt: belezaUrawaCupMatch.kickoffAt,
       status: belezaUrawaCupMatch.status,
       score: { home: belezaUrawaCupMatch.homeScore, away: belezaUrawaCupMatch.awayScore },
+    } : {}),
+    ...(fixture.id === belezaReginaMatch.id ? {
+      detailMatchId: fixture.id, kickoffAt: belezaReginaMatch.kickoffAt,
+      status: belezaReginaMatch.status,
+      score: { home: belezaReginaMatch.homeScore, away: belezaReginaMatch.awayScore },
+      sourceUrl: "https://www.verdy.co.jp/beleza/match/info/12026101115/result",
     } : {}),
   })),
 ];

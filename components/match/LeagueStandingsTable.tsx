@@ -165,7 +165,8 @@ export function LeagueStandingsTable({
       <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
         {standings.competition}
         {standings.sourceUrl && (standings.sourceUrl === "https://www.jleague.jp/j1/standings/2026-27/" ?
-          <>　／　Source: <a href={standings.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline">Jリーグ公式</a></> : "　／　Source: 東京ヴェルディ公式")}
+          <>　／　Source: <a href={standings.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline">Jリーグ公式</a></> : standings.sourceUrl.startsWith("https://data.weleague.jp/") ?
+          <>　／　Source: <a href={standings.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline">WEリーグ公式</a></> : "　／　Source: 東京ヴェルディ公式")}
       </p>
     </section>
   );

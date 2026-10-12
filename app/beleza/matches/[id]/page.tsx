@@ -12,6 +12,7 @@ import { BelezaLiveOfficialLineups } from "@/components/match/BelezaLiveOfficial
 import { resolveMatchStatus } from "@/lib/match/status";
 import type { MatchGoal, Team } from "@/types/domain";
 import {
+  belezaReginaMatch, belezaReginaHalfScores, belezaReginaGoals, belezaReginaSubstitutions, belezaReginaOfficialRecord, belezaReginaActualLineup, reginaActualLineup, reginaTeam, belezaReginaStats, belezaReginaReview,
   belezaTeam,
   acNaganoTeam,
   inacKobeTeam,
@@ -120,6 +121,8 @@ export default async function BelezaMatchDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+
+  if (id === belezaReginaMatch.id) return <BelezaReginaDetail />;
 
   if (id === belezaUrawaCupMatch.id) {
     return <BelezaUrawaCupDetail />;
@@ -991,6 +994,49 @@ function BelezaMatch5Detail() {
         opponentTeamName={opponentTeamStatsLabel(belezaMatch5)}
         stats={belezaMatch5Stats}
       />
+    </div>
+  );
+}
+
+function BelezaReginaDetail() {
+  const match = belezaReginaMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <div className="flex items-center justify-between">
+        <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+        <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+        <span className="w-8" />
+      </div>
+      <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
+        <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep">{match.competition}</p>
+        <p className="mt-2 tabular-nums text-[15px] font-extrabold text-text-secondary">{match.dateLabel}</p>
+        <div className="mt-4 flex flex-col items-center gap-1.5 text-center">
+          <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{match.homeTeamName}</p>
+          <p className="text-[10px] font-bold text-text-secondary">HOME</p>
+          <p className="py-1 tabular-nums text-[26px] font-extrabold text-text-primary">{match.homeScore} - {match.awayScore}</p>
+          <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{match.awayTeamName}</p>
+          <p className="text-[10px] font-bold text-text-secondary">AWAY</p>
+        </div>
+        <div className="mt-4 border-t border-border pt-3 text-center">
+          <p className="tabular-nums text-[15px] font-bold text-text-primary">{match.kickoffLabel} KICK OFF</p>
+          <p className="mt-1 text-[12px] text-text-secondary">{match.venue}</p>
+        </div>
+      </section>
+      <div className="text-center">
+        <StatusBadge variant="win" label="WIN" />
+        <p className="mt-2 text-[12px] text-text-secondary">前半 {belezaReginaHalfScores.firstHalf} ／ 後半 {belezaReginaHalfScores.secondHalf}</p>
+      </div>
+      <BelezaLiveOfficialLineups
+        belezaTeam={belezaTeam}
+        belezaLineup={belezaReginaActualLineup}
+        opponentTeam={reginaTeam}
+        opponentLineup={reginaActualLineup}
+        caption="公式発表されたStarting XI・ベンチです。両チームの開始時フォーメーションは未確認のため掲載していません。"
+      />
+      <p className="text-[13px] text-text-secondary">監督：東京NB 楠瀬 直木 ／ 広島 赤井 秀一</p>
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName} goals={belezaReginaGoals} substitutions={belezaReginaSubstitutions} officialRecord={belezaReginaOfficialRecord} officialSourceLabel="東京ヴェルディ公式 試合記録" />
+      <BelezaMatchStats belezaTeamName={match.homeTeamName} opponentTeamName={match.awayTeamName} stats={belezaReginaStats} />
+      <section className="space-y-3"><SectionHeader title="東京NB、広島レジーナに3-1で勝利" eyebrow="MATCH REVIEW" />{belezaReginaReview.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}</section>
     </div>
   );
 }
