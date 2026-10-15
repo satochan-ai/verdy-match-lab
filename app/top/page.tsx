@@ -20,6 +20,8 @@ import { HiroshimaPredictions } from "@/components/match/HiroshimaPredictions";
 import { HiroshimaMatchPreview } from "@/components/match/HiroshimaMatchPreview";
 import { shouldShowHiroshimaPreContent } from "@/lib/match/hiroshima-content";
 import { FcTokyoPredictions } from "@/components/match/FcTokyoPredictions";
+import { FcTokyoMatchPreview } from "@/components/match/FcTokyoMatchPreview";
+import { FcTokyoStrategies } from "@/components/match/FcTokyoStrategies";
 import { shouldShowFcTokyoPrediction } from "@/lib/match/fc-tokyo-prediction";
 import { HiroshimaStrategies } from "@/components/match/HiroshimaStrategies";
 
@@ -257,7 +259,15 @@ export default async function TopTeamPage() {
             </>
           )}
 
-          {showFcTokyoPrediction && <FcTokyoPredictions />}
+          {showFcTokyoPrediction && (
+            <>
+              <FcTokyoMatchPreview />
+
+              <FcTokyoStrategies />
+
+              <FcTokyoPredictions />
+            </>
+          )}
 
           <LeagueStandingsTable standings={j1Standings} highlightTeamName="東京ヴェルディ" />
       </div>

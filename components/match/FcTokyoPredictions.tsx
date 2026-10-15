@@ -14,7 +14,7 @@ export function FcTokyoPredictions() {
       <SectionHeader title="東京ダービー｜FC東京戦 予想スタメン" eyebrow="PREDICTED LINEUP / 2026.10.17" />
       <p className="text-[14px] font-bold text-text-primary">東京V {FC_TOKYO_PREDICTION_FORMATION} ／ FC東京 {FC_TOKYO_PREDICTION_FORMATION}</p>
       <p className="text-[14px] leading-relaxed text-text-primary">
-        FC東京は10月14日の天皇杯でメンバーを入れ替えており、リーグ戦では主力が戻る前提で予想しています。出場可否を確定する情報ではありません。
+        FC東京は10月14日のルヴァンカップ3回戦でメンバーを入れ替えており、リーグ戦では主力が戻る前提で予想しています。出場可否を確定する情報ではありません。
       </p>
       <div className="grid gap-6 lg:grid-cols-2">
         <article aria-label={`東京ヴェルディ ${FC_TOKYO_PREDICTION_FORMATION}`} className="min-w-0">

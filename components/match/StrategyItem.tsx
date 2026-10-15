@@ -32,14 +32,17 @@ export function StrategyItem({
   strategy,
   showResult,
   opponent = false,
+  numberClass,
 }: {
   strategy: Strategy;
   showResult?: boolean;
   opponent?: boolean;
+  /** 番号の配色を上書きする（未指定なら従来どおりopponentで決まる）。 */
+  numberClass?: string;
 }) {
   return (
     <li className="grid grid-cols-[2.25rem_minmax(0,1fr)] gap-3 py-5 lg:grid-cols-[2.75rem_minmax(0,1fr)] lg:gap-5 lg:py-6">
-      <p className={`tabular-nums text-right text-[20px] font-extrabold leading-none lg:text-[24px] ${opponent ? "text-purple-700" : "text-primary-green"}`}>
+      <p className={`tabular-nums text-right text-[20px] font-extrabold leading-none lg:text-[24px] ${numberClass ?? (opponent ? "text-purple-700" : "text-primary-green")}`}>
         {String(strategy.orderNo).padStart(2, "0")}
       </p>
       <div className="min-w-0 border-l border-border pl-3 lg:pl-4">
