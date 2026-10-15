@@ -1,6 +1,6 @@
 import { SectionHeader } from "@/components/ui/SectionHeader";
-
-type PredictionPlayer = { name: string; role: string; alternative?: string };
+import { PredictionPitch } from "@/components/match/PredictionPitch";
+import type { PredictionPlayer } from "@/lib/match/prediction";
 
 // 2026/27公式選手一覧で照合。未確認の選手は番号を表示しない。
 // https://www.verdy.co.jp/team/ / https://www.sanfrecce.co.jp/team/top-players
@@ -68,35 +68,6 @@ const hiroshimaRows: PredictionPlayer[][] = [
   [{ name: "大迫 敬介", role: "GK" }],
 ];
 
-function PredictionPitch({ rows, opponent = false }: { rows: PredictionPlayer[][]; opponent?: boolean }) {
-  const line = opponent ? "border-purple-700/30" : "border-primary-green/30";
-  return (
-    <div className={`relative overflow-hidden border-2 px-1 py-6 lg:px-3 ${opponent ? "border-purple-800 bg-purple-50" : "border-deep-green bg-surface-tint"}`}>
-      <div aria-hidden="true" className={`pointer-events-none absolute inset-2 border ${line}`} />
-      <div aria-hidden="true" className={`pointer-events-none absolute inset-x-2 top-1/2 border-t ${line}`} />
-      <div aria-hidden="true" className={`pointer-events-none absolute left-1/2 top-1/2 size-16 -translate-x-1/2 -translate-y-1/2 rounded-full border ${line}`} />
-      <div aria-hidden="true" className={`pointer-events-none absolute inset-x-[25%] top-2 h-8 border-x border-b ${line}`} />
-      <div aria-hidden="true" className={`pointer-events-none absolute inset-x-[25%] bottom-2 h-8 border-x border-t ${line}`} />
-      <div className="relative grid min-h-[480px] content-between gap-6 lg:min-h-[520px]">
-        {rows.map((row, index) => (
-          <div key={index} className="grid items-start gap-1" style={{ gridTemplateColumns: `repeat(${row.length}, minmax(0, 1fr))` }}>
-            {row.map((player) => (
-              <div key={player.name} className="min-w-0 text-center">
-                <span className={`mx-auto flex size-7 items-center justify-center rounded-full text-[12px] font-extrabold text-white lg:size-9 lg:text-[14px] ${opponent ? "bg-purple-700" : "bg-primary-green"}`}>
-                  {shirtNumbers[player.name] ?? ""}
-                </span>
-                <p className={`mt-1 text-[10px] font-bold lg:text-[12px] ${opponent ? "text-purple-900" : "text-deep-green"}`}>{player.role}</p>
-                <p className="break-keep break-words text-[12px] font-extrabold leading-snug text-text-primary lg:text-[15px]">{player.name}</p>
-                {player.alternative && <p className="mt-1 break-keep break-words text-[11px] leading-snug text-text-secondary lg:text-[12px]">{opponent ? `（${player.alternative}）` : `（対抗：${player.alternative}）`}</p>}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export function HiroshimaPredictions() {
   return (
     <section aria-label="相馬新監督初陣・広島戦予想スタメン" className="space-y-4">
@@ -110,7 +81,7 @@ export function HiroshimaPredictions() {
             <h3 className="mb-2 flex justify-between gap-3 text-[16px] font-extrabold text-deep-green">
               <span>{prediction.label}</span><span>{prediction.formation}</span>
             </h3>
-            <PredictionPitch rows={prediction.rows} />
+            <PredictionPitch rows={prediction.rows} numbers={shirtNumbers} tone="verdy" />
           </article>
         ))}
       </div>
@@ -118,7 +89,7 @@ export function HiroshimaPredictions() {
         <h3 id="hiroshima-opponent-title" className="text-[18px] font-extrabold text-purple-900">サンフレッチェ広島 予想スタメン</h3>
         <p className="text-[14px] font-bold text-purple-900">3-4-2-1｜独自予想</p>
         <div className="mx-auto max-w-[596px]">
-          <PredictionPitch rows={hiroshimaRows} opponent />
+          <PredictionPitch rows={hiroshimaRows} numbers={shirtNumbers} tone="opponent" />
         </div>
         <p className="text-[12px] leading-relaxed text-text-secondary">CFのスタメン対抗候補：鮎川 峻。出場可能性やコンディションを確定する情報ではありません。</p>
       </section>

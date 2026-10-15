@@ -19,6 +19,8 @@ import { resolveMatchStatus } from "@/lib/match/status";
 import { HiroshimaPredictions } from "@/components/match/HiroshimaPredictions";
 import { HiroshimaMatchPreview } from "@/components/match/HiroshimaMatchPreview";
 import { shouldShowHiroshimaPreContent } from "@/lib/match/hiroshima-content";
+import { FcTokyoPredictions } from "@/components/match/FcTokyoPredictions";
+import { shouldShowFcTokyoPrediction } from "@/lib/match/fc-tokyo-prediction";
 import { HiroshimaStrategies } from "@/components/match/HiroshimaStrategies";
 
 export const metadata: Metadata = {
@@ -72,6 +74,7 @@ export default async function TopTeamPage() {
   );
   const displayFixture = liveFixture ?? nextFixture;
   const showHiroshimaPreContent = shouldShowHiroshimaPreContent(displayFixture);
+  const showFcTokyoPrediction = shouldShowFcTokyoPrediction(displayFixture);
   const topUpcoming = getUpcomingFixtures(topFixtures, now, 5).map(toTopUpcomingFixture);
   // nextMatchがnull（scheduledな試合が未登録）の場合は、過去試合を出さずに
   // 「次戦情報準備中」の空状態を表示する。LAST MATCH / NEXT 5は独立して表示する。
@@ -253,6 +256,8 @@ export default async function TopTeamPage() {
               <HiroshimaPredictions />
             </>
           )}
+
+          {showFcTokyoPrediction && <FcTokyoPredictions />}
 
           <LeagueStandingsTable standings={j1Standings} highlightTeamName="東京ヴェルディ" />
       </div>
