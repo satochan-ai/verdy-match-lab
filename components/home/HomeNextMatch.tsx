@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import type { CommonFixture } from "@/lib/types/fixture";
 import { homeFeatureLabels } from "@/components/home/home-copy";
+import { topDetailPendingNotice, topLiveNotice } from "@/lib/match/top-card-presentation";
 
 function formatFixture(iso: string) {
   const parts = new Intl.DateTimeFormat("en-US", {
@@ -22,21 +23,20 @@ function formatFixture(iso: string) {
   };
 }
 
-export function HomeNextMatch({ fixture }: { fixture?: CommonFixture }) {
+export function HomeNextMatch({ fixture, isLive = false, detailHref }: { fixture?: CommonFixture; isLive?: boolean; detailHref?: string }) {
   if (!fixture?.kickoffAt) return null;
 
   const { date, time } = formatFixture(fixture.kickoffAt);
-  const detailHref = fixture.detailMatchId ? `/matches/${fixture.detailMatchId}` : undefined;
 
   return (
     <section aria-labelledby="home-next-match" className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
       <div className="flex items-baseline justify-between gap-4">
         <div>
           <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
-            NEXT MATCH
+            {isLive ? "LIVE MATCH" : "NEXT MATCH"}
           </p>
           <h2 id="home-next-match" className="mt-1 text-[17px] font-extrabold text-text-primary lg:text-[20px]">
-            TOP TEAM 次戦
+            {isLive ? "TOP TEAM 試合中" : "TOP TEAM 次戦"}
           </h2>
         </div>
         <p className="shrink-0 tabular-nums text-[13px] font-extrabold text-text-primary lg:text-[15px]">
@@ -81,6 +81,9 @@ export function HomeNextMatch({ fixture }: { fixture?: CommonFixture }) {
           </Link>
         )}
       </div>
+
+      {!detailHref && <p className="mt-3 text-[12px] leading-relaxed text-text-secondary">{topDetailPendingNotice}</p>}
+      {isLive && <p className="mt-3 text-[12px] leading-relaxed text-text-secondary">{topLiveNotice}</p>}
 
       <ul aria-label="Verdy Match Labで見られること" className="mt-5 grid border-t border-border pt-4 sm:grid-cols-3 sm:gap-5">
         {homeFeatureLabels.map(([label, description]) => (

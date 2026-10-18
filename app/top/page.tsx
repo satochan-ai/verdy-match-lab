@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import somaAnalysis from "@/public/images/soma-naoki-tactical-analysis-20261008.png";
 import { getMatchResult } from "@/lib/match/result";
-import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
+import { getMatchDetail, getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
 import { topFixtures, toTopUpcomingFixture } from "@/lib/data/top-fixtures";
 import { getNextFixture, getUpcomingFixtures } from "@/lib/data/fixture-selectors";
 import { StrategyList } from "@/components/match/StrategyList";
@@ -16,6 +16,7 @@ import { j1Standings } from "@/lib/mock/standings";
 import { getMatchDayLabel } from "@/lib/match/display";
 import { OpponentRecentMatches } from "@/components/match/OpponentRecentMatches";
 import { resolveMatchStatus } from "@/lib/match/status";
+import { getTopDetailHref, topDetailPendingNotice, topLiveNotice } from "@/lib/match/top-card-presentation";
 import { HiroshimaPredictions } from "@/components/match/HiroshimaPredictions";
 import { HiroshimaMatchPreview } from "@/components/match/HiroshimaMatchPreview";
 import { shouldShowHiroshimaPreContent } from "@/lib/match/hiroshima-content";
@@ -75,6 +76,8 @@ export default async function TopTeamPage() {
       resolveMatchStatus({ status: "scheduled", kickoffAt: fixture.kickoffAt }, now) === "live",
   );
   const displayFixture = liveFixture ?? nextFixture;
+  const detailMatch = displayFixture?.detailMatchId ? await getMatchDetail(displayFixture.detailMatchId) : undefined;
+  const detailHref = getTopDetailHref(displayFixture?.detailMatchId, detailMatch);
   const showHiroshimaPreContent = shouldShowHiroshimaPreContent(displayFixture);
   const showFcTokyoPrediction = shouldShowFcTokyoPrediction(displayFixture);
   const topUpcoming = getUpcomingFixtures(topFixtures, now, 5).map(toTopUpcomingFixture);
@@ -116,7 +119,7 @@ export default async function TopTeamPage() {
           <section className="section-reveal border-y-2 border-fusion-black bg-surface-tint px-4 py-6 lg:px-10 lg:py-8">
             <div className="flex items-baseline justify-between gap-3">
               <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
-                NEXT MATCH
+                {liveFixture ? "LIVE MATCH" : "NEXT MATCH"}
               </p>
               {dayLabel.kind === "days" && <p className="text-[11px] font-bold text-primary-green">あと{dayLabel.days}日</p>}
               {dayLabel.kind === "today" && <p className="text-[11px] font-bold text-primary-green">今日</p>}
@@ -163,13 +166,15 @@ export default async function TopTeamPage() {
                 </span>
               </p>
               <p className="text-[12px] text-text-secondary">{displayFixture.venue}</p>
-              <Link
-                href={displayFixture.detailMatchId ? `/matches/${displayFixture.detailMatchId}` : "/top"}
+              {detailHref && <Link
+                href={detailHref}
                 className="mt-3 flex h-12 w-full items-center justify-center bg-primary-green text-[14px] font-bold text-white lg:mt-0 lg:inline-flex lg:h-10 lg:w-auto lg:px-5"
               >
                 試合詳細を見る
-              </Link>
+              </Link>}
             </div>
+            {!detailHref && <p className="mt-3 text-[12px] leading-relaxed text-text-secondary">{topDetailPendingNotice}</p>}
+            {liveFixture && <p className="mt-3 text-[12px] leading-relaxed text-text-secondary">{topLiveNotice}</p>}
           </section>
           ) : (
           <section className="section-reveal border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">

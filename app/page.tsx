@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { getRecentFinishedMatchSummary } from "@/lib/data/matches";
+import { getMatchDetail, getRecentFinishedMatchSummary } from "@/lib/data/matches";
 import { resolveCategoryCardState } from "@/lib/match/category-card-state";
 import { belezaFixtures, toBelezaUpcomingMatch } from "@/lib/data/beleza-fixtures";
 import { u21Fixtures, toU21UpcomingMatch } from "@/lib/data/u21-fixtures";
 import { topFixtures, toTopUpcomingFixture } from "@/lib/data/top-fixtures";
 import { getLatestFinishedFixture, getNextFixture } from "@/lib/data/fixture-selectors";
 import { resolveMatchStatus } from "@/lib/match/status";
+import { getTopDetailHref } from "@/lib/match/top-card-presentation";
 import { HomeHero } from "@/components/home/HomeHero";
 import { HomeNextMatch } from "@/components/home/HomeNextMatch";
 import { CategoryHomeCard } from "@/components/match/CategoryHomeCard";
@@ -32,6 +33,8 @@ export default async function Home() {
       resolveMatchStatus({ status: "scheduled", kickoffAt: fixture.kickoffAt }, now) === "live",
   );
   const topCardFixture = liveTopFixture ?? nextTopFixture;
+  const detailMatch = topCardFixture?.detailMatchId ? await getMatchDetail(topCardFixture.detailMatchId) : undefined;
+  const detailHref = getTopDetailHref(topCardFixture?.detailMatchId, detailMatch);
 
   // 3カテゴリーとも resolveCategoryCardState() で
   // LIVE → NEXT MATCH → LAST RESULT → EMPTY の同一ルールで状態を決める。
@@ -117,7 +120,7 @@ export default async function Home() {
         categoryCta={{ href: "#categories", label: "3カテゴリーを見る" }}
       />
 
-      <HomeNextMatch fixture={topCardFixture} />
+      <HomeNextMatch fixture={topCardFixture} isLive={Boolean(liveTopFixture)} detailHref={detailHref} />
 
       <section id="categories">
         <div className="flex items-baseline gap-3">
