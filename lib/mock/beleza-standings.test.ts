@@ -13,14 +13,14 @@ test("WE League standings register 日テレ・東京ヴェルディベレーザ
   assert.deepEqual(belezaEntries[0], {
     rank: 3,
     teamName: "日テレ・東京ヴェルディベレーザ",
-    played: 3,
-    wins: 2,
+    played: 4,
+    wins: 3,
     draws: 0,
     losses: 1,
-    goalsFor: 7,
-    goalsAgainst: 5,
-    goalDifference: 2,
-    points: 6,
+    goalsFor: 10,
+    goalsAgainst: 7,
+    goalDifference: 3,
+    points: 9,
   });
 });
 
@@ -34,7 +34,7 @@ test("WE League standings entries are internally consistent (played/points/goal 
 });
 
 test("WE League standings expose the as-of label", () => {
-  assert.equal(weLeagueStandings.asOfLabel, "2026/09/06 18:57 現在");
+  assert.equal(weLeagueStandings.asOfLabel, "2026/10/18 15:59 現在");
 });
 
 test("Kracie Cup standings hold exactly 12 clubs with unique ranks (no ties this matchday)", () => {

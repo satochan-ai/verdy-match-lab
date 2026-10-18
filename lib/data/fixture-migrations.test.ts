@@ -14,7 +14,7 @@ test("U-21 and BELEZA have unique IDs and stay within category boundaries", () =
   assert.equal(new Set(all.map((fixture) => fixture.id)).size, all.length);
   // U-21 contributes 5; BELEZA contributes 8 (5 archived matches that each render
   // individually at /beleza/matches/[id], plus the current snapshot, 浦和カップ戦 and 広島カップ戦).
-  assert.equal(new Set(all.flatMap((fixture) => fixture.detailMatchId ? [fixture.detailMatchId] : [])).size, 13);
+  assert.equal(new Set(all.flatMap((fixture) => fixture.detailMatchId ? [fixture.detailMatchId] : [])).size, 14);
   assert.equal(u21Fixtures.every((fixture) => fixture.category === "u21"), true);
   assert.equal(belezaFixtures.every((fixture) => fixture.category === "beleza"), true);
 });
@@ -67,7 +67,7 @@ test("two consecutive finishes update NEXT, LAST and HISTORY for both categories
   // として実データに存在するため、LAST/HISTORY直近2件はそちら（より新しい確定結果）になる。
   const cases = [
     { fixtures: u21Fixtures.map(f => f.id === "u21-next-4" ? { ...f, status: "scheduled" as const, score: undefined } : f), finishedIds: ["u21-next-1", "u21-next-2"], nextId: "u21-next-4", lastId: "u21-next-3", historyTop2: ["u21-next-3", "u21-next-2"] },
-    { fixtures: belezaFixtures, finishedIds: ["beleza-next-3", "beleza-next-4"], nextId: "beleza-next-9", lastId: "beleza-next-8", historyTop2: ["beleza-next-8", "beleza-next-7"] },
+    { fixtures: belezaFixtures, finishedIds: ["beleza-next-3", "beleza-next-4"], nextId: "beleza-next-10", lastId: "beleza-next-9", historyTop2: ["beleza-next-9", "beleza-next-8"] },
   ] as const;
   for (const { fixtures, finishedIds, nextId, lastId, historyTop2 } of cases) {
     const simulated = withStatus(fixtures, finishedIds, "finished");
