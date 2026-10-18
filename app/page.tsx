@@ -5,6 +5,7 @@ import { belezaFixtures, toBelezaUpcomingMatch } from "@/lib/data/beleza-fixture
 import { u21Fixtures, toU21UpcomingMatch } from "@/lib/data/u21-fixtures";
 import { topFixtures, toTopUpcomingFixture } from "@/lib/data/top-fixtures";
 import { getLatestFinishedFixture, getNextFixture } from "@/lib/data/fixture-selectors";
+import { getCategoryLiveFixture } from "@/lib/match/category-live-fixture";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { getTopDetailHref } from "@/lib/match/top-card-presentation";
 import { HomeHero } from "@/components/home/HomeHero";
@@ -65,11 +66,11 @@ export default async function Home() {
         : undefined,
   });
 
-  const nextU21Fixture = getNextFixture(u21Fixtures, now);
+  const nextU21Fixture = getCategoryLiveFixture(u21Fixtures, now) ?? getNextFixture(u21Fixtures, now);
   const u21LastFixture = getLatestFinishedFixture(u21Fixtures);
   const u21CardState = resolveCategoryCardState({
     now,
-    focus: nextU21Fixture?.kickoffAt ? { status: "scheduled", kickoffAt: nextU21Fixture.kickoffAt } : undefined,
+    focus: nextU21Fixture ? { status: nextU21Fixture.status === "half_time" || nextU21Fixture.status === "live" ? "live" : "scheduled", kickoffAt: nextU21Fixture.kickoffAt ?? "" } : undefined,
     nextFixture: nextU21Fixture
       ? {
           opponentName: nextU21Fixture.opponentName,
@@ -89,11 +90,11 @@ export default async function Home() {
       : undefined,
   });
 
-  const nextBelezaFixture = getNextFixture(belezaFixtures, now);
+  const nextBelezaFixture = getCategoryLiveFixture(belezaFixtures, now) ?? getNextFixture(belezaFixtures, now);
   const belezaLastFixture = getLatestFinishedFixture(belezaFixtures);
   const belezaCardState = resolveCategoryCardState({
     now,
-    focus: nextBelezaFixture?.kickoffAt ? { status: "scheduled", kickoffAt: nextBelezaFixture.kickoffAt } : undefined,
+    focus: nextBelezaFixture ? { status: nextBelezaFixture.status === "half_time" || nextBelezaFixture.status === "live" ? "live" : "scheduled", kickoffAt: nextBelezaFixture.kickoffAt ?? "" } : undefined,
     nextFixture: nextBelezaFixture
       ? {
           opponentName: nextBelezaFixture.opponentName,

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getCategoryDetailHref } from "@/lib/data/category-match-details";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { BelezaMatchStats } from "@/components/match/BelezaMatchStats";
@@ -121,6 +122,7 @@ export default async function BelezaMatchDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  if (!getCategoryDetailHref("beleza", id)) notFound();
 
   if (id === belezaReginaMatch.id) return <BelezaReginaDetail />;
 

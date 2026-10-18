@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getCategoryDetailHref } from "@/lib/data/category-match-details";
 import {
   u21Match,
   u21HomeOfficialLineup,
@@ -62,7 +63,7 @@ export default async function U21MatchDetailPage({
 
   // 公式データを登録済みのIDのみ詳細を表示し、該当しないIDは404にする
   // （TOP TEAMの /matches/[id] とはデータ構造が別のため共通化しない）。
-  if (id !== u21Match.id && id !== u21ShimizuMatch.id && id !== u21Match1.id && id !== u21KawasakiMatch.id && id !== u21IwataMatch.id) {
+  if (!getCategoryDetailHref("u21", id)) {
     notFound();
   }
 
