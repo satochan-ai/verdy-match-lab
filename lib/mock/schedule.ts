@@ -192,11 +192,12 @@ export const scheduleMatches: ScheduleMatch[] = [
     id: "sched-fc-tokyo",
     competition: "j1",
     round: "第10節",
-    kickoffAt: "2026-10-17T14:00:00+09:00",
+    kickoffAt: "2026-10-17T14:03:00+09:00",
     venue: "味の素スタジアム",
     isVerdyHome: true,
     opponentName: "FC東京",
-    status: "scheduled",
+    status: "finished",
+    homeScore: 0, awayScore: 4, detailMatchId: "sched-fc-tokyo",
   },
   // 第11節以降は東京ヴェルディ公式「2026/27シーズン試合一覧」
   // （https://www.verdy.co.jp/match/schedule/）で2026-10-10に確認した確定日程。

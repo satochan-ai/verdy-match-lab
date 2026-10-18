@@ -1,9 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { hiroshimaResult as match } from "../mock/top-hiroshima-result.ts";
-import { topFixtures } from "./top-fixtures.ts";
+import { topFixtures as currentTopFixtures } from "./top-fixtures.ts";
 import { getLatestFinishedFixture, getUpcomingFixtures } from "./fixture-selectors.ts";
 import { getMatchResult } from "../match/result.ts";
+
+// 10/12時点の履歴を再現し、後日のFC東京結果登録に依存させない。
+const topFixtures = currentTopFixtures.map(f => f.id === "sched-fc-tokyo" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-17T14:00:00+09:00" } : f);
 test("Hiroshima official result, squads, goals, substitutions and cards stay confirmed", () => {
   assert.equal(getMatchResult(match), "loss");
   assert.deepEqual([match.homeScore, match.awayScore], [0, 2]);

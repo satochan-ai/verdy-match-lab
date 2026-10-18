@@ -6,7 +6,11 @@ import { getNextFixture, getLatestFinishedFixture } from "../data/fixture-select
 import { topFixtures as currentTopFixtures } from "../data/top-fixtures.ts";
 
 // 鳥取戦終了時点の履歴検証。広島戦の結果登録後も当時のselector条件を再現する。
-const topFixtures = currentTopFixtures.map((fixture) => fixture.id === "sched-hiroshima" ? { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-11T15:00:00+09:00" } : fixture);
+const topFixtures = currentTopFixtures.map((fixture) => {
+  if (fixture.id === "sched-hiroshima") return { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-11T15:00:00+09:00" };
+  if (fixture.id === "sched-fc-tokyo") return { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-17T14:00:00+09:00" };
+  return fixture;
+});
 
 test("PK decides the winner without changing the drawn match score", () => {
   const match = { homeScore: 0, awayScore: 0, isVerdyHome: false, penaltyShootout: { homeScore: 3, awayScore: 4 } };

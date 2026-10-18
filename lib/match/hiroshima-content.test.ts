@@ -1,8 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { getNextFixture } from "../data/fixture-selectors.ts";
-import { topFixtures } from "../data/top-fixtures.ts";
+import { topFixtures as currentTopFixtures } from "../data/top-fixtures.ts";
 import { shouldShowHiroshimaPreContent } from "./hiroshima-content.ts";
+
+// 広島戦終了直後の次戦表示を履歴fixtureで検証する。
+const topFixtures = currentTopFixtures.map(f => f.id === "sched-fc-tokyo" ? { ...f, status: "scheduled" as const, score: undefined, kickoffAt: "2026-10-17T14:00:00+09:00" } : f);
 
 test("Hiroshima pre-match content is shown only when the displayed NEXT is sched-hiroshima", () => {
   assert.equal(shouldShowHiroshimaPreContent({ id: "sched-hiroshima" }), true);

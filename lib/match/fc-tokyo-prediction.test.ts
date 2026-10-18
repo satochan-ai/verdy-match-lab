@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { getNextFixture } from "../data/fixture-selectors.ts";
-import { topFixtures } from "../data/top-fixtures.ts";
+import { topFixtures as currentTopFixtures } from "../data/top-fixtures.ts";
 import { shouldShowHiroshimaPreContent } from "./hiroshima-content.ts";
 import {
   FC_TOKYO_PREDICTION_FIXTURE_ID,
@@ -14,6 +14,9 @@ import {
 
 const line = (rows: typeof verdyDerbyRows, numbers: Record<string, number | undefined>) =>
   rows.map((row) => row.map((p) => `${p.role}:${p.name}#${numbers[p.name] ?? ""}`));
+
+// 試合前の予定時刻・状態を隔離fixtureで保持する。
+const topFixtures = currentTopFixtures.map(f => f.id === "sched-fc-tokyo" ? { ...f, status: "scheduled" as const, score: undefined, kickoffAt: "2026-10-17T14:00:00+09:00" } : f);
 
 test("Verdy predicted XI: 4-4-2, 11 players, left→right order, official numbers", () => {
   assert.deepEqual(verdyDerbyRows.map((row) => row.length), [2, 4, 4, 1]); // FW / MF / DF / GK（上→下）

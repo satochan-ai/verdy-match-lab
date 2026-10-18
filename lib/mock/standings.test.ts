@@ -15,13 +15,13 @@ test("J1 standings register 東京ヴェルディ exactly once with the official
   assert.deepEqual(verdyEntries[0], {
     rank: 20,
     teamName: "東京ヴェルディ",
-    played: 9,
+    played: 10,
     wins: 0,
     draws: 4,
-    losses: 5,
+    losses: 6,
     goalsFor: 4,
-    goalsAgainst: 14,
-    goalDifference: -10,
+    goalsAgainst: 18,
+    goalDifference: -14,
     points: 4,
   });
 });
@@ -32,14 +32,14 @@ test("J1 standings register ジェフユナイテッド千葉 exactly once with 
   assert.deepEqual(chibaEntries[0], {
     rank: 19,
     teamName: "ジェフユナイテッド千葉",
-    played: 9,
+    played: 10,
     wins: 1,
-    draws: 2,
+    draws: 3,
     losses: 6,
     goalsFor: 8,
     goalsAgainst: 19,
     goalDifference: -11,
-    points: 5,
+    points: 6,
   });
 });
 
@@ -53,5 +53,5 @@ test("J1 standings entries are internally consistent (points and goal difference
 
 test("J1 standings expose the official source and as-of label", () => {
   assert.equal(j1Standings.sourceUrl, "https://www.jleague.jp/j1/standings/2026-27/");
-  assert.equal(j1Standings.asOfLabel, "2026年10月11日18:19更新");
+  assert.equal(j1Standings.asOfLabel, "2026年10月17日21:18更新");
 });

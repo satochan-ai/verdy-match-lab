@@ -12,9 +12,9 @@ const withStatus = (fixtures: readonly CommonFixture[], ids: readonly string[], 
 test("U-21 and BELEZA have unique IDs and stay within category boundaries", () => {
   const all = [...u21Fixtures, ...belezaFixtures];
   assert.equal(new Set(all.map((fixture) => fixture.id)).size, all.length);
-  // U-21 contributes 4; BELEZA contributes 8 (5 archived matches that each render
+  // U-21 contributes 5; BELEZA contributes 8 (5 archived matches that each render
   // individually at /beleza/matches/[id], plus the current snapshot, 浦和カップ戦 and 広島カップ戦).
-  assert.equal(new Set(all.flatMap((fixture) => fixture.detailMatchId ? [fixture.detailMatchId] : [])).size, 12);
+  assert.equal(new Set(all.flatMap((fixture) => fixture.detailMatchId ? [fixture.detailMatchId] : [])).size, 13);
   assert.equal(u21Fixtures.every((fixture) => fixture.category === "u21"), true);
   assert.equal(belezaFixtures.every((fixture) => fixture.category === "beleza"), true);
 });
@@ -56,7 +56,7 @@ test("TBD-only collections provide a provisional NEXT, while confirmed fixtures 
 });
 
 test("kickoff boundary includes 17:59 and excludes a still-scheduled 18:01 fixture", () => {
-  const kickoff = { ...u21Fixtures.find((fixture) => fixture.id === "u21-next-4")!, id: "boundary", kickoffAt: "2026-09-12T18:00:00+09:00" };
+  const kickoff = { ...u21Fixtures.find((fixture) => fixture.id === "u21-next-4")!, id: "boundary", status: "scheduled" as const, score: undefined, kickoffAt: "2026-09-12T18:00:00+09:00" };
   assert.equal(getNextFixture([kickoff], new Date("2026-09-12T17:59:00+09:00"))?.id, "boundary");
   assert.equal(getNextFixture([kickoff], new Date("2026-09-12T18:01:00+09:00")), undefined);
 });
@@ -66,7 +66,7 @@ test("two consecutive finishes update NEXT, LAST and HISTORY for both categories
   // BELEZA: finishedIds（INAC神戸戦・EL埼玉戦）より後に浦和カップ戦・C大阪戦がすでにfinished
   // として実データに存在するため、LAST/HISTORY直近2件はそちら（より新しい確定結果）になる。
   const cases = [
-    { fixtures: u21Fixtures, finishedIds: ["u21-next-1", "u21-next-2"], nextId: "u21-next-4", lastId: "u21-next-3", historyTop2: ["u21-next-3", "u21-next-2"] },
+    { fixtures: u21Fixtures.map(f => f.id === "u21-next-4" ? { ...f, status: "scheduled" as const, score: undefined } : f), finishedIds: ["u21-next-1", "u21-next-2"], nextId: "u21-next-4", lastId: "u21-next-3", historyTop2: ["u21-next-3", "u21-next-2"] },
     { fixtures: belezaFixtures, finishedIds: ["beleza-next-3", "beleza-next-4"], nextId: "beleza-next-9", lastId: "beleza-next-8", historyTop2: ["beleza-next-8", "beleza-next-7"] },
   ] as const;
   for (const { fixtures, finishedIds, nextId, lastId, historyTop2 } of cases) {

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { getNextFixture } from "../data/fixture-selectors.ts";
-import { topFixtures } from "../data/top-fixtures.ts";
+import { topFixtures as currentTopFixtures } from "../data/top-fixtures.ts";
 import { shouldShowFcTokyoPrediction } from "./fc-tokyo-prediction.ts";
 import { shouldShowHiroshimaPreContent } from "./hiroshima-content.ts";
 import {
@@ -11,6 +11,9 @@ import {
   verdyDerbyPreview,
   verdyDerbyStrategies,
 } from "./fc-tokyo-preview.ts";
+
+// 10/15時点のプレビュー表示条件を再現する。
+const topFixtures = currentTopFixtures.map(f => f.id === "sched-fc-tokyo" ? { ...f, status: "scheduled" as const, score: undefined, kickoffAt: "2026-10-17T14:00:00+09:00" } : f);
 
 test("both teams have a MATCH PREVIEW with title, body and 4 key points", () => {
   assert.equal(verdyDerbyPreview.title, "東京ダービーで問われる、相馬ヴェルディの次なる一手");

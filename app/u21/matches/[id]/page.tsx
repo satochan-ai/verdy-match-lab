@@ -32,6 +32,7 @@ import {
   u21KawasakiOfficialRecord,
 } from "@/lib/mock/u21";
 import { resolveMatchStatus } from "@/lib/match/status";
+import { u21IwataMatch, u21IwataHomeOfficialLineup, u21IwataAwayOfficialLineup, u21IwataGoals, u21IwataCards, u21IwataSubstitutions, u21IwataOfficialRecord } from "@/lib/mock/u21-iwata-result";
 import { U21LiveSection } from "@/components/match/U21LiveSection";
 import { U21OfficialLineups } from "@/components/match/U21OfficialLineups";
 import { MatchRecord } from "@/components/match/MatchRecord";
@@ -61,20 +62,21 @@ export default async function U21MatchDetailPage({
 
   // 公式データを登録済みのIDのみ詳細を表示し、該当しないIDは404にする
   // （TOP TEAMの /matches/[id] とはデータ構造が別のため共通化しない）。
-  if (id !== u21Match.id && id !== u21ShimizuMatch.id && id !== u21Match1.id && id !== u21KawasakiMatch.id) {
+  if (id !== u21Match.id && id !== u21ShimizuMatch.id && id !== u21Match1.id && id !== u21KawasakiMatch.id && id !== u21IwataMatch.id) {
     notFound();
   }
 
   const isShimizu = id === u21ShimizuMatch.id;
   const isFctokyo = id === u21Match1.id;
   const isKawasaki = id === u21KawasakiMatch.id;
-  const match = isKawasaki ? u21KawasakiMatch : isShimizu ? u21ShimizuMatch : isFctokyo ? u21Match1 : u21Match;
-  const homeLineup = isKawasaki ? u21KawasakiHomeOfficialLineup : isShimizu ? u21ShimizuHomeOfficialLineup : isFctokyo ? u21Match1HomeOfficialLineup : u21HomeOfficialLineup;
-  const awayLineup = isKawasaki ? u21KawasakiAwayOfficialLineup : isShimizu ? u21ShimizuAwayOfficialLineup : isFctokyo ? u21Match1AwayOfficialLineup : u21AwayOfficialLineup;
-  const goals = isKawasaki ? u21KawasakiGoals : isFctokyo ? u21Match1Goals : isShimizu ? u21ShimizuGoals : u21Goals;
-  const cards = isKawasaki ? u21KawasakiCards : isFctokyo ? u21Match1Cards : isShimizu ? [] : u21Cards;
-  const substitutions = isKawasaki ? u21KawasakiSubstitutions : isFctokyo ? u21Match1Substitutions : isShimizu ? u21ShimizuSubstitutions : u21Substitutions;
-  const officialRecord = isKawasaki ? u21KawasakiOfficialRecord : isFctokyo ? u21Match1OfficialRecord : isShimizu ? u21ShimizuOfficialRecord : u21OfficialRecord;
+  const isIwata = id === u21IwataMatch.id;
+  const match = isIwata ? u21IwataMatch : isKawasaki ? u21KawasakiMatch : isShimizu ? u21ShimizuMatch : isFctokyo ? u21Match1 : u21Match;
+  const homeLineup = isIwata ? u21IwataHomeOfficialLineup : isKawasaki ? u21KawasakiHomeOfficialLineup : isShimizu ? u21ShimizuHomeOfficialLineup : isFctokyo ? u21Match1HomeOfficialLineup : u21HomeOfficialLineup;
+  const awayLineup = isIwata ? u21IwataAwayOfficialLineup : isKawasaki ? u21KawasakiAwayOfficialLineup : isShimizu ? u21ShimizuAwayOfficialLineup : isFctokyo ? u21Match1AwayOfficialLineup : u21AwayOfficialLineup;
+  const goals = isIwata ? u21IwataGoals : isKawasaki ? u21KawasakiGoals : isFctokyo ? u21Match1Goals : isShimizu ? u21ShimizuGoals : u21Goals;
+  const cards = isIwata ? u21IwataCards : isKawasaki ? u21KawasakiCards : isFctokyo ? u21Match1Cards : isShimizu ? [] : u21Cards;
+  const substitutions = isIwata ? u21IwataSubstitutions : isKawasaki ? u21KawasakiSubstitutions : isFctokyo ? u21Match1Substitutions : isShimizu ? u21ShimizuSubstitutions : u21Substitutions;
+  const officialRecord = isIwata ? u21IwataOfficialRecord : isKawasaki ? u21KawasakiOfficialRecord : isFctokyo ? u21Match1OfficialRecord : isShimizu ? u21ShimizuOfficialRecord : u21OfficialRecord;
 
   const displayStatus = resolveMatchStatus(match, new Date());
   const statusLabel = {
