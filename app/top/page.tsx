@@ -25,6 +25,8 @@ import { FcTokyoMatchPreview } from "@/components/match/FcTokyoMatchPreview";
 import { FcTokyoStrategies } from "@/components/match/FcTokyoStrategies";
 import { shouldShowFcTokyoPrediction } from "@/lib/match/fc-tokyo-prediction";
 import { HiroshimaStrategies } from "@/components/match/HiroshimaStrategies";
+import { YokohamaFmMatchPreview, YokohamaFmStrategies, YokohamaFmPredictions } from "@/components/match/YokohamaFmPreContent";
+import { shouldShowYokohamaFmContent } from "@/lib/match/yokohama-fm-content";
 
 export const metadata: Metadata = {
   title: "東京ヴェルディ TOP TEAM | Verdy Match Lab",
@@ -80,6 +82,7 @@ export default async function TopTeamPage() {
   const detailHref = getTopDetailHref(displayFixture?.detailMatchId, detailMatch);
   const showHiroshimaPreContent = shouldShowHiroshimaPreContent(displayFixture);
   const showFcTokyoPrediction = shouldShowFcTokyoPrediction(displayFixture);
+  const showYokohamaFmContent = shouldShowYokohamaFmContent(displayFixture);
   const topUpcoming = getUpcomingFixtures(topFixtures, now, 5).map(toTopUpcomingFixture);
   // nextMatchがnull（scheduledな試合が未登録）の場合は、過去試合を出さずに
   // 「次戦情報準備中」の空状態を表示する。LAST MATCH / NEXT 5は独立して表示する。
@@ -253,6 +256,14 @@ export default async function TopTeamPage() {
               <a href="https://www.football-lab.jp/kufc/formation?year=2025" target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">Football LAB：鹿児島2025年フォーメーション</a>
             </div>
           </section>
+
+          {showYokohamaFmContent && (
+            <>
+              <YokohamaFmMatchPreview />
+              <YokohamaFmStrategies />
+              <YokohamaFmPredictions />
+            </>
+          )}
 
           {showHiroshimaPreContent && (
             <>
