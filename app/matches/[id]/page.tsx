@@ -16,6 +16,7 @@ import { AvailabilityInfo } from "@/components/match/AvailabilityInfo";
 import { PreviousMatchSummary } from "@/components/match/PreviousMatchSummary";
 import { HalfTimeNote } from "@/components/match/HalfTimeNote";
 import { MatchRecord } from "@/components/match/MatchRecord";
+import { YokohamaFmPredictionCheck, YokohamaFmViewerReview } from "@/components/match/YokohamaFmResultExtras";
 import { AiGuidePanel } from "@/features/ai-guide/ui/AiGuidePanel";
 import { LiveGuidePanel } from "@/features/ai-guide/ui/LiveGuidePanel";
 import { AnalysisReportView } from "@/features/ai-guide/ui/AnalysisReportView";
@@ -46,7 +47,9 @@ export default async function MatchDetailPage({
     finished: "試合終了",
   }[displayStatus];
 
-  const officialLineupsBlock = match.actualLineups && (
+  // 開始時フォーメーションが公式で未確認の試合（両側未設定）では、ピッチ型の公式スタメン欄を出さない
+  // （先発・ベンチはMATCH RECORDのSTARTING XIに掲載される）。
+  const officialLineupsBlock = match.actualLineups && (match.actualLineups.home.formation || match.actualLineups.away.formation) && (
     <OfficialLineups
       homeTeam={match.homeTeam}
       awayTeam={match.awayTeam}
@@ -287,6 +290,13 @@ export default async function MatchDetailPage({
           <div className="mt-8 lg:col-start-1 lg:mt-6">
             {officialLineupsBlock}
           </div>
+
+          {match.id === "sched-yokohama-fm" && (
+            <div className="mt-8 space-y-8 lg:col-start-1 lg:mt-6">
+              <YokohamaFmViewerReview />
+              <YokohamaFmPredictionCheck />
+            </div>
+          )}
 
           <div className="mt-10 lg:col-start-1 lg:mt-6">
             <StrategyList

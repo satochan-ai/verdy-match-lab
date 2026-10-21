@@ -9,6 +9,7 @@ import { topFixtures as currentTopFixtures } from "../data/top-fixtures.ts";
 const topFixtures = currentTopFixtures.map((fixture) => {
   if (fixture.id === "sched-hiroshima") return { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-11T15:00:00+09:00" };
   if (fixture.id === "sched-fc-tokyo") return { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-17T14:00:00+09:00" };
+  if (fixture.id === "sched-yokohama-fm") return { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-21T19:00:00+09:00" };
   return fixture;
 });
 

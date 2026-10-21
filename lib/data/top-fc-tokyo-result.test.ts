@@ -3,12 +3,15 @@ import test from "node:test";
 import { fcTokyoResult as match } from "../mock/top-fc-tokyo-result.ts";
 import { matches } from "../mock/matches.ts";
 import { scheduleMatches } from "../mock/schedule.ts";
-import { topFixtures } from "./top-fixtures.ts";
+import { topFixtures as currentTopFixtures } from "./top-fixtures.ts";
 import { validateTopFixtureConsistency } from "./top-fixture-consistency.ts";
 import { getLatestFinishedFixture, getNextFixture, getUpcomingFixtures } from "./fixture-selectors.ts";
 import { resolveMatchStatus } from "../match/status.ts";
 import { verdyDerbyRows } from "../match/fc-tokyo-prediction.ts";
 import { verdyDerbyPreview, verdyDerbyStrategies } from "../match/fc-tokyo-preview.ts";
+
+// 10/18時点の履歴を再現し、後日の横浜FM戦の結果登録に依存させない。
+const topFixtures = currentTopFixtures.map(f => f.id === "sched-yokohama-fm" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-21T19:00:00+09:00" } : f);
 
 test("FC Tokyo official result is consistent across schedule, fixture and published detail", () => {
   assert.deepEqual([match.homeScore, match.awayScore], [0, 4]);

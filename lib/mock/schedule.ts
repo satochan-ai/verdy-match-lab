@@ -205,11 +205,13 @@ export const scheduleMatches: ScheduleMatch[] = [
     id: "sched-yokohama-fm",
     competition: "j1",
     round: "第11節",
-    kickoffAt: "2026-10-21T19:00:00+09:00",
+    kickoffAt: "2026-10-21T19:03:00+09:00",
     venue: "ＭＵＦＧスタジアム",
     isVerdyHome: false,
     opponentName: "横浜F・マリノス",
-    status: "scheduled",
+    status: "finished",
+    // アウェイ戦のためhome＝横浜F・マリノス側のスコア（公式 2-2）。
+    homeScore: 2, awayScore: 2, detailMatchId: "sched-yokohama-fm",
   },
   {
     id: "sched-fukuoka",

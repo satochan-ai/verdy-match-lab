@@ -646,6 +646,10 @@ export function getPostMatchAnalysis(match: Match): AnalysisReport {
       { heading: "確認済み試合情報", bullets: match.matchNotes },
     ] };
   }
+  // 横浜FM戦は確認済みの公式情報のみ掲載する（観戦レビューは別セクション）。
+  if (match.id === "sched-yokohama-fm") {
+    return { sections: [{ heading: "確認済み試合情報", bullets: match.matchNotes }] };
+  }
   const opponentName = match.isVerdyHome ? match.awayTeam.name : match.homeTeam.name;
   const anchorStrategy = match.strategies[0];
   const intro = anchorStrategy
