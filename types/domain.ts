@@ -139,6 +139,13 @@ export interface OfficialMatchRecord {
 export interface ActualLineup {
   /** 公式発表画面で確認できた場合のみ設定する。 */
   formation?: string;
+  /**
+   * 公式フォーメーション図の並び（"背番号 名前"）。GK→最終ライン→前線の順で、各行は画面左→右。
+   * starters（登録ポジション別リスト）とは別に、図の行がポジション別リストと一致しない場合のみ設定する。
+   */
+  pitchOrder?: string[];
+  /** formation／pitchOrderの出典・時点（例：Jリーグ公式「前半0分」）。確認できた場合のみ設定する。 */
+  formationBasis?: string;
   starters: PositionPlayerGroups;
   bench: PositionPlayerGroups;
 }

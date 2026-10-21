@@ -43,7 +43,7 @@ export function YokohamaFmPredictionCheck() {
     <section aria-label="予想スタメンの答え合わせ" className="space-y-4">
       <SectionHeader title="予想スタメンの答え合わせ" eyebrow="PREDICTION CHECK" />
       <p className="text-[13px] leading-relaxed text-text-secondary">
-        試合前に公開した独自予想と、公式記録の先発11名を選手単位で比べています。公式の開始時フォーメーションを確認できていないため、フォーメーションとピッチ上の役割（サイド・ボランチ等）の一致は判定していません。
+        試合前に公開した独自予想と、公式記録の先発11名を選手単位で比べています。フォーメーションはJリーグ公式の開始時（前半0分）の配置と比較しており、ピッチ上の役割（サイド・ボランチ等）の一致は判定していません。
       </p>
       <div className="grid gap-4 lg:grid-cols-2">
         <CheckBlock check={verdy} />

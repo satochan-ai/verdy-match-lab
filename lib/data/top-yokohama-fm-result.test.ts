@@ -51,12 +51,11 @@ test("goals, cards and substitutions equal the official record with no fabricate
   ]);
 });
 
-test("official squads: 11 starters + 9 bench per team, every sub belongs to the right team, formation is not invented", () => {
+test("official squads: 11 starters + 9 bench per team, every sub belongs to the right team", () => {
   const { home, away } = match.actualLineups!;
   for (const lineup of [home, away]) {
     assert.equal(Object.values(lineup.starters).flat().length, 11);
     assert.equal(Object.values(lineup.bench).flat().length, 9);
-    assert.equal(lineup.formation, undefined);
   }
   const roster = (lineup: typeof home) => [...Object.values(lineup.starters).flat(), ...Object.values(lineup.bench).flat()].map((p) => p.replace(/^\d+ /, ""));
   const verdy = roster(away);
@@ -74,7 +73,7 @@ test("stats are limited to the official record and no unconfirmed stats are regi
   assert.equal(match.matchStats, undefined);
   assert.ok(match.matchNotes.some((note) => note.includes("シュート 横浜FM 14 - 東京V 12") && note.includes("CK 6 - 6") && note.includes("FK 25 - 15")));
   assert.equal(match.matchNotes.some((note) => /枠内|支配率|パス/.test(note)), false);
-  assert.ok(match.matchNotes.some((note) => note.includes("開始時フォーメーション：公式で確認できていないため未掲載")));
+  assert.ok(match.matchNotes.some((note) => note.includes("開始時フォーメーション：東京V 4-4-2 ／ 横浜FM 4-2-3-1（Jリーグ公式 フォーメーション「前半0分」）")));
 });
 
 test("finish clears LIVE, makes the match LAST and advances NEXT/NEXT5 to the registered fixtures only", () => {
@@ -98,7 +97,7 @@ test("pre-match editorial data is kept unchanged as history", () => {
   assert.deepEqual(verdyYokohamaRows[0].map((p) => p.name), ["一美 和成", "キム ヒョンウ"]);
 });
 
-test("prediction check: player-level hits, change predictions and formation held (not confirmed)", () => {
+test("prediction check: player-level hits, change predictions and formation compared with the confirmed starting formation", () => {
   const { verdy, marinos } = yokohamaFmPredictionCheck;
   assert.deepEqual([...verdy.matched].sort(), ["一美 和成", "平川 怜", "新井 悠太", "林 尚輝", "熊取谷 一星", "藤本 寛也"].sort());
   assert.deepEqual(verdy.predictedNotStarted.map((p) => `${p.name}:${p.appearance}`).sort(), [
@@ -114,10 +113,9 @@ test("prediction check: player-level hits, change predictions and formation held
   assert.deepEqual([...marinos.startedNotPredicted].sort(), ["井上 太聖", "宮市 亮", "遠野 大弥", "飯倉 大樹"].sort());
   assert.deepEqual([marinos.changes.correct, marinos.changes.total], [3, 4]);
   assert.deepEqual(marinos.keyPlayers.map((p) => `${p.name}:${p.appearance}`), ["知念 慶:先発", "ジョルディ・クルークス:先発", "谷村 海那:先発"]);
-  for (const check of [verdy, marinos]) {
-    assert.equal(check.actualFormation, undefined);
-    assert.equal(check.formationVerdict, "判定保留");
-  }
+  // 開始時フォーメーション（Jリーグ公式「前半0分」）が確認できたため、予想との一致を判定する。
+  assert.deepEqual([verdy.predictedFormation, verdy.actualFormation, verdy.formationVerdict], ["4-4-2", "4-4-2", "一致"]);
+  assert.deepEqual([marinos.predictedFormation, marinos.actualFormation, marinos.formationVerdict], ["4-2-3-1", "4-2-3-1", "一致"]);
 });
 
 test("viewer review keeps the provided text, is labelled subjective and adds no unconfirmed play", () => {
@@ -130,4 +128,34 @@ test("viewer review keeps the provided text, is labelled subjective and adds no 
   // 総括は確認済みの公式情報のみ（観戦レビューは別セクション）。
   const report = getPostMatchAnalysis(match);
   assert.deepEqual(report.sections.map((s) => s.heading), ["確認済み試合情報"]);
+});
+
+test("official starting formation (J.League 前半0分) is registered with its source and keeps the start-time basis", () => {
+  const { home, away } = match.actualLineups!;
+  assert.deepEqual([home.formation, away.formation], ["4-2-3-1", "4-4-2"]);
+  for (const lineup of [home, away]) assert.match(lineup.formationBasis!, /前半0分/);
+  // 最後の交代後（後半41分）の布陣ではなく、開始時の先発11名であること。
+  const startersOf = (lineup: typeof home) => Object.values(lineup.starters).flat().sort();
+  for (const lineup of [home, away]) assert.deepEqual([...lineup.pitchOrder!].sort(), startersOf(lineup));
+  assert.equal(match.substitutions!.some((s) => ["山田 剛綺", "山根 陸", "喜田 拓也", "神田 奏真"].includes(s.playerIn) && [...home.pitchOrder!, ...away.pitchOrder!].some((p) => p.endsWith(s.playerIn))), false);
+});
+
+test("pitch order matches the official formation rows and left-to-right placement", () => {
+  const { home, away } = match.actualLineups!;
+  const rows = (order: string[], shape: number[]) => {
+    const [gk, ...field] = order;
+    let index = 0;
+    return [[gk], ...shape.map((count) => { const row = field.slice(index, index + count); index += count; return row; })];
+  };
+  // 東京V 4-4-2（画面左向き攻撃：下側＝左）。GK→DF→MF→FW、各行は左→右。
+  assert.deepEqual(rows(away.pitchOrder!, [4, 4, 2]).map((row) => row.map((p) => p.replace(/^\d+ /, ""))), [
+    ["マテウス"], ["溝口 修平", "チョ ユミン", "林 尚輝", "鈴木 海音"], ["新井 悠太", "平川 怜", "齋藤 功佑", "藤本 寛也"], ["一美 和成", "熊取谷 一星"],
+  ]);
+  // 横浜FM 4-2-3-1（画面右向き攻撃：上側＝左）。
+  assert.deepEqual(rows(home.pitchOrder!, [4, 2, 3, 1]).map((row) => row.map((p) => p.replace(/^\d+ /, ""))), [
+    ["飯倉 大樹"], ["井上 太聖", "諏訪間 幸成", "ジェイソン キニョーネス", "木村 卓斗"], ["知念 慶", "松村 晃助"], ["ジョルディ クルークス", "遠野 大弥", "宮市 亮"], ["谷村 海那"],
+  ]);
+  // 登録ポジション別リスト（公式記録）は図の行に合わせて書き換えない。
+  assert.deepEqual(home.starters.FW, ["11 ジョルディ クルークス", "9 谷村 海那", "23 宮市 亮"]);
+  assert.deepEqual(home.starters.MF, ["14 知念 慶", "41 松村 晃助", "7 遠野 大弥"]);
 });
