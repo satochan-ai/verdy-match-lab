@@ -16,7 +16,7 @@ const topFixtures = currentTopFixtures.map((fixture) => {
 
 test("TOP schedule adapter produces valid CommonFixtures", () => {
   assert.equal(validateFixtures(topFixtures).length, 0);
-  assert.equal(topFixtures.length, 18);
+  assert.equal(topFixtures.length, 19);
   assert.deepEqual(topFixtures.find((fixture) => fixture.id === "sched-cerezo")?.score, { home: 0, away: 0 });
   assert.equal(topFixtures.find((fixture) => fixture.id === "sched-cerezo")?.detailMatchId, "match-11");
   assert.deepEqual(topFixtures.find((fixture) => fixture.id === "sched-kashima")?.score, { home: 0, away: 2 });

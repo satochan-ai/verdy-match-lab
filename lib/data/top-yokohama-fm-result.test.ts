@@ -83,7 +83,7 @@ test("finish clears LIVE, makes the match LAST and advances NEXT/NEXT5 to the re
   const next = getNextFixture(topFixtures, now)!;
   assert.deepEqual([next.id, next.opponentName, next.kickoffAt, next.venue, next.isHome, next.competition.round], ["sched-fukuoka", "アビスパ福岡", "2026-10-24T15:00:00+09:00", "味の素スタジアム", true, "第12節"]);
   const upcoming = getUpcomingFixtures(topFixtures, now, 5);
-  assert.deepEqual(upcoming.map((f) => f.id), ["sched-fukuoka", "sched-nagasaki", "sched-shimizu"]); // 登録済みの実日程のみ（5件に水増ししない）
+  assert.deepEqual(upcoming.map((f) => f.id), ["sched-fukuoka", "sched-nagasaki", "sched-shimizu", "sched-nagoya"]); // 登録済みの実日程のみ（5件に水増ししない）
   assert.equal(upcoming.some((f) => f.id === match.id), false);
   assert.equal(shouldShowYokohamaFmContent({ id: match.id, status: "finished" }), false);
 });
@@ -158,4 +158,12 @@ test("pitch order matches the official formation rows and left-to-right placemen
   // 登録ポジション別リスト（公式記録）は図の行に合わせて書き換えない。
   assert.deepEqual(home.starters.FW, ["11 ジョルディ クルークス", "9 谷村 海那", "23 宮市 亮"]);
   assert.deepEqual(home.starters.MF, ["14 知念 慶", "41 松村 晃助", "7 遠野 大弥"]);
+});
+
+test("11/21 Nagoya is registered once from the official schedule, after Shimizu in NEXT5", () => {
+  const nagoya = topFixtures.filter((f) => f.id === "sched-nagoya");
+  assert.equal(nagoya.length, 1);
+  assert.deepEqual([nagoya[0].opponentName, nagoya[0].kickoffAt, nagoya[0].venue, nagoya[0].isHome, nagoya[0].competition.round, nagoya[0].status, nagoya[0].score, nagoya[0].detailMatchId], ["名古屋グランパス", "2026-11-21T14:00:00+09:00", "味の素スタジアム", true, "第15節", "scheduled", undefined, undefined]);
+  const upcoming = getUpcomingFixtures(topFixtures, new Date("2026-10-22T00:00:00+09:00"), 5);
+  assert.equal(upcoming.at(-1)?.id, "sched-nagoya");
 });

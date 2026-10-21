@@ -255,11 +255,13 @@ export default async function MatchDetailPage({
         <div className="space-y-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
           <div className="space-y-6">
             <MatchScoreboard match={displayMatch} />
-            <StrategyList
-              strategies={match.strategies}
-              showResult
-              title="軍師の三策（前半終了時点）"
-            />
+            {match.strategies.length > 0 && (
+              <StrategyList
+                strategies={match.strategies}
+                showResult
+                title="軍師の三策（前半終了時点）"
+              />
+            )}
             <HalfTimeNote matchId={match.id} />
             {officialLineupsBlock}
           </div>
@@ -298,13 +300,16 @@ export default async function MatchDetailPage({
             </div>
           )}
 
-          <div className="mt-10 lg:col-start-1 lg:mt-6">
-            <StrategyList
-              strategies={match.strategies}
-              showResult
-              title="軍師の三策 答え合わせ"
-            />
-          </div>
+          {/* 三策の検証データが無い試合では、見出しだけの空セクションを出さない。 */}
+          {match.strategies.length > 0 && (
+            <div className="mt-10 lg:col-start-1 lg:mt-6">
+              <StrategyList
+                strategies={match.strategies}
+                showResult
+                title="軍師の三策 答え合わせ"
+              />
+            </div>
+          )}
 
           <div className="mt-10 lg:col-start-2 lg:mt-0">
             <section className="section-reveal">

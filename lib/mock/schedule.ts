@@ -243,6 +243,17 @@ export const scheduleMatches: ScheduleMatch[] = [
     opponentName: "清水エスパルス",
     status: "scheduled",
   },
+  {
+    // 東京ヴェルディ公式「2026/27シーズン試合一覧」で2026-10-21に確認した確定日程。
+    id: "sched-nagoya",
+    competition: "j1",
+    round: "第15節",
+    kickoffAt: "2026-11-21T14:00:00+09:00",
+    venue: "味の素スタジアム",
+    isVerdyHome: true,
+    opponentName: "名古屋グランパス",
+    status: "scheduled",
+  },
 ];
 
 export function getPreviousMatches(limit = 5): ScheduleMatch[] {

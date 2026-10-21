@@ -44,7 +44,7 @@ test("FC Tokyo finish clears LIVE, advances LAST/NEXT5 and preserves pre-match e
   assert.equal(resolveMatchStatus(match, now), "finished");
   assert.equal(getLatestFinishedFixture(topFixtures)?.id, match.id);
   assert.equal(getNextFixture(topFixtures, now)?.id, "sched-yokohama-fm");
-  assert.deepEqual(getUpcomingFixtures(topFixtures, now, 5).map(f => f.id), ["sched-yokohama-fm", "sched-fukuoka", "sched-nagasaki", "sched-shimizu"]);
+  assert.deepEqual(getUpcomingFixtures(topFixtures, now, 5).map(f => f.id), ["sched-yokohama-fm", "sched-fukuoka", "sched-nagasaki", "sched-shimizu", "sched-nagoya"]);
   assert.equal(verdyDerbyRows.flat().length, 11);
   assert.equal(verdyDerbyStrategies.length, 3);
   assert.equal(verdyDerbyPreview.paragraphs.length, 5);
