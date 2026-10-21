@@ -1,12 +1,13 @@
 import type { PredictionPlayer } from "@/lib/match/prediction";
 
-type Tone = "verdy" | "opponent" | "fctokyo" | "marinos";
+type Tone = "verdy" | "opponent" | "fctokyo" | "marinos" | "avispa";
 
 const tones: Record<Tone, { frame: string; line: string; circle: string; role: string }> = {
   verdy: { frame: "border-deep-green bg-surface-tint", line: "border-primary-green/30", circle: "bg-primary-green", role: "text-deep-green" },
   opponent: { frame: "border-purple-800 bg-purple-50", line: "border-purple-700/30", circle: "bg-purple-700", role: "text-purple-900" },
   fctokyo: { frame: "border-blue-800 bg-blue-50", line: "border-blue-700/30", circle: "bg-blue-800 ring-2 ring-red-600", role: "text-blue-900" },
   marinos: { frame: "border-blue-800 bg-white", line: "border-blue-700/30", circle: "bg-blue-800 ring-2 ring-red-600", role: "text-blue-900" },
+  avispa: { frame: "border-blue-950 bg-slate-50", line: "border-blue-900/30", circle: "bg-blue-950 ring-2 ring-slate-400", role: "text-blue-950" },
 };
 
 function PlayerName({ player }: { player: PredictionPlayer }) {

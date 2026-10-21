@@ -7,9 +7,10 @@ const opponentButton = {
   purple: { on: "border-purple-700 bg-purple-700 text-white", off: "border-border bg-surface text-purple-900" },
   fctokyo: { on: "border-red-600 bg-blue-800 text-white", off: "border-border bg-surface text-blue-900" },
   marinos: { on: "border-red-600 bg-blue-800 text-white", off: "border-border bg-white text-blue-900" },
+  avispa: { on: "border-slate-400 bg-blue-950 text-white", off: "border-border bg-white text-blue-950" },
 };
 
-export function TeamPerspective({ label, verdy, hiroshima, opponentLabel = "広島", opponentTone = "purple" }: { label: string; verdy: ReactNode; hiroshima: ReactNode; opponentLabel?: string; opponentTone?: "purple" | "fctokyo" | "marinos" }) {
+export function TeamPerspective({ label, verdy, hiroshima, opponentLabel = "広島", opponentTone = "purple" }: { label: string; verdy: ReactNode; hiroshima: ReactNode; opponentLabel?: string; opponentTone?: "purple" | "fctokyo" | "marinos" | "avispa" }) {
   const [opponent, setOpponent] = useState(false);
   return (
     <div className="space-y-4">

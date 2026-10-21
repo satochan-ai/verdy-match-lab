@@ -10,13 +10,13 @@ import {
   type YokohamaFmPreview,
 } from "@/lib/match/yokohama-fm-content";
 
-function Sources({ sources }: { sources: { label: string; url: string }[] }) {
+export function Sources({ sources }: { sources: { label: string; url: string }[] }) {
   return <ul className="flex flex-wrap gap-x-5 gap-y-2 text-[12px] leading-relaxed">
     {sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">{source.label}</a></li>)}
   </ul>;
 }
 
-function PreviewBody({ preview }: { preview: YokohamaFmPreview }) {
+export function PreviewBody({ preview }: { preview: YokohamaFmPreview }) {
   return <div className="space-y-4">
     <h3 className="text-[18px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{preview.title}</h3>
     <div className="space-y-3 text-[14px] leading-relaxed text-text-primary">
