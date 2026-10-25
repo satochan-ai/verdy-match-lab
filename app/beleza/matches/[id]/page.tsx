@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 import {
+  belezaElfenLeagueMatch, belezaElfenLeagueHalfScores, belezaElfenLeagueGoals,
+  belezaElfenLeagueSubstitutions, belezaElfenLeagueOfficialRecord, belezaElfenLeagueFormation,
+  belezaElfenLeagueReviewTitle, belezaElfenLeagueReview,
+} from "@/lib/mock/beleza-elfen-league";
+import {
   belezaReginaLeagueMatch, belezaReginaLeagueHalfScores, belezaReginaLeagueGoals,
   belezaReginaLeagueCards, belezaReginaLeagueSubstitutions, belezaReginaLeagueOfficialRecord,
   belezaReginaLeagueStats, belezaReginaLeagueActualLineup, reginaLeagueActualLineup,
@@ -129,6 +134,7 @@ export default async function BelezaMatchDetailPage({
   const { id } = await params;
   if (!getCategoryDetailHref("beleza", id)) notFound();
 
+  if (id === belezaElfenLeagueMatch.id) return <BelezaElfenLeagueDetail />;
   if (id === belezaReginaLeagueMatch.id) return <BelezaReginaLeagueDetail />;
 
   if (id === belezaReginaMatch.id) return <BelezaReginaDetail />;
@@ -1072,6 +1078,34 @@ function BelezaReginaLeagueDetail() {
         officialSourceLabel="WEリーグ公式 試合記録" />
       <p className="text-[12px] text-text-secondary">警告・退場：両チームなし。46*′はハーフタイム中の交代を示します。</p>
       <BelezaMatchStats belezaTeamName={belezaTeam.name} opponentTeamName={reginaTeam.name} stats={belezaReginaLeagueStats} />
+    </div>
+  );
+}
+
+function BelezaElfenLeagueDetail() {
+  const match = belezaElfenLeagueMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+      <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+      <ArchivedMatchHero competition={match.competition} dateLabel={match.dateLabel} resultLabel="win"
+        homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        homeScore={match.homeScore} awayScore={match.awayScore} kickoffLabel={match.kickoffLabel}
+        kickoffCaption="実際のKICK OFF" venue={match.venue} halfScores={belezaElfenLeagueHalfScores} goals={belezaElfenLeagueGoals} />
+      <section>
+        <SectionHeader title="実際の並び" eyebrow="FORMATION" />
+        <div className="border-y border-border bg-surface px-3 py-4">
+          <FormationPitch team={belezaTeam} lineup={belezaElfenLeagueFormation} idPrefix="elfen-league-actual" />
+        </div>
+      </section>
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        goals={belezaElfenLeagueGoals} substitutions={belezaElfenLeagueSubstitutions}
+        officialRecord={belezaElfenLeagueOfficialRecord} officialSourceLabel="WEリーグ公式 試合記録" />
+      <p className="text-[12px] text-text-secondary">交代はベレーザのみ掲載。HTはハーフタイム中の交代。警告：90分 眞城美春（繰り返しの違反）。</p>
+      <section className="space-y-3">
+        <SectionHeader title={belezaElfenLeagueReviewTitle} eyebrow="MATCH REVIEW" />
+        {belezaElfenLeagueReview.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+      </section>
     </div>
   );
 }
