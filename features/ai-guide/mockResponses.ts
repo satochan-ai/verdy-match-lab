@@ -646,8 +646,8 @@ export function getPostMatchAnalysis(match: Match): AnalysisReport {
       { heading: "確認済み試合情報", bullets: match.matchNotes },
     ] };
   }
-  // 横浜FM戦は確認済みの公式情報のみ掲載する（観戦レビューは別セクション）。
-  if (match.id === "sched-yokohama-fm") {
+  // 横浜FM戦・福岡戦は確認済みの公式情報のみ掲載する（観戦レビューは別セクション）。
+  if (match.id === "sched-yokohama-fm" || match.id === "sched-fukuoka") {
     return { sections: [{ heading: "確認済み試合情報", bullets: match.matchNotes }] };
   }
   const opponentName = match.isVerdyHome ? match.awayTeam.name : match.homeTeam.name;

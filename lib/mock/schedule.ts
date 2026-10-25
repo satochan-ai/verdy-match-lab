@@ -217,11 +217,13 @@ export const scheduleMatches: ScheduleMatch[] = [
     id: "sched-fukuoka",
     competition: "j1",
     round: "第12節",
-    kickoffAt: "2026-10-24T15:00:00+09:00",
+    kickoffAt: "2026-10-24T15:03:00+09:00",
     venue: "味の素スタジアム",
     isVerdyHome: true,
     opponentName: "アビスパ福岡",
-    status: "scheduled",
+    status: "finished",
+    // ホーム戦のためhome＝東京ヴェルディ側のスコア（公式 3-1）。
+    homeScore: 3, awayScore: 1, detailMatchId: "sched-fukuoka",
   },
   {
     id: "sched-nagasaki",

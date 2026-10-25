@@ -13,16 +13,16 @@ test("J1 standings register 東京ヴェルディ exactly once with the official
   const verdyEntries = j1Standings.entries.filter((entry) => entry.teamName === "東京ヴェルディ");
   assert.equal(verdyEntries.length, 1);
   assert.deepEqual(verdyEntries[0], {
-    rank: 20,
+    rank: 18,
     teamName: "東京ヴェルディ",
-    played: 11,
-    wins: 0,
+    played: 12,
+    wins: 1,
     draws: 5,
     losses: 6,
-    goalsFor: 6,
-    goalsAgainst: 20,
-    goalDifference: -14,
-    points: 5,
+    goalsFor: 9,
+    goalsAgainst: 21,
+    goalDifference: -12,
+    points: 8,
   });
 });
 
@@ -30,16 +30,16 @@ test("J1 standings register ジェフユナイテッド千葉 exactly once with 
   const chibaEntries = j1Standings.entries.filter((entry) => entry.teamName === "ジェフユナイテッド千葉");
   assert.equal(chibaEntries.length, 1);
   assert.deepEqual(chibaEntries[0], {
-    rank: 19,
+    rank: 20,
     teamName: "ジェフユナイテッド千葉",
-    played: 11,
+    played: 12,
     wins: 1,
-    draws: 3,
+    draws: 4,
     losses: 7,
-    goalsFor: 10,
-    goalsAgainst: 22,
+    goalsFor: 12,
+    goalsAgainst: 24,
     goalDifference: -12,
-    points: 6,
+    points: 7,
   });
 });
 
@@ -53,12 +53,12 @@ test("J1 standings entries are internally consistent (points and goal difference
 
 test("J1 standings expose the official source and as-of label", () => {
   assert.equal(j1Standings.sourceUrl, "https://www.jleague.jp/j1/standings/2026-27/");
-  assert.equal(j1Standings.asOfLabel, "2026年10月21日21:59更新");
+  assert.equal(j1Standings.asOfLabel, "2026年10月25日18:32更新");
 });
 
-test("J1 standings snapshot is a complete round (all 20 clubs on 11 matches) with balanced totals", () => {
+test("J1 standings snapshot is a complete round (all 20 clubs on 12 matches) with balanced totals", () => {
   const entries = j1Standings.entries;
-  assert.equal(entries.every((entry) => entry.played === 11), true);
+  assert.equal(entries.every((entry) => entry.played === 12), true);
   assert.equal(entries.reduce((sum, e) => sum + e.wins, 0), entries.reduce((sum, e) => sum + e.losses, 0));
   assert.equal(entries.reduce((sum, e) => sum + e.goalsFor, 0), entries.reduce((sum, e) => sum + e.goalsAgainst, 0));
   assert.equal(entries.find((entry) => entry.teamName === "横浜F・マリノス")?.rank, 9);

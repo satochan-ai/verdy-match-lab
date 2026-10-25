@@ -4,18 +4,22 @@ import { yokohamaFmPredictionCheck, type TeamCheck } from "@/lib/match/yokohama-
 import { yokohamaFmViewerReview } from "@/lib/match/yokohama-fm-review";
 
 /** 観戦者本人のレビュー。公式の試合結果・記録とは別セクションとして、主観を含むことを明示して掲載する。 */
-export function YokohamaFmViewerReview() {
+export function ViewerReview({ review }: { review: { title: string; paragraphs: string[]; notice: string } }) {
   return (
     <section aria-label="観戦レビュー" className="space-y-3 border-y border-border bg-surface px-4 py-5">
       <SectionHeader title="観戦レビュー" eyebrow="VIEWER REVIEW" />
       <p className="inline-block border border-deep-green px-2 py-0.5 text-[11px] font-bold text-deep-green">観戦者本人の主観を含むレビュー</p>
-      <h3 className="text-[18px] font-extrabold leading-snug text-text-primary lg:text-[20px]">{yokohamaFmViewerReview.title}</h3>
+      <h3 className="text-[18px] font-extrabold leading-snug text-text-primary lg:text-[20px]">{review.title}</h3>
       <div className="space-y-3 text-[14px] leading-relaxed text-text-primary">
-        {yokohamaFmViewerReview.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+        {review.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
       </div>
-      <p className="text-[13px] font-bold leading-relaxed text-deep-green">{yokohamaFmViewerReview.notice}</p>
+      <p className="text-[13px] font-bold leading-relaxed text-deep-green">{review.notice}</p>
     </section>
   );
+}
+
+export function YokohamaFmViewerReview() {
+  return <ViewerReview review={yokohamaFmViewerReview} />;
 }
 
 function CheckBlock({ check }: { check: TeamCheck }) {

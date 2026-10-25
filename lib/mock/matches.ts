@@ -2,6 +2,7 @@ import type { Match } from "@/types/domain";
 import { hiroshimaResult } from "./top-hiroshima-result.ts";
 import { fcTokyoResult } from "./top-fc-tokyo-result.ts";
 import { yokohamaFmResult } from "./top-yokohama-fm-result.ts";
+import { fukuokaResult } from "./top-fukuoka-result.ts";
 
 const verdy = { id: "verdy", name: "東京ヴェルディ", isVerdy: true };
 
@@ -10,6 +11,7 @@ function opponent(id: string, name: string) {
 }
 
 export const matches: Match[] = [
+  fukuokaResult,
   yokohamaFmResult,
   fcTokyoResult,
   hiroshimaResult,

@@ -19,6 +19,7 @@ const line = (rows: typeof verdyDerbyRows, numbers: Record<string, number | unde
 const topFixtures = currentTopFixtures.map(f => {
   if (f.id === "sched-fc-tokyo") return { ...f, status: "scheduled" as const, score: undefined, kickoffAt: "2026-10-17T14:00:00+09:00" };
   if (f.id === "sched-yokohama-fm") return { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-21T19:00:00+09:00" };
+  if (f.id === "sched-fukuoka") return { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-24T15:00:00+09:00" };
   return f;
 });
 

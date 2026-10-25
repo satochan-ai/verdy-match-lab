@@ -16,7 +16,8 @@ import { AvailabilityInfo } from "@/components/match/AvailabilityInfo";
 import { PreviousMatchSummary } from "@/components/match/PreviousMatchSummary";
 import { HalfTimeNote } from "@/components/match/HalfTimeNote";
 import { MatchRecord } from "@/components/match/MatchRecord";
-import { YokohamaFmPredictionCheck, YokohamaFmViewerReview } from "@/components/match/YokohamaFmResultExtras";
+import { ViewerReview, YokohamaFmPredictionCheck, YokohamaFmViewerReview } from "@/components/match/YokohamaFmResultExtras";
+import { fukuokaViewerReview } from "@/lib/match/fukuoka-review";
 import { AiGuidePanel } from "@/features/ai-guide/ui/AiGuidePanel";
 import { LiveGuidePanel } from "@/features/ai-guide/ui/LiveGuidePanel";
 import { AnalysisReportView } from "@/features/ai-guide/ui/AnalysisReportView";
@@ -297,6 +298,12 @@ export default async function MatchDetailPage({
             <div className="mt-8 space-y-8 lg:col-start-1 lg:mt-6">
               <YokohamaFmViewerReview />
               <YokohamaFmPredictionCheck />
+            </div>
+          )}
+
+          {match.id === "sched-fukuoka" && (
+            <div className="mt-8 space-y-8 lg:col-start-1 lg:mt-6">
+              <ViewerReview review={fukuokaViewerReview} />
             </div>
           )}
 
