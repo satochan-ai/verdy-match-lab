@@ -2,25 +2,40 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { weLeagueStandings, kracieCupStandings } from "./beleza-standings.ts";
 
-test("WE League standings hold exactly 12 clubs with no duplicate team names", () => {
+test("WE League standings match all 12 official records as of 2026/10/25 15:58", () => {
   assert.equal(weLeagueStandings.entries.length, 12);
   assert.equal(new Set(weLeagueStandings.entries.map((entry) => entry.teamName)).size, 12);
+  // 公式列順：順位・クラブ・勝点・試合・勝・分・敗・得点・失点・得失。
+  assert.deepEqual(weLeagueStandings.entries.map(e => [e.rank, e.teamName, e.points, e.played, e.wins, e.draws, e.losses, e.goalsFor, e.goalsAgainst, e.goalDifference]), [
+    [1, "三菱重工浦和レッズレディース", 12, 5, 4, 0, 1, 12, 4, 8],
+    [2, "日テレ・東京ヴェルディベレーザ", 12, 5, 4, 0, 1, 14, 8, 6],
+    [3, "ジェフ千葉レディース", 12, 6, 4, 0, 2, 9, 7, 2],
+    [4, "INAC神戸レオネッサ", 10, 7, 3, 1, 3, 14, 13, 1],
+    [5, "サンフレッチェ広島レジーナ", 9, 5, 3, 0, 2, 7, 5, 2],
+    [6, "セレッソ大阪ヤンマーレディース", 8, 5, 2, 2, 1, 8, 6, 2],
+    [7, "ノジマステラ神奈川相模原", 8, 6, 2, 2, 2, 6, 11, -5],
+    [8, "マイナビ仙台", 7, 6, 2, 1, 3, 9, 11, -2],
+    [9, "ちふれASエルフェン埼玉", 7, 6, 2, 1, 3, 6, 8, -2],
+    [10, "アルビレックス新潟レディース", 5, 6, 1, 2, 3, 5, 7, -2],
+    [11, "AC長野パルセイロ・レディース", 3, 6, 0, 3, 3, 4, 9, -5],
+    [12, "RB大宮アルディージャWOMEN", 3, 5, 1, 0, 4, 3, 8, -5],
+  ]);
 });
 
-test("WE League standings register 日テレ・東京ヴェルディベレーザ at 3rd with the official values", () => {
+test("WE League standings register 日テレ・東京ヴェルディベレーザ at 2nd with the official values", () => {
   const belezaEntries = weLeagueStandings.entries.filter((entry) => entry.teamName === "日テレ・東京ヴェルディベレーザ");
   assert.equal(belezaEntries.length, 1);
   assert.deepEqual(belezaEntries[0], {
-    rank: 3,
+    rank: 2,
     teamName: "日テレ・東京ヴェルディベレーザ",
-    played: 4,
-    wins: 3,
+    played: 5,
+    wins: 4,
     draws: 0,
     losses: 1,
-    goalsFor: 10,
-    goalsAgainst: 7,
-    goalDifference: 3,
-    points: 9,
+    goalsFor: 14,
+    goalsAgainst: 8,
+    goalDifference: 6,
+    points: 12,
   });
 });
 
@@ -34,7 +49,7 @@ test("WE League standings entries are internally consistent (played/points/goal 
 });
 
 test("WE League standings expose the as-of label", () => {
-  assert.equal(weLeagueStandings.asOfLabel, "2026/10/18 15:59 現在");
+  assert.equal(weLeagueStandings.asOfLabel, "2026/10/25 15:58 現在");
 });
 
 test("Kracie Cup standings hold exactly 12 clubs with unique ranks (no ties this matchday)", () => {
