@@ -25,6 +25,8 @@ import { FcTokyoMatchPreview } from "@/components/match/FcTokyoMatchPreview";
 import { FcTokyoStrategies } from "@/components/match/FcTokyoStrategies";
 import { shouldShowFcTokyoPrediction } from "@/lib/match/fc-tokyo-prediction";
 import { HiroshimaStrategies } from "@/components/match/HiroshimaStrategies";
+import { AnalysisLinkCard } from "@/components/analysis/AnalysisLinkCard";
+import { analysisCard } from "@/lib/analysis/jofuku-soma-transition";
 import { YokohamaFmMatchPreview, YokohamaFmStrategies, YokohamaFmPredictions } from "@/components/match/YokohamaFmPreContent";
 import { shouldShowYokohamaFmContent } from "@/lib/match/yokohama-fm-content";
 import { FukuokaMatchPreview, FukuokaStrategies, FukuokaPredictions } from "@/components/match/FukuokaPreContent";
@@ -225,6 +227,9 @@ export default async function TopTeamPage() {
               <Link href="/archive" className="block text-[12px] font-bold text-deep-green">過去の試合を見る →</Link>
             </div>
           </div>
+
+          {/* SPECIAL ANALYSIS：LAST MATCHの下、NEXT 5の上に特別分析記事への導線を1件置く。 */}
+          <AnalysisLinkCard {...analysisCard} />
 
           {topUpcoming.length > 0 && (
             <section>
