@@ -26,6 +26,16 @@ function Chapter({ no, title, children }: { no: number; title: string; children:
   );
 }
 
+/** 観戦者本人の所感。公式データで裏付けた事実とは見た目でも分けて掲載する。 */
+function Impression({ children }: { children: React.ReactNode }) {
+  return (
+    <aside className="border-l-2 border-pioneer-gold bg-surface px-3 py-3">
+      <p className="text-[11px] font-bold tracking-[0.1em] text-pioneer-gold-deep">観戦所感</p>
+      <div className="mt-1 space-y-2 text-[14px] leading-relaxed text-text-primary">{children}</div>
+    </aside>
+  );
+}
+
 function Note({ children }: { children: React.ReactNode }) {
   return <p className="text-[12px] leading-relaxed text-text-secondary">{children}</p>;
 }
@@ -82,7 +92,6 @@ const result = (f: number, a: number) => (f > a ? "勝" : f === a ? "分" : "敗
 export default function JofukuSomaTransitionPage() {
   const jofuku = analysisMatches.filter((m) => m.era === "jofuku");
   const soma = analysisMatches.filter((m) => m.era === "soma");
-  const counted = analysisMatches.filter((m) => !m.excludedReason);
   const jRecord = eraRecord("jofuku");
   const sRecord = eraRecord("soma");
   const counts = startCounts();
@@ -114,7 +123,7 @@ export default function JofukuSomaTransitionPage() {
       <Note>城福体制 {jRecord.wins}勝{jRecord.draws}分{jRecord.losses}敗（{jRecord.goalsFor}得点{jRecord.goalsAgainst}失点）／相馬体制 {sRecord.wins}勝{sRecord.draws}分{sRecord.losses}敗（{sRecord.goalsFor}得点{sRecord.goalsAgainst}失点）。スコアは東京V側を先に表記しています。</Note>
 
       <Chapter no={1} title="3-4-2-1から4-4-2へ">
-        <p>城福体制の直近4試合は、すべて3-4-2-1で始まりました。3バックの前に中央MFを2人置き、両ウイングバックが幅を取ります。前線は染野唯月の1トップを、福田湧矢と平尾勇人の2シャドーが支える形です。</p>
+        <p>城福体制の直近4試合は、すべて3-4-2-1で始まりました。3バックの前に中央MFを2人置き、両ウイングバックが幅を取ります。前線は染野唯月の1トップで、神戸戦を除く3試合は福田湧矢と平尾勇人が2シャドーに入りました（神戸戦は福田と松橋優安）。</p>
         <p>相馬体制の4試合は、すべて4-4-2で始まっています。最終ラインは3人から4人になり、サイドはサイドバックとサイドMFの2人で受け持ちます。前線は1トップ2シャドーから2トップに変わりました。</p>
         <div className="grid gap-6 lg:grid-cols-2">
           <article aria-label={`城福体制 ${jofukuRepresentative.formation}`} className="min-w-0">
@@ -148,10 +157,11 @@ export default function JofukuSomaTransitionPage() {
       </Chapter>
 
       <Chapter no={3} title="走行距離・スプリント比較">
-        <p>はっきり変わったのは運動量です。FC東京戦を除く相馬体制3試合の平均は、総移動距離が{a.soma.distance.toFixed(2)}km、スプリントが{a.soma.sprints.toFixed(1)}回。城福体制4試合の{a.jofuku.distance.toFixed(2)}km、{a.jofuku.sprints.toFixed(1)}回を上回りました。横浜FM戦と福岡戦は、どちらもスプリントが160回を超えています。</p>
-        <p>一方で、シュートは平均{a.jofuku.shots.toFixed(2)}本から{a.soma.shots.toFixed(2)}本、ゴール期待値は{a.jofuku.xg.toFixed(3)}から{a.soma.xg.toFixed(3)}と、ほぼ同じ水準です。走る量が増えたことが、そのまま決定機の増加につながっているとは、まだ言えません。</p>
+        <Impression><p>相馬監督は、全体的に走れる選手を選んでいる印象があります。</p></Impression>
+        <p>数字の上でも、はっきり変わったのは運動量です。比較は城福体制4試合と、FC東京戦を除く相馬体制3試合の平均で行います。相馬体制3試合の平均は、総移動距離が{a.soma.distance.toFixed(2)}km、スプリントが{a.soma.sprints.toFixed(1)}回。城福体制4試合の{a.jofuku.distance.toFixed(2)}km、{a.jofuku.sprints.toFixed(1)}回を上回りました。横浜FM戦と福岡戦は、どちらもスプリントが160回を超えています。</p>
+        <p>一方で、シュートは平均{a.jofuku.shots.toFixed(2)}本から{a.soma.shots.toFixed(2)}本、ゴール期待値（シュートの位置や状況から見た得点の見込み）は{a.jofuku.xg.toFixed(3)}から{a.soma.xg.toFixed(3)}と、ほぼ同じ水準です。走る量が増えたことが、そのまま決定機の増加につながっているとは、まだ言えません。</p>
         <Table
-          caption="平均値の比較（FC東京戦を除く）"
+          caption="平均値の比較（城福体制4試合／FC東京戦を除く相馬体制3試合）"
           head={["指標", "城福（4試合）", "相馬（3試合）"]}
           rows={[
             ["平均シュート", `${a.jofuku.shots.toFixed(2)}本`, `${a.soma.shots.toFixed(2)}本`],
@@ -164,7 +174,7 @@ export default function JofukuSomaTransitionPage() {
           <Bars label="総移動距離（km）" unit="km" digits={1} min={100} max={130} rows={analysisMatches.map((m) => ({ key: m.id, name: matchName(m), era: m.era, value: m.distanceKm, muted: Boolean(m.excludedReason) }))} />
           <Bars label="スプリント（回）" unit="回" max={170} rows={analysisMatches.map((m) => ({ key: m.id, name: matchName(m), era: m.era, value: m.sprints, muted: Boolean(m.excludedReason) }))} />
         </div>
-        <Note>出典：Football LAB 各試合レポート（シュート・ゴール期待値・総移動距離・スプリント。スプリントは時速25km以上の走行回数）。FC東京戦（薄い色で表示）は{analysisMatches.find((m) => m.excludedReason)?.excludedReason}、平均から除外しています。値はJリーグ公式記録・公式スタッツと集計基準が異なり、一致しない場合があります。</Note>
+        <Note>総移動距離のグラフは差を見やすくするため100kmを起点にしており、棒の長さは数値の比率どおりではありません。スプリントのグラフは0回が起点です。出典：Football LAB 各試合レポート（シュート・ゴール期待値・総移動距離・スプリント。スプリントは時速25km以上の走行回数）。数値はすべてFootball LABの値で、Jリーグ公式の数値とは混ぜていません。FC東京戦（薄い色で表示）は{analysisMatches.find((m) => m.excludedReason)?.excludedReason}、平均から除外しています。Jリーグ公式記録・公式スタッツとは集計基準が異なり、一致しない場合があります。</Note>
       </Chapter>
 
       <Chapter no={4} title="ボール奪取位置の比較">
@@ -201,25 +211,32 @@ export default function JofukuSomaTransitionPage() {
       <Chapter no={5} title="横浜FM戦からの変化">
         <p>相馬体制は広島戦0-2、FC東京戦0-4と2連敗でスタートしました。続く横浜FM戦では、FC東京戦から先発を5人変更（うち1人は染野唯月の出場停止によるもの）。2点を先行されながら、藤本寛也と山田剛綺のゴールで2-2に追いつきました。</p>
         <p>福岡戦の先発変更は、鈴木海音に代えて内田陽介を起用した1人だけ。メンバーをほぼ固定して臨み、3-1で初勝利を挙げました。</p>
-        <p>観戦していて感じたのは、左サイドの変化です。溝口修平と新井悠太は横浜FM戦からコンビを組み、福岡戦が2試合目。互いの動きを理解してプレーできる場面が増えていました。また福岡戦では、齋藤功佑がこれまでより比較的フリーでボールを受けられる場面が多く、中盤で時間を作れていた印象です。いずれも観戦時の所感で、データで裏付けたものではありません。</p>
+        <Impression>
+          <p>横浜FM戦で2点差を追いついたことは、チームの雰囲気にも影響したと感じます。福岡戦は試合前から、勝利を期待できる空気がありました。</p>
+          <p>左サイドでは、溝口修平と新井悠太の連係が良くなっています。2人は横浜FM戦からコンビを組み、福岡戦が2試合目。互いの動きを理解してプレーできる場面が増えていました。</p>
+          <p>福岡戦では、齋藤功佑が比較的フリーでボールを受け、キープできていました。中盤で時間を作れるようになり、攻撃に余裕が生まれていた印象です。</p>
+        </Impression>
+        <Note>上記は観戦時の所感で、データで裏付けたものではありません。</Note>
       </Chapter>
 
       <Chapter no={6} title="交代策とスタメン争い">
         <p>福岡戦では、67分に熊取谷一星と交代で入った松橋優安が74分に勝ち越しゴール。88分に一美和成と交代で入った寺沼星文が、90分に3点目を決めました。前節の横浜FM戦でも、86分から出場した山田剛綺が後半アディショナルタイムに同点ゴールを挙げています。2試合続けて、途中出場の選手が得点に絡みました。</p>
-        <p>そこに、出場停止が明けた染野唯月が戻ります。染野は相馬体制の最初の2試合で先発し、キム ヒョンウと2トップを組みました。横浜FM戦・福岡戦は熊取谷・一美の2トップで、松橋・寺沼・山田が途中から結果を出しています。前線の顔ぶれをどう組み合わせるかは、次節以降の注目点です。</p>
+        <Impression><p>福岡戦は、交代策が勝利の鍵になった試合だったと思います。</p></Impression>
+        <p>そこに、出場停止が明けた染野唯月が戻ります。染野は相馬体制の最初の2試合で先発し、キム ヒョンウと2トップを組みました。横浜FM戦・福岡戦は熊取谷・一美の2トップで、松橋・寺沼・山田が途中から結果を出しています。</p>
+        <Impression><p>染野が戻ることで、前線のスタメン争いはこれまで以上に激しくなりそうです。誰をどう組み合わせるのか、次節以降のメンバーに注目しています。</p></Impression>
         <Note>本章は起用の可能性を整理したもので、次戦の先発を予想・確定するものではありません。染野唯月の出場停止はJリーグ公式発表（2試合）に基づきます。</Note>
       </Chapter>
 
       <Chapter no={7} title="4試合を終えて">
         <p>相馬体制の4試合は、広島戦0-2、FC東京戦0-4、横浜FM戦2-2、福岡戦3-1。{sRecord.wins}勝{sRecord.draws}分{sRecord.losses}敗、{sRecord.goalsFor}得点{sRecord.goalsAgainst}失点です。</p>
-        <p>フォーメーションは3-4-2-1から4-4-2に変わり、藤本寛也のように新たに主力になった選手がいる一方、マテウス、林尚輝、齋藤功佑、平川怜、新井悠太、溝口修平といった城福体制の中心選手も、役割を変えながら起用されています。運動量は数字の上でもはっきり増えました。</p>
+        <p>フォーメーションは3-4-2-1から4-4-2に変わりました。藤本寛也のように新たに先発の常連になった選手がいる一方、城福体制の中心選手の多くは、役割を変えながら起用され続けています。運動量は数字の上でもはっきり増えました。</p>
         <p>ただし、シュート数やゴール期待値はほぼ横ばいで、奪取位置の変化も小さく、守備の狙いが変わったかどうかはまだ判断できません。4試合のうち2試合は上位との対戦で、1試合は10人での戦いでした。監督交代が成功だったかどうかを、この4試合だけで決めることはできません。連戦の最後に勝点3を取ったこのチームが、次の試合でどんな形を見せるのかを追っていきます。</p>
       </Chapter>
 
       <section aria-labelledby="sources" className="space-y-3 border-t border-border pt-6">
         <SectionHeader title="データの出典・対象・除外条件" eyebrow="SOURCES" />
         <ul className="space-y-1 text-[12px] leading-relaxed text-text-secondary">
-          <li>対象：城福体制 J1直近4試合（{jofuku.map((m) => m.short).join("・")}）、相馬体制 就任後4試合（{soma.map((m) => m.short).join("・")}）。平均値の比較はFC東京戦を除く{counted.length}試合。</li>
+          <li>対象：城福体制 J1直近4試合（{jofuku.map((m) => m.short).join("・")}）、相馬体制 就任後4試合（{soma.map((m) => m.short).join("・")}）。平均値の比較は城福体制4試合と、FC東京戦（ほぼ全時間を10人で戦った試合）を除く相馬体制3試合。</li>
           <li>先発・得点・交代：Jリーグ公式記録。シュート・ゴール期待値・総移動距離・スプリント・ボール保持率：Football LAB 各試合レポート。ボール奪取データ：当サイト集計（公式データ未照合）。</li>
         </ul>
         <ul className="grid gap-x-6 gap-y-1 text-[12px] sm:grid-cols-2">
