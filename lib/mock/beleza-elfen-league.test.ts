@@ -8,8 +8,9 @@ import { getCategoryDetailHref } from "../data/category-match-details.ts";
 test("10/24 result registers the existing ID, advances LAST/NEXT and preserves both previous results", () => {
   const fixture = belezaFixtures.find(f => f.id === match.id)!;
   assert.deepEqual([fixture.status, fixture.kickoffAt, fixture.score], ["finished", "2026-10-24T12:03:00+09:00", { home: 4, away: 1 }]);
-  assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, match.id);
-  assert.equal(getNextFixture(belezaFixtures, new Date("2026-10-25T12:00:00+09:00"))?.id, "beleza-next-11");
+  // 10/28 C大阪戦の結果登録後はLASTがC大阪戦、NEXTが大宮戦へ進む（EL埼玉戦は履歴に残る）。
+  assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, "beleza-next-11");
+  assert.equal(getNextFixture(belezaFixtures, new Date("2026-10-25T12:00:00+09:00"))?.id, "beleza-next-12");
   assert.equal(getCategoryDetailHref("beleza", fixture.detailMatchId), "/beleza/matches/beleza-next-10");
   const history = getSeasonHistory(belezaFixtures);
   for (const id of ["beleza-next-4", "beleza-next-9", "beleza-next-10"]) assert.equal(history.filter(f => f.id === id).length, 1);

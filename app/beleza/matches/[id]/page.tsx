@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import {
+  belezaCerezoLeagueMatch, belezaCerezoLeagueHalfScores, belezaCerezoLeagueGoals, belezaCerezoLeagueCards,
+  belezaCerezoLeagueSubstitutions, belezaCerezoLeagueOfficialRecord, belezaCerezoLeagueStats,
+  belezaCerezoLeagueActualLineup, cerezoLeagueActualLineup, belezaCerezoLeagueReviewTitle,
+  belezaCerezoLeagueReview, belezaCerezoLeagueViewerNotes,
+} from "@/lib/mock/beleza-cerezo-league";
+import {
   belezaElfenLeagueMatch, belezaElfenLeagueHalfScores, belezaElfenLeagueGoals,
   belezaElfenLeagueSubstitutions, belezaElfenLeagueOfficialRecord, belezaElfenLeagueFormation,
   belezaElfenLeagueReviewTitle, belezaElfenLeagueReview,
@@ -25,6 +31,7 @@ import type { MatchGoal, Team } from "@/types/domain";
 import {
   belezaReginaMatch, belezaReginaHalfScores, belezaReginaGoals, belezaReginaSubstitutions, belezaReginaOfficialRecord, belezaReginaActualLineup, reginaActualLineup, reginaTeam, belezaReginaStats, belezaReginaReview,
   belezaTeam,
+  cerezoOsakaYanmarTeam,
   acNaganoTeam,
   inacKobeTeam,
   urawaTeam,
@@ -134,6 +141,7 @@ export default async function BelezaMatchDetailPage({
   const { id } = await params;
   if (!getCategoryDetailHref("beleza", id)) notFound();
 
+  if (id === belezaCerezoLeagueMatch.id) return <BelezaCerezoLeagueDetail />;
   if (id === belezaElfenLeagueMatch.id) return <BelezaElfenLeagueDetail />;
   if (id === belezaReginaLeagueMatch.id) return <BelezaReginaLeagueDetail />;
 
@@ -1106,6 +1114,40 @@ function BelezaElfenLeagueDetail() {
         <SectionHeader title={belezaElfenLeagueReviewTitle} eyebrow="MATCH REVIEW" />
         {belezaElfenLeagueReview.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
       </section>
+    </div>
+  );
+}
+
+function BelezaCerezoLeagueDetail() {
+  const match = belezaCerezoLeagueMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+      <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+      <ArchivedMatchHero competition={match.competition} dateLabel={match.dateLabel} resultLabel="loss"
+        homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        homeScore={match.homeScore} awayScore={match.awayScore} kickoffLabel={match.kickoffLabel}
+        kickoffCaption="実際のKICK OFF" venue={match.venue} halfScores={belezaCerezoLeagueHalfScores} goals={belezaCerezoLeagueGoals} />
+      <BelezaLiveOfficialLineups belezaTeam={belezaTeam} belezaLineup={belezaCerezoLeagueActualLineup}
+        opponentTeam={cerezoOsakaYanmarTeam} opponentLineup={cerezoLeagueActualLineup}
+        caption="公式記録のStarting XI・ベンチです。両チームの開始時フォーメーションは未確認のため掲載していません。" />
+      <p className="text-[13px] text-text-secondary">監督：東京NB 楠瀬 直木 ／ C大阪 松田 岳夫</p>
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        goals={belezaCerezoLeagueGoals} cards={belezaCerezoLeagueCards}
+        substitutions={belezaCerezoLeagueSubstitutions} officialRecord={belezaCerezoLeagueOfficialRecord}
+        officialSourceLabel="WEリーグ公式 試合記録" />
+      <p className="text-[12px] text-text-secondary">警告・退場：両チームなし。HTはハーフタイム中の交代。FKは直接FKと間接FKの合計です。</p>
+      <BelezaMatchStats belezaTeamName={belezaTeam.name} opponentTeamName={cerezoOsakaYanmarTeam.name} stats={belezaCerezoLeagueStats} />
+      <section className="space-y-3">
+        <SectionHeader title={belezaCerezoLeagueReviewTitle} eyebrow="MATCH REVIEW" />
+        {belezaCerezoLeagueReview.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+      </section>
+      {belezaCerezoLeagueViewerNotes.length > 0 && (
+        <section aria-label="観戦所感" className="space-y-3">
+          <SectionHeader title="観戦所感" eyebrow="VIEWER NOTES" />
+          {belezaCerezoLeagueViewerNotes.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+        </section>
+      )}
     </div>
   );
 }

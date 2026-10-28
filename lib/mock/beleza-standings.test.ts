@@ -2,23 +2,23 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { weLeagueStandings, kracieCupStandings } from "./beleza-standings.ts";
 
-test("WE League standings match all 12 official records as of 2026/10/25 15:58", () => {
+test("WE League standings match all 12 official records as of 2026/10/28 20:57", () => {
   assert.equal(weLeagueStandings.entries.length, 12);
   assert.equal(new Set(weLeagueStandings.entries.map((entry) => entry.teamName)).size, 12);
   // 公式列順：順位・クラブ・勝点・試合・勝・分・敗・得点・失点・得失。
   assert.deepEqual(weLeagueStandings.entries.map(e => [e.rank, e.teamName, e.points, e.played, e.wins, e.draws, e.losses, e.goalsFor, e.goalsAgainst, e.goalDifference]), [
-    [1, "三菱重工浦和レッズレディース", 12, 5, 4, 0, 1, 12, 4, 8],
-    [2, "日テレ・東京ヴェルディベレーザ", 12, 5, 4, 0, 1, 14, 8, 6],
+    [1, "三菱重工浦和レッズレディース", 15, 6, 5, 0, 1, 14, 4, 10],
+    [2, "日テレ・東京ヴェルディベレーザ", 12, 6, 4, 0, 2, 15, 10, 5],
     [3, "ジェフ千葉レディース", 12, 6, 4, 0, 2, 9, 7, 2],
-    [4, "INAC神戸レオネッサ", 10, 7, 3, 1, 3, 14, 13, 1],
-    [5, "サンフレッチェ広島レジーナ", 9, 5, 3, 0, 2, 7, 5, 2],
-    [6, "セレッソ大阪ヤンマーレディース", 8, 5, 2, 2, 1, 8, 6, 2],
+    [4, "セレッソ大阪ヤンマーレディース", 11, 6, 3, 2, 1, 10, 7, 3],
+    [5, "INAC神戸レオネッサ", 10, 7, 3, 1, 3, 14, 13, 1],
+    [6, "サンフレッチェ広島レジーナ", 9, 6, 3, 0, 3, 7, 7, 0],
     [7, "ノジマステラ神奈川相模原", 8, 6, 2, 2, 2, 6, 11, -5],
     [8, "マイナビ仙台", 7, 6, 2, 1, 3, 9, 11, -2],
     [9, "ちふれASエルフェン埼玉", 7, 6, 2, 1, 3, 6, 8, -2],
-    [10, "アルビレックス新潟レディース", 5, 6, 1, 2, 3, 5, 7, -2],
-    [11, "AC長野パルセイロ・レディース", 3, 6, 0, 3, 3, 4, 9, -5],
-    [12, "RB大宮アルディージャWOMEN", 3, 5, 1, 0, 4, 3, 8, -5],
+    [10, "RB大宮アルディージャWOMEN", 6, 6, 2, 0, 4, 4, 8, -4],
+    [11, "アルビレックス新潟レディース", 5, 6, 1, 2, 3, 5, 7, -2],
+    [12, "AC長野パルセイロ・レディース", 3, 7, 0, 3, 4, 4, 10, -6],
   ]);
 });
 
@@ -28,13 +28,13 @@ test("WE League standings register 日テレ・東京ヴェルディベレーザ
   assert.deepEqual(belezaEntries[0], {
     rank: 2,
     teamName: "日テレ・東京ヴェルディベレーザ",
-    played: 5,
+    played: 6,
     wins: 4,
     draws: 0,
-    losses: 1,
-    goalsFor: 14,
-    goalsAgainst: 8,
-    goalDifference: 6,
+    losses: 2,
+    goalsFor: 15,
+    goalsAgainst: 10,
+    goalDifference: 5,
     points: 12,
   });
 });
@@ -49,7 +49,7 @@ test("WE League standings entries are internally consistent (played/points/goal 
 });
 
 test("WE League standings expose the as-of label", () => {
-  assert.equal(weLeagueStandings.asOfLabel, "2026/10/25 15:58 現在");
+  assert.equal(weLeagueStandings.asOfLabel, "2026/10/28 20:57 現在");
 });
 
 test("Kracie Cup standings hold exactly 12 clubs with unique ranks (no ties this matchday)", () => {

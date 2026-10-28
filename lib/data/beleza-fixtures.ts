@@ -1,5 +1,6 @@
 import type { UpcomingFixture } from "../../types/domain";
 import { belezaElfenLeagueMatch } from "../mock/beleza-elfen-league.ts";
+import { belezaCerezoLeagueMatch } from "../mock/beleza-cerezo-league.ts";
 import { belezaReginaLeagueMatch } from "../mock/beleza-regina-league.ts";
 import type { CommonFixture } from "../types/fixture";
 import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, belezaMatch5, belezaUrawaCupMatch, belezaReginaMatch, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
@@ -87,6 +88,12 @@ export const belezaFixtures: CommonFixture[] = [
       status: belezaReginaMatch.status,
       score: { home: belezaReginaMatch.homeScore, away: belezaReginaMatch.awayScore },
       sourceUrl: "https://www.verdy.co.jp/beleza/match/info/12026101115/result",
+    } : {}),
+    ...(fixture.id === belezaCerezoLeagueMatch.id ? {
+      detailMatchId: fixture.id, kickoffAt: belezaCerezoLeagueMatch.kickoffAt,
+      status: belezaCerezoLeagueMatch.status,
+      score: { home: belezaCerezoLeagueMatch.homeScore, away: belezaCerezoLeagueMatch.awayScore },
+      sourceUrl: "https://weleague.jp/files/2026/match_pdf_jp/2026102805.pdf",
     } : {}),
     ...(fixture.id === belezaElfenLeagueMatch.id ? {
       detailMatchId: fixture.id, kickoffAt: belezaElfenLeagueMatch.kickoffAt,

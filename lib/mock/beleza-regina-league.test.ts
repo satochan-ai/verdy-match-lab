@@ -36,8 +36,8 @@ test("finished record advances selectors and exposes a valid detail route", () =
   const fixture = belezaFixtures.find(f => f.id === match.id)!;
   assert.equal(fixture.status, "finished");
   assert.deepEqual(fixture.score, { home: 2, away: 3 });
-  assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, "beleza-next-10");
-  assert.equal(getNextFixture(belezaFixtures, now)?.id, "beleza-next-11");
-  assert.deepEqual(getUpcomingFixtures(belezaFixtures, now, 5).map(f => f.id), ["beleza-next-11", "beleza-next-12", "beleza-next-13"]);
+  assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, "beleza-next-11");
+  assert.equal(getNextFixture(belezaFixtures, now)?.id, "beleza-next-12");
+  assert.deepEqual(getUpcomingFixtures(belezaFixtures, now, 5).map(f => f.id), ["beleza-next-12", "beleza-next-13"]);
   assert.equal(getCategoryDetailHref("beleza", fixture.detailMatchId), "/beleza/matches/beleza-next-9");
 });
