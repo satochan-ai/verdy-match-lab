@@ -13,7 +13,7 @@ test("U-21 and BELEZA have unique IDs and stay within category boundaries", () =
   const all = [...u21Fixtures, ...belezaFixtures];
   assert.equal(new Set(all.map((fixture) => fixture.id)).size, all.length);
   // 10/28 C大阪戦の詳細追加後も、カテゴリー間で詳細IDが重複しない。
-  assert.equal(new Set(all.flatMap((fixture) => fixture.detailMatchId ? [fixture.detailMatchId] : [])).size, 16);
+  assert.equal(new Set(all.flatMap((fixture) => fixture.detailMatchId ? [fixture.detailMatchId] : [])).size, 17);
   assert.equal(u21Fixtures.every((fixture) => fixture.category === "u21"), true);
   assert.equal(belezaFixtures.every((fixture) => fixture.category === "beleza"), true);
 });
@@ -66,7 +66,7 @@ test("two consecutive finishes update NEXT, LAST and HISTORY for both categories
   // として実データに存在するため、LAST/HISTORY直近2件はそちら（より新しい確定結果）になる。
   const cases = [
     { fixtures: u21Fixtures.map(f => f.id === "u21-next-4" ? { ...f, status: "scheduled" as const, score: undefined } : f), finishedIds: ["u21-next-1", "u21-next-2"], nextId: "u21-next-4", lastId: "u21-next-3", historyTop2: ["u21-next-3", "u21-next-2"] },
-    { fixtures: belezaFixtures, finishedIds: ["beleza-next-3", "beleza-next-4"], nextId: "beleza-next-12", lastId: "beleza-next-11", historyTop2: ["beleza-next-11", "beleza-next-10"] },
+    { fixtures: belezaFixtures, finishedIds: ["beleza-next-3", "beleza-next-4"], nextId: "beleza-next-13", lastId: "beleza-next-12", historyTop2: ["beleza-next-12", "beleza-next-11"] },
   ] as const;
   for (const { fixtures, finishedIds, nextId, lastId, historyTop2 } of cases) {
     const simulated = withStatus(fixtures, finishedIds, "finished");

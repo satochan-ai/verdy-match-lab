@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import {
+  belezaOmiyaLeagueMatch, belezaOmiyaLeagueHalfScores, belezaOmiyaLeagueGoals, belezaOmiyaLeagueCards,
+  belezaOmiyaLeagueSubstitutions, belezaOmiyaLeagueOfficialRecord, belezaOmiyaLeagueStats,
+  belezaOmiyaLeagueActualLineup, omiyaLeagueActualLineup, omiyaLeagueTeam, belezaOmiyaLeagueFormation,
+  belezaOmiyaLeagueReviewTitle, belezaOmiyaLeagueReview, belezaOmiyaLeagueViewerNotes,
+} from "@/lib/mock/beleza-omiya-league";
+import {
   belezaCerezoLeagueMatch, belezaCerezoLeagueHalfScores, belezaCerezoLeagueGoals, belezaCerezoLeagueCards,
   belezaCerezoLeagueSubstitutions, belezaCerezoLeagueOfficialRecord, belezaCerezoLeagueStats,
   belezaCerezoLeagueActualLineup, cerezoLeagueActualLineup, belezaCerezoLeagueReviewTitle,
@@ -141,6 +147,7 @@ export default async function BelezaMatchDetailPage({
   const { id } = await params;
   if (!getCategoryDetailHref("beleza", id)) notFound();
 
+  if (id === belezaOmiyaLeagueMatch.id) return <BelezaOmiyaLeagueDetail />;
   if (id === belezaCerezoLeagueMatch.id) return <BelezaCerezoLeagueDetail />;
   if (id === belezaElfenLeagueMatch.id) return <BelezaElfenLeagueDetail />;
   if (id === belezaReginaLeagueMatch.id) return <BelezaReginaLeagueDetail />;
@@ -1146,6 +1153,48 @@ function BelezaCerezoLeagueDetail() {
         <section aria-label="観戦所感" className="space-y-3">
           <SectionHeader title="観戦所感" eyebrow="VIEWER NOTES" />
           {belezaCerezoLeagueViewerNotes.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+        </section>
+      )}
+    </div>
+  );
+}
+
+function BelezaOmiyaLeagueDetail() {
+  const match = belezaOmiyaLeagueMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+      <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+      <ArchivedMatchHero competition={match.competition} dateLabel={match.dateLabel} resultLabel="win"
+        homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        homeScore={match.homeScore} awayScore={match.awayScore} kickoffLabel={match.kickoffLabel}
+        kickoffCaption="実際のKICK OFF" venue={match.venue} halfScores={belezaOmiyaLeagueHalfScores} goals={belezaOmiyaLeagueGoals} />
+      <section>
+        <SectionHeader title="観戦・提供情報に基づく配置" eyebrow="FORMATION" />
+        <div className="border-y border-border bg-surface px-3 py-4">
+          <FormationPitch team={belezaTeam} lineup={belezaOmiyaLeagueFormation} idPrefix="omiya-league-observed" />
+        </div>
+        <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">東京NBの配置は観戦・提供情報に基づく3-4-2-1です。各ラインは画面左から右の並びで、公式記録の登録ポジションとは区別しています。大宮の開始時配置は未確認のため図示していません。</p>
+      </section>
+      <BelezaLiveOfficialLineups belezaTeam={belezaTeam} belezaLineup={belezaOmiyaLeagueActualLineup}
+        opponentTeam={omiyaLeagueTeam} opponentLineup={omiyaLeagueActualLineup}
+        caption="公式記録のStarting XI・ベンチです。登録ポジションは公式記録の表記に従っています。" />
+      <p className="text-[13px] text-text-secondary">監督：東京NB 楠瀬 直木 ／ 大宮 柳井 里奈</p>
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        goals={belezaOmiyaLeagueGoals} cards={belezaOmiyaLeagueCards}
+        substitutions={belezaOmiyaLeagueSubstitutions} officialRecord={belezaOmiyaLeagueOfficialRecord}
+        officialSourceLabel="WEリーグ公式 試合記録" />
+      <p className="text-[12px] text-text-secondary">警告・退場：両チームとも公式記録に記載なし。HTはハーフタイム中の交代です。</p>
+      <BelezaMatchStats belezaTeamName={belezaTeam.name} opponentTeamName={omiyaLeagueTeam.name} stats={belezaOmiyaLeagueStats} />
+      <p className="text-[12px] text-text-secondary">FKは<a className="underline" href="https://weleague.jp/matches/2026103135/" target="_blank" rel="noopener noreferrer">WEリーグ公式試合ページ</a>の表記（東京NB 1／大宮 2）を採用しています。</p>
+      <section className="space-y-3">
+        <SectionHeader title={belezaOmiyaLeagueReviewTitle} eyebrow="MATCH REVIEW" />
+        {belezaOmiyaLeagueReview.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+      </section>
+      {belezaOmiyaLeagueViewerNotes.length > 0 && (
+        <section className="space-y-3">
+          <SectionHeader title="観戦者の所感" eyebrow="VIEWER NOTES" />
+          {belezaOmiyaLeagueViewerNotes.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
         </section>
       )}
     </div>
