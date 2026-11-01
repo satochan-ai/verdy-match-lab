@@ -3,17 +3,22 @@ import { notFound } from "next/navigation";
 import { getMatchDetail } from "@/lib/data/matches";
 import { resolveMatchStatus } from "@/lib/match/status";
 import { MatchScoreboard } from "@/components/match/MatchScoreboard";
+import { PenaltyShootoutDetail } from "@/components/match/PenaltyShootoutDetail";
 import { MatchMeta } from "@/components/match/MatchMeta";
 import { FixtureMetaLine } from "@/components/match/FixtureMetaLine";
 import { StrategyList } from "@/components/match/StrategyList";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PredictedLineups } from "@/components/match/PredictedLineups";
+import { VerdyLineupOptions } from "@/components/match/VerdyLineupOptions";
 import { AlternativeFormationsList } from "@/components/match/AlternativeFormationsList";
 import { OfficialLineups } from "@/components/match/OfficialLineups";
 import { AvailabilityInfo } from "@/components/match/AvailabilityInfo";
 import { PreviousMatchSummary } from "@/components/match/PreviousMatchSummary";
 import { HalfTimeNote } from "@/components/match/HalfTimeNote";
 import { MatchRecord } from "@/components/match/MatchRecord";
+import { ViewerReview, YokohamaFmPredictionCheck, YokohamaFmViewerReview } from "@/components/match/YokohamaFmResultExtras";
+import { fukuokaViewerReview } from "@/lib/match/fukuoka-review";
+import { NagasakiResultExtras } from "@/components/match/NagasakiResultExtras";
 import { AiGuidePanel } from "@/features/ai-guide/ui/AiGuidePanel";
 import { LiveGuidePanel } from "@/features/ai-guide/ui/LiveGuidePanel";
 import { AnalysisReportView } from "@/features/ai-guide/ui/AnalysisReportView";
@@ -44,7 +49,9 @@ export default async function MatchDetailPage({
     finished: "試合終了",
   }[displayStatus];
 
-  const officialLineupsBlock = match.actualLineups && (
+  // 開始時フォーメーションが公式で未確認の試合（両側未設定）では、ピッチ型の公式スタメン欄を出さない
+  // （先発・ベンチはMATCH RECORDのSTARTING XIに掲載される）。
+  const officialLineupsBlock = match.actualLineups && (match.actualLineups.home.formation || match.actualLineups.away.formation) && (
     <OfficialLineups
       homeTeam={match.homeTeam}
       awayTeam={match.awayTeam}
@@ -72,6 +79,16 @@ export default async function MatchDetailPage({
     />
   );
 
+  // 自チーム側の予想スタメン複数案（相手側の予想スタメンが未提供の試合専用）。
+  // predictedLineupsとは独立したフィールドで、両方設定された試合は無い前提だが、
+  // 念のためpredictedLineupsが無い試合でのみ表示する（表示の重複を避ける）。
+  const verdyLineupOptionsBlock = !match.predictedLineups && match.verdyLineupOptions && match.verdyLineupOptions.length > 0 && (
+    <VerdyLineupOptions
+      team={match.isVerdyHome ? match.homeTeam : match.awayTeam}
+      options={match.verdyLineupOptions}
+    />
+  );
+
   return (
     <div className="space-y-6 pb-4">
       <div className="flex items-center justify-between">
@@ -85,7 +102,12 @@ export default async function MatchDetailPage({
       {displayStatus === "scheduled" && (() => {
         const hasPreMatchContent =
           match.strategies.length > 0 ||
-          Boolean(match.predictedLineups || match.availability || match.previousMatch);
+          Boolean(
+            match.predictedLineups ||
+              match.availability ||
+              match.previousMatch ||
+              (match.verdyLineupOptions && match.verdyLineupOptions.length > 0),
+          );
 
         const overviewBlock = (
           <div>
@@ -190,6 +212,7 @@ export default async function MatchDetailPage({
               {strategyBlock}
               {previewBlock}
               {predictedLineupsBlock}
+              {verdyLineupOptionsBlock}
               {alternativeFormationsBlock}
               {officialLineupsBlock}
               {availabilityBlock}
@@ -207,6 +230,7 @@ export default async function MatchDetailPage({
                 {overviewBlock}
                 {fixtureInfoBlock}
                 {predictedLineupsBlock}
+                {verdyLineupOptionsBlock}
                 {alternativeFormationsBlock}
                 {officialLineupsBlock}
                 {availabilityBlock}
@@ -233,11 +257,13 @@ export default async function MatchDetailPage({
         <div className="space-y-6 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
           <div className="space-y-6">
             <MatchScoreboard match={displayMatch} />
-            <StrategyList
-              strategies={match.strategies}
-              showResult
-              title="軍師の三策（前半終了時点）"
-            />
+            {match.strategies.length > 0 && (
+              <StrategyList
+                strategies={match.strategies}
+                showResult
+                title="軍師の三策（前半終了時点）"
+              />
+            )}
             <HalfTimeNote matchId={match.id} />
             {officialLineupsBlock}
           </div>
@@ -257,23 +283,45 @@ export default async function MatchDetailPage({
               </div>
             )}
             <MatchScoreboard match={displayMatch} />
+            <PenaltyShootoutDetail match={displayMatch} />
           </div>
 
           <div className="mt-8 lg:col-start-1 lg:mt-6">
             {predictedLineupsBlock}
+            {verdyLineupOptionsBlock}
           </div>
 
           <div className="mt-8 lg:col-start-1 lg:mt-6">
             {officialLineupsBlock}
           </div>
 
-          <div className="mt-10 lg:col-start-1 lg:mt-6">
-            <StrategyList
-              strategies={match.strategies}
-              showResult
-              title="軍師の三策 答え合わせ"
-            />
-          </div>
+          {match.id === "sched-yokohama-fm" && (
+            <div className="mt-8 space-y-8 lg:col-start-1 lg:mt-6">
+              <YokohamaFmViewerReview />
+              <YokohamaFmPredictionCheck />
+            </div>
+          )}
+
+          {match.id === "sched-fukuoka" && (
+            <div className="mt-8 space-y-8 lg:col-start-1 lg:mt-6">
+              <ViewerReview review={fukuokaViewerReview} />
+            </div>
+          )}
+
+          {match.id === "sched-nagasaki" && (
+            <div className="mt-8 lg:col-start-1 lg:mt-6"><NagasakiResultExtras /></div>
+          )}
+
+          {/* 三策の検証データが無い試合では、見出しだけの空セクションを出さない。 */}
+          {match.strategies.length > 0 && (
+            <div className="mt-10 lg:col-start-1 lg:mt-6">
+              <StrategyList
+                strategies={match.strategies}
+                showResult
+                title="軍師の三策 答え合わせ"
+              />
+            </div>
+          )}
 
           <div className="mt-10 lg:col-start-2 lg:mt-0">
             <section className="section-reveal">

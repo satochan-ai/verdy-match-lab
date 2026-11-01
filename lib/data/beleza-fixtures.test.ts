@@ -9,11 +9,11 @@ const now = new Date("2026-09-13T00:00:00+09:00");
 
 test("BELEZA fixture collection is valid", () => {
   assert.equal(validateFixtures(belezaFixtures).length, 0);
-  assert.equal(belezaFixtures.length, 9);
-  // /beleza/matches/[id] now renders beleza-match-1/2/3 (archived) individually in addition
+  assert.equal(belezaFixtures.length, 14);
+  // /beleza/matches/[id] now renders beleza-match-1/2/3/4/5 (archived) individually in addition
   // to the current snapshot (beleza-next-4, EL埼玉), so every finished BELEZA match carries a
   // real (non-fabricated) detailMatchId equal to its own id.
-  for (const id of ["beleza-match-1", "beleza-match-2", "beleza-match-3", "beleza-next-4"]) {
+  for (const id of ["beleza-match-1", "beleza-match-2", "beleza-match-3", "beleza-next-4", "beleza-match-4", "beleza-match-5"]) {
     assert.equal(belezaFixtures.find((fixture) => fixture.id === id)?.detailMatchId, id);
   }
 });
@@ -39,33 +39,40 @@ test("BELEZA actual formation preserves the confirmed DF and MF horizontal order
 
 test("BELEZA season history entries carry detailMatchId through for mobile/desktop history links", () => {
   const history = getSeasonHistory(belezaFixtures).map(toBelezaSeasonHistoryEntry);
-  assert.equal(history.length, 5);
+  assert.equal(history.length, 13);
 });
 
-test("BELEZA NEXT advances after the finished 09.19 ちふれ match", () => {
+test("BELEZA NEXT advances after the finished 10.31 大宮 match", () => {
   const nextFixture = getNextFixture(belezaFixtures, now);
-  assert.equal(nextFixture?.opponentName, "アルビレックス新潟レディース");
-  // 公式表記のキックオフ時刻（16:03）へ修正されていること。他fixtureは変更しない。
-  assert.equal(nextFixture?.kickoffAt, "2026-09-23T14:00:00+09:00");
+  assert.equal(nextFixture?.opponentName, "ノジマステラ神奈川相模原");
+  assert.equal(nextFixture?.kickoffAt, "2026-11-07T14:00:00+09:00");
   // /beleza のNEXT MATCH詳細CTA（app/beleza/page.tsx）は、この一致を条件に
   // /beleza/matches/${belezaElfenMatch.id} へのリンクを表示する。
   assert.notEqual(nextFixture?.id, belezaElfenMatch.id);
   const upcoming = getUpcomingFixtures(belezaFixtures, now, 5);
-  assert.equal(upcoming.length, 4);
+  // 登録済み未終了日程は1件。未確認の日程で5件に補完しない。
+  assert.equal(upcoming.length, 1);
   assert.equal(upcoming.every((fixture) => fixture.status === "scheduled"), true);
-  assert.deepEqual(upcoming.map((fixture) => fixture.opponentName), [
-    "アルビレックス新潟レディース", "セレッソ大阪ヤンマーレディース", "三菱重工浦和レッズレディース", "サンフレッチェ広島レジーナ",
+  assert.deepEqual(upcoming.map((fixture) => fixture.kickoffAt), [
+    "2026-11-07T14:00:00+09:00",
   ]);
+  assert.deepEqual(upcoming.map((fixture) => `${fixture.opponentName}|${fixture.competition.round}|${fixture.isHome ? "H" : "A"}|${fixture.venue}`), [
+    "ノジマステラ神奈川相模原|第8節|A|相模原ギオンスタジアム",
+  ]);
+  assert.equal(new Set(upcoming.map((fixture) => fixture.id)).size, 1);
+  assert.equal(getNextFixture(belezaFixtures, now)?.id, upcoming[0].id);
 });
 
-test("BELEZA LAST, HISTORY and 09.05 浦和 result are derived", () => {
+test("BELEZA LAST, HISTORY and 10.03 浦和 result are derived", () => {
   const last = getLatestFinishedFixture(belezaFixtures)!;
-  assert.equal(last.opponentName, "ちふれASエルフェン埼玉");
+  assert.equal(last.opponentName, "RB大宮アルディージャWOMEN");
+  assert.deepEqual(last.score, { home: 2, away: 1 });
   assert.equal(toBelezaSeasonHistoryEntry(last).result, "win");
   const history = getSeasonHistory(belezaFixtures);
-  assert.equal(history.length, 5);
+  assert.equal(history.length, 13);
   assert.deepEqual(history.map((fixture) => fixture.opponentName), [
-    "ちふれASエルフェン埼玉", "INAC神戸レオネッサ", "三菱重工浦和レッズレディース", "AC長野パルセイロ・レディース", "ジェフユナイテッド市原・千葉レディース",
+    "RB大宮アルディージャWOMEN", "セレッソ大阪ヤンマーレディース", "ちふれASエルフェン埼玉", "サンフレッチェ広島レジーナ", "サンフレッチェ広島レジーナ", "三菱重工浦和レッズレディース", "セレッソ大阪ヤンマーレディース", "アルビレックス新潟レディース", "ちふれASエルフェン埼玉", "INAC神戸レオネッサ",
+    "三菱重工浦和レッズレディース", "AC長野パルセイロ・レディース", "ジェフユナイテッド市原・千葉レディース",
   ]);
   assert.equal(history.filter((fixture) => fixture.id === "beleza-match-3").length, 1);
 });

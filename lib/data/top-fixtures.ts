@@ -11,6 +11,7 @@ export const topFixtures: CommonFixture[] = scheduleMatches.map((item) => ({
   score: item.homeScore != null && item.awayScore != null ? { home: item.homeScore, away: item.awayScore } : undefined,
   detailMatchId: item.detailMatchId ?? (item.id === "sched-kobe" ? "match-10" : undefined),
   opponentRecentMatches: item.opponentRecentMatches,
+  ...(item.status === "scheduled" ? { sourceUrl: "https://www.verdy.co.jp/match/schedule/" } : {}),
 }));
 
 const toMeta = (fixture: CommonFixture) => ({ competition: fixture.competition.name, roundLabel: fixture.competition.round });

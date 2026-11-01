@@ -22,6 +22,15 @@ function parsePlayer(player: string, position: keyof PositionPlayerGroups) {
 function toPitchLineup(lineup: ActualLineup): PredictedLineup | undefined {
   if (!lineup.formation) return undefined;
 
+  if (lineup.pitchOrder) {
+    // 公式フォーメーション図の並びを優先する。positionは登録ポジション別リストから引く。
+    const positionOf = (player: string) => positions.find((position) => lineup.starters[position].includes(player)) ?? "MF";
+    return {
+      formation: lineup.formation,
+      starters: lineup.pitchOrder.map((player) => parsePlayer(player, positionOf(player))),
+    };
+  }
+
   return {
     formation: lineup.formation,
     starters: positions.flatMap((position) =>
@@ -86,6 +95,9 @@ export function OfficialLineups({
       <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
         公式発表されたStarting XI・フォーメーション・ベンチです。
       </p>
+      {[lineups.home.formationBasis, lineups.away.formationBasis].filter((basis, index, all): basis is string => Boolean(basis) && all.indexOf(basis) === index).map((basis) => (
+        <p key={basis} className="mt-1 text-[11px] leading-relaxed text-text-secondary">フォーメーションと選手配置：{basis}。試合前の予想フォーメーションとは別の、実際の配置です。</p>
+      ))}
     </section>
   );
 }

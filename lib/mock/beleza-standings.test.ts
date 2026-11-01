@@ -2,25 +2,40 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { weLeagueStandings, kracieCupStandings } from "./beleza-standings.ts";
 
-test("WE League standings hold exactly 12 clubs with no duplicate team names", () => {
+test("WE League standings match all 12 official records as of 2026/10/31 16:55", () => {
   assert.equal(weLeagueStandings.entries.length, 12);
   assert.equal(new Set(weLeagueStandings.entries.map((entry) => entry.teamName)).size, 12);
+  // 公式列順：順位・クラブ・勝点・試合・勝・分・敗・得点・失点・得失。
+  assert.deepEqual(weLeagueStandings.entries.map(e => [e.rank, e.teamName, e.points, e.played, e.wins, e.draws, e.losses, e.goalsFor, e.goalsAgainst, e.goalDifference]), [
+    [1, "三菱重工浦和レッズレディース", 15, 6, 5, 0, 1, 14, 4, 10],
+    [2, "日テレ・東京ヴェルディベレーザ", 15, 7, 5, 0, 2, 17, 11, 6],
+    [3, "ジェフ千葉レディース", 13, 7, 4, 1, 2, 9, 7, 2],
+    [4, "セレッソ大阪ヤンマーレディース", 11, 6, 3, 2, 1, 10, 7, 3],
+    [5, "INAC神戸レオネッサ", 10, 7, 3, 1, 3, 14, 13, 1],
+    [6, "サンフレッチェ広島レジーナ", 9, 6, 3, 0, 3, 7, 7, 0],
+    [7, "ノジマステラ神奈川相模原", 9, 7, 2, 3, 2, 6, 11, -5],
+    [8, "マイナビ仙台", 7, 6, 2, 1, 3, 9, 11, -2],
+    [9, "ちふれASエルフェン埼玉", 7, 6, 2, 1, 3, 6, 8, -2],
+    [10, "RB大宮アルディージャWOMEN", 6, 7, 2, 0, 5, 5, 10, -5],
+    [11, "アルビレックス新潟レディース", 5, 6, 1, 2, 3, 5, 7, -2],
+    [12, "AC長野パルセイロ・レディース", 3, 7, 0, 3, 4, 4, 10, -6],
+  ]);
 });
 
-test("WE League standings register 日テレ・東京ヴェルディベレーザ at 3rd with the official values", () => {
+test("WE League standings register 日テレ・東京ヴェルディベレーザ at 2nd with the official values", () => {
   const belezaEntries = weLeagueStandings.entries.filter((entry) => entry.teamName === "日テレ・東京ヴェルディベレーザ");
   assert.equal(belezaEntries.length, 1);
   assert.deepEqual(belezaEntries[0], {
-    rank: 3,
+    rank: 2,
     teamName: "日テレ・東京ヴェルディベレーザ",
-    played: 3,
-    wins: 2,
+    played: 7,
+    wins: 5,
     draws: 0,
-    losses: 1,
-    goalsFor: 7,
-    goalsAgainst: 5,
-    goalDifference: 2,
-    points: 6,
+    losses: 2,
+    goalsFor: 17,
+    goalsAgainst: 11,
+    goalDifference: 6,
+    points: 15,
   });
 });
 
@@ -34,35 +49,34 @@ test("WE League standings entries are internally consistent (played/points/goal 
 });
 
 test("WE League standings expose the as-of label", () => {
-  assert.equal(weLeagueStandings.asOfLabel, "2026/09/06 18:57 現在");
+  assert.equal(weLeagueStandings.asOfLabel, "2026/10/31 16:55 現在");
 });
 
-test("Kracie Cup standings hold exactly 12 clubs and allow tied ranks (no unique-rank assertion)", () => {
+test("Kracie Cup standings hold exactly 12 clubs with unique ranks (no ties this matchday)", () => {
   assert.equal(kracieCupStandings.entries.length, 12);
   assert.equal(new Set(kracieCupStandings.entries.map((entry) => entry.teamName)).size, 12);
-  // 同順位を許可する（2位・4位・7位・11位に重複あり）。
   const ranks = kracieCupStandings.entries.map((entry) => entry.rank);
-  assert.equal(new Set(ranks).size < ranks.length, true);
+  assert.equal(new Set(ranks).size, ranks.length);
 });
 
-test("Kracie Cup standings register 日テレ・東京ヴェルディベレーザ at (tied) 4th with the official values", () => {
+test("Kracie Cup standings register 日テレ・東京ヴェルディベレーザ at 2nd with the official values", () => {
   const belezaEntries = kracieCupStandings.entries.filter((entry) => entry.teamName === "日テレ・東京ヴェルディベレーザ");
   assert.equal(belezaEntries.length, 1);
   assert.deepEqual(belezaEntries[0], {
-    rank: 4,
+    rank: 2,
     teamName: "日テレ・東京ヴェルディベレーザ",
-    played: 1,
-    wins: 1,
+    played: 6,
+    wins: 4,
     draws: 0,
-    losses: 0,
-    goalsFor: 3,
-    goalsAgainst: 2,
-    goalDifference: 1,
-    points: 3,
-    regulationWins: 1,
+    losses: 2,
+    goalsFor: 14,
+    goalsAgainst: 11,
+    goalDifference: 3,
+    points: 12,
+    regulationWins: 4,
     penaltyWins: 0,
     penaltyLosses: 0,
-    regulationLosses: 0,
+    regulationLosses: 2,
   });
 });
 
@@ -78,5 +92,5 @@ test("Kracie Cup standings entries are internally consistent (regulation/PK brea
 });
 
 test("Kracie Cup standings expose the as-of label", () => {
-  assert.equal(kracieCupStandings.asOfLabel, "2026/09/13 19:57 現在");
+  assert.equal(kracieCupStandings.asOfLabel, "2026/10/12 08:36 現在（公式速報）");
 });

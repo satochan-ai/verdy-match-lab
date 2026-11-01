@@ -141,7 +141,7 @@ export const u21AwayOfficialLineup: U21OfficialLineup = {
 /** 東西リーグラウンド EAST 第3節（U-21清水エスパルス戦）公式ラインアップ。 */
 export const u21ShimizuMatch = {
   id: "u21-next-2",
-  status: "scheduled" as MatchStatus,
+  status: "finished" as MatchStatus,
   competition: "2026／27Ｕ-21Ｊリーグ 東西リーグラウンド EAST 第3節",
   kickoffAt: "2026-09-20T14:03:00+09:00",
   kickoffLabel: "14:03",
@@ -150,9 +150,32 @@ export const u21ShimizuMatch = {
   isVerdyHome: true,
   homeTeamName: "東京ヴェルディU-21",
   awayTeamName: "U-21清水エスパルス",
-  homeScore: undefined as number | undefined,
-  awayScore: undefined as number | undefined,
+  homeScore: 4,
+  awayScore: 2,
 };
+
+export const u21ShimizuOfficialRecord: OfficialMatchRecord = {
+  kickoff: "14:03",
+  attendance: 487,
+  weather: "雨",
+  temperature: "23.7℃",
+  humidity: "80%",
+};
+
+export const u21ShimizuGoals: MatchGoal[] = [
+  { minute: "6'", scorer: "鈴木 奎吾", team: "U-21清水エスパルス" },
+  { minute: "12'", scorer: "熊取谷 一星", team: "東京ヴェルディU-21" },
+  { minute: "18'", scorer: "山田 剛綺", team: "東京ヴェルディU-21" },
+  { minute: "52'", scorer: "小澤 煌志", team: "U-21清水エスパルス" },
+  { minute: "60'", scorer: "山田 剛綺", team: "東京ヴェルディU-21" },
+  { minute: "67'", scorer: "大藤 颯太", team: "東京ヴェルディU-21" },
+];
+
+// 同時刻の複数交代はIN/OUTの個別対応が確定できないため登録せず、
+// 公式資料から一対一で確認できる75分の交代のみ保持する。
+export const u21ShimizuSubstitutions: MatchSubstitution[] = [
+  { minute: "75'", team: "東京ヴェルディU-21", playerIn: "田邉 秀斗", playerOut: "白井 亮丞" },
+];
 
 export const u21ShimizuHomeOfficialLineup: U21OfficialLineup = {
   starters: {
@@ -192,6 +215,84 @@ export const u21ShimizuPredictedFormationOptions: PredictedLineup[] = [
     ],
   },
 ];
+
+/** 10/3川崎戦：ユーザー提供の公式確定結果。開始時フォーメーションは未確認。 */
+export const u21KawasakiMatch = {
+  id: "u21-next-3",
+  status: "finished" as MatchStatus,
+  competition: "2026／27Ｕ-21Ｊリーグ 東西リーグラウンド EAST 第4節",
+  kickoffAt: "2026-10-03T15:03:00+09:00",
+  kickoffLabel: "15:03",
+  scheduleNote: undefined as string | undefined,
+  venue: "Uvanceとどろきスタジアム by Fujitsu",
+  isVerdyHome: false,
+  homeTeamName: "U-21川崎フロンターレ",
+  awayTeamName: "東京ヴェルディU-21",
+  homeScore: 4,
+  awayScore: 1,
+};
+
+export const u21KawasakiGoals: MatchGoal[] = [
+  { minute: "5'", scorer: "持山 匡佑", team: u21KawasakiMatch.homeTeamName },
+  { minute: "14'", scorer: "持山 匡佑", team: u21KawasakiMatch.homeTeamName },
+  { minute: "39'", scorer: "神田 奏真", team: u21KawasakiMatch.awayTeamName },
+  { minute: "78'", scorer: "山市 秀翔", team: u21KawasakiMatch.homeTeamName },
+  { minute: "83'", scorer: "小林 悠", team: u21KawasakiMatch.homeTeamName },
+];
+
+// 東京V62・79分、川崎64分は同時刻複数交代。OUT/INの対応未確定のため未収録。
+export const u21KawasakiSubstitutions: MatchSubstitution[] = [
+  { minute: "22'", team: u21KawasakiMatch.awayTeamName, playerOut: "山田 剛綺", playerIn: "高居 丈流" },
+  { minute: "46'", team: u21KawasakiMatch.homeTeamName, playerOut: "持山 匡佑", playerIn: "加藤 昊" },
+  { minute: "66'", team: u21KawasakiMatch.homeTeamName, playerOut: "武内 勇人", playerIn: "廣瀬 寧生" },
+  { minute: "76'", team: u21KawasakiMatch.homeTeamName, playerOut: "カイキ ケイロス", playerIn: "小林 悠" },
+];
+
+export const u21KawasakiCards: MatchCard[] = [
+  { player: "中村 圭佑", team: u21KawasakiMatch.awayTeamName, type: "red" },
+  // 由井航太は警告2枚による退場。既存型はsecond-yellowを区別できないためredで保持。
+  { player: "由井 航太", team: u21KawasakiMatch.homeTeamName, type: "red" },
+  { player: "山市 秀翔", team: u21KawasakiMatch.homeTeamName, type: "yellow" },
+  { player: "川村 楽人", team: u21KawasakiMatch.awayTeamName, type: "yellow" },
+];
+
+export const u21KawasakiOfficialRecord: OfficialMatchRecord = {
+  kickoff: "15:03",
+  attendance: 9474,
+  weather: "曇のち晴",
+  temperature: "22.8℃",
+  humidity: "56%",
+};
+
+export const u21KawasakiHomeOfficialLineup: U21OfficialLineup = {
+  starters: {
+    GK: ["33 イ クンヒョン"],
+    DF: ["30 野田 裕人", "35 對馬 羽琉", "2 松長根 悠仁", "31 渡邉 拓眞"],
+    MF: ["26 由井 航太", "25 山市 秀翔", "24 武内 勇人", "20 持山 匡佑", "34 長 璃喜"],
+    FW: ["93 カイキ ケイロス"],
+  },
+  bench: {
+    GK: ["21 小村 風人"],
+    DF: ["37 上野 煌士郎", "39 藤田 明日翔"],
+    MF: ["16 木村 風斗", "32 加藤 昊"],
+    FW: ["11 小林 悠", "36 廣瀬 寧生"],
+  },
+};
+
+export const u21KawasakiAwayOfficialLineup: U21OfficialLineup = {
+  starters: {
+    GK: ["41 中村 圭佑"],
+    DF: ["83 松田 陸", "82 田邉 秀斗"],
+    MF: ["28 山本 丈偉", "89 食野 壮磨", "24 仲山 獅恩", "42 今井 健人"],
+    FW: ["27 白井 亮丞", "38 神田 奏真", "84 山田 剛綺", "94 松橋 優安"],
+  },
+  bench: {
+    GK: ["91 高居 丈流"],
+    DF: ["92 原田 爽潤"],
+    MF: ["30 川村 楽人", "87 下吉 洸平"],
+    FW: ["51 大藤 颯太", "80 キム ヒョンウ", "90 熊取谷 一星"],
+  },
+};
 
 /**
  * === 東西リーグラウンド EAST 第1節（FC東京U-21戦）アーカイブ ===
@@ -346,9 +447,9 @@ export const u21SeasonHistory: U21SeasonHistoryEntry[] = [
 
 /**
  * 第2節終了後のNEXT 5（公式日程のみ）。U-21浦和レッズ戦はu21Match（現在表示中の1試合）へ
- * 昇格したため、重複登録を避けるためこの一覧からは外す。日時未確定の試合（交流戦）は
- * 単一の日付を確定させず、dateLabelを範囲表記、kickoffLabelを"TBD"とする。会場は
- * 公式確認できた場合のみ設定する。
+ * 昇格したため、重複登録を避けるためこの一覧からは外す。交流戦ラウンドの日程は公式発表
+ * （2026-10-10確認）で確定済み。2027年開催分（日程候補のみ・会場未定）は登録しない。
+ * 会場は公式確認できた場合のみ設定する。
  */
 export const u21UpcomingMatches: UpcomingFixture[] = [
   {
@@ -366,7 +467,7 @@ export const u21UpcomingMatches: UpcomingFixture[] = [
   {
     id: "u21-next-3",
     dateLabel: "10.03 SAT",
-    kickoffLabel: "15:00",
+    kickoffLabel: u21KawasakiMatch.kickoffLabel,
     fixtureMeta: {
       competition: "2026/27 U-21 Jリーグ",
       stage: "東西リーグラウンド",
@@ -386,11 +487,12 @@ export const u21UpcomingMatches: UpcomingFixture[] = [
     },
     isHome: false,
     opponentName: "U-21ジュビロ磐田",
+    venue: "大久保G",
   },
   {
     id: "u21-next-5",
-    dateLabel: "10.31 - 11.02",
-    kickoffLabel: "TBD",
+    dateLabel: "11.01 SUN",
+    kickoffLabel: "13:00",
     fixtureMeta: {
       competition: "2026/27 U-21 Jリーグ",
       stage: "交流戦ラウンド",
@@ -398,6 +500,7 @@ export const u21UpcomingMatches: UpcomingFixture[] = [
     },
     isHome: true,
     opponentName: "U-21名古屋グランパス",
+    venue: "AGFフィールド",
   },
   {
     id: "u21-next-6",
@@ -410,5 +513,35 @@ export const u21UpcomingMatches: UpcomingFixture[] = [
     },
     isHome: false,
     opponentName: "U-21ガンバ大阪",
+    venue: "パナソニック スタジアム 吹田",
+  },
+  // 以下はU-21 Jリーグ日程（https://www.verdy.co.jp/beleza/news/15080 ・9/3更新、2026-10-10確認）
+  // の確定日程。ホーム／アウェイは会場（AGFフィールド・味の素フィールド西が丘＝ホーム）から判定。
+  {
+    id: "u21-next-7",
+    dateLabel: "11.29 SUN",
+    kickoffLabel: "13:00",
+    fixtureMeta: { competition: "2026/27 U-21 Jリーグ", stage: "交流戦ラウンド", roundLabel: "第3節" },
+    isHome: true,
+    opponentName: "U-21ヴィッセル神戸",
+    venue: "味の素フィールド西が丘",
+  },
+  {
+    id: "u21-next-8",
+    dateLabel: "12.06 SUN",
+    kickoffLabel: "13:00",
+    fixtureMeta: { competition: "2026/27 U-21 Jリーグ", stage: "交流戦ラウンド", roundLabel: "第4節" },
+    isHome: false,
+    opponentName: "U-21V・ファーレン長崎",
+    venue: "PEACE STADIUM Connected by SoftBank",
+  },
+  {
+    id: "u21-next-9",
+    dateLabel: "12.12 SAT",
+    kickoffLabel: "13:00",
+    fixtureMeta: { competition: "2026/27 U-21 Jリーグ", stage: "交流戦ラウンド", roundLabel: "第5節" },
+    isHome: true,
+    opponentName: "U-21ファジアーノ岡山",
+    venue: "AGFフィールド",
   },
 ];

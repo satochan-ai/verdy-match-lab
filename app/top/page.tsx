@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
+import Image from "next/image";
+import somaAnalysis from "@/public/images/soma-naoki-tactical-analysis-20261008.png";
+import { getMatchResult } from "@/lib/match/result";
+import { getMatchDetail, getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
 import { topFixtures, toTopUpcomingFixture } from "@/lib/data/top-fixtures";
 import { getNextFixture, getUpcomingFixtures } from "@/lib/data/fixture-selectors";
 import { StrategyList } from "@/components/match/StrategyList";
@@ -13,6 +16,24 @@ import { j1Standings } from "@/lib/mock/standings";
 import { getMatchDayLabel } from "@/lib/match/display";
 import { OpponentRecentMatches } from "@/components/match/OpponentRecentMatches";
 import { resolveMatchStatus } from "@/lib/match/status";
+import { getTopDetailHref, topDetailPendingNotice, topLiveNotice } from "@/lib/match/top-card-presentation";
+import { HiroshimaPredictions } from "@/components/match/HiroshimaPredictions";
+import { HiroshimaMatchPreview } from "@/components/match/HiroshimaMatchPreview";
+import { shouldShowHiroshimaPreContent } from "@/lib/match/hiroshima-content";
+import { FcTokyoPredictions } from "@/components/match/FcTokyoPredictions";
+import { FcTokyoMatchPreview } from "@/components/match/FcTokyoMatchPreview";
+import { FcTokyoStrategies } from "@/components/match/FcTokyoStrategies";
+import { shouldShowFcTokyoPrediction } from "@/lib/match/fc-tokyo-prediction";
+import { HiroshimaStrategies } from "@/components/match/HiroshimaStrategies";
+import { AnalysisLinkCard } from "@/components/analysis/AnalysisLinkCard";
+import { analysisCard } from "@/lib/analysis/jofuku-soma-transition";
+import { YokohamaFmMatchPreview, YokohamaFmStrategies, YokohamaFmPredictions } from "@/components/match/YokohamaFmPreContent";
+import { shouldShowYokohamaFmContent } from "@/lib/match/yokohama-fm-content";
+import { FukuokaMatchPreview, FukuokaStrategies, FukuokaPredictions } from "@/components/match/FukuokaPreContent";
+import { shouldShowFukuokaContent } from "@/lib/match/fukuoka-content";
+import { NagasakiPredictions } from "@/components/match/NagasakiPredictions";
+import { NagasakiMatchPreview, NagasakiStrategies } from "@/components/match/NagasakiPreContent";
+import { shouldShowNagasakiPrediction } from "@/lib/match/nagasaki-prediction";
 
 export const metadata: Metadata = {
   title: "東京ヴェルディ TOP TEAM | Verdy Match Lab",
@@ -45,12 +66,17 @@ function formatShortDate(iso: string) {
   return `${d.getMonth() + 1}/${d.getDate()}`;
 }
 
+/** LIVE/NEXTの判定がnowに依存するため、静的prerenderにせず毎リクエスト描画する。 */
+export const dynamic = "force-dynamic";
+
 export default async function TopTeamPage() {
   const [nextMatch, recent] = await Promise.all([
     getNextMatch(),
     getRecentFinishedMatchSummary(),
   ]);
   const now = new Date();
+  // 広島戦専用コンテンツ（データは保持）は、表示中のNEXT/LIVEが広島戦のときだけ次戦エリアに出す。
+  const hiroshimaFixture = topFixtures.find((fixture) => fixture.id === "sched-hiroshima");
   const nextFixture = getNextFixture(topFixtures, now);
   const liveFixture = topFixtures.find(
     (fixture) =>
@@ -59,6 +85,13 @@ export default async function TopTeamPage() {
       resolveMatchStatus({ status: "scheduled", kickoffAt: fixture.kickoffAt }, now) === "live",
   );
   const displayFixture = liveFixture ?? nextFixture;
+  const detailMatch = displayFixture?.detailMatchId ? await getMatchDetail(displayFixture.detailMatchId) : undefined;
+  const detailHref = getTopDetailHref(displayFixture?.detailMatchId, detailMatch);
+  const showHiroshimaPreContent = shouldShowHiroshimaPreContent(displayFixture);
+  const showFcTokyoPrediction = shouldShowFcTokyoPrediction(displayFixture);
+  const showYokohamaFmContent = shouldShowYokohamaFmContent(displayFixture);
+  const showFukuokaContent = shouldShowFukuokaContent(displayFixture);
+  const showNagasakiPrediction = shouldShowNagasakiPrediction(displayFixture);
   const topUpcoming = getUpcomingFixtures(topFixtures, now, 5).map(toTopUpcomingFixture);
   // nextMatchがnull（scheduledな試合が未登録）の場合は、過去試合を出さずに
   // 「次戦情報準備中」の空状態を表示する。LAST MATCH / NEXT 5は独立して表示する。
@@ -66,16 +99,16 @@ export default async function TopTeamPage() {
     ? { name: displayFixture.opponentName }
     : null;
   const recentOpponent = recent.isVerdyHome ? recent.awayTeam : recent.homeTeam;
-  const recentResult =
-    recent.homeScore! === recent.awayScore!
-      ? "draw"
-      : (recent.isVerdyHome && recent.homeScore! > recent.awayScore!) ||
-        (!recent.isVerdyHome && recent.awayScore! > recent.homeScore!)
-      ? "win"
-      : "loss";
+  const recentResult = getMatchResult(recent);
 
   const fixture = displayFixture?.kickoffAt ? formatMatchday(displayFixture.kickoffAt) : null;
-  const dayLabel = liveFixture ? { kind: "live" as const } : nextMatch ? getMatchDayLabel(nextMatch, now) : null;
+  // 表示中のNEXT fixture（topFixtures由来）から直接決める。scheduledなMatch行（nextMatch）が
+  // 無い期間でも、NEXT MATCHの日数表示が空状態にならないようにする。
+  const dayLabel = liveFixture
+    ? { kind: "live" as const }
+    : displayFixture?.kickoffAt
+      ? getMatchDayLabel({ status: "scheduled", kickoffAt: displayFixture.kickoffAt }, now)
+      : null;
 
   return (
     <div className="space-y-6">
@@ -98,7 +131,7 @@ export default async function TopTeamPage() {
           <section className="section-reveal border-y-2 border-fusion-black bg-surface-tint px-4 py-6 lg:px-10 lg:py-8">
             <div className="flex items-baseline justify-between gap-3">
               <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep lg:text-[12px]">
-                NEXT MATCH
+                {liveFixture ? "LIVE MATCH" : "NEXT MATCH"}
               </p>
               {dayLabel.kind === "days" && <p className="text-[11px] font-bold text-primary-green">あと{dayLabel.days}日</p>}
               {dayLabel.kind === "today" && <p className="text-[11px] font-bold text-primary-green">今日</p>}
@@ -145,13 +178,15 @@ export default async function TopTeamPage() {
                 </span>
               </p>
               <p className="text-[12px] text-text-secondary">{displayFixture.venue}</p>
-              <Link
-                href={displayFixture.detailMatchId ? `/matches/${displayFixture.detailMatchId}` : "/top"}
+              {detailHref && <Link
+                href={detailHref}
                 className="mt-3 flex h-12 w-full items-center justify-center bg-primary-green text-[14px] font-bold text-white lg:mt-0 lg:inline-flex lg:h-10 lg:w-auto lg:px-5"
               >
                 試合詳細を見る
-              </Link>
+              </Link>}
             </div>
+            {!detailHref && <p className="mt-3 text-[12px] leading-relaxed text-text-secondary">{topDetailPendingNotice}</p>}
+            {liveFixture && <p className="mt-3 text-[12px] leading-relaxed text-text-secondary">{topLiveNotice}</p>}
           </section>
           ) : (
           <section className="section-reveal border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
@@ -186,6 +221,7 @@ export default async function TopTeamPage() {
                     </span>
                     <span className="ml-2 flex shrink-0 items-center gap-2">
                       <span className="tabular-nums font-bold text-text-primary">{recent.homeScore}-{recent.awayScore}</span>
+                      {recent.penaltyShootout && <span className="text-[12px]">PK {recent.penaltyShootout.homeScore}-{recent.penaltyShootout.awayScore}</span>}
                       <StatusBadge variant={recentResult} />
                     </span>
                   </div>
@@ -196,11 +232,84 @@ export default async function TopTeamPage() {
             </div>
           </div>
 
+          {/* SPECIAL ANALYSIS：LAST MATCHの下、NEXT 5の上に特別分析記事への導線を1件置く。 */}
+          <AnalysisLinkCard {...analysisCard} />
+
           {topUpcoming.length > 0 && (
             <section>
               <SectionHeader title="NEXT 5" eyebrow="UPCOMING FIXTURES" />
               <UpcomingFixtureList fixtures={topUpcoming} variant="top" />
             </section>
+          )}
+
+          <section aria-labelledby="soma-feature-title" className="space-y-4 border-y border-border bg-surface px-4 py-5 lg:px-6 lg:py-6">
+            <div>
+              <p className="text-[11px] font-bold tracking-[0.15em] text-pioneer-gold-deep">MANAGER FEATURE</p>
+              <h2 id="soma-feature-title" className="mt-1 text-[20px] font-extrabold leading-snug text-text-primary lg:text-[24px]">
+                相馬直樹新監督特集｜4-4-2を軸に東京Vはどう変わる？
+              </h2>
+              <p className="mt-2 text-[14px] text-text-secondary">新体制の戦術と選手起用を考察</p>
+            </div>
+            <a href="/images/soma-naoki-tactical-analysis-20261008.png" target="_blank" rel="noopener noreferrer" className="block" aria-label="相馬直樹監督の戦術分析画像を原寸で開く（新しいタブ）">
+              <Image src={somaAnalysis} alt="相馬直樹監督の2026年10月8日就任、鹿児島2025年の4-4-2採用実績と、東京Vでの非公式の起用・戦術予想を整理した図" className="h-auto w-full" sizes="(min-width: 1280px) 1200px, 100vw" />
+            </a>
+            <p className="text-[12px] text-text-secondary">画像を選ぶと原寸で開きます。小さい文字は拡大してご覧ください。</p>
+            <p className="text-[14px] leading-relaxed text-text-primary">
+              相馬直樹新監督の就任を受け、過去の4-4-2採用傾向と戦術的な特徴を整理しました。東京ヴェルディの現有戦力を踏まえ、染野唯月と一美和成の2トップ、藤本寛也の右サイド、新井悠太の左サイドなどを独自に予想しています。
+            </p>
+            <p className="text-[13px] font-bold leading-relaxed text-deep-green">
+              本特集は非公式の独自分析・予想です。実際の起用やフォーメーションを示す公式情報ではありません。
+            </p>
+            <p className="text-[12px] leading-relaxed text-text-secondary">
+              就任情報はクラブ公式発表、鹿児島2025年の38試合・18勝12分8敗はFootball LABを参照しています。4-4-2はFootball LABによる試合開始時の独自判定です。プレス・守備組織・縦攻撃・4-2-2-2への可変は当サイトの分析・予想で、監督の確定的な方針ではありません。
+            </p>
+            <div className="flex flex-wrap gap-x-5 gap-y-2 text-[13px]">
+              <a href="https://www.verdy.co.jp/news/15277" target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">東京ヴェルディ公式：監督就任のお知らせ</a>
+              <a href="https://www.football-lab.jp/kufc/formation?year=2025" target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">Football LAB：鹿児島2025年フォーメーション</a>
+            </div>
+          </section>
+
+          {showNagasakiPrediction && (
+            <>
+              <NagasakiMatchPreview />
+              <NagasakiStrategies />
+              <NagasakiPredictions />
+            </>
+          )}
+          {showYokohamaFmContent && (
+            <>
+              <YokohamaFmMatchPreview />
+              <YokohamaFmStrategies />
+              <YokohamaFmPredictions />
+            </>
+          )}
+
+          {showFukuokaContent && (
+            <>
+              <FukuokaMatchPreview />
+              <FukuokaStrategies />
+              <FukuokaPredictions />
+            </>
+          )}
+
+          {showHiroshimaPreContent && (
+            <>
+              {hiroshimaFixture && <HiroshimaMatchPreview fixture={hiroshimaFixture} />}
+
+              <HiroshimaStrategies />
+
+              <HiroshimaPredictions />
+            </>
+          )}
+
+          {showFcTokyoPrediction && (
+            <>
+              <FcTokyoMatchPreview />
+
+              <FcTokyoStrategies />
+
+              <FcTokyoPredictions />
+            </>
           )}
 
           <LeagueStandingsTable standings={j1Standings} highlightTeamName="東京ヴェルディ" />

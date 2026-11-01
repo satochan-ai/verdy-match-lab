@@ -57,6 +57,20 @@ export const elfenSaitamaTeam: Team = {
   isVerdy: false,
 };
 
+/** クラシエカップ第3節の対戦相手。 */
+export const albirexNiigataLadiesTeam: Team = {
+  id: "albirex-niigata-ladies",
+  name: "アルビレックス新潟レディース",
+  isVerdy: false,
+};
+
+/** クラシエカップ第4節の対戦相手。 */
+export const cerezoOsakaYanmarTeam: Team = {
+  id: "cerezo-osaka-yanmar-ladies",
+  name: "セレッソ大阪ヤンマーレディース",
+  isVerdy: false,
+};
+
 /**
  * === クラシエカップ リーグステージ第1節（INAC神戸レオネッサ戦）：現在表示中の1試合 ===
  * IDは既存のNEXT5エントリ「beleza-next-3」をそのまま再利用する（重複作成しない）。
@@ -277,6 +291,155 @@ export const elfenActualLineup: ActualLineup = {
     DF: ["13 佐久間 未稀"],
     MF: ["37 梅月 万優子", "29 山下 朝子", "19 森中 陽菜", "17 木許 和心"],
     FW: ["36 中村 優那"],
+  },
+};
+
+/**
+ * === クラシエカップ リーグステージ第3節（アルビレックス新潟レディース戦）アーカイブ ===
+ * belezaMatch／belezaElfenMatchのような「現在表示中の1試合」上書きスナップショットではなく、
+ * beleza-match-1／2／3と同じ永続アーカイブ枠として新規ID（beleza-match-4）を発行する
+ * （この節以降、9/23・9/27の2試合を同時に個別詳細ページで到達可能にする必要があるため）。
+ * 対戦相手（新潟L）側のスタメン・ベンチ・開始時フォーメーションは今回の提供データにないため、
+ * 推測で追加しない（ベレーザ側のみ記録）。
+ */
+export const belezaMatch4 = {
+  id: "beleza-match-4",
+  competition: "2026/27 WEリーグ クラシエカップ リーグステージ第3節",
+  fixtureMeta: {
+    competition: "2026/27 WEリーグ クラシエカップ",
+    stage: "リーグステージ",
+    roundLabel: "第3節",
+  } satisfies FixtureMeta,
+  dateLabel: "09.23 WED",
+  kickoffLabel: "14:03",
+  kickoffAt: "2026-09-23T14:03:00+09:00",
+  venue: "多摩市立陸上競技場",
+  status: "finished" as const,
+  homeTeamName: belezaTeam.name,
+  awayTeamName: albirexNiigataLadiesTeam.name,
+  isBelezaHome: true,
+  homeScore: 1,
+  awayScore: 3,
+};
+
+export const belezaMatch4HalfScores = { firstHalf: "0-2", secondHalf: "1-1" };
+
+export const belezaMatch4Goals: MatchGoal[] = [
+  { minute: "20'", scorer: "滝川 結女", team: albirexNiigataLadiesTeam.name },
+  { minute: "21'", scorer: "園田 瑞貴", team: albirexNiigataLadiesTeam.name },
+  { minute: "55'", scorer: "杉田 亜未", team: albirexNiigataLadiesTeam.name },
+  { minute: "86'", scorer: "青木 夕菜", team: belezaTeam.name },
+];
+
+export const belezaMatch4Cards: MatchCard[] = [];
+
+export const belezaMatch4Substitutions: MatchSubstitution[] = [
+  { minute: "46'", team: belezaTeam.name, playerOut: "土光 真代", playerIn: "樋渡 百花" },
+  { minute: "46'", team: belezaTeam.name, playerOut: "安藤 梢", playerIn: "式田 和" },
+  { minute: "73'", team: belezaTeam.name, playerOut: "須長 穂乃果", playerIn: "猶本 光" },
+  { minute: "80'", team: belezaTeam.name, playerOut: "氏原 里穂菜", playerIn: "松永 未夢" },
+  { minute: "89'", team: belezaTeam.name, playerOut: "北村 菜々美", playerIn: "井手 ひなた" },
+];
+
+export const belezaMatch4Stats = {
+  beleza: { shots: 21, freeKicks: 0, corners: 5 },
+  opponent: { shots: 10, freeKicks: 7, corners: 4 },
+};
+
+export const belezaMatch4OfficialRecord: OfficialMatchRecord = {
+  kickoff: "14:03",
+  attendance: 1012,
+  weather: "雨",
+  temperature: "20.2℃",
+  humidity: "90%",
+};
+
+/** ベレーザ側のみ公式発表確認済み。新潟L側のStarting XI・ベンチは今回未提供のため掲載しない。 */
+export const belezaMatch4ActualLineup: ActualLineup = {
+  starters: {
+    GK: ["1 野田 にな"],
+    DF: ["4 土光 真代", "2 青木 夕菜", "3 村松 智子", "17 朝生 珠実"],
+    MF: ["6 隅田 凜", "35 須長 穂乃果", "7 北村 菜々美", "14 眞城 美春"],
+    FW: ["13 氏原 里穂菜", "40 安藤 梢"],
+  },
+  bench: {
+    GK: ["21 水口 茉優"],
+    DF: ["22 井手 ひなた"],
+    MF: ["8 猶本 光", "18 松永 未夢"],
+    FW: ["11 樋渡 百花", "25 ダネル タン", "38 式田 和"],
+  },
+};
+
+/**
+ * === クラシエカップ リーグステージ第4節（セレッソ大阪ヤンマーレディース戦）アーカイブ ===
+ * 対戦相手（C大阪）側のスタメン・ベンチは今回の提供データにないため、ベレーザ側のみ記録する。
+ */
+export const belezaMatch5 = {
+  id: "beleza-match-5",
+  competition: "2026/27 WEリーグ クラシエカップ リーグステージ第4節",
+  fixtureMeta: {
+    competition: "2026/27 WEリーグ クラシエカップ",
+    stage: "リーグステージ",
+    roundLabel: "第4節",
+  } satisfies FixtureMeta,
+  dateLabel: "09.27 SUN",
+  kickoffLabel: "18:03",
+  kickoffAt: "2026-09-27T18:03:00+09:00",
+  venue: "YANMAR HANASAKA STADIUM",
+  status: "finished" as const,
+  homeTeamName: cerezoOsakaYanmarTeam.name,
+  awayTeamName: belezaTeam.name,
+  isBelezaHome: false,
+  homeScore: 1,
+  awayScore: 4,
+};
+
+export const belezaMatch5HalfScores = { firstHalf: "0-2", secondHalf: "1-2" };
+
+export const belezaMatch5Goals: MatchGoal[] = [
+  { minute: "13'", scorer: "北村 菜々美", team: belezaTeam.name },
+  { minute: "41'", scorer: "式田 和", team: belezaTeam.name },
+  { minute: "78'", scorer: "朝生 珠実", team: belezaTeam.name },
+  { minute: "86'", scorer: "猶本 光", team: belezaTeam.name },
+  { minute: "88'", scorer: "玉村 海乃", team: cerezoOsakaYanmarTeam.name },
+];
+
+export const belezaMatch5Cards: MatchCard[] = [];
+
+export const belezaMatch5Substitutions: MatchSubstitution[] = [
+  { minute: "46'", team: belezaTeam.name, playerOut: "松永 未夢", playerIn: "朝生 珠実" },
+  { minute: "61'", team: belezaTeam.name, playerOut: "樋渡 百花", playerIn: "猶本 光" },
+  { minute: "61'", team: belezaTeam.name, playerOut: "氏原 里穂菜", playerIn: "小林 里歌子" },
+  { minute: "83'", team: belezaTeam.name, playerOut: "小林 里歌子", playerIn: "隅田 凜" },
+  { minute: "87'", team: belezaTeam.name, playerOut: "北村 菜々美", playerIn: "井手 ひなた" },
+];
+
+export const belezaMatch5Stats = {
+  beleza: { shots: 12, freeKicks: 15, corners: 4 },
+  opponent: { shots: 8, freeKicks: 10, corners: 1 },
+};
+
+export const belezaMatch5OfficialRecord: OfficialMatchRecord = {
+  kickoff: "18:03",
+  attendance: 1115,
+  weather: "雨",
+  temperature: "23.4℃",
+  humidity: "90%",
+};
+
+/** ベレーザ側のみ公式発表確認済み。C大阪側のStarting XI・ベンチは今回未提供のため掲載しない。 */
+export const belezaMatch5ActualLineup: ActualLineup = {
+  starters: {
+    GK: ["1 野田 にな"],
+    DF: ["2 青木 夕菜", "3 村松 智子", "32 松岡 瑛茉"],
+    MF: ["14 眞城 美春", "35 須長 穂乃果", "7 北村 菜々美", "18 松永 未夢"],
+    FW: ["38 式田 和", "11 樋渡 百花", "13 氏原 里穂菜"],
+  },
+  bench: {
+    GK: ["21 水口 茉優"],
+    DF: ["4 土光 真代", "17 朝生 珠実", "22 井手 ひなた"],
+    MF: ["6 隅田 凜", "8 猶本 光"],
+    FW: ["20 小林 里歌子"],
   },
 };
 
@@ -778,15 +941,125 @@ export const belezaSeasonHistory: BelezaSeasonHistoryEntry[] = [
     awayScore: 2,
     result: "win",
   },
+  {
+    id: "beleza-next-4",
+    dateLabel: "09.19",
+    round: "第2節",
+    homeTeamName: elfenTeam.name,
+    awayTeamName: belezaTeam.name,
+    homeScore: 0,
+    awayScore: 1,
+    result: "win",
+  },
+  {
+    id: "beleza-match-4",
+    dateLabel: "09.23",
+    round: "第3節",
+    homeTeamName: belezaTeam.name,
+    awayTeamName: albirexNiigataLadiesTeam.name,
+    homeScore: 1,
+    awayScore: 3,
+    result: "loss",
+  },
+  {
+    id: "beleza-match-5",
+    dateLabel: "09.27",
+    round: "第4節",
+    homeTeamName: cerezoOsakaYanmarTeam.name,
+    awayTeamName: belezaTeam.name,
+    homeScore: 1,
+    awayScore: 4,
+    result: "win",
+  },
 ];
 
 /**
- * 第2節終了後のNEXT 5（公式日程のみ）。EL埼玉戦はfinishedになったため一覧から外す。
+ * 第2節終了後のNEXT 5（公式日程のみ）。EL埼玉戦・新潟L戦・C大阪戦はfinishedになったため
+ * 一覧から外す（それぞれbelezaMatch/belezaMatch4/belezaMatch5として個別に記録する）。
  * クラシエカップ第1節（INAC神戸戦）はSeason Historyへ移動したため、
  * 重複登録を避けるためこの一覧からは外す。
  * WEリーグとクラシエカップを大会横断で開催日時の早い順に並べる。
  * 会場は公式日程で確認できた場合のみ設定する（推測で埋めない）。
  */
+/** 10/3浦和戦：ユーザー提供の公式確定結果。開始時フォーメーションは未確認。 */
+export const belezaUrawaCupMatch = {
+  id: "beleza-next-7",
+  status: "finished" as const,
+  competition: "2026/27 WEリーグ クラシエカップ リーグステージ 第5節",
+  kickoffAt: "2026-10-03T14:03:00+09:00",
+  kickoffLabel: "14:03",
+  dateLabel: "10.03 SAT",
+  venue: "浦和駒場スタジアム",
+  isBelezaHome: false,
+  homeTeamName: urawaTeam.name,
+  awayTeamName: belezaTeam.name,
+  homeScore: 4,
+  awayScore: 2,
+};
+
+export const belezaUrawaCupHalfScores = { firstHalf: "4-2", secondHalf: "0-0" };
+
+export const belezaUrawaCupGoals: MatchGoal[] = [
+  { minute: "2'", scorer: "加藤 千佳", team: urawaTeam.name },
+  { minute: "11'", scorer: "猶本 光", team: belezaTeam.name },
+  { minute: "13'", scorer: "丹野 凜々香", team: urawaTeam.name },
+  { minute: "25'", scorer: "大西 若菜", team: urawaTeam.name },
+  { minute: "40'", scorer: "サンシャイン フォンテス", team: urawaTeam.name },
+  { minute: "45'", scorer: "式田 和", team: belezaTeam.name },
+];
+
+// 浦和82分に2交代あり。OUT/INの対応未確定のため未収録。
+export const belezaUrawaCupSubstitutions: MatchSubstitution[] = [
+  { minute: "46'", team: belezaTeam.name, playerOut: "須長 穂乃果", playerIn: "氏原 里穂菜" },
+  { minute: "60'", team: belezaTeam.name, playerOut: "朝生 珠実", playerIn: "小林 里歌子" },
+  { minute: "63'", team: urawaTeam.name, playerOut: "サンシャイン フォンテス", playerIn: "川船 暁海" },
+  { minute: "71'", team: urawaTeam.name, playerOut: "加藤 千佳", playerIn: "榊原 琴乃" },
+  { minute: "71'", team: urawaTeam.name, playerOut: "大西 若菜", playerIn: "柴田 華絵" },
+  { minute: "74'", team: belezaTeam.name, playerOut: "村松 智子", playerIn: "井手 ひなた" },
+  { minute: "74'", team: belezaTeam.name, playerOut: "猶本 光", playerIn: "松永 未夢" },
+];
+
+export const belezaUrawaCupOfficialRecord: OfficialMatchRecord = {
+  kickoff: "14:03",
+  attendance: 1651,
+  weather: "晴",
+  temperature: "23.7℃",
+  humidity: "55%",
+  referee: "田澤 友梨奈",
+  assistantReferees: ["吉永 真紀", "岩本 毬花"],
+  fourthOfficial: "吉田 知弘",
+};
+
+export const belezaUrawaCupActualLineup: ActualLineup = {
+  starters: {
+    GK: ["21 水口 茉優"],
+    DF: ["2 青木 夕菜", "3 村松 智子", "32 松岡 瑛茉"],
+    MF: ["14 眞城 美春", "35 須長 穂乃果", "38 式田 和", "8 猶本 光", "7 北村 菜々美", "17 朝生 珠実"],
+    FW: ["11 樋渡 百花"],
+  },
+  bench: {
+    GK: ["41 加登脇 心羽"],
+    DF: ["4 土光 真代", "22 井手 ひなた"],
+    MF: ["6 隅田 凜", "18 松永 未夢"],
+    FW: ["13 氏原 里穂菜", "20 小林 里歌子"],
+  },
+};
+
+export const urawaCupActualLineup: ActualLineup = {
+  starters: {
+    GK: ["1 池田 咲紀子"],
+    DF: ["13 長嶋 玲奈", "7 高橋 はな", "2 エスタ マイ キス", "30 長尾 ののか"],
+    MF: ["14 菊池 まりあ", "26 丹野 凜々香", "6 加藤 千佳", "5 伊藤 美紀", "16 大西 若菜"],
+    FW: ["19 サンシャイン フォンテス"],
+  },
+  bench: {
+    GK: ["12 福田 史織"],
+    DF: [],
+    MF: ["8 榊原 琴乃", "18 柴田 華絵", "20 高塚 映奈", "21 タンチュリエ ローリー", "28 櫻井 まどか"],
+    FW: ["11 川船 暁海"],
+  },
+};
+
 export const belezaUpcomingMatches: UpcomingFixture[] = [
   {
     id: "beleza-next-4",
@@ -801,32 +1074,6 @@ export const belezaUpcomingMatches: UpcomingFixture[] = [
     isHome: false,
     opponentName: "ちふれASエルフェン埼玉",
     venue: "熊谷スポーツ文化公園陸上競技場",
-  },
-  {
-    id: "beleza-next-5",
-    dateLabel: "09.23 WED",
-    kickoffLabel: "14:00",
-    fixtureMeta: {
-      competition: "2026/27 WEリーグ クラシエカップ",
-      stage: "リーグステージ",
-      roundLabel: "第3節",
-    },
-    isHome: true,
-    opponentName: "アルビレックス新潟レディース",
-    venue: "多摩市立陸上競技場",
-  },
-  {
-    id: "beleza-next-6",
-    dateLabel: "09.27 SUN",
-    kickoffLabel: "18:00",
-    fixtureMeta: {
-      competition: "2026/27 WEリーグ クラシエカップ",
-      stage: "リーグステージ",
-      roundLabel: "第4節",
-    },
-    isHome: false,
-    opponentName: "セレッソ大阪ヤンマーレディース",
-    venue: "YANMAR HANASAKA STADIUM",
   },
   {
     id: "beleza-next-7",
@@ -854,4 +1101,113 @@ export const belezaUpcomingMatches: UpcomingFixture[] = [
     opponentName: "サンフレッチェ広島レジーナ",
     venue: "AGFフィールド",
   },
+  // 以下のWEリーグ戦は東京ヴェルディ公式カレンダー（https://www.verdy.co.jp/beleza/calendar/ ・2026-10-10確認）
+  // の確定日程。ホーム／アウェイは会場（AGFフィールド・味の素フィールド西が丘＝ホーム）から判定。
+  {
+    id: "beleza-next-9",
+    dateLabel: "10.18 SUN",
+    kickoffLabel: "14:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第4節",
+    },
+    isHome: false,
+    opponentName: "サンフレッチェ広島レジーナ",
+    venue: "エディオンピースウイング広島",
+  },
+  {
+    id: "beleza-next-10",
+    dateLabel: "10.24 SAT",
+    kickoffLabel: "12:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第6節",
+    },
+    isHome: true,
+    opponentName: "ちふれASエルフェン埼玉",
+    venue: "AGFフィールド",
+  },
+  {
+    id: "beleza-next-11",
+    dateLabel: "10.28 WED",
+    kickoffLabel: "18:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第5節",
+    },
+    isHome: true,
+    opponentName: "セレッソ大阪ヤンマーレディース",
+    venue: "味の素フィールド西が丘",
+  },
+  {
+    id: "beleza-next-12",
+    dateLabel: "10.31 SAT",
+    kickoffLabel: "15:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第7節",
+    },
+    isHome: true,
+    opponentName: "RB大宮アルディージャWOMEN",
+    venue: "味の素フィールド西が丘",
+  },
+  {
+    id: "beleza-next-13",
+    dateLabel: "11.07 SAT",
+    kickoffLabel: "14:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第8節",
+    },
+    isHome: false,
+    opponentName: "ノジマステラ神奈川相模原",
+    venue: "相模原ギオンスタジアム",
+  },
+];
+
+/** 10/11 クラシエカップ第6節。クラブ公式の試合経過で81分の対応も確認済み。 */
+export const reginaTeam: Team = { id: "hiroshima-regina", name: "サンフレッチェ広島レジーナ", isVerdy: false };
+export const belezaReginaMatch = {
+  id: "beleza-next-8", competition: "2026/27 WEリーグ クラシエカップ リーグステージ第6節",
+  dateLabel: "10.11 SUN", kickoffLabel: "12:04", kickoffAt: "2026-10-11T12:04:00+09:00",
+  venue: "AGFフィールド", status: "finished" as const, isBelezaHome: true,
+  homeTeamName: belezaTeam.name, awayTeamName: reginaTeam.name, homeScore: 3, awayScore: 1,
+};
+export const belezaReginaHalfScores = { firstHalf: "2-0", secondHalf: "1-1" };
+export const belezaReginaGoals: MatchGoal[] = [
+  { minute: "5'", scorer: "土光 真代", team: belezaTeam.name },
+  { minute: "23'", scorer: "氏原 里穂菜", team: belezaTeam.name },
+  { minute: "90'", scorer: "李 誠雅", team: reginaTeam.name },
+  { minute: "90+3'", scorer: "眞城 美春", team: belezaTeam.name },
+];
+export const belezaReginaSubstitutions: MatchSubstitution[] = [
+  { minute: "46'", team: belezaTeam.name, playerOut: "樋渡 百花", playerIn: "小林 里歌子" },
+  { minute: "46'", team: reginaTeam.name, playerOut: "松本 茉奈加", playerIn: "小川 愛" },
+  { minute: "56'", team: belezaTeam.name, playerOut: "式田 和", playerIn: "北村 菜々美" },
+  { minute: "63'", team: reginaTeam.name, playerOut: "中嶋 淑乃", playerIn: "李 誠雅" },
+  { minute: "71'", team: reginaTeam.name, playerOut: "柳瀬 楓菜", playerIn: "伊藤 めぐみ" },
+  { minute: "81'", team: belezaTeam.name, playerOut: "猶本 光", playerIn: "松永 未夢" },
+  { minute: "81'", team: belezaTeam.name, playerOut: "氏原 里穂菜", playerIn: "井手 ひなた" },
+  { minute: "81'", team: reginaTeam.name, playerOut: "古賀 花野", playerIn: "瀧澤 千聖" },
+  { minute: "81'", team: reginaTeam.name, playerOut: "左山 桃子", playerIn: "島袋 奈美恵" },
+  { minute: "90'", team: belezaTeam.name, playerOut: "松岡 瑛茉", playerIn: "安藤 梢" },
+];
+export const belezaReginaOfficialRecord: OfficialMatchRecord = {
+  kickoff: "12:04", attendance: 1362, weather: "晴", temperature: "29.3℃", humidity: "34%",
+  sourceUrl: "https://www.verdy.co.jp/beleza/match/info/12026101115/result",
+};
+export const belezaReginaStats = { beleza: { shots: 10, freeKicks: 9, corners: 5 }, opponent: { shots: 14, freeKicks: 7, corners: 3 } };
+export const belezaReginaActualLineup: ActualLineup = {
+  starters: { GK: ["21 水口 茉優"], DF: ["32 松岡 瑛茉", "4 土光 真代", "17 朝生 珠実"], MF: ["6 隅田 凜", "19 塩越 柚歩", "8 猶本 光", "14 眞城 美春"], FW: ["38 式田 和", "11 樋渡 百花", "13 氏原 里穂菜"] },
+  bench: { GK: ["31 遠藤 有紗"], DF: ["22 井手 ひなた"], MF: ["7 北村 菜々美", "18 松永 未夢"], FW: ["20 小林 里歌子", "25 ダネル タン", "40 安藤 梢"] },
+};
+export const reginaActualLineup: ActualLineup = {
+  starters: { GK: ["32 石田 ひなは"], DF: ["38 嶋田 華", "4 朝倉 加奈子", "6 左山 桃子", "15 藤生 菜摘"], MF: ["18 渡邊 真衣", "23 柳瀬 楓菜", "16 早間 美空"], FW: ["14 松本 茉奈加", "28 古賀 花野", "11 中嶋 淑乃"] },
+  bench: { GK: ["22 藤田 七海"], DF: ["3 呉屋 絵理子"], MF: ["7 伊藤 めぐみ", "8 小川 愛", "10 瀧澤 千聖", "20 島袋 奈美恵"], FW: ["30 李 誠雅"] },
+};
+export const belezaReginaReview = [
+  "日テレ・東京ヴェルディベレーザは、WEリーグクラシエカップ第6節でサンフレッチェ広島レジーナと対戦し、3-1で勝利した。",
+  "開始5分に土光真代の得点で先制すると、23分には氏原里穂菜が追加点を奪い、2点をリードして前半を終了。",
+  "後半90分に李誠雅の得点で1点を返されたものの、90+3分に眞城美春が得点し、3-1で試合を終えた。",
+  "広島にシュート数で上回られながらも、ベレーザが3得点を挙げて勝利した一戦となった。",
 ];

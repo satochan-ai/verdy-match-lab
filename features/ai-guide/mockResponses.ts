@@ -1,3 +1,4 @@
+import { hiroshimaReview } from "../../lib/mock/top-hiroshima-result.ts";
 import type {
   Match,
   ScoreSituation,
@@ -615,7 +616,40 @@ export function getHalfTimeAnalysis(match: Match): AnalysisReport {
 // POST_MATCH
 // ---------------------------------------------------------------------------
 
+/**
+ * 試合結果の一文。90分で終了した試合は従来どおり「X-Yで終了」のまま変えない。
+ * 延長戦で決着した試合は延長戦の末の最終スコアを、PK戦で決着した試合は
+ * 本体スコア（延長を含む）に加えてPKスコアと勝者を文面に含める。
+ * PKスコアはMatchScoreboardと同じ対戦カード順（HOME-AWAY）で出す。
+ */
+function describeFinalResult(match: Match, opponentName: string): string {
+  const score = `${match.homeScore}-${match.awayScore}`;
+  const pk = match.penaltyShootout;
+
+  if (pk) {
+    const winner = pk.homeScore > pk.awayScore ? match.homeTeam.name : match.awayTeam.name;
+    const lead = match.extraTime ? `${score}で延長戦を終え` : `${score}で終了し`;
+    return `${opponentName}との一戦は${lead}、PK戦${pk.homeScore}-${pk.awayScore}で${winner}が勝利。`;
+  }
+
+  if (match.extraTime) {
+    return `${opponentName}との一戦は延長戦の末、${score}で終了。`;
+  }
+
+  return `${opponentName}との一戦は${score}で終了。`;
+}
+
 export function getPostMatchAnalysis(match: Match): AnalysisReport {
+  if (match.id === "sched-hiroshima") {
+    return { sections: [
+      { heading: "相馬新体制の初陣、広島に0-2で敗戦", bullets: hiroshimaReview },
+      { heading: "確認済み試合情報", bullets: match.matchNotes },
+    ] };
+  }
+  // 横浜FM戦・福岡戦は確認済みの公式情報のみ掲載する（観戦レビューは別セクション）。
+  if (match.id === "sched-yokohama-fm" || match.id === "sched-fukuoka" || match.id === "sched-nagasaki") {
+    return { sections: [{ heading: "確認済み試合情報", bullets: match.matchNotes }] };
+  }
   const opponentName = match.isVerdyHome ? match.awayTeam.name : match.homeTeam.name;
   const anchorStrategy = match.strategies[0];
   const intro = anchorStrategy
@@ -626,7 +660,7 @@ export function getPostMatchAnalysis(match: Match): AnalysisReport {
     sections: [
       {
         heading: "試合総括",
-        body: `${intro}${opponentName}との一戦は${match.homeScore}-${match.awayScore}で終了。${match.matchNotes[0] ?? ""}`,
+        body: `${intro}${describeFinalResult(match, opponentName)}${match.matchNotes[0] ?? ""}`,
       },
       {
         heading: "勝敗を分けたポイント",

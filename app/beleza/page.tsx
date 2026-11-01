@@ -10,7 +10,8 @@ import { weLeagueStandings, kracieCupStandings } from "@/lib/mock/beleza-standin
 import { belezaFixtures, toBelezaSeasonHistoryEntry, toBelezaUpcomingMatch } from "@/lib/data/beleza-fixtures";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "@/lib/data/fixture-selectors";
 import type { CommonFixture } from "@/lib/types/fixture";
-import { resolveMatchStatus } from "@/lib/match/status";
+import { getCategoryLiveFixture } from "@/lib/match/category-live-fixture";
+import { getCategoryDetailHref } from "@/lib/data/category-match-details";
 import { LiveMatchPanel } from "@/components/match/LiveMatchPanel";
 import { LeagueStandingsTable } from "@/components/match/LeagueStandingsTable";
 import { belezaElfenMatch } from "@/lib/mock/beleza";
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
 export default function BelezaPage() {
   const now = new Date();
   const nextFixture = getNextFixture(belezaFixtures, now);
-  const liveFixture = belezaFixtures.find((fixture) => fixture.status === "scheduled" && fixture.kickoffAt && resolveMatchStatus({ status: "scheduled", kickoffAt: fixture.kickoffAt }, now) === "live");
+  const liveFixture = getCategoryLiveFixture(belezaFixtures, now);
   const nextDisplayFixture = nextFixture ? toBelezaUpcomingMatch(nextFixture) : undefined;
   const upcomingFixtures = getUpcomingFixtures(belezaFixtures, now, 5).map(toBelezaUpcomingMatch);
   const lastFixture = getLatestFinishedFixture(belezaFixtures);
@@ -71,7 +72,7 @@ export default function BelezaPage() {
         <span className="w-8" />
       </div>
 
-      {liveFixture && <LiveMatchPanel fixture={liveFixture} teamName={belezaTeam.name} />}
+      {liveFixture && <LiveMatchPanel fixture={liveFixture} detailHref={getCategoryDetailHref("beleza", liveFixture.detailMatchId)} teamName={belezaTeam.name} />}
 
       {nextDisplayFixture && nextHomeName && nextAwayName ? (
         <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">

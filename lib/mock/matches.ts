@@ -1,4 +1,9 @@
 import type { Match } from "@/types/domain";
+import { hiroshimaResult } from "./top-hiroshima-result.ts";
+import { fcTokyoResult } from "./top-fc-tokyo-result.ts";
+import { yokohamaFmResult } from "./top-yokohama-fm-result.ts";
+import { fukuokaResult } from "./top-fukuoka-result.ts";
+import { nagasakiResult } from "./top-nagasaki-result.ts";
 
 const verdy = { id: "verdy", name: "東京ヴェルディ", isVerdy: true };
 
@@ -7,6 +12,114 @@ function opponent(id: string, name: string) {
 }
 
 export const matches: Match[] = [
+  nagasakiResult,
+  fukuokaResult,
+  yokohamaFmResult,
+  fcTokyoResult,
+  hiroshimaResult,
+  {
+    id: "sched-emperor-tottori",
+    homeTeam: opponent("gainare-tottori", "ガイナーレ鳥取"),
+    awayTeam: verdy,
+    isVerdyHome: false,
+    kickoffAt: "2026-10-07T19:00:00+09:00",
+    venue: "味の素スタジアム",
+    status: "finished",
+    homeScore: 0,
+    awayScore: 0,
+    extraTime: true,
+    extraTimeScore: { home: 0, away: 0 },
+    penaltyShootout: {
+      homeScore: 3,
+      awayScore: 4,
+      homeKicks: [
+        { order: 1, player: "本保 奏希", result: "miss" },
+        { order: 2, player: "荒井 涼", result: "miss" },
+        { order: 3, player: "田制 裕作", result: "goal" },
+        { order: 4, player: "二階堂 正哉", result: "goal" },
+        { order: 5, player: "橋本 清太郎", result: "goal" },
+      ],
+      awayKicks: [
+        { order: 1, player: "染野 唯月", result: "goal" },
+        { order: 2, player: "神田 奏真", result: "goal" },
+        { order: 3, player: "福田 湧矢", result: "miss" },
+        { order: 4, player: "山本 丈偉", result: "goal" },
+        { order: 5, player: "食野 壮磨", result: "goal" },
+      ],
+    },
+    goals: [],
+    substitutions: [
+      { minute: "HT", team: "東京V", playerOut: "平川 怜", playerIn: "食野 壮磨" },
+      { minute: "HT", team: "東京V", playerOut: "溝口 修平", playerIn: "新井 悠太" },
+      { minute: "56'", team: "東京V", playerOut: "藤本 寛也", playerIn: "山本 丈偉" },
+      { minute: "84'", team: "東京V", playerOut: "齋藤 功佑", playerIn: "神田 奏真" },
+      { minute: "84'", team: "東京V", playerOut: "白井 亮丞", playerIn: "仲山 獅恩" },
+      { minute: "延長前半開始", team: "東京V", playerOut: "松田 陸", playerIn: "鈴木 海音" },
+      { minute: "67'", team: "鳥取", playerOut: "東條 敦輝", playerIn: "本保 奏希" },
+      { minute: "67'", team: "鳥取", playerOut: "三木 直土", playerIn: "吉田 伊吹" },
+      { minute: "75'", team: "鳥取", playerOut: "ムン ミン", playerIn: "荒井 涼" },
+      { minute: "80'", team: "鳥取", playerOut: "金浦 真樹", playerIn: "二階堂 正哉" },
+      { minute: "80'", team: "鳥取", playerOut: "河村 匠", playerIn: "橋本 清太郎" },
+      { minute: "96'", team: "鳥取", playerOut: "藤田 一途", playerIn: "田制 裕作" },
+    ],
+    cards: [
+      { minute: "17'", team: "東京V", player: "藤本 寛也", type: "yellow" },
+      { minute: "37'", team: "東京V", player: "松田 陸", type: "yellow" },
+    ],
+    timeSegment: null,
+    fixtureMeta: {
+      competition: "天皇杯 JFA 第106回全日本サッカー選手権大会",
+      roundLabel: "3回戦",
+    },
+    actualLineups: {
+      away: {
+        formation: "3-4-1-2",
+        starters: {
+          GK: ["1 マテウス"],
+          DF: ["29 佐古 真礼", "4 林 尚輝", "36 松田 陸"],
+          MF: ["18 溝口 修平", "8 齋藤 功佑", "16 平川 怜", "14 福田 湧矢", "19 藤本 寛也"],
+          FW: ["27 白井 亮丞", "9 染野 唯月"],
+        },
+        bench: {
+          GK: ["21 長沢 祐弥"],
+          DF: ["15 鈴木 海音"],
+          MF: ["20 食野 壮磨", "24 仲山 獅恩", "28 山本 丈偉", "30 川村 楽人", "40 新井 悠太"],
+          FW: ["38 神田 奏真", "51 大藤 颯太"],
+        },
+      },
+      home: {
+        formation: "3-1-4-2",
+        starters: {
+          GK: ["88 バーンズ アントン"],
+          DF: ["55 大嶋 春樹", "3 ヴァンイヤーデン ショーン", "42 金浦 真樹"],
+          MF: ["15 木内 達也", "14 河村 匠", "2 藤田 一途", "8 東條 敦輝", "32 ムン ミン"],
+          FW: ["9 篠田 大輝", "10 三木 直土"],
+        },
+        bench: {
+          GK: ["47 桃井 玲"],
+          DF: ["4 二階堂 正哉", "7 荒井 涼", "34 鄭 翔英", "77 橋本 清太郎"],
+          MF: ["16 田制 裕作", "21 矢島 慎也", "27 本保 奏希"],
+          FW: ["22 吉田 伊吹"],
+        },
+      },
+    },
+    // 未提供の戦術プロフィール・予想データは補完しない。
+    verdyProfile: {
+      formation: "",
+      characteristics: { attack: "", defense: "" },
+      keyPlayers: [],
+      recentTrend: "",
+    },
+    opponentProfile: {
+      formation: "",
+      characteristics: { attack: "", defense: "" },
+      keyPlayers: [],
+      recentTrend: "",
+    },
+    matchNotes: [],
+    focusPoints: [],
+    strategies: [],
+  },
   {
     id: "match-1",
     homeTeam: verdy,
@@ -1375,6 +1488,159 @@ export const matches: Match[] = [
         description:
           "先発CFの南野は中央に留まるだけでなく、動きながら最終ラインと中盤の間へ入ってくる。簡単に前を向かせず、サヴィオ・金子との連係を切りたい。後半に小森が投入された場合は、縦への速い攻撃と背後への動きへの警戒を一段上げる必要がある。",
         result: "pending",
+      },
+    ],
+  },
+  {
+    // ルヴァンカップ1stラウンド2回戦（サガン鳥栖）。9/19浦和戦（match-14）から中10日、
+    // 9/29ルヴァン→10/3 U21→10/7天皇杯→10/11 J1という連戦を控える。城福浩監督は中断後に
+    // メンバーを一度リセットして考える趣旨の発言をしているため、直近リーグ戦の先発を
+    // そのまま踏襲する単純な予想ではなく、トップ戦力・ローテーション・U21との振り分けを
+    // 踏まえた2案（ユーザー提供）として登録する。相手（鳥栖）側の予想スタメンは今回未提供の
+    // ため、predictedLineups（HOME/AWAY必須ペア）ではなくverdyLineupOptionsを使う。
+    id: "match-15",
+    homeTeam: opponent("sagan-tosu", "サガン鳥栖"),
+    awayTeam: verdy,
+    isVerdyHome: false,
+    kickoffAt: "2026-09-29T19:00:00+09:00",
+    venue: "駅前不動産スタジアム",
+    status: "finished",
+    // 延長戦を含む最終スコア（サガン鳥栖 2-1 東京V）。
+    homeScore: 2,
+    awayScore: 1,
+    extraTime: true,
+    timeSegment: null,
+    fixtureMeta: { competition: "ルヴァン", roundLabel: "1stラウンド 2回戦" },
+    // 試合終了後の公式記録（ユーザー提供）。actualLineups/goals等は予想（verdyLineupOptions）
+    // とは独立して保持し、予想を公式スタメンで上書きしない。sourceUrlは未提供のため設定しない。
+    // 審判情報はユーザー提供のとおり記録。
+    officialRecord: {
+      kickoff: "19:00",
+      attendance: 2658,
+      weather: "晴れ",
+      temperature: "23.5℃",
+      humidity: "84%",
+      referee: "上田 益也",
+      assistantReferees: ["塩津 祐介", "阿部 将茂"],
+      fourthOfficial: "山口 大輔",
+    },
+    // 鳥栖側の並びは提供順のまま（画面左→右は未確認）。#13は両チームに存在する
+    // （鳥栖：城定 幹大／東京V：山田 剛綺）。所属はチーム単位で保持する。
+    actualLineups: {
+      home: {
+        formation: "3-4-2-1",
+        starters: {
+          GK: ["12 松原 颯汰"],
+          DF: ["26 安藤 寿岐", "37 森下 怜哉", "3 神山 京右"],
+          MF: ["7 坂本 亘基", "24 山内 翔", "2 松本 凪生", "43 芳野 凱斗"],
+          FW: ["16 西澤 健太", "20 中原 輝", "10 鈴木 大馳"],
+        },
+        bench: {
+          GK: ["31 藤嶋 栄介"],
+          DF: ["4 今津 佑太", "28 吉田 真那斗", "44 阿部 海大"],
+          MF: ["13 城定 幹大", "41 松岡 響祈", "47 伊澤 璃来"],
+          FW: ["11 塩浜 遼", "42 合戸 晴矢"],
+        },
+      },
+      away: {
+        formation: "3-4-2-1",
+        starters: {
+          GK: ["1 マテウス"],
+          DF: ["15 鈴木 海音", "29 佐古 真礼", "4 林 尚輝"],
+          MF: ["40 新井 悠太", "8 齋藤 功佑", "2 柴戸 海", "14 福田 湧矢"],
+          FW: ["38 神田 奏真", "19 藤本 寛也", "9 染野 唯月"],
+        },
+        bench: {
+          GK: ["21 長沢 祐弥"],
+          DF: ["5 井上 竜太", "18 溝口 修平"],
+          MF: ["7 松橋 優安", "16 平川 怜", "28 山本 丈偉"],
+          FW: ["13 山田 剛綺", "25 熊取谷 一星", "27 白井 亮丞"],
+        },
+      },
+    },
+    goals: [
+      { minute: "52'", scorer: "塩浜 遼", team: "鳥栖" },
+      { minute: "60'", scorer: "藤本 寛也", team: "東京V" },
+      { minute: "107'", scorer: "塩浜 遼", team: "鳥栖" },
+    ],
+    cards: [
+      { minute: "19'", player: "森下 怜哉", team: "鳥栖", type: "yellow" },
+      { minute: "118'", player: "西澤 健太", team: "鳥栖", type: "yellow" },
+      { minute: "31'", player: "佐古 真礼", team: "東京V", type: "yellow" },
+      { minute: "58'", player: "新井 悠太", team: "東京V", type: "yellow" },
+      { minute: "90+4'", player: "福田 湧矢", team: "東京V", type: "yellow" },
+    ],
+    // 控え・交代の所属は公式情報に基づき修正済み：#47 伊澤 璃来・#41 松岡 響祈は鳥栖所属
+    // （当初は提供表の左右列混在で東京V控えと誤読していた）。#28 山本 丈偉・#27 白井 亮丞・
+    // #25 熊取谷 一星・#16 平川 怜・#18 溝口 修平・#5 井上 竜太は東京V所属。
+    // 東京V側の91'交代は延長を含むためそのまま記録。
+    substitutions: [
+      { minute: "57'", team: "東京V", playerIn: "山本 丈偉", playerOut: "柴戸 海" },
+      { minute: "57'", team: "東京V", playerIn: "白井 亮丞", playerOut: "神田 奏真" },
+      { minute: "79'", team: "東京V", playerIn: "平川 怜", playerOut: "齋藤 功佑" },
+      { minute: "79'", team: "東京V", playerIn: "熊取谷 一星", playerOut: "藤本 寛也" },
+      { minute: "86'", team: "東京V", playerIn: "溝口 修平", playerOut: "新井 悠太" },
+      { minute: "91'", team: "東京V", playerIn: "井上 竜太", playerOut: "林 尚輝" },
+      { minute: "37'", team: "鳥栖", playerIn: "合戸 晴矢", playerOut: "鈴木 大馳" },
+      { minute: "46'", team: "鳥栖", playerIn: "塩浜 遼", playerOut: "坂本 亘基" },
+      { minute: "61'", team: "鳥栖", playerIn: "吉田 真那斗", playerOut: "中原 輝" },
+      { minute: "61'", team: "鳥栖", playerIn: "伊澤 璃来", playerOut: "芳野 凱斗" },
+      { minute: "86'", team: "鳥栖", playerIn: "松岡 響祈", playerOut: "松本 凪生" },
+      { minute: "101'", team: "鳥栖", playerIn: "城定 幹大", playerOut: "山内 翔" },
+    ],
+    // home=サガン鳥栖 / away=東京V。警告数は提供スタッツのとおり（鳥栖3・東京V3）。
+    // 個別の警告選手を確認できたのは鳥栖2名・東京V3名。
+    matchStats: {
+      home: { shots: 18, shotsOnTarget: 6, possession: "45%", passSuccessRate: "84%", offsides: 1, corners: 4, freeKicks: 15, yellowCards: 3, redCards: 0 },
+      away: { shots: 19, shotsOnTarget: 5, possession: "55%", passSuccessRate: "87%", offsides: 4, corners: 7, freeKicks: 19, yellowCards: 3, redCards: 0 },
+    },
+    verdyProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
+    opponentProfile: { formation: "情報準備中", characteristics: { attack: "情報準備中", defense: "情報準備中" }, keyPlayers: [], recentTrend: "情報準備中" },
+    matchNotes: [
+      "52分に塩浜遼が先制、60分に藤本寛也が同点ゴールを挙げたが、延長107分に塩浜遼が決勝点を挙げ、鳥栖が2-1で勝利した。",
+    ],
+    focusPoints: [],
+    strategies: [],
+    verdyLineupOptions: [
+      {
+        label: "第1案",
+        note: "直近の連戦・ローテーションを踏まえた予想の一案。実際の先発とは異なる場合がある。",
+        lineup: {
+          formation: "3-4-2-1",
+          starters: [
+            { number: 21, name: "長沢 祐弥", position: "GK" },
+            { number: 5, name: "井上 竜太", position: "DF" },
+            { number: 29, name: "佐古 真礼", position: "DF" },
+            { number: 15, name: "鈴木 海音", position: "DF" },
+            { number: 18, name: "溝口 修平", position: "MF" },
+            { number: 2, name: "柴戸 海", position: "MF" },
+            { number: 8, name: "齋藤 功佑", position: "MF" },
+            { number: 40, name: "新井 悠太", position: "MF" },
+            { number: 19, name: "藤本 寛也", position: "シャドー" },
+            { number: 17, name: "キム ヒョンウ", position: "シャドー" },
+            { number: 33, name: "一美 和成", position: "CF" },
+          ],
+        },
+      },
+      {
+        label: "第2案",
+        note: "トップ戦力・ローテーション・U21との振り分けを踏まえた、もう一つの案。実際の先発とは異なる場合がある。",
+        lineup: {
+          formation: "3-4-2-1",
+          starters: [
+            { number: 21, name: "長沢 祐弥", position: "GK" },
+            { number: 5, name: "井上 竜太", position: "DF" },
+            { number: 29, name: "佐古 真礼", position: "DF" },
+            { number: 22, name: "内田 陽介", position: "DF" },
+            { number: 7, name: "松橋 優安", position: "MF" },
+            { number: 2, name: "柴戸 海", position: "MF" },
+            { number: 16, name: "平川 怜", position: "MF" },
+            { number: 40, name: "新井 悠太", position: "MF" },
+            { number: 38, name: "神田 奏真", position: "シャドー" },
+            { number: 24, name: "仲山 獅恩", position: "シャドー" },
+            { number: 33, name: "一美 和成", position: "CF" },
+          ],
+        },
       },
     ],
   },

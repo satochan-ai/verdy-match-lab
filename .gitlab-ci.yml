@@ -1,0 +1,41 @@
+# Linux CI: install / test / lint / typecheck / Next build / Workers build.
+# deployは行わない。secret不要（DATABASE_URL未設定 → 既存のmock fallbackで動作）。
+
+default:
+  # ローカル開発（Windows）と同じNode versionに固定
+  image: node:24.14.1-bookworm
+  interruptible: true
+
+stages:
+  - verify
+
+variables:
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+  NEXT_TELEMETRY_DISABLED: "1"
+  WRANGLER_SEND_METRICS: "false"
+
+# MRがあるbranchではMR pipelineだけを動かし、二重実行を避ける
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
+verify:
+  stage: verify
+  cache:
+    key:
+      files:
+        - package-lock.json
+    paths:
+      - .npm/
+  script:
+    - uname -a && head -n 2 /etc/os-release && node --version && npm --version
+    - npm ci
+    - npm test
+    - npm run lint
+    - npx tsc --noEmit --incremental false
+    - npm run build
+    - npm run cf:build
+    - test -f .open-next/worker.js

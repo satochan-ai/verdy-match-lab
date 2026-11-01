@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getMatchResult } from "@/lib/match/result";
 import { getArchiveMatches } from "@/lib/data/matches";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 
@@ -16,13 +17,7 @@ export default async function ArchivePage() {
       <ul className="mt-4 divide-y divide-border border-y border-border">
         {list.map((m) => {
           const opponent = m.isVerdyHome ? m.awayTeam : m.homeTeam;
-          const result =
-            m.homeScore === m.awayScore
-              ? "draw"
-              : (m.isVerdyHome && m.homeScore! > m.awayScore!) ||
-                (!m.isVerdyHome && m.awayScore! > m.homeScore!)
-              ? "win"
-              : "loss";
+          const result = getMatchResult(m);
           return (
             <li key={m.id}>
               <Link
@@ -43,6 +38,7 @@ export default async function ArchivePage() {
                 )}
                 <span className="tabular-nums mr-2 font-bold text-text-primary">
                   {m.homeScore}-{m.awayScore}
+                  {m.penaltyShootout && <span className="ml-2 text-[11px]">PK {m.penaltyShootout.homeScore}-{m.penaltyShootout.awayScore}</span>}
                 </span>
                 <StatusBadge variant={result} />
               </Link>

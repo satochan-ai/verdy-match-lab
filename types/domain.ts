@@ -62,6 +62,24 @@ export interface PreviousMatchGoal {
 /** Matchの自試合の得点記録。前節参照用のPreviousMatchGoalと同一形状のため型を共有する。 */
 export type MatchGoal = PreviousMatchGoal;
 
+/** PK戦のキッカー1人分の結果。orderは蹴った順（1始まり）。 */
+export interface PenaltyKickResult {
+  order: number;
+  player: string;
+  result: "goal" | "miss";
+}
+
+/**
+ * PK戦の結果。homeScore/awayScoreはPKスコア（試合本体のスコアとは別）。
+ * キッカー個別結果（homeKicks/awayKicks）は公式で確認できた場合のみ設定する。
+ */
+export interface PenaltyShootout {
+  homeScore: number;
+  awayScore: number;
+  homeKicks?: PenaltyKickResult[];
+  awayKicks?: PenaltyKickResult[];
+}
+
 export interface MatchCard {
   /** 公式結果ページで確認できた場合のみ設定する。未確認ならundefinedのまま。 */
   minute?: string;
@@ -108,6 +126,12 @@ export interface OfficialMatchRecord {
   weather?: string;
   temperature?: string;
   humidity?: string;
+  /** 主審。公式記録で確認できた場合のみ設定する。 */
+  referee?: string;
+  /** 副審。公式記録で確認できた場合のみ設定する。 */
+  assistantReferees?: string[];
+  /** 第4の審判。公式記録で確認できた場合のみ設定する。 */
+  fourthOfficial?: string;
   sourceUrl?: string;
 }
 
@@ -115,6 +139,13 @@ export interface OfficialMatchRecord {
 export interface ActualLineup {
   /** 公式発表画面で確認できた場合のみ設定する。 */
   formation?: string;
+  /**
+   * 公式フォーメーション図の並び（"背番号 名前"）。GK→最終ライン→前線の順で、各行は画面左→右。
+   * starters（登録ポジション別リスト）とは別に、図の行がポジション別リストと一致しない場合のみ設定する。
+   */
+  pitchOrder?: string[];
+  /** formation／pitchOrderの出典・時点（例：Jリーグ公式「前半0分」）。確認できた場合のみ設定する。 */
+  formationBasis?: string;
   starters: PositionPlayerGroups;
   bench: PositionPlayerGroups;
 }
@@ -147,6 +178,20 @@ export interface AlternativeFormation {
   title: string;
   formation: string;
   starters: AlternativeFormationPosition[];
+  note?: string;
+}
+
+/**
+ * 自チーム（東京V）の予想スタメンが複数案あり、かつ相手側の予想スタメンが
+ * 未確定・未提供の試合向けの軽量な構造。predictedLineups（HOME/AWAY必須ペア）は
+ * 相手側の予想も揃っている試合専用のため、相手側を推測で埋めたくない試合では
+ * こちらを使う。FormationPitchでの描画に使えるよう、中身はPredictedLineupそのもの。
+ */
+export interface LineupOption {
+  /** 案のラベル。例："第1案"。 */
+  label: string;
+  lineup: PredictedLineup;
+  /** 断定を避けた注記（任意）。 */
   note?: string;
 }
 
@@ -192,6 +237,13 @@ export interface Match {
   status: MatchStatus;
   homeScore: number | null;
   awayScore: number | null;
+  /**
+   * 延長戦を含む結果の場合のみtrue（homeScore/awayScoreは延長を含む最終スコア）。
+   * 90分で決着した試合・未設定の試合は従来どおりの表示のまま変わらない。
+   */
+  extraTime?: boolean;
+  extraTimeScore?: { home: number; away: number };
+  penaltyShootout?: PenaltyShootout;
   timeSegment: TimeSegment | null;
   verdyProfile: TeamProfile;
   opponentProfile: TeamProfile;
@@ -204,6 +256,12 @@ export interface Match {
    * 配列化せず、この試合が未設定の場合は従来どおりの表示のまま変わらない。
    */
   alternativeFormations?: AlternativeFormation[];
+  /**
+   * 自チーム（東京V）側の予想スタメン複数案。相手側の予想スタメンが未提供の試合で、
+   * predictedLineups（HOME/AWAY必須ペア）を使わずに複数案を表示するための専用フィールド。
+   * 通常のpredictedLineupsが設定されている試合には影響しない。
+   */
+  verdyLineupOptions?: LineupOption[];
   previousMatch?: PreviousMatch;
   availability?: AvailabilityInfo;
   /** この試合自体の得点記録。finished以降、公式結果が確認できた場合のみ設定する。 */

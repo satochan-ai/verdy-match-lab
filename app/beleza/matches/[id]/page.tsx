@@ -1,6 +1,29 @@
 import type { Metadata } from "next";
+import {
+  belezaOmiyaLeagueMatch, belezaOmiyaLeagueHalfScores, belezaOmiyaLeagueGoals, belezaOmiyaLeagueCards,
+  belezaOmiyaLeagueSubstitutions, belezaOmiyaLeagueOfficialRecord, belezaOmiyaLeagueStats,
+  belezaOmiyaLeagueActualLineup, omiyaLeagueActualLineup, omiyaLeagueTeam, belezaOmiyaLeagueFormation,
+  belezaOmiyaLeagueReviewTitle, belezaOmiyaLeagueReview, belezaOmiyaLeagueViewerNotes,
+} from "@/lib/mock/beleza-omiya-league";
+import {
+  belezaCerezoLeagueMatch, belezaCerezoLeagueHalfScores, belezaCerezoLeagueGoals, belezaCerezoLeagueCards,
+  belezaCerezoLeagueSubstitutions, belezaCerezoLeagueOfficialRecord, belezaCerezoLeagueStats,
+  belezaCerezoLeagueActualLineup, cerezoLeagueActualLineup, belezaCerezoLeagueReviewTitle,
+  belezaCerezoLeagueReview, belezaCerezoLeagueViewerNotes,
+} from "@/lib/mock/beleza-cerezo-league";
+import {
+  belezaElfenLeagueMatch, belezaElfenLeagueHalfScores, belezaElfenLeagueGoals,
+  belezaElfenLeagueSubstitutions, belezaElfenLeagueOfficialRecord, belezaElfenLeagueFormation,
+  belezaElfenLeagueReviewTitle, belezaElfenLeagueReview,
+} from "@/lib/mock/beleza-elfen-league";
+import {
+  belezaReginaLeagueMatch, belezaReginaLeagueHalfScores, belezaReginaLeagueGoals,
+  belezaReginaLeagueCards, belezaReginaLeagueSubstitutions, belezaReginaLeagueOfficialRecord,
+  belezaReginaLeagueStats, belezaReginaLeagueActualLineup, reginaLeagueActualLineup,
+} from "@/lib/mock/beleza-regina-league";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getCategoryDetailHref } from "@/lib/data/category-match-details";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { BelezaMatchStats } from "@/components/match/BelezaMatchStats";
@@ -12,7 +35,9 @@ import { BelezaLiveOfficialLineups } from "@/components/match/BelezaLiveOfficial
 import { resolveMatchStatus } from "@/lib/match/status";
 import type { MatchGoal, Team } from "@/types/domain";
 import {
+  belezaReginaMatch, belezaReginaHalfScores, belezaReginaGoals, belezaReginaSubstitutions, belezaReginaOfficialRecord, belezaReginaActualLineup, reginaActualLineup, reginaTeam, belezaReginaStats, belezaReginaReview,
   belezaTeam,
+  cerezoOsakaYanmarTeam,
   acNaganoTeam,
   inacKobeTeam,
   urawaTeam,
@@ -75,6 +100,29 @@ import {
   belezaElfenSubstitutions,
   belezaElfenStats,
   belezaElfenOfficialRecord,
+  belezaMatch4,
+  belezaMatch4HalfScores,
+  belezaMatch4Goals,
+  belezaMatch4OfficialRecord,
+  belezaMatch4Cards,
+  belezaMatch4Substitutions,
+  belezaMatch4Stats,
+  belezaMatch4ActualLineup,
+  belezaMatch5,
+  belezaMatch5HalfScores,
+  belezaMatch5Goals,
+  belezaMatch5OfficialRecord,
+  belezaMatch5Cards,
+  belezaMatch5Substitutions,
+  belezaMatch5Stats,
+  belezaMatch5ActualLineup,
+  belezaUrawaCupMatch,
+  belezaUrawaCupActualLineup,
+  urawaCupActualLineup,
+  belezaUrawaCupOfficialRecord,
+  belezaUrawaCupHalfScores,
+  belezaUrawaCupGoals,
+  belezaUrawaCupSubstitutions,
 } from "@/lib/mock/beleza";
 
 /**
@@ -97,6 +145,18 @@ export default async function BelezaMatchDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  if (!getCategoryDetailHref("beleza", id)) notFound();
+
+  if (id === belezaOmiyaLeagueMatch.id) return <BelezaOmiyaLeagueDetail />;
+  if (id === belezaCerezoLeagueMatch.id) return <BelezaCerezoLeagueDetail />;
+  if (id === belezaElfenLeagueMatch.id) return <BelezaElfenLeagueDetail />;
+  if (id === belezaReginaLeagueMatch.id) return <BelezaReginaLeagueDetail />;
+
+  if (id === belezaReginaMatch.id) return <BelezaReginaDetail />;
+
+  if (id === belezaUrawaCupMatch.id) {
+    return <BelezaUrawaCupDetail />;
+  }
 
   if (id === belezaMatch1.id) {
     return <BelezaMatch1Detail />;
@@ -109,6 +169,12 @@ export default async function BelezaMatchDetailPage({
   }
   if (id === belezaElfenMatch.id) {
     return <BelezaElfenDetail />;
+  }
+  if (id === belezaMatch4.id) {
+    return <BelezaMatch4Detail />;
+  }
+  if (id === belezaMatch5.id) {
+    return <BelezaMatch5Detail />;
   }
 
   // 上記いずれにも該当しないIDは404にする（TOP TEAMの /matches/[id] とはデータ構造が
@@ -355,6 +421,7 @@ function ArchivedMatchHero({
   homeScore,
   awayScore,
   kickoffLabel,
+  kickoffCaption = "予定KICK OFF",
   venue,
   halfScores,
   goals,
@@ -367,6 +434,7 @@ function ArchivedMatchHero({
   homeScore: number;
   awayScore: number;
   kickoffLabel: string;
+  kickoffCaption?: string;
   venue: string;
   halfScores?: { firstHalf: string; secondHalf: string };
   goals: MatchGoal[];
@@ -414,7 +482,7 @@ function ArchivedMatchHero({
 
       <div className="mt-4 flex flex-col items-center gap-1 border-t border-border pt-3 text-center lg:hidden">
         <p className="tabular-nums text-[15px] font-bold text-text-primary">
-          {kickoffLabel} <span className="text-[11px] font-bold text-text-secondary">予定KICK OFF</span>
+          {kickoffLabel} <span className="text-[11px] font-bold text-text-secondary">{kickoffCaption}</span>
         </p>
         <p className="text-[12px] text-text-secondary">{venue}</p>
       </div>
@@ -458,7 +526,7 @@ function ArchivedMatchHero({
 
         <div className="mt-6 flex items-baseline justify-between text-left">
           <p className="tabular-nums text-[16px] font-bold text-text-primary">
-            {kickoffLabel} <span className="text-[12px] font-bold text-text-secondary">予定KICK OFF</span>
+            {kickoffLabel} <span className="text-[12px] font-bold text-text-secondary">{kickoffCaption}</span>
           </p>
           <p className="text-[12px] text-text-secondary">{venue}</p>
         </div>
@@ -488,6 +556,47 @@ function TwoTeamFormationSection({
       </div>
       <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">{caption}</p>
     </section>
+  );
+}
+
+/** 浦和カップ戦の公式結果・メンバー。開始時フォーメーションは未確認。 */
+function BelezaUrawaCupDetail() {
+  const match = belezaUrawaCupMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <div className="flex items-center justify-between">
+        <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+        <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+        <span className="w-8" />
+      </div>
+      <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
+        <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep">{match.competition}</p>
+        <p className="mt-2 tabular-nums text-[15px] font-extrabold text-text-secondary">{match.dateLabel}</p>
+        <div className="mt-4 flex flex-col items-center gap-1.5 text-center">
+          <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{match.homeTeamName}</p>
+          <p className="text-[10px] font-bold text-text-secondary">HOME</p>
+          <p className="py-1 tabular-nums text-[26px] font-extrabold text-text-primary">{match.homeScore} - {match.awayScore}</p>
+          <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{match.awayTeamName}</p>
+          <p className="text-[10px] font-bold text-text-secondary">AWAY</p>
+        </div>
+        <div className="mt-4 border-t border-border pt-3 text-center">
+          <p className="tabular-nums text-[15px] font-bold text-text-primary">{match.kickoffLabel} KICK OFF</p>
+          <p className="mt-1 text-[12px] text-text-secondary">{match.venue}</p>
+        </div>
+      </section>
+      <div className="text-center">
+        <StatusBadge variant="loss" label="LOSS" />
+        <p className="mt-2 text-[12px] text-text-secondary">前半 {belezaUrawaCupHalfScores.firstHalf} ／ 後半 {belezaUrawaCupHalfScores.secondHalf}</p>
+      </div>
+      <BelezaLiveOfficialLineups
+        belezaTeam={belezaTeam}
+        belezaLineup={belezaUrawaCupActualLineup}
+        opponentTeam={urawaTeam}
+        opponentLineup={urawaCupActualLineup}
+        caption="公式発表されたStarting XI・ベンチです。両チームの開始時フォーメーションは未確認のため掲載していません。"
+      />
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName} goals={belezaUrawaCupGoals} substitutions={belezaUrawaCupSubstitutions} officialRecord={belezaUrawaCupOfficialRecord} />
+    </div>
   );
 }
 
@@ -800,6 +909,294 @@ function BelezaElfenDetail() {
       />
       {isFinished && <MatchRecord homeTeamName={belezaElfenMatch.homeTeamName} awayTeamName={belezaElfenMatch.awayTeamName} goals={belezaElfenGoals} cards={belezaElfenCards} substitutions={belezaElfenSubstitutions} officialRecord={belezaElfenOfficialRecord} officialSourceLabel={belezaOfficialSourceLabel} actualLineups={{ home: elfenActualLineup, away: belezaElfenActualLineup }} />}
       {isFinished && <BelezaMatchStats belezaTeamName={belezaTeam.name} opponentTeamName={elfenTeam.name} stats={belezaElfenStats} />}
+    </div>
+  );
+}
+
+/**
+ * クラシエカップ リーグステージ第3節（アルビレックス新潟レディース戦）詳細。
+ * 相手（新潟L）側のStarting XI・ベンチ・開始時フォーメーションは今回未提供のため、
+ * ベレーザ側のみMATCH RECORDのSTARTING XIに掲載する（推測で埋めない）。
+ * 開始時フォーメーションはベレーザ側も未提供のため、FORMATION区画自体を出さない。
+ */
+function BelezaMatch4Detail() {
+  const belezaScore = belezaMatch4.isBelezaHome ? belezaMatch4.homeScore : belezaMatch4.awayScore;
+  const opponentScore = belezaMatch4.isBelezaHome ? belezaMatch4.awayScore : belezaMatch4.homeScore;
+  const resultLabel = belezaScore === opponentScore ? "draw" : belezaScore > opponentScore ? "win" : "loss";
+
+  return (
+    <div className="space-y-8 pb-4">
+      <div className="flex items-center justify-between">
+        <Link href="/beleza" className="text-[13px] font-bold text-deep-green">
+          ← 戻る
+        </Link>
+        <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+        <span className="w-8" />
+      </div>
+
+      <ArchivedMatchHero
+        competition={belezaMatch4.competition}
+        dateLabel={belezaMatch4.dateLabel}
+        resultLabel={resultLabel}
+        homeTeamName={belezaMatch4.homeTeamName}
+        awayTeamName={belezaMatch4.awayTeamName}
+        homeScore={belezaMatch4.homeScore}
+        awayScore={belezaMatch4.awayScore}
+        kickoffLabel={belezaMatch4.kickoffLabel}
+        venue={belezaMatch4.venue}
+        halfScores={belezaMatch4HalfScores}
+        goals={belezaMatch4Goals}
+      />
+
+      <MatchRecord
+        homeTeamName={belezaMatch4.homeTeamName}
+        awayTeamName={belezaMatch4.awayTeamName}
+        goals={belezaMatch4Goals}
+        cards={belezaMatch4Cards}
+        substitutions={belezaMatch4Substitutions}
+        officialRecord={belezaMatch4OfficialRecord}
+        officialSourceLabel="WE LEAGUE Official Match Record"
+        actualLineups={
+          belezaMatch4.isBelezaHome
+            ? { home: belezaMatch4ActualLineup }
+            : { away: belezaMatch4ActualLineup }
+        }
+      />
+
+      <BelezaMatchStats
+        belezaTeamName={belezaTeamStatsLabel(belezaMatch4)}
+        opponentTeamName={opponentTeamStatsLabel(belezaMatch4)}
+        stats={belezaMatch4Stats}
+      />
+    </div>
+  );
+}
+
+/**
+ * クラシエカップ リーグステージ第4節（セレッソ大阪ヤンマーレディース戦）詳細。
+ * 相手（C大阪）側のStarting XI・ベンチ・開始時フォーメーションは今回未提供のため、
+ * ベレーザ側のみMATCH RECORDのSTARTING XIに掲載する（推測で埋めない）。
+ */
+function BelezaMatch5Detail() {
+  const belezaScore = belezaMatch5.isBelezaHome ? belezaMatch5.homeScore : belezaMatch5.awayScore;
+  const opponentScore = belezaMatch5.isBelezaHome ? belezaMatch5.awayScore : belezaMatch5.homeScore;
+  const resultLabel = belezaScore === opponentScore ? "draw" : belezaScore > opponentScore ? "win" : "loss";
+
+  return (
+    <div className="space-y-8 pb-4">
+      <div className="flex items-center justify-between">
+        <Link href="/beleza" className="text-[13px] font-bold text-deep-green">
+          ← 戻る
+        </Link>
+        <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+        <span className="w-8" />
+      </div>
+
+      <ArchivedMatchHero
+        competition={belezaMatch5.competition}
+        dateLabel={belezaMatch5.dateLabel}
+        resultLabel={resultLabel}
+        homeTeamName={belezaMatch5.homeTeamName}
+        awayTeamName={belezaMatch5.awayTeamName}
+        homeScore={belezaMatch5.homeScore}
+        awayScore={belezaMatch5.awayScore}
+        kickoffLabel={belezaMatch5.kickoffLabel}
+        venue={belezaMatch5.venue}
+        halfScores={belezaMatch5HalfScores}
+        goals={belezaMatch5Goals}
+      />
+
+      <MatchRecord
+        homeTeamName={belezaMatch5.homeTeamName}
+        awayTeamName={belezaMatch5.awayTeamName}
+        goals={belezaMatch5Goals}
+        cards={belezaMatch5Cards}
+        substitutions={belezaMatch5Substitutions}
+        officialRecord={belezaMatch5OfficialRecord}
+        officialSourceLabel="WE LEAGUE Official Match Record"
+        actualLineups={
+          belezaMatch5.isBelezaHome
+            ? { home: belezaMatch5ActualLineup }
+            : { away: belezaMatch5ActualLineup }
+        }
+      />
+
+      <BelezaMatchStats
+        belezaTeamName={belezaTeamStatsLabel(belezaMatch5)}
+        opponentTeamName={opponentTeamStatsLabel(belezaMatch5)}
+        stats={belezaMatch5Stats}
+      />
+    </div>
+  );
+}
+
+function BelezaReginaDetail() {
+  const match = belezaReginaMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <div className="flex items-center justify-between">
+        <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+        <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+        <span className="w-8" />
+      </div>
+      <section className="border-y-2 border-fusion-black bg-surface-tint px-4 py-5 lg:px-8 lg:py-7">
+        <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep">{match.competition}</p>
+        <p className="mt-2 tabular-nums text-[15px] font-extrabold text-text-secondary">{match.dateLabel}</p>
+        <div className="mt-4 flex flex-col items-center gap-1.5 text-center">
+          <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{match.homeTeamName}</p>
+          <p className="text-[10px] font-bold text-text-secondary">HOME</p>
+          <p className="py-1 tabular-nums text-[26px] font-extrabold text-text-primary">{match.homeScore} - {match.awayScore}</p>
+          <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{match.awayTeamName}</p>
+          <p className="text-[10px] font-bold text-text-secondary">AWAY</p>
+        </div>
+        <div className="mt-4 border-t border-border pt-3 text-center">
+          <p className="tabular-nums text-[15px] font-bold text-text-primary">{match.kickoffLabel} KICK OFF</p>
+          <p className="mt-1 text-[12px] text-text-secondary">{match.venue}</p>
+        </div>
+      </section>
+      <div className="text-center">
+        <StatusBadge variant="win" label="WIN" />
+        <p className="mt-2 text-[12px] text-text-secondary">前半 {belezaReginaHalfScores.firstHalf} ／ 後半 {belezaReginaHalfScores.secondHalf}</p>
+      </div>
+      <BelezaLiveOfficialLineups
+        belezaTeam={belezaTeam}
+        belezaLineup={belezaReginaActualLineup}
+        opponentTeam={reginaTeam}
+        opponentLineup={reginaActualLineup}
+        caption="公式発表されたStarting XI・ベンチです。両チームの開始時フォーメーションは未確認のため掲載していません。"
+      />
+      <p className="text-[13px] text-text-secondary">監督：東京NB 楠瀬 直木 ／ 広島 赤井 秀一</p>
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName} goals={belezaReginaGoals} substitutions={belezaReginaSubstitutions} officialRecord={belezaReginaOfficialRecord} officialSourceLabel="東京ヴェルディ公式 試合記録" />
+      <BelezaMatchStats belezaTeamName={match.homeTeamName} opponentTeamName={match.awayTeamName} stats={belezaReginaStats} />
+      <section className="space-y-3"><SectionHeader title="東京NB、広島レジーナに3-1で勝利" eyebrow="MATCH REVIEW" />{belezaReginaReview.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}</section>
+    </div>
+  );
+}
+
+function BelezaReginaLeagueDetail() {
+  const match = belezaReginaLeagueMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+      <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+      <ArchivedMatchHero competition={match.competition} dateLabel={match.dateLabel} resultLabel="win"
+        homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        homeScore={match.homeScore} awayScore={match.awayScore} kickoffLabel={match.kickoffLabel}
+        kickoffCaption="実際のKICK OFF" venue={match.venue} halfScores={belezaReginaLeagueHalfScores} goals={belezaReginaLeagueGoals} />
+      <BelezaLiveOfficialLineups belezaTeam={belezaTeam} belezaLineup={belezaReginaLeagueActualLineup}
+        opponentTeam={reginaTeam} opponentLineup={reginaLeagueActualLineup}
+        caption="公式発表されたStarting XI・ベンチです。両チームの開始時フォーメーションは未確認のため掲載していません。" />
+      <p className="text-[13px] text-text-secondary">監督：東京NB 楠瀬 直木 ／ 広島 赤井 秀一</p>
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        goals={belezaReginaLeagueGoals} cards={belezaReginaLeagueCards}
+        substitutions={belezaReginaLeagueSubstitutions} officialRecord={belezaReginaLeagueOfficialRecord}
+        officialSourceLabel="WEリーグ公式 試合記録" />
+      <p className="text-[12px] text-text-secondary">警告・退場：両チームなし。46*′はハーフタイム中の交代を示します。</p>
+      <BelezaMatchStats belezaTeamName={belezaTeam.name} opponentTeamName={reginaTeam.name} stats={belezaReginaLeagueStats} />
+    </div>
+  );
+}
+
+function BelezaElfenLeagueDetail() {
+  const match = belezaElfenLeagueMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+      <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+      <ArchivedMatchHero competition={match.competition} dateLabel={match.dateLabel} resultLabel="win"
+        homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        homeScore={match.homeScore} awayScore={match.awayScore} kickoffLabel={match.kickoffLabel}
+        kickoffCaption="実際のKICK OFF" venue={match.venue} halfScores={belezaElfenLeagueHalfScores} goals={belezaElfenLeagueGoals} />
+      <section>
+        <SectionHeader title="実際の並び" eyebrow="FORMATION" />
+        <div className="border-y border-border bg-surface px-3 py-4">
+          <FormationPitch team={belezaTeam} lineup={belezaElfenLeagueFormation} idPrefix="elfen-league-actual" />
+        </div>
+      </section>
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        goals={belezaElfenLeagueGoals} substitutions={belezaElfenLeagueSubstitutions}
+        officialRecord={belezaElfenLeagueOfficialRecord} officialSourceLabel="WEリーグ公式 試合記録" />
+      <p className="text-[12px] text-text-secondary">交代はベレーザのみ掲載。HTはハーフタイム中の交代。警告：90分 眞城美春（繰り返しの違反）。</p>
+      <section className="space-y-3">
+        <SectionHeader title={belezaElfenLeagueReviewTitle} eyebrow="MATCH REVIEW" />
+        {belezaElfenLeagueReview.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+      </section>
+    </div>
+  );
+}
+
+function BelezaCerezoLeagueDetail() {
+  const match = belezaCerezoLeagueMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+      <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+      <ArchivedMatchHero competition={match.competition} dateLabel={match.dateLabel} resultLabel="loss"
+        homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        homeScore={match.homeScore} awayScore={match.awayScore} kickoffLabel={match.kickoffLabel}
+        kickoffCaption="実際のKICK OFF" venue={match.venue} halfScores={belezaCerezoLeagueHalfScores} goals={belezaCerezoLeagueGoals} />
+      <BelezaLiveOfficialLineups belezaTeam={belezaTeam} belezaLineup={belezaCerezoLeagueActualLineup}
+        opponentTeam={cerezoOsakaYanmarTeam} opponentLineup={cerezoLeagueActualLineup}
+        caption="公式記録のStarting XI・ベンチです。両チームの開始時フォーメーションは未確認のため掲載していません。" />
+      <p className="text-[13px] text-text-secondary">監督：東京NB 楠瀬 直木 ／ C大阪 松田 岳夫</p>
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        goals={belezaCerezoLeagueGoals} cards={belezaCerezoLeagueCards}
+        substitutions={belezaCerezoLeagueSubstitutions} officialRecord={belezaCerezoLeagueOfficialRecord}
+        officialSourceLabel="WEリーグ公式 試合記録" />
+      <p className="text-[12px] text-text-secondary">警告・退場：両チームなし。HTはハーフタイム中の交代。FKは直接FKと間接FKの合計です。</p>
+      <BelezaMatchStats belezaTeamName={belezaTeam.name} opponentTeamName={cerezoOsakaYanmarTeam.name} stats={belezaCerezoLeagueStats} />
+      <section className="space-y-3">
+        <SectionHeader title={belezaCerezoLeagueReviewTitle} eyebrow="MATCH REVIEW" />
+        {belezaCerezoLeagueReview.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+      </section>
+      {belezaCerezoLeagueViewerNotes.length > 0 && (
+        <section aria-label="観戦所感" className="space-y-3">
+          <SectionHeader title="観戦所感" eyebrow="VIEWER NOTES" />
+          {belezaCerezoLeagueViewerNotes.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+        </section>
+      )}
+    </div>
+  );
+}
+
+function BelezaOmiyaLeagueDetail() {
+  const match = belezaOmiyaLeagueMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+      <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+      <ArchivedMatchHero competition={match.competition} dateLabel={match.dateLabel} resultLabel="win"
+        homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        homeScore={match.homeScore} awayScore={match.awayScore} kickoffLabel={match.kickoffLabel}
+        kickoffCaption="実際のKICK OFF" venue={match.venue} halfScores={belezaOmiyaLeagueHalfScores} goals={belezaOmiyaLeagueGoals} />
+      <section>
+        <SectionHeader title="観戦・提供情報に基づく配置" eyebrow="FORMATION" />
+        <div className="border-y border-border bg-surface px-3 py-4">
+          <FormationPitch team={belezaTeam} lineup={belezaOmiyaLeagueFormation} idPrefix="omiya-league-observed" />
+        </div>
+        <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">東京NBの配置は観戦・提供情報に基づく3-4-2-1です。各ラインは画面左から右の並びで、公式記録の登録ポジションとは区別しています。大宮の開始時配置は未確認のため図示していません。</p>
+      </section>
+      <BelezaLiveOfficialLineups belezaTeam={belezaTeam} belezaLineup={belezaOmiyaLeagueActualLineup}
+        opponentTeam={omiyaLeagueTeam} opponentLineup={omiyaLeagueActualLineup}
+        caption="公式記録のStarting XI・ベンチです。登録ポジションは公式記録の表記に従っています。" />
+      <p className="text-[13px] text-text-secondary">監督：東京NB 楠瀬 直木 ／ 大宮 柳井 里奈</p>
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        goals={belezaOmiyaLeagueGoals} cards={belezaOmiyaLeagueCards}
+        substitutions={belezaOmiyaLeagueSubstitutions} officialRecord={belezaOmiyaLeagueOfficialRecord}
+        officialSourceLabel="WEリーグ公式 試合記録" />
+      <p className="text-[12px] text-text-secondary">警告・退場：両チームとも公式記録に記載なし。HTはハーフタイム中の交代です。</p>
+      <BelezaMatchStats belezaTeamName={belezaTeam.name} opponentTeamName={omiyaLeagueTeam.name} stats={belezaOmiyaLeagueStats} />
+      <p className="text-[12px] text-text-secondary">FKは<a className="underline" href="https://weleague.jp/matches/2026103135/" target="_blank" rel="noopener noreferrer">WEリーグ公式試合ページ</a>の表記（東京NB 1／大宮 2）を採用しています。</p>
+      <section className="space-y-3">
+        <SectionHeader title={belezaOmiyaLeagueReviewTitle} eyebrow="MATCH REVIEW" />
+        {belezaOmiyaLeagueReview.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+      </section>
+      {belezaOmiyaLeagueViewerNotes.length > 0 && (
+        <section className="space-y-3">
+          <SectionHeader title="観戦者の所感" eyebrow="VIEWER NOTES" />
+          {belezaOmiyaLeagueViewerNotes.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+        </section>
+      )}
     </div>
   );
 }
