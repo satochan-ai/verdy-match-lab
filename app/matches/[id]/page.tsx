@@ -18,6 +18,7 @@ import { HalfTimeNote } from "@/components/match/HalfTimeNote";
 import { MatchRecord } from "@/components/match/MatchRecord";
 import { ViewerReview, YokohamaFmPredictionCheck, YokohamaFmViewerReview } from "@/components/match/YokohamaFmResultExtras";
 import { fukuokaViewerReview } from "@/lib/match/fukuoka-review";
+import { NagasakiResultExtras } from "@/components/match/NagasakiResultExtras";
 import { AiGuidePanel } from "@/features/ai-guide/ui/AiGuidePanel";
 import { LiveGuidePanel } from "@/features/ai-guide/ui/LiveGuidePanel";
 import { AnalysisReportView } from "@/features/ai-guide/ui/AnalysisReportView";
@@ -305,6 +306,10 @@ export default async function MatchDetailPage({
             <div className="mt-8 space-y-8 lg:col-start-1 lg:mt-6">
               <ViewerReview review={fukuokaViewerReview} />
             </div>
+          )}
+
+          {match.id === "sched-nagasaki" && (
+            <div className="mt-8 lg:col-start-1 lg:mt-6"><NagasakiResultExtras /></div>
           )}
 
           {/* 三策の検証データが無い試合では、見出しだけの空セクションを出さない。 */}

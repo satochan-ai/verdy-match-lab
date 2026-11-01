@@ -3,7 +3,7 @@ import test from "node:test";
 import { fukuokaResult as match } from "../mock/top-fukuoka-result.ts";
 import { matches } from "../mock/matches.ts";
 import { scheduleMatches } from "../mock/schedule.ts";
-import { topFixtures } from "./top-fixtures.ts";
+import { topFixtures as currentTopFixtures } from "./top-fixtures.ts";
 import { validateTopFixtureConsistency } from "./top-fixture-consistency.ts";
 import { getLatestFinishedFixture, getNextFixture, getUpcomingFixtures } from "./fixture-selectors.ts";
 import { resolveMatchStatus } from "../match/status.ts";
@@ -11,6 +11,9 @@ import { getMatchResult } from "../match/result.ts";
 import { shouldShowFukuokaContent, verdyFukuokaRows, avispaRows, verdyFukuokaStrategies, avispaStrategies } from "../match/fukuoka-content.ts";
 import { fukuokaViewerReview } from "../match/fukuoka-review.ts";
 import { getPostMatchAnalysis } from "../../features/ai-guide/mockResponses.ts";
+
+// 福岡戦直後の履歴。後日の長崎戦は試合前へ戻す。
+const topFixtures = currentTopFixtures.map(f => f.id === "sched-nagasaki" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-01T14:00:00+09:00" } : f);
 
 test("Fukuoka official result is consistent across schedule, fixture and published detail", () => {
   assert.deepEqual([match.homeScore, match.awayScore], [3, 1]);
