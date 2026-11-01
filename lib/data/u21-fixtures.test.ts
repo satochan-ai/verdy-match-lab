@@ -7,7 +7,7 @@ import { validateFixtures } from "./fixture-validation.ts";
 const now = new Date("2026-08-30T00:00:00+09:00");
 
 // 川崎戦終了後・磐田戦開始前の履歴を再現する。
-const u21Fixtures = currentU21Fixtures.map(f => f.id === "u21-next-4" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, venue: "大久保G" } : f);
+const u21Fixtures = currentU21Fixtures.map(f => f.id === "u21-next-5" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined } : f.id === "u21-next-4" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, venue: "大久保G" } : f);
 
 test("U-21 fixture collection is valid and has one finished plus five upcoming fixtures", () => {
   assert.equal(validateFixtures(u21Fixtures).length, 0);

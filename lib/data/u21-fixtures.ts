@@ -2,6 +2,7 @@ import type { UpcomingFixture } from "../../types/domain";
 import type { CommonFixture } from "../types/fixture";
 import { u21Match, u21Match1, u21ShimizuMatch, u21KawasakiMatch, u21UpcomingMatches } from "../mock/u21.ts";
 import { u21IwataMatch, u21IwataOfficialRecord } from "../mock/u21-iwata-result.ts";
+import { u21NagoyaMatch, u21NagoyaOfficialRecord } from "../mock/u21-nagoya-result.ts";
 
 const TEAM_NAME = "東京ヴェルディU-21";
 const competition = "2026/27 U-21 Jリーグ";
@@ -73,6 +74,12 @@ export const u21Fixtures: CommonFixture[] = [
       status: u21IwataMatch.status,
       score: { home: u21IwataMatch.homeScore, away: u21IwataMatch.awayScore },
       sourceUrl: u21IwataOfficialRecord.sourceUrl,
+    } : {}),
+    ...(fixture.id === u21NagoyaMatch.id ? {
+      detailMatchId: u21NagoyaMatch.id,
+      status: u21NagoyaMatch.status,
+      score: { home: u21NagoyaMatch.homeScore, away: u21NagoyaMatch.awayScore },
+      sourceUrl: u21NagoyaOfficialRecord.sourceUrl,
     } : {}),
   })),
 ];

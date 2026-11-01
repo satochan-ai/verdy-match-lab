@@ -40,6 +40,8 @@ import { MatchRecord } from "@/components/match/MatchRecord";
 import { StatusBadge } from "@/components/ui/StatusBadge";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { FormationPitch } from "@/components/match/PredictedFormation";
+import { u21NagoyaMatch, u21NagoyaHomeOfficialLineup, u21NagoyaAwayOfficialLineup, u21NagoyaGoals, u21NagoyaCards, u21NagoyaSubstitutions, u21NagoyaOfficialRecord } from "@/lib/mock/u21-nagoya-result";
+import { U21NagoyaReport } from "@/components/match/U21NagoyaReport";
 
 /**
  * U-21の公式メンバー・試合記録の個別試合詳細。
@@ -63,7 +65,7 @@ export default async function U21MatchDetailPage({
 
   // 公式データを登録済みのIDのみ詳細を表示し、該当しないIDは404にする
   // （TOP TEAMの /matches/[id] とはデータ構造が別のため共通化しない）。
-  if (!getCategoryDetailHref("u21", id)) {
+  if (id !== u21NagoyaMatch.id && !getCategoryDetailHref("u21", id)) {
     notFound();
   }
 
@@ -71,13 +73,14 @@ export default async function U21MatchDetailPage({
   const isFctokyo = id === u21Match1.id;
   const isKawasaki = id === u21KawasakiMatch.id;
   const isIwata = id === u21IwataMatch.id;
-  const match = isIwata ? u21IwataMatch : isKawasaki ? u21KawasakiMatch : isShimizu ? u21ShimizuMatch : isFctokyo ? u21Match1 : u21Match;
-  const homeLineup = isIwata ? u21IwataHomeOfficialLineup : isKawasaki ? u21KawasakiHomeOfficialLineup : isShimizu ? u21ShimizuHomeOfficialLineup : isFctokyo ? u21Match1HomeOfficialLineup : u21HomeOfficialLineup;
-  const awayLineup = isIwata ? u21IwataAwayOfficialLineup : isKawasaki ? u21KawasakiAwayOfficialLineup : isShimizu ? u21ShimizuAwayOfficialLineup : isFctokyo ? u21Match1AwayOfficialLineup : u21AwayOfficialLineup;
-  const goals = isIwata ? u21IwataGoals : isKawasaki ? u21KawasakiGoals : isFctokyo ? u21Match1Goals : isShimizu ? u21ShimizuGoals : u21Goals;
-  const cards = isIwata ? u21IwataCards : isKawasaki ? u21KawasakiCards : isFctokyo ? u21Match1Cards : isShimizu ? [] : u21Cards;
-  const substitutions = isIwata ? u21IwataSubstitutions : isKawasaki ? u21KawasakiSubstitutions : isFctokyo ? u21Match1Substitutions : isShimizu ? u21ShimizuSubstitutions : u21Substitutions;
-  const officialRecord = isIwata ? u21IwataOfficialRecord : isKawasaki ? u21KawasakiOfficialRecord : isFctokyo ? u21Match1OfficialRecord : isShimizu ? u21ShimizuOfficialRecord : u21OfficialRecord;
+  const isNagoya = id === u21NagoyaMatch.id;
+  const match = isNagoya ? u21NagoyaMatch : isIwata ? u21IwataMatch : isKawasaki ? u21KawasakiMatch : isShimizu ? u21ShimizuMatch : isFctokyo ? u21Match1 : u21Match;
+  const homeLineup = isNagoya ? u21NagoyaHomeOfficialLineup : isIwata ? u21IwataHomeOfficialLineup : isKawasaki ? u21KawasakiHomeOfficialLineup : isShimizu ? u21ShimizuHomeOfficialLineup : isFctokyo ? u21Match1HomeOfficialLineup : u21HomeOfficialLineup;
+  const awayLineup = isNagoya ? u21NagoyaAwayOfficialLineup : isIwata ? u21IwataAwayOfficialLineup : isKawasaki ? u21KawasakiAwayOfficialLineup : isShimizu ? u21ShimizuAwayOfficialLineup : isFctokyo ? u21Match1AwayOfficialLineup : u21AwayOfficialLineup;
+  const goals = isNagoya ? u21NagoyaGoals : isIwata ? u21IwataGoals : isKawasaki ? u21KawasakiGoals : isFctokyo ? u21Match1Goals : isShimizu ? u21ShimizuGoals : u21Goals;
+  const cards = isNagoya ? u21NagoyaCards : isIwata ? u21IwataCards : isKawasaki ? u21KawasakiCards : isFctokyo ? u21Match1Cards : isShimizu ? [] : u21Cards;
+  const substitutions = isNagoya ? u21NagoyaSubstitutions : isIwata ? u21IwataSubstitutions : isKawasaki ? u21KawasakiSubstitutions : isFctokyo ? u21Match1Substitutions : isShimizu ? u21ShimizuSubstitutions : u21Substitutions;
+  const officialRecord = isNagoya ? u21NagoyaOfficialRecord : isIwata ? u21IwataOfficialRecord : isKawasaki ? u21KawasakiOfficialRecord : isFctokyo ? u21Match1OfficialRecord : isShimizu ? u21ShimizuOfficialRecord : u21OfficialRecord;
 
   const displayStatus = resolveMatchStatus(match, new Date());
   const statusLabel = {
@@ -121,7 +124,7 @@ export default async function U21MatchDetailPage({
 
         <div className="mt-3 grid grid-cols-[1fr_auto_1fr] items-center gap-2 lg:mt-5 lg:gap-6">
           <div className="min-w-0 text-right">
-            <p className="truncate text-[14px] font-extrabold leading-[1.15] text-text-primary lg:text-[24px]">
+            <p className={`${isNagoya ? "break-words" : "truncate"} text-[14px] font-extrabold leading-[1.15] text-text-primary lg:text-[24px]`}>
               {match.homeTeamName}
             </p>
             <p className="mt-0.5 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
@@ -138,7 +141,7 @@ export default async function U21MatchDetailPage({
             </div>
           )}
           <div className="min-w-0 text-left">
-            <p className="truncate text-[14px] font-extrabold leading-[1.15] text-text-primary lg:text-[24px]">
+            <p className={`${isNagoya ? "break-words" : "truncate"} text-[14px] font-extrabold leading-[1.15] text-text-primary lg:text-[24px]`}>
               {match.awayTeamName}
             </p>
             <p className="mt-0.5 text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
@@ -215,6 +218,8 @@ export default async function U21MatchDetailPage({
           </p>
         </section>
       )}
+
+      {isNagoya && <U21NagoyaReport />}
 
       {isFinished && (
         <MatchRecord
