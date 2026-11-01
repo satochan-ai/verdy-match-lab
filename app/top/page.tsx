@@ -32,6 +32,7 @@ import { shouldShowYokohamaFmContent } from "@/lib/match/yokohama-fm-content";
 import { FukuokaMatchPreview, FukuokaStrategies, FukuokaPredictions } from "@/components/match/FukuokaPreContent";
 import { shouldShowFukuokaContent } from "@/lib/match/fukuoka-content";
 import { NagasakiPredictions } from "@/components/match/NagasakiPredictions";
+import { NagasakiMatchPreview, NagasakiStrategies } from "@/components/match/NagasakiPreContent";
 import { shouldShowNagasakiPrediction } from "@/lib/match/nagasaki-prediction";
 
 export const metadata: Metadata = {
@@ -268,7 +269,13 @@ export default async function TopTeamPage() {
             </div>
           </section>
 
-          {showNagasakiPrediction && <NagasakiPredictions />}
+          {showNagasakiPrediction && (
+            <>
+              <NagasakiMatchPreview />
+              <NagasakiStrategies />
+              <NagasakiPredictions />
+            </>
+          )}
           {showYokohamaFmContent && (
             <>
               <YokohamaFmMatchPreview />
