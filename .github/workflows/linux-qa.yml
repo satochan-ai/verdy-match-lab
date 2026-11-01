@@ -1,13 +1,20 @@
 name: Linux QA
 
 on:
+  pull_request:
+    branches: [master]
   push:
-    branches: [claude/update-2026-09-27]
+    branches: [master]
   workflow_dispatch:
   workflow_call:
 
 permissions:
   contents: read
+
+# PRの更新時だけ古い実行を止める。masterと手動実行は最後まで実行する。
+concurrency:
+  group: linux-qa-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   qa:
