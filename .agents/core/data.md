@@ -40,6 +40,8 @@ Do not place generated or editorial content in official fields, and do not rewri
 
 - Do not correct name spelling, change shirt numbers or formations, or add or remove `captain` by guesswork. Do not confuse players with similar names.
 - When updating an official lineup, confirm the mapping between the official source and existing data.
+- The official lineup types (`ActualLineup`, `U21OfficialLineup`) hold `starters` and `bench`. Treat both as confirmed only when an official announcement shows them, and do not fill in unconfirmed players or shirt numbers.
+- `PredictedLineup` has no bench field. Keep any predicted bench out of the official `bench` data, and do not delete pre-match predictions after the official lineup is announced.
 - Treat `fixtureMeta.competition`, `fixtureMeta.roundLabel`, stage, opponent, home/away, venue, score, result, and scorers as factual data.
 - When existing data conflicts, do not choose one side and replace it wholesale. Report the conflict with its sources.
 - Match IDs (for example `match-8`, `beleza-match-1`, `u21-match-1`) are public URLs. Use a new unique ID for a new match and do not break links to past matches.
