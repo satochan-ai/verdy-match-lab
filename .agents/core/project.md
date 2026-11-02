@@ -26,6 +26,10 @@ The current app is an MVP/beta. External AI APIs are not part of its required ar
 
 Use the Verdy greens (`verdy-green`, `deep-green`, `pioneer-gold`) as the identity anchor while putting readability, hierarchy, and match information first. Do not add color, gradients, or cards only as decoration, and do not perform a full redesign without an explicit request.
 
+## SEO and metadata
+
+SEO is not a reason to imply an official relationship with the club, a league, or a competition organizer, or to weaken the unofficial fan-site position. The factuality rules also apply to titles, descriptions, OGP, structured data, sitemaps, and other metadata: do not present unconfirmed predictions, tactical analysis, or editorial views as confirmed official information.
+
 ## Documents
 
 Read the other files in this directory that apply to the task. This directory is the project-specification source of truth; tool adapters are only entry points.

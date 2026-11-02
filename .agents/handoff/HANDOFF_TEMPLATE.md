@@ -73,5 +73,6 @@ Call out dependencies or cautions that are not already expressed by the frontmat
 
 The Common Core Handoff Contract defines approvals and the receiver's start procedure. In addition:
 
+- Do not reuse a recorded approval if the branch, HEAD, worktree state, remote, work goal, or PR target or head has changed since it was recorded. Recheck it under the Common Core and `.agents/core/workflow.md`.
 - `git_command`, `raw_git_files`, `prior_handoff`, and `unknown` are distinct evidence levels. A value from `raw_git_files` is not Git-command verification.
 - Do not record browser storage or full environment dumps. Record only a coarse authentication state when needed.
