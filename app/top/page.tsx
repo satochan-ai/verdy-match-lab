@@ -34,6 +34,9 @@ import { shouldShowFukuokaContent } from "@/lib/match/fukuoka-content";
 import { NagasakiPredictions } from "@/components/match/NagasakiPredictions";
 import { NagasakiMatchPreview, NagasakiStrategies } from "@/components/match/NagasakiPreContent";
 import { shouldShowNagasakiPrediction } from "@/lib/match/nagasaki-prediction";
+import { ShimizuPredictions } from "@/components/match/ShimizuPredictions";
+import { ShimizuMatchPreview, ShimizuStrategies } from "@/components/match/ShimizuPreContent";
+import { shouldShowShimizuPrediction } from "@/lib/match/shimizu-prediction";
 
 export const metadata: Metadata = {
   title: "東京ヴェルディ TOP TEAM | Verdy Match Lab",
@@ -92,6 +95,7 @@ export default async function TopTeamPage() {
   const showYokohamaFmContent = shouldShowYokohamaFmContent(displayFixture);
   const showFukuokaContent = shouldShowFukuokaContent(displayFixture);
   const showNagasakiPrediction = shouldShowNagasakiPrediction(displayFixture);
+  const showShimizuPrediction = shouldShowShimizuPrediction(displayFixture);
   const topUpcoming = getUpcomingFixtures(topFixtures, now, 5).map(toTopUpcomingFixture);
   // nextMatchがnull（scheduledな試合が未登録）の場合は、過去試合を出さずに
   // 「次戦情報準備中」の空状態を表示する。LAST MATCH / NEXT 5は独立して表示する。
@@ -269,6 +273,13 @@ export default async function TopTeamPage() {
             </div>
           </section>
 
+          {showShimizuPrediction && (
+            <>
+              <ShimizuMatchPreview />
+              <ShimizuStrategies />
+              <ShimizuPredictions />
+            </>
+          )}
           {showNagasakiPrediction && (
             <>
               <NagasakiMatchPreview />
