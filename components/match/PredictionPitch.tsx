@@ -1,6 +1,6 @@
 import type { PredictionPlayer } from "@/lib/match/prediction";
 
-type Tone = "verdy" | "opponent" | "fctokyo" | "marinos" | "avispa" | "nagasaki";
+type Tone = "verdy" | "opponent" | "fctokyo" | "marinos" | "avispa" | "nagasaki" | "shimizu";
 
 const tones: Record<Tone, { frame: string; line: string; circle: string; role: string }> = {
   verdy: { frame: "border-deep-green bg-surface-tint", line: "border-primary-green/30", circle: "bg-primary-green", role: "text-deep-green" },
@@ -9,6 +9,8 @@ const tones: Record<Tone, { frame: string; line: string; circle: string; role: s
   marinos: { frame: "border-blue-800 bg-white", line: "border-blue-700/30", circle: "bg-blue-800 ring-2 ring-red-600", role: "text-blue-900" },
   avispa: { frame: "border-blue-950 bg-slate-50", line: "border-blue-900/30", circle: "bg-blue-950 ring-2 ring-slate-400", role: "text-blue-950" },
   nagasaki: { frame: "border-blue-800 bg-blue-50", line: "border-blue-700/30", circle: "bg-blue-800 ring-2 ring-orange-600", role: "text-blue-900" },
+  // 白の背番号が読めるよう濃いオレンジ（orange-700）を基調にする。
+  shimizu: { frame: "border-orange-700 bg-orange-50", line: "border-orange-700/30", circle: "bg-orange-700 ring-2 ring-blue-900", role: "text-orange-900" },
 };
 
 function PlayerName({ player }: { player: PredictionPlayer }) {
