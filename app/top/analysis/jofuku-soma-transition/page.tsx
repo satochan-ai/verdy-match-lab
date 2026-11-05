@@ -2,253 +2,106 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PredictionPitch } from "@/components/match/PredictionPitch";
-import {
-  analysisTitle, analysisMatches, eraAverage, eraRecord, eraLabel, recoveryRows, recoveryAverage,
-  startCounts, jofukuRepresentative, somaRepresentative, lineupChanges, ANALYSIS_DISCLAIMER, type Era,
-} from "@/lib/analysis/jofuku-soma-transition";
+import { analysisTitle, jofukuRepresentative, somaRepresentative, ANALYSIS_DISCLAIMER } from "@/lib/analysis/jofuku-soma-transition";
 
 export const metadata: Metadata = {
   title: `${analysisTitle} | Verdy Match Lab`,
-  description: "東京ヴェルディの城福体制直近4試合と相馬体制4試合を、基本スタメン・運動量・ボール奪取位置・選手起用で比較する特別分析。",
+  description: "東京ヴェルディの城福体制から相馬体制への変化を、配置、攻守、選手起用と試合経過から考えます。",
 };
 
-const eraTone: Record<Era, string> = { jofuku: "bg-text-secondary", soma: "bg-primary-green" };
-
 function Chapter({ no, title, children }: { no: number; title: string; children: React.ReactNode }) {
-  return (
-    <section aria-labelledby={`chapter-${no}`} className="space-y-4">
-      <div className="border-l-2 border-primary-green pl-3">
-        <p className="text-[11px] font-bold tracking-[0.15em] text-pioneer-gold-deep">CHAPTER {no}</p>
-        <h2 id={`chapter-${no}`} className="mt-1 text-[18px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{title}</h2>
-      </div>
-      <div className="space-y-4 text-[14px] leading-relaxed text-text-primary">{children}</div>
-    </section>
-  );
-}
-
-/** 観戦者本人の所感。公式データで裏付けた事実とは見た目でも分けて掲載する。 */
-function Impression({ children }: { children: React.ReactNode }) {
-  return (
-    <aside className="border-l-2 border-pioneer-gold bg-surface px-3 py-3">
-      <p className="text-[11px] font-bold tracking-[0.1em] text-pioneer-gold-deep">観戦所感</p>
-      <div className="mt-1 space-y-2 text-[14px] leading-relaxed text-text-primary">{children}</div>
-    </aside>
-  );
+  return <section aria-labelledby={`chapter-${no}`} className="space-y-4">
+    <div className="border-l-2 border-primary-green pl-3">
+      <p className="text-[11px] font-bold tracking-[0.15em] text-pioneer-gold-deep">CHAPTER {no}</p>
+      <h2 id={`chapter-${no}`} className="mt-1 text-[18px] font-extrabold leading-snug text-text-primary lg:text-[22px]">{title}</h2>
+    </div>
+    <div className="space-y-4 text-[14px] leading-relaxed text-text-primary">{children}</div>
+  </section>;
 }
 
 function Note({ children }: { children: React.ReactNode }) {
   return <p className="text-[12px] leading-relaxed text-text-secondary">{children}</p>;
 }
 
-/** 横棒グラフ。maxを共通にして2体制・各試合の長さを比較できるようにする。 */
-function Bars({ label, unit, rows, max, min = 0, digits = 0 }: { label: string; unit: string; rows: { key: string; name: string; era: Era; value: number; muted?: boolean }[]; max: number; min?: number; digits?: number }) {
-  return (
-    <figure className="space-y-2 border border-border bg-surface p-3 lg:p-4">
-      <figcaption className="text-[13px] font-extrabold text-text-primary">{label}</figcaption>
-      <ul className="space-y-1.5">
-        {rows.map((row) => (
-          <li key={row.key} className="grid grid-cols-[6.5rem_minmax(0,1fr)_4.5rem] items-center gap-2 text-[12px]">
-            <span className={`min-w-0 truncate ${row.muted ? "text-text-secondary" : "font-bold text-text-primary"}`}>{row.name}</span>
-            <span className="h-3 bg-border/40" aria-hidden="true">
-              <span className={`block h-3 ${eraTone[row.era]} ${row.muted ? "opacity-40" : ""}`} style={{ width: `${Math.max(0, Math.min(100, ((row.value - min) / (max - min)) * 100))}%` }} />
-            </span>
-            <span className="text-right tabular-nums font-bold text-text-primary">{row.value.toFixed(digits)}{unit}</span>
-          </li>
-        ))}
-      </ul>
-      <p className="flex flex-wrap gap-x-4 gap-y-1 text-[11px] text-text-secondary">
-        {min > 0 && <span>棒の起点は{min}{unit}</span>}
-        <span><span className={`mr-1 inline-block h-2 w-3 ${eraTone.jofuku}`} />城福体制</span>
-        <span><span className={`mr-1 inline-block h-2 w-3 ${eraTone.soma}`} />相馬体制</span>
-      </p>
-    </figure>
-  );
-}
-
-function Table({ head, rows, caption }: { head: string[]; rows: (string | number)[][]; caption?: string }) {
-  return (
-    <div className="overflow-x-auto border border-border bg-surface">
-      <table className="w-full min-w-[21rem] border-collapse text-[12px] lg:text-[13px]">
-        {caption && <caption className="px-3 pt-3 text-left text-[13px] font-extrabold text-text-primary">{caption}</caption>}
-        <thead>
-          <tr className="border-b border-border text-text-secondary">
-            {head.map((h, i) => <th key={h} scope="col" className={`px-3 py-2 font-bold ${i === 0 ? "text-left" : "text-right"}`}>{h}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr key={row.join("|")} className="border-b border-border last:border-b-0">
-              {row.map((cell, i) => <td key={i} className={`px-3 py-2 tabular-nums ${i === 0 ? "text-left font-bold text-text-primary" : "text-right text-text-primary"}`}>{cell}</td>)}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-const result = (f: number, a: number) => (f > a ? "勝" : f === a ? "分" : "敗");
+const sources = [
+  ["クラブ：新監督就任にあたっての説明", "https://www.verdy.co.jp/news/15278"],
+  ["Jリーグ：千葉戦", "https://www.jleague.jp/match/j1/2026/091302/"],
+  ["Jリーグ：浦和戦", "https://www.jleague.jp/match/j1/2026/091904/"],
+  ["Jリーグ：広島戦", "https://www.jleague.jp/match/j1/2026/101103/"],
+  ["Jリーグ：FC東京戦", "https://www.jleague.jp/match/j1/2026/101708/"],
+  ["Jリーグ：横浜FM戦", "https://www.jleague.jp/match/j1/2026/102107/"],
+  ["Jリーグ：福岡戦", "https://www.jleague.jp/match/j1/2026/102408/"],
+  ["Jリーグ：長崎戦", "https://www.jleague.jp/match/j1/2026/110103/"],
+  ["サッカーマガジン：相馬監督の初陣", "https://soccermagazine.jp/j1/17869827"],
+];
 
 export default function JofukuSomaTransitionPage() {
-  const jofuku = analysisMatches.filter((m) => m.era === "jofuku");
-  const soma = analysisMatches.filter((m) => m.era === "soma");
-  const jRecord = eraRecord("jofuku");
-  const sRecord = eraRecord("soma");
-  const counts = startCounts();
-  const avg = (era: Era) => ({
-    shots: eraAverage(era, "shots"), xg: eraAverage(era, "xg", 3), distance: eraAverage(era, "distanceKm"), sprints: eraAverage(era, "sprints", 1), possession: eraAverage(era, "possession", 1),
-  });
-  const a = { jofuku: avg("jofuku"), soma: avg("soma") };
-  const possessionAll = (era: Era) => { const l = analysisMatches.filter((m) => m.era === era); return Math.round((l.reduce((s, m) => s + m.possession, 0) / l.length) * 10) / 10; };
-  const matchName = (m: (typeof analysisMatches)[number]) => `${m.date} ${m.short}`;
+  return <article className="space-y-10 pb-4">
+    <Link href="/top" className="text-[13px] font-bold text-deep-green">← TOP TEAMへ戻る</Link>
+    <header className="space-y-3 border-y-2 border-fusion-black bg-surface-tint px-4 py-6 lg:px-10 lg:py-8">
+      <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep">SPECIAL ANALYSIS｜特別分析</p>
+      <h1 className="text-[22px] font-extrabold leading-snug tracking-tight text-text-primary lg:text-[30px]">{analysisTitle}</h1>
+      <p className="text-[14px] leading-relaxed text-text-primary">城福浩監督が築いた土台を踏まえ、相馬直樹監督の就任後に何が変わったのか。2026年11月1日の長崎戦までの試合を、配置、攻守、起用と交代策から振り返ります。</p>
+      <p className="text-[13px] font-bold leading-relaxed text-deep-green">{ANALYSIS_DISCLAIMER}</p>
+    </header>
 
-  return (
-    <article className="space-y-10 pb-4">
-      <Link href="/top" className="text-[13px] font-bold text-deep-green">← TOP TEAMへ戻る</Link>
+    <Chapter no={1} title="監督交代と引き継いだもの">
+      <p>東京ヴェルディは10月に城福監督との契約を解除し、相馬監督の就任を発表しました。クラブは就任時、城福監督の下で積み重ねた守備を整理・発展させ、攻撃への移行につなげることを期待すると説明しています。これはクラブが示した方向性であり、各場面の守備原則がそのまま継承されたことを証明するものではありません。</p>
+      <p>城福体制でJ1復帰を果たし、その後も積み重ねた経験があります。相馬体制は広島戦、FC東京戦に敗れた後、横浜FM戦で引き分け、福岡戦と長崎戦に連勝しました。FC東京戦は染野唯月が退場し、数的不利の時間が長かった試合です。</p>
+    </Chapter>
 
-      <header className="space-y-3 border-y-2 border-fusion-black bg-surface-tint px-4 py-6 lg:px-10 lg:py-8">
-        <p className="text-[11px] font-bold tracking-[0.2em] text-pioneer-gold-deep">SPECIAL ANALYSIS｜特別分析</p>
-        <h1 className="text-[22px] font-extrabold leading-snug tracking-tight text-text-primary lg:text-[30px]">{analysisTitle}</h1>
-        <p className="text-[14px] leading-relaxed text-text-primary">
-          東京ヴェルディは10月8日、相馬直樹監督の就任を発表しました。城福浩前監督の直近4試合（神戸・C大阪・千葉・浦和）と、相馬監督の就任後4試合（広島・FC東京・横浜FM・福岡）を、フォーメーション、先発メンバー、運動量、ボール奪取位置で比べます。
-        </p>
-        <p className="text-[13px] font-bold leading-relaxed text-deep-green">{ANALYSIS_DISCLAIMER}</p>
-      </header>
+    <Chapter no={2} title="3-4-2-1と4-4-2の違い">
+      <p>城福体制の千葉戦・浦和戦は、染野の1トップに福田湧矢と平尾勇人の2シャドーを置き、両ウイングバックが幅を取る形で開始。相馬体制の福岡戦は熊取谷一星と一美和成の2トップ、左右にサイドバックとサイドMFを置く形で始まりました。中央MFは両例とも2人です。</p>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <article aria-label="城福体制 3-4-2-1" className="min-w-0"><h3 className="mb-2 font-extrabold">城福体制：千葉戦・浦和戦　3-4-2-1</h3><PredictionPitch rows={jofukuRepresentative.rows} numbers={jofukuRepresentative.numbers} tone="verdy" /></article>
+        <article aria-label="相馬体制 4-4-2" className="min-w-0"><h3 className="mb-2 font-extrabold text-deep-green">相馬体制：福岡戦　4-4-2</h3><PredictionPitch rows={somaRepresentative.rows} numbers={somaRepresentative.numbers} tone="verdy" /></article>
+      </div>
+      <Note>Jリーグ公式の試合開始時の配置を基にした代表例です。全試合・全局面で同じ形だったという意味ではありません。役割名は当サイトの表記です。</Note>
+      <figure className="grid gap-3 border border-border bg-surface p-4 sm:grid-cols-2">
+        <figcaption className="font-bold sm:col-span-2">攻撃の関係を考える概念図</figcaption>
+        <div className="space-y-2 border-l-2 border-text-secondary pl-3"><p className="font-bold">1トップ＋2シャドー</p><p>WB → シャドー ↔ 1トップ ← シャドー ← WB</p><p>前線の縦の関係と、幅を取るWBが選択肢になります。</p></div>
+        <div className="space-y-2 border-l-2 border-primary-green pl-3"><p className="font-bold">2トップ＋両サイド</p><p>SB・サイドMF → 2トップ ← サイドMF・SB</p><p>左右の組み合わせから、並ぶ2人を使う選択肢があります。</p></div>
+        <Note>配置上の関係を説明する概念図です。矢印は決まった攻撃経路や、実際に毎回行われた動きを示すものではありません。</Note>
+      </figure>
+    </Chapter>
 
-      <Table
-        caption="対象8試合（明治安田J1リーグ）"
-        head={["体制", "日付", "対戦相手", "H/A", "スコア", "結果"]}
-        rows={analysisMatches.map((m) => [eraLabel[m.era], m.date, m.opponent, m.homeAway, `${m.goalsFor}-${m.goalsAgainst}`, result(m.goalsFor, m.goalsAgainst)])}
-      />
-      <Note>城福体制 {jRecord.wins}勝{jRecord.draws}分{jRecord.losses}敗（{jRecord.goalsFor}得点{jRecord.goalsAgainst}失点）／相馬体制 {sRecord.wins}勝{sRecord.draws}分{sRecord.losses}敗（{sRecord.goalsFor}得点{sRecord.goalsAgainst}失点）。スコアは東京V側を先に表記しています。</Note>
+    <Chapter no={3} title="攻撃：サイドと前線の組み合わせ">
+      <p>広島戦の取材では、新井悠太の左クロスに染野が頭で合わせた場面と、藤本寛也のパスからキム ヒョンウが抜け出した場面が報じられています。新たな配置で、サイドから前線を使う選択肢が見えた一方、試合は0-2で終わりました。</p>
+      <p>長崎戦の先制点は藤本のパスを受けた染野が決め、勝ち越し点は熊取谷のスルーパスから溝口修平のクロスを経て一美が決めました。福岡戦の3点目も、溝口のクロスに寺沼星文が合わせたものです。いずれも確認できる個別の場面であり、常にこの形で前進したとは限りません。</p>
+      <aside className="space-y-2 border-l-2 border-pioneer-gold bg-surface px-3 py-3">
+        <p className="text-[11px] font-bold tracking-[0.1em] text-pioneer-gold-deep">旧記事に記された見立て</p>
+        <p>福岡戦の左サイドでは、横浜FM戦から組んだ溝口と新井の連係が良くなり、互いの動きを理解してプレーする場面が増えたという所感がありました。</p>
+        <p>また、福岡戦の齋藤功佑は比較的フリーでボールを受けてキープし、中盤で時間を作っていたという見立ても記されています。</p>
+        <Note>いずれも旧記事の主観的な観戦所感で、映像やデータによる再検証は行っていません。</Note>
+      </aside>
+      <p>2トップが相手の最終ラインに並び、両サイドから供給を受けられることは配置上の選択肢です。奪った位置や中央MFの攻撃参加が交代前とどう変わったかは、継続的な映像確認が必要です。</p>
+    </Chapter>
 
-      <Chapter no={1} title="3-4-2-1から4-4-2へ">
-        <p>城福体制の直近4試合は、すべて3-4-2-1で始まりました。3バックの前に中央MFを2人置き、両ウイングバックが幅を取ります。前線は染野唯月の1トップで、神戸戦を除く3試合は福田湧矢と平尾勇人が2シャドーに入りました（神戸戦は福田と松橋優安）。</p>
-        <p>相馬体制の4試合は、すべて4-4-2で始まっています。最終ラインは3人から4人になり、サイドはサイドバックとサイドMFの2人で受け持ちます。前線は1トップ2シャドーから2トップに変わりました。</p>
-        <div className="grid gap-6 lg:grid-cols-2">
-          <article aria-label={`城福体制 ${jofukuRepresentative.formation}`} className="min-w-0">
-            <h3 className="mb-2 flex justify-between gap-3 text-[16px] font-extrabold text-text-primary"><span>城福体制（千葉戦・浦和戦）</span><span>{jofukuRepresentative.formation}</span></h3>
-            <PredictionPitch rows={jofukuRepresentative.rows} numbers={jofukuRepresentative.numbers} tone="verdy" />
-          </article>
-          <article aria-label={`相馬体制 ${somaRepresentative.formation}`} className="min-w-0">
-            <h3 className="mb-2 flex justify-between gap-3 text-[16px] font-extrabold text-deep-green"><span>相馬体制（福岡戦）</span><span>{somaRepresentative.formation}</span></h3>
-            <PredictionPitch rows={somaRepresentative.rows} numbers={somaRepresentative.numbers} tone="verdy" />
-          </article>
-        </div>
-        <Note>配置はJリーグ公式フォーメーション「前半0分」（試合開始時）。上が前線、下がGKで、画面の左が左サイドです。役割名は当サイトの表記です。</Note>
-      </Chapter>
+    <Chapter no={4} title="守備：前から奪う狙いと対応">
+      <p>広島戦後の取材で相馬監督は、前で奪い返せた前半と、それができなかった後半を振り返っています。前線から働きかける狙いと、それを続ける難しさが同じ試合に表れました。後半に相手の交代を受けて対応が難しくなったことも、林尚輝の振り返りとして伝えられています。</p>
+      <p>4-4-2では前線と中盤がそれぞれ守備に関わる配置になりますが、中央とサイドの受け渡し、具体的な奪いどころや選手間の距離は、開始時の図だけでは分かりません。長崎戦は勝ち越し後にリードを守りましたが、守り方が改善したと断定するには別の検証が必要です。</p>
+    </Chapter>
 
-      <Chapter no={2} title="両監督の基本スタメン比較">
-        <p><span className="font-bold">城福体制の基本スタメン：</span>{jofukuRepresentative.reason}</p>
-        <p><span className="font-bold">相馬体制の基本スタメン：</span>{somaRepresentative.reason}</p>
-        <Table
-          caption="選手別の先発回数（各体制4試合）"
-          head={["選手", "城福体制", "相馬体制", "増減"]}
-          rows={counts.map((c) => [c.name, c.jofuku, c.soma, c.soma - c.jofuku > 0 ? `+${c.soma - c.jofuku}` : String(c.soma - c.jofuku)])}
-        />
-        <Note>先発はJリーグ公式記録（各試合ページ）に基づきます。両体制とも4試合・44人分です。</Note>
-        <ul className="space-y-2">
-          <li><span className="font-bold">継続して先発：</span>{lineupChanges.continued.join("、")}。両体制の基本スタメンにそろって入った6人です。</li>
-          <li><span className="font-bold">相馬体制で先発が増えた：</span>藤本寛也は城福体制の直近4試合で先発がなく、相馬体制では4試合すべてで先発しました（横浜FM戦・福岡戦は右MF）。熊取谷一星、一美和成、チョ ユミン、柴戸海、キム ヒョンウもそれぞれ2試合に先発しています。</li>
-          <li><span className="font-bold">先発から外れた：</span>井上竜太（4試合→0試合）と平尾勇人（3試合→0試合）は、相馬体制では先発していません。福田湧矢は広島戦・FC東京戦に先発しましたが、FC東京戦は29分で交代し、横浜FM戦・福岡戦はメンバー外でした（理由の公式発表は確認できていません）。鈴木海音は福岡戦でベンチスタートでした。</li>
-          <li><span className="font-bold">出場停止による変更：</span>染野唯月はFC東京戦の退場により、横浜FM戦・福岡戦の2試合が出場停止でした。先発が4試合から2試合に減ったのはこのためで、監督の選考による変更とは分けて考える必要があります。</li>
-          <li><span className="font-bold">ポジション・役割が変わった：</span>新井悠太は城福体制の千葉戦・浦和戦では右WB、相馬体制では広島戦・FC東京戦がDF（公式記録の表記）、横浜FM戦・福岡戦は左MFでした。溝口修平は左WBから左SBへ、林尚輝は3バック中央から4バックのCBへ移っています。中央MFの平川怜・齋藤功佑は、両体制で同じ並び（左が平川、右が齋藤）でした。</li>
-        </ul>
-      </Chapter>
+    <Chapter no={5} title="役割が変わった選手たち">
+      <p>染野は城福体制の代表例では1トップ、相馬体制の広島戦ではキムと2トップを組みました。FC東京戦の退場による出場停止を経て長崎戦に復帰し、一美と先発して得点。一美も勝ち越し点を挙げています。</p>
+      <p>新井は千葉・浦和戦の右WBから、広島戦では左サイドバック、福岡戦では左MFへ。溝口は千葉・浦和戦の左WBから福岡戦の左SBに入りました。藤本は広島戦で新たに先発し、長崎戦では染野の先制点につながるパスを送りました。</p>
+      <p>平川怜は代表例の両試合で中央MFを担い、長崎戦も先発。森田晃樹は福岡戦と長崎戦で途中出場しました。起用の違いには出場停止なども関わるため、欠場理由を監督の判断だけで説明することはできません。</p>
+    </Chapter>
 
-      <Chapter no={3} title="走行距離・スプリント比較">
-        <Impression><p>相馬監督は、全体的に走れる選手を選んでいる印象があります。</p></Impression>
-        <p>数字の上でも、はっきり変わったのは運動量です。比較は城福体制4試合と、FC東京戦を除く相馬体制3試合の平均で行います。相馬体制3試合の平均は、総移動距離が{a.soma.distance.toFixed(2)}km、スプリントが{a.soma.sprints.toFixed(1)}回。城福体制4試合の{a.jofuku.distance.toFixed(2)}km、{a.jofuku.sprints.toFixed(1)}回を上回りました。横浜FM戦と福岡戦は、どちらもスプリントが160回を超えています。</p>
-        <p>一方で、シュートは平均{a.jofuku.shots.toFixed(2)}本から{a.soma.shots.toFixed(2)}本、ゴール期待値（シュートの位置や状況から見た得点の見込み）は{a.jofuku.xg.toFixed(3)}から{a.soma.xg.toFixed(3)}と、ほぼ同じ水準です。走る量が増えたことが、そのまま決定機の増加につながっているとは、まだ言えません。</p>
-        <Table
-          caption="平均値の比較（城福体制4試合／FC東京戦を除く相馬体制3試合）"
-          head={["指標", "城福（4試合）", "相馬（3試合）"]}
-          rows={[
-            ["平均シュート", `${a.jofuku.shots.toFixed(2)}本`, `${a.soma.shots.toFixed(2)}本`],
-            ["平均ゴール期待値", a.jofuku.xg.toFixed(3), a.soma.xg.toFixed(3)],
-            ["平均総移動距離", `${a.jofuku.distance.toFixed(2)}km`, `${a.soma.distance.toFixed(2)}km`],
-            ["平均スプリント", `${a.jofuku.sprints.toFixed(1)}回`, `${a.soma.sprints.toFixed(1)}回`],
-          ]}
-        />
-        <div className="grid gap-4 lg:grid-cols-2">
-          <Bars label="総移動距離（km）" unit="km" digits={1} min={100} max={130} rows={analysisMatches.map((m) => ({ key: m.id, name: matchName(m), era: m.era, value: m.distanceKm, muted: Boolean(m.excludedReason) }))} />
-          <Bars label="スプリント（回）" unit="回" max={170} rows={analysisMatches.map((m) => ({ key: m.id, name: matchName(m), era: m.era, value: m.sprints, muted: Boolean(m.excludedReason) }))} />
-        </div>
-        <Note>総移動距離のグラフは差を見やすくするため100kmを起点にしており、棒の長さは数値の比率どおりではありません。スプリントのグラフは0回が起点です。出典：Football LAB 各試合レポート（シュート・ゴール期待値・総移動距離・スプリント。スプリントは時速25km以上の走行回数）。数値はすべてFootball LABの値で、Jリーグ公式の数値とは混ぜていません。FC東京戦（薄い色で表示）は{analysisMatches.find((m) => m.excludedReason)?.excludedReason}、平均から除外しています。Jリーグ公式記録・公式スタッツとは集計基準が異なり、一致しない場合があります。</Note>
-      </Chapter>
+    <Chapter no={6} title="交代策と試合運び">
+      <p>横浜FM戦は2点を追う展開から藤本が1点を返し、途中出場の山田剛綺が終盤に同点としました。福岡戦は熊取谷の先制後に追いつかれましたが、途中出場の松橋優安が勝ち越し、寺沼が追加点を決めて3-1で勝利しました。</p>
+      <p>長崎戦では染野の先制後に追いつかれた直後、途中出場の熊取谷が溝口へスルーパスを送り、一美の決勝点につながりました。勝ち越した後には佐古真礼と寺沼、終盤には山田を投入しています。交代選手が結果に関わったことは確かですが、それだけで交代策のすべてを評価することはできません。</p>
+    </Chapter>
 
-      <Chapter no={4} title="ボール奪取位置の比較">
-        <p>ボールを奪った位置の平均は、城福体制の{recoveryAverage("jofuku", "avgPosition").toFixed(2)}mに対し、相馬体制は{recoveryAverage("soma", "avgPosition").toFixed(1)}m。数字の上ではやや前になっていますが、相馬体制の3試合は31.6m〜38.0mと幅が大きく、城福体制の範囲（30.8m〜37.1m）と大きく重なります。奪う位置がはっきり前に移ったとまでは言えません。</p>
-        <p>目立つのは、中盤（MS）で奪う割合です。城福体制の平均{recoveryAverage("jofuku", "ms").toFixed(2)}%に対し、相馬体制は{recoveryAverage("soma", "ms").toFixed(1)}%で、福岡戦は45%でした。逆に、相手ゴールに近いアタッキングサード（AS）での奪取は{recoveryAverage("jofuku", "as").toFixed(1)}%から{recoveryAverage("soma", "as").toFixed(1)}%に下がっています。4-4-2の2列で中盤にブロックを作り、そこで奪う場面が増えている可能性はありますが、3試合だけでは守備の狙いが変わったと断定できません。ここでは仮説として扱います。</p>
-        <Bars label="平均ボール奪取位置（m）" unit="m" digits={1} max={40} rows={recoveryRows.map((r) => ({ key: r.era + r.short, name: r.short, era: r.era, value: r.avgPosition }))} />
-        <Table
-          caption="試合別のボール奪取データ"
-          head={["体制", "対戦", "平均奪取位置", "AS", "MS"]}
-          rows={[
-            ...recoveryRows.map((r) => [eraLabel[r.era], r.short, `${r.avgPosition.toFixed(1)}m`, `${r.as}%`, `${r.ms}%`]),
-            ["城福体制", "4試合平均", `${recoveryAverage("jofuku", "avgPosition").toFixed(2)}m`, `${recoveryAverage("jofuku", "as").toFixed(1)}%`, `${recoveryAverage("jofuku", "ms").toFixed(2)}%`],
-            ["相馬体制", "3試合平均", `${recoveryAverage("soma", "avgPosition").toFixed(1)}m`, `${recoveryAverage("soma", "as").toFixed(1)}%`, `${recoveryAverage("soma", "ms").toFixed(1)}%`],
-          ]}
-        />
-        <Note>ボール奪取データは観戦分析用に当サイトが集計した値で、公式データとの照合はしていません。AS（アタッキングサード）・MS（ミドルサード）は、全ボール奪取回数に占める各エリアの割合です。平均は試合ごとの値の単純平均で、奪取回数による加重平均ではありません。FC東京戦は集計対象外です。</Note>
-      </Chapter>
+    <Chapter no={7} title="連勝の先に見る課題">
+      <p>広島戦の敗戦、退場者を出したFC東京戦、横浜FM戦の追い上げ、福岡・長崎戦の連勝。相馬体制の最初の5試合は、それぞれ異なる展開でした。2トップの組み合わせ、中央MFと両サイドの関係、前線からの守備、先制後や失点後の試合運びを引き続き見たいところです。</p>
+      <p>福岡戦と長崎戦の結果は前進ですが、チームが完成したと結論づけるにはまだ早い。城福体制の積み重ねを尊重しながら、新しい配置が相手や状況に応じてどう機能するかを追っていきます。</p>
+    </Chapter>
 
-      <section aria-labelledby="possession" className="space-y-4">
-        <div className="border-l-2 border-pioneer-gold pl-3">
-          <p className="text-[11px] font-bold tracking-[0.15em] text-pioneer-gold-deep">DATA</p>
-          <h2 id="possession" className="mt-1 text-[18px] font-extrabold leading-snug text-text-primary lg:text-[22px]">ボール支配率と対戦相手</h2>
-        </div>
-        <Table
-          head={["相手の順位帯", "体制", "対戦", "ボール保持率"]}
-          rows={(["上位", "中位", "下位"] as const).flatMap((tier) => analysisMatches.filter((m) => m.tier === tier).map((m) => [tier, eraLabel[m.era], `${m.short}（${m.homeAway}）`, `${m.possession.toFixed(1)}%${m.excludedReason ? "（10人）" : ""}`]))}
-        />
-        <p className="text-[14px] leading-relaxed text-text-primary">
-          ボール保持率の平均は、城福体制が{possessionAll("jofuku").toFixed(1)}%、相馬体制が{possessionAll("soma").toFixed(1)}%（FC東京戦を除くと{a.soma.possession.toFixed(1)}%）です。ただし相馬体制の4試合には上位の広島・FC東京が含まれ、FC東京戦はほぼ全時間を10人で戦いました。同じ下位相手の千葉戦（58.9%）と福岡戦（50.8%）、中位相手の浦和戦（52.4%）と横浜FM戦（41.5%）を比べても差はありますが、試合展開や先制点の有無も保持率を左右します。数字の違いを監督の戦術だけで説明することはできません。
-        </p>
-        <Note>出典：Football LAB 各試合レポートのボール保持率（8試合とも同一基準）。Jリーグ公式スタッツのボール支配率とは算出方法が異なります。順位帯は今回の分析用の分類です。</Note>
-      </section>
-
-      <Chapter no={5} title="横浜FM戦からの変化">
-        <p>相馬体制は広島戦0-2、FC東京戦0-4と2連敗でスタートしました。続く横浜FM戦では、FC東京戦から先発を5人変更（うち1人は染野唯月の出場停止によるもの）。2点を先行されながら、藤本寛也と山田剛綺のゴールで2-2に追いつきました。</p>
-        <p>福岡戦の先発変更は、鈴木海音に代えて内田陽介を起用した1人だけ。メンバーをほぼ固定して臨み、3-1で初勝利を挙げました。</p>
-        <Impression>
-          <p>横浜FM戦で2点差を追いついたことは、チームの雰囲気にも影響したと感じます。福岡戦は試合前から、勝利を期待できる空気がありました。</p>
-          <p>左サイドでは、溝口修平と新井悠太の連係が良くなっています。2人は横浜FM戦からコンビを組み、福岡戦が2試合目。互いの動きを理解してプレーできる場面が増えていました。</p>
-          <p>福岡戦では、齋藤功佑が比較的フリーでボールを受け、キープできていました。中盤で時間を作れるようになり、攻撃に余裕が生まれていた印象です。</p>
-        </Impression>
-        <Note>上記は観戦時の所感で、データで裏付けたものではありません。</Note>
-      </Chapter>
-
-      <Chapter no={6} title="交代策とスタメン争い">
-        <p>福岡戦では、67分に熊取谷一星と交代で入った松橋優安が74分に勝ち越しゴール。88分に一美和成と交代で入った寺沼星文が、90分に3点目を決めました。前節の横浜FM戦でも、86分から出場した山田剛綺が後半アディショナルタイムに同点ゴールを挙げています。2試合続けて、途中出場の選手が得点に絡みました。</p>
-        <Impression><p>福岡戦は、交代策が勝利の鍵になった試合だったと思います。</p></Impression>
-        <p>そこに、出場停止が明けた染野唯月が戻ります。染野は相馬体制の最初の2試合で先発し、キム ヒョンウと2トップを組みました。横浜FM戦・福岡戦は熊取谷・一美の2トップで、松橋・寺沼・山田が途中から結果を出しています。</p>
-        <Impression><p>染野が戻ることで、前線のスタメン争いはこれまで以上に激しくなりそうです。誰をどう組み合わせるのか、次節以降のメンバーに注目しています。</p></Impression>
-        <Note>本章は起用の可能性を整理したもので、次戦の先発を予想・確定するものではありません。染野唯月の出場停止はJリーグ公式発表（2試合）に基づきます。</Note>
-      </Chapter>
-
-      <Chapter no={7} title="4試合を終えて">
-        <p>相馬体制の4試合は、広島戦0-2、FC東京戦0-4、横浜FM戦2-2、福岡戦3-1。{sRecord.wins}勝{sRecord.draws}分{sRecord.losses}敗、{sRecord.goalsFor}得点{sRecord.goalsAgainst}失点です。</p>
-        <p>フォーメーションは3-4-2-1から4-4-2に変わりました。藤本寛也のように新たに先発の常連になった選手がいる一方、城福体制の中心選手の多くは、役割を変えながら起用され続けています。運動量は数字の上でもはっきり増えました。</p>
-        <p>ただし、シュート数やゴール期待値はほぼ横ばいで、奪取位置の変化も小さく、守備の狙いが変わったかどうかはまだ判断できません。4試合のうち2試合は上位との対戦で、1試合は10人での戦いでした。監督交代が成功だったかどうかを、この4試合だけで決めることはできません。連戦の最後に勝点3を取ったこのチームが、次の試合でどんな形を見せるのかを追っていきます。</p>
-      </Chapter>
-
-      <section aria-labelledby="sources" className="space-y-3 border-t border-border pt-6">
-        <SectionHeader title="データの出典・対象・除外条件" eyebrow="SOURCES" />
-        <ul className="space-y-1 text-[12px] leading-relaxed text-text-secondary">
-          <li>対象：城福体制 J1直近4試合（{jofuku.map((m) => m.short).join("・")}）、相馬体制 就任後4試合（{soma.map((m) => m.short).join("・")}）。平均値の比較は城福体制4試合と、FC東京戦（ほぼ全時間を10人で戦った試合）を除く相馬体制3試合。</li>
-          <li>先発・得点・交代：Jリーグ公式記録。シュート・ゴール期待値・総移動距離・スプリント・ボール保持率：Football LAB 各試合レポート。ボール奪取データ：当サイト集計（公式データ未照合）。</li>
-        </ul>
-        <ul className="grid gap-x-6 gap-y-1 text-[12px] sm:grid-cols-2">
-          {analysisMatches.map((m) => (
-            <li key={m.id} className="flex flex-wrap gap-x-3">
-              <span className="font-bold text-text-primary">{m.date} {m.short}</span>
-              <a href={m.jleagueUrl} target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">Jリーグ公式</a>
-              <a href={m.footballLabUrl} target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">Football LAB</a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </article>
-  );
+    <section aria-labelledby="sources" className="space-y-3 border-t border-border pt-6">
+      <SectionHeader title="出典・分析上の注意" eyebrow="SOURCES" />
+      <Note>対象は2026年11月1日までの試合です。試合結果・先発・得点・交代はJリーグ公式記録、広島戦のプレーと発言は取材記事、監督交代の背景はクラブの説明に基づきます。配置の説明と今後の着眼点は当サイトの分析です。</Note>
+      <ul className="grid gap-x-6 gap-y-2 text-[12px] sm:grid-cols-2">{sources.map(([label, url]) => <li key={url}><a href={url} target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">{label}</a></li>)}</ul>
+    </section>
+  </article>;
 }
