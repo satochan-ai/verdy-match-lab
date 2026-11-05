@@ -2,7 +2,7 @@ import type { PredictionPlayer } from "../match/prediction.ts";
 import { matches } from "../mock/matches.ts";
 
 /**
- * SPECIAL ANALYSIS「城福体制から相馬体制へ。4試合で何が変わったのか？」の記事データ。
+ * SPECIAL ANALYSIS「城福体制から相馬体制へ。東京ヴェルディの戦い方はどう変わったのか」の記事データ。
  * 先発はJリーグ公式記録ベースの既存試合データ（lib/mock）から集計し、記事内で数え直さない。
  * シュート・ゴール期待値・総移動距離・スプリント・ボール保持率は、8試合とも同一基準のFootball LAB試合レポート
  * （2026-10-26確認）。Jリーグ公式スタッツや公式記録とは集計基準が異なり、数値が一致しない項目がある。
@@ -10,11 +10,11 @@ import { matches } from "../mock/matches.ts";
  */
 export const ANALYSIS_SLUG = "jofuku-soma-transition";
 export const ANALYSIS_PATH = `/top/analysis/${ANALYSIS_SLUG}`;
-export const analysisTitle = "城福体制から相馬体制へ。4試合で何が変わったのか？";
+export const analysisTitle = "城福体制から相馬体制へ。東京ヴェルディの戦い方はどう変わったのか";
 export const analysisCard = {
   eyebrow: "SPECIAL ANALYSIS｜特別分析",
   title: "城福体制から相馬体制へ。何が変わったのか？",
-  summary: "基本スタメン、運動量、ボール奪取位置、選手起用の変化を比較",
+  summary: "フォーメーション、攻守、選手起用と交代策から変化を考える",
   href: ANALYSIS_PATH,
 };
 export const ANALYSIS_DISCLAIMER = "※本記事はVerdy Match Labによる非公式の独自分析です。戦術の意図や今後の起用を示す公式情報ではありません。";
