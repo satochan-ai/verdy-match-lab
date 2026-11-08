@@ -240,11 +240,12 @@ export const scheduleMatches: ScheduleMatch[] = [
     id: "sched-shimizu",
     competition: "j1",
     round: "第14節",
-    kickoffAt: "2026-11-07T13:00:00+09:00",
+    kickoffAt: "2026-11-07T13:03:00+09:00",
     venue: "ＩＡＩスタジアム日本平",
     isVerdyHome: false,
     opponentName: "清水エスパルス",
-    status: "scheduled",
+    status: "finished",
+    homeScore: 0, awayScore: 1, detailMatchId: "sched-shimizu",
   },
   {
     // 東京ヴェルディ公式「2026/27シーズン試合一覧」で2026-10-21に確認した確定日程。

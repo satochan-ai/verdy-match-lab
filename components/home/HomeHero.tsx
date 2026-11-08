@@ -27,7 +27,7 @@ export function HomeHero({
   categoryCta: { href: string; label: string };
 }) {
   return (
-    <section className="relative -mt-6 mx-[calc(50%-50vw)] overflow-hidden bg-primary-green text-shine-white md:-mt-8">
+    <section className="relative -mt-6 -mx-4 overflow-hidden md:mx-[calc(50%-50vw)] bg-primary-green text-shine-white md:-mt-8">
       {/*
         background layer：ユーザー撮影のスタジアム写真1枚。Heroは画面表示直後に見える
         LCP要素になるためpriorityを付け、fill + sizes="100vw"でCLSなく全幅表示する。

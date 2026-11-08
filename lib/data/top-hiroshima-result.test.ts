@@ -6,7 +6,7 @@ import { getLatestFinishedFixture, getUpcomingFixtures } from "./fixture-selecto
 import { getMatchResult } from "../match/result.ts";
 
 // 10/12時点の履歴を再現し、後日のFC東京結果登録に依存させない。
-const topFixtures = currentTopFixtures.map(f => f.id === "sched-nagasaki" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-01T14:00:00+09:00" } : f).map(f => {
+const topFixtures = currentTopFixtures.map(f => f.id === "sched-shimizu" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-07T13:00:00+09:00" } : f).map(f => f.id === "sched-nagasaki" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-01T14:00:00+09:00" } : f).map(f => {
   if (f.id === "sched-fc-tokyo") return { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-17T14:00:00+09:00" };
   if (f.id === "sched-yokohama-fm") return { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-21T19:00:00+09:00" };
   if (f.id === "sched-fukuoka") return { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-24T15:00:00+09:00" };
