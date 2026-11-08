@@ -13,7 +13,7 @@ export function ShimizuResultExtras() {
   return <div className="space-y-8 text-[14px] leading-relaxed">
     <section className="space-y-3" aria-label="清水戦 試合後レビュー">
       <SectionHeader title="清水戦 試合後レビュー" eyebrow="MATCH REVIEW" />
-      <h2 className="text-lg font-extrabold">熊取谷の決勝点と無失点で、敵地3連勝</h2>
+      <h2 className="text-lg font-extrabold">熊取谷の決勝点と無失点で、リーグ3連勝</h2>
       <p>東京ヴェルディは清水を1-0で破り、福岡、長崎に続いてリーグ3連勝。相馬直樹監督の就任後、初の無失点勝利となった。前半は0-0、72分に熊取谷一星が決めた1点を守り切った。</p>
       <h3 className="font-bold">試合の流れ</h3>
       <p>18分にチョ ユミンに代わり佐古真礼が入り、59分に柴戸海と熊取谷が投入された。熊取谷は13分後に決勝点。交代理由は公式資料で確認できていない。</p>

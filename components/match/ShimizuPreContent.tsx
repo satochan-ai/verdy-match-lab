@@ -9,7 +9,7 @@ export function ShimizuMatchPreview({ archive = false }: { archive?: boolean }) 
     if (index === 0) return paragraph.replace(/Football LABの11月2日更新時点で、.*?勝点で並ぶ。/, "");
     if (index === 3) return paragraph.replace(/【事実】Football LABの集計では、.*?こぼれ球から4点。/, "【事実】");
     if (index === 7) return paragraph.replace(/Football LABによると、.*?4点ある。/, "");
-    if (index === 9) return paragraph.replace(/清水はホームで2勝2分3敗。/, "").replace(/走行距離はリーグ2位の東京Vに対し、清水は20位。/, "");
+    if (index === 9) return paragraph.replace(/清水はホームで2勝2分3敗。苦しい状況にあるチームが/, "苦しい状況にある清水が").replace(/走行距離はリーグ2位の東京Vに対し、清水は20位。/, "");
     return paragraph;
   }) : shimizuPreview.paragraphs;
   return <section aria-label="清水戦 MATCH PREVIEW" className="space-y-4 border-y border-border bg-surface px-4 py-5 lg:px-6 lg:py-6">
