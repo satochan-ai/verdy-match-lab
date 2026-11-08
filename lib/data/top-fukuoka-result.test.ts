@@ -13,7 +13,7 @@ import { fukuokaViewerReview } from "../match/fukuoka-review.ts";
 import { getPostMatchAnalysis } from "../../features/ai-guide/mockResponses.ts";
 
 // 福岡戦直後の履歴。後日の長崎戦は試合前へ戻す。
-const topFixtures = currentTopFixtures.map(f => f.id === "sched-nagasaki" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-01T14:00:00+09:00" } : f);
+const topFixtures = currentTopFixtures.map(f => f.id === "sched-shimizu" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-07T13:00:00+09:00" } : f).map(f => f.id === "sched-nagasaki" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-01T14:00:00+09:00" } : f);
 
 test("Fukuoka official result is consistent across schedule, fixture and published detail", () => {
   assert.deepEqual([match.homeScore, match.awayScore], [3, 1]);

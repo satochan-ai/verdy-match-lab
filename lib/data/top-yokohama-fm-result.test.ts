@@ -14,7 +14,7 @@ import { yokohamaFmViewerReview } from "../match/yokohama-fm-review.ts";
 import { getPostMatchAnalysis } from "../../features/ai-guide/mockResponses.ts";
 
 // 10/21試合終了時点を再現し、後日の福岡戦の結果登録に依存させない。
-const topFixtures = currentTopFixtures.map(f => f.id === "sched-nagasaki" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-01T14:00:00+09:00" } : f).map(f => f.id === "sched-fukuoka" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-24T15:00:00+09:00" } : f);
+const topFixtures = currentTopFixtures.map(f => f.id === "sched-shimizu" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-07T13:00:00+09:00" } : f).map(f => f.id === "sched-nagasaki" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-01T14:00:00+09:00" } : f).map(f => f.id === "sched-fukuoka" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-24T15:00:00+09:00" } : f);
 
 test("Yokohama FM official result is consistent across schedule, fixture and published detail", () => {
   assert.deepEqual([match.homeScore, match.awayScore], [2, 2]);

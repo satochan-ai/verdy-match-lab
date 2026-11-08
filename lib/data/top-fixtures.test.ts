@@ -7,7 +7,7 @@ import { validateFixtures } from "./fixture-validation.ts";
 const now = new Date("2026-09-03T00:00:00+09:00");
 
 // 鳥取戦終了時点の履歴検証。広島戦の結果登録後も当時のselector条件を再現する。
-const topFixtures = currentTopFixtures.map(f => f.id === "sched-nagasaki" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-01T14:00:00+09:00" } : f).map((fixture) => {
+const topFixtures = currentTopFixtures.map(f => f.id === "sched-shimizu" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-07T13:00:00+09:00" } : f).map(f => f.id === "sched-nagasaki" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-01T14:00:00+09:00" } : f).map((fixture) => {
   if (fixture.id === "sched-hiroshima") return { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-11T15:00:00+09:00" };
   if (fixture.id === "sched-fc-tokyo") return { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-17T14:00:00+09:00" };
   if (fixture.id === "sched-yokohama-fm") return { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-21T19:00:00+09:00" };
