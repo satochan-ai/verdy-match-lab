@@ -2,28 +2,28 @@ import type { LeagueStandings } from "@/types/standings";
 
 /**
  * 2026/27 WEリーグ 順位表。
- * 出典：WEリーグ公式順位表（2026/10/31 16:55更新）。
+ * 出典：WEリーグ公式順位表（2026/11/08 15:01更新、2026-11-09確認）。
  * 公式ページに表示されている列（順位・チーム名・勝点・試合数・勝敗分・得点・失点・得失点差）
  * のみを保持し、存在しない列は追加しない。全12クラブを提供値どおり保持する。
  * 数値は推測・補完しない。同順位は許可する（rankの重複を禁止しない）。
  */
 export const weLeagueStandings: LeagueStandings = {
   competition: "2026/27 WEリーグ",
-  asOfLabel: "2026/10/31 16:55 現在",
+  asOfLabel: "2026/11/08 15:01 現在",
   sourceUrl: "https://weleague.jp/standings/",
   entries: [
-    {"rank":1,"teamName":"三菱重工浦和レッズレディース","played":6,"wins":5,"draws":0,"losses":1,"goalsFor":14,"goalsAgainst":4,"goalDifference":10,"points":15},
-    {"rank":2,"teamName":"日テレ・東京ヴェルディベレーザ","played":7,"wins":5,"draws":0,"losses":2,"goalsFor":17,"goalsAgainst":11,"goalDifference":6,"points":15},
-    {"rank":3,"teamName":"ジェフ千葉レディース","played":7,"wins":4,"draws":1,"losses":2,"goalsFor":9,"goalsAgainst":7,"goalDifference":2,"points":13},
-    {"rank":4,"teamName":"セレッソ大阪ヤンマーレディース","played":6,"wins":3,"draws":2,"losses":1,"goalsFor":10,"goalsAgainst":7,"goalDifference":3,"points":11},
-    {"rank":5,"teamName":"INAC神戸レオネッサ","played":7,"wins":3,"draws":1,"losses":3,"goalsFor":14,"goalsAgainst":13,"goalDifference":1,"points":10},
-    {"rank":6,"teamName":"サンフレッチェ広島レジーナ","played":6,"wins":3,"draws":0,"losses":3,"goalsFor":7,"goalsAgainst":7,"goalDifference":0,"points":9},
-    {"rank":7,"teamName":"ノジマステラ神奈川相模原","played":7,"wins":2,"draws":3,"losses":2,"goalsFor":6,"goalsAgainst":11,"goalDifference":-5,"points":9},
-    {"rank":8,"teamName":"マイナビ仙台","played":6,"wins":2,"draws":1,"losses":3,"goalsFor":9,"goalsAgainst":11,"goalDifference":-2,"points":7},
-    {"rank":9,"teamName":"ちふれASエルフェン埼玉","played":6,"wins":2,"draws":1,"losses":3,"goalsFor":6,"goalsAgainst":8,"goalDifference":-2,"points":7},
-    {"rank":10,"teamName":"RB大宮アルディージャWOMEN","played":7,"wins":2,"draws":0,"losses":5,"goalsFor":5,"goalsAgainst":10,"goalDifference":-5,"points":6},
-    {"rank":11,"teamName":"アルビレックス新潟レディース","played":6,"wins":1,"draws":2,"losses":3,"goalsFor":5,"goalsAgainst":7,"goalDifference":-2,"points":5},
-    {"rank":12,"teamName":"AC長野パルセイロ・レディース","played":7,"wins":0,"draws":3,"losses":4,"goalsFor":4,"goalsAgainst":10,"goalDifference":-6,"points":3},
+    {"rank":1,"teamName":"三菱重工浦和レッズレディース","played":8,"wins":6,"draws":0,"losses":2,"goalsFor":16,"goalsAgainst":5,"goalDifference":11,"points":18},
+    {"rank":2,"teamName":"ジェフ千葉レディース","played":8,"wins":5,"draws":1,"losses":2,"goalsFor":11,"goalsAgainst":7,"goalDifference":4,"points":16},
+    {"rank":3,"teamName":"セレッソ大阪ヤンマーレディース","played":8,"wins":4,"draws":3,"losses":1,"goalsFor":16,"goalsAgainst":9,"goalDifference":7,"points":15},
+    {"rank":4,"teamName":"日テレ・東京ヴェルディベレーザ","played":8,"wins":5,"draws":0,"losses":3,"goalsFor":17,"goalsAgainst":12,"goalDifference":5,"points":15},
+    {"rank":5,"teamName":"マイナビ仙台","played":8,"wins":4,"draws":1,"losses":3,"goalsFor":12,"goalsAgainst":12,"goalDifference":0,"points":13},
+    {"rank":6,"teamName":"サンフレッチェ広島レジーナ","played":8,"wins":4,"draws":0,"losses":4,"goalsFor":11,"goalsAgainst":11,"goalDifference":0,"points":12},
+    {"rank":7,"teamName":"ノジマステラ神奈川相模原","played":8,"wins":3,"draws":3,"losses":2,"goalsFor":7,"goalsAgainst":11,"goalDifference":-4,"points":12},
+    {"rank":8,"teamName":"INAC神戸レオネッサ","played":7,"wins":3,"draws":1,"losses":3,"goalsFor":14,"goalsAgainst":13,"goalDifference":1,"points":10},
+    {"rank":9,"teamName":"ちふれASエルフェン埼玉","played":8,"wins":2,"draws":1,"losses":5,"goalsFor":8,"goalsAgainst":15,"goalDifference":-7,"points":7},
+    {"rank":10,"teamName":"RB大宮アルディージャWOMEN","played":8,"wins":2,"draws":0,"losses":6,"goalsFor":5,"goalsAgainst":12,"goalDifference":-7,"points":6},
+    {"rank":11,"teamName":"アルビレックス新潟レディース","played":7,"wins":1,"draws":2,"losses":4,"goalsFor":5,"goalsAgainst":9,"goalDifference":-4,"points":5},
+    {"rank":12,"teamName":"AC長野パルセイロ・レディース","played":8,"wins":0,"draws":4,"losses":4,"goalsFor":6,"goalsAgainst":12,"goalDifference":-6,"points":4},
   ],
 };
 
