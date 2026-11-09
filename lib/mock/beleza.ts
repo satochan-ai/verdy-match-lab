@@ -1204,20 +1204,6 @@ export const belezaUpcomingMatches: UpcomingFixture[] = [
   },
 ];
 
-/**
- * 11/7 WEリーグ第8節・N相模原戦の公式確定結果（N相模原 1-0 ベレーザ、前半1-0／後半0-0）。
- * 出典：WEリーグ公式試合ページ https://weleague.jp/matches/2026110725/ （2026-11-09確認、キックオフ14:03）。
- * 個別の詳細ページは未作成のためdetailMatchIdは持たない（LAST MATCH・HISTORYはリンクなしで表示）。
- */
-export const belezaStellaLeagueResult = {
-  id: "beleza-next-13",
-  kickoffAt: "2026-11-07T14:03:00+09:00",
-  status: "finished" as const,
-  homeScore: 1,
-  awayScore: 0,
-  sourceUrl: "https://weleague.jp/matches/2026110725/",
-};
-
 /** 10/11 クラシエカップ第6節。クラブ公式の試合経過で81分の対応も確認済み。 */
 export const reginaTeam: Team = { id: "hiroshima-regina", name: "サンフレッチェ広島レジーナ", isVerdy: false };
 export const belezaReginaMatch = {
