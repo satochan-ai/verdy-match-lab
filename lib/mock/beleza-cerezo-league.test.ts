@@ -11,12 +11,12 @@ import { getLatestFinishedFixture, getNextFixture, getSeasonHistory } from "../d
 import { getCategoryDetailHref } from "../data/category-match-details.ts";
 import { belezaTeam } from "./beleza.ts";
 
-test("10/28 C大阪 result preserves its existing ID and detail after the 大宮 result", () => {
+test("10/28 C大阪 result preserves its existing ID and detail after the 大宮 and N相模原 results", () => {
   const fixture = belezaFixtures.find((f) => f.id === match.id)!;
   assert.deepEqual([fixture.status, fixture.kickoffAt, fixture.score, fixture.competition.round], ["finished", "2026-10-28T18:03:00+09:00", { home: 1, away: 2 }, "第5節"]);
-  assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, "beleza-next-12");
+  assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, "beleza-next-13");
   const next = getNextFixture(belezaFixtures, new Date("2026-10-28T22:00:00+09:00"))!;
-  assert.deepEqual([next.id, next.opponentName, next.kickoffAt], ["beleza-next-13", "ノジマステラ神奈川相模原", "2026-11-07T14:00:00+09:00"]);
+  assert.deepEqual([next.id, next.opponentName, next.kickoffAt], ["beleza-next-14", "アルビレックス新潟レディース", "2026-11-14T15:00:00+09:00"]);
   assert.equal(getCategoryDetailHref("beleza", fixture.detailMatchId), "/beleza/matches/beleza-next-11");
   const history = getSeasonHistory(belezaFixtures);
   for (const id of ["beleza-next-10", "beleza-next-11"]) assert.equal(history.filter((f) => f.id === id).length, 1);

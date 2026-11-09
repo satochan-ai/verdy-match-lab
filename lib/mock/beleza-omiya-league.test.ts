@@ -12,20 +12,21 @@ import { getCategoryDetailHref } from "../data/category-match-details.ts";
 import { belezaCerezoLeagueMatch } from "./beleza-cerezo-league.ts";
 import { belezaElfenLeagueMatch } from "./beleza-elfen-league.ts";
 
-test("10/31 result uses the registered ID, chronological fixtures, LAST and the official 11/7 away NEXT", () => {
+test("10/31 result keeps the registered ID and history after the 11/7 result; NEXT is the official 11/14 home match", () => {
   const fixture = belezaFixtures.find(f => f.id === match.id)!;
   assert.deepEqual([fixture.status, fixture.kickoffAt, fixture.score, fixture.competition.round], ["finished", "2026-10-31T15:05:00+09:00", { home: 2, away: 1 }, "第7節"]);
   assert.deepEqual(halves, { firstHalf: "1-0", secondHalf: "1-1" });
   assert.equal(getCategoryDetailHref("beleza", fixture.detailMatchId), "/beleza/matches/beleza-next-12");
-  assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, match.id);
+  // 11/7 N相模原戦の結果登録により、LASTはN相模原戦へ進む。
+  assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, "beleza-next-13");
   const now = new Date("2026-11-01T10:00:00+09:00");
   const next = getNextFixture(belezaFixtures, now)!;
-  assert.deepEqual([next.id, next.kickoffAt, next.opponentName, next.isHome, next.venue], ["beleza-next-13", "2026-11-07T14:00:00+09:00", "ノジマステラ神奈川相模原", false, "相模原ギオンスタジアム"]);
-  assert.deepEqual(getUpcomingFixtures(belezaFixtures, now, 5).map(f => f.id), [next.id]);
+  assert.deepEqual([next.id, next.kickoffAt, next.opponentName, next.isHome, next.venue], ["beleza-next-14", "2026-11-14T15:00:00+09:00", "アルビレックス新潟レディース", true, "味の素フィールド西が丘"]);
+  assert.deepEqual(getUpcomingFixtures(belezaFixtures, now, 5).map(f => f.id), [next.id, "beleza-next-15", "beleza-next-16"]);
   const timestamps = belezaFixtures.map(f => Date.parse(f.kickoffAt!));
   assert.deepEqual(timestamps, [...timestamps].sort((a, b) => a - b));
   const history = getSeasonHistory(belezaFixtures);
-  for (const previous of [belezaCerezoLeagueMatch, belezaElfenLeagueMatch]) {
+  for (const previous of [match, belezaCerezoLeagueMatch, belezaElfenLeagueMatch]) {
     assert.equal(history.filter(f => f.id === previous.id).length, 1);
     assert.deepEqual(belezaFixtures.find(f => f.id === previous.id)?.score, { home: previous.homeScore, away: previous.awayScore });
   }

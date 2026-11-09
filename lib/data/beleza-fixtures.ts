@@ -4,7 +4,14 @@ import { belezaElfenLeagueMatch } from "../mock/beleza-elfen-league.ts";
 import { belezaCerezoLeagueMatch } from "../mock/beleza-cerezo-league.ts";
 import { belezaReginaLeagueMatch } from "../mock/beleza-regina-league.ts";
 import type { CommonFixture } from "../types/fixture";
-import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, belezaMatch5, belezaUrawaCupMatch, belezaReginaMatch, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
+import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, belezaMatch5, belezaUrawaCupMatch, belezaReginaMatch, belezaStellaLeagueResult, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
+
+/** 11/14以降の確定日程の出典（WEリーグ公式試合ページ、2026-11-09確認）。 */
+const weLeagueMatchPages: Record<string, string> = {
+  "beleza-next-14": "https://weleague.jp/matches/2026111411/",
+  "beleza-next-15": "https://weleague.jp/matches/2026111804/",
+  "beleza-next-16": "https://weleague.jp/matches/2026112304/",
+};
 
 export const belezaFixtures: CommonFixture[] = [
   {
@@ -75,9 +82,16 @@ export const belezaFixtures: CommonFixture[] = [
   ...belezaUpcomingMatches.slice(1).map((fixture, index) => ({
     id: fixture.id, category: "beleza" as const, teamName: belezaTeam.name, opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
-    kickoffAt: ["2026-10-03T14:00:00+09:00", "2026-10-11T12:00:00+09:00", "2026-10-18T14:00:00+09:00", "2026-10-24T12:00:00+09:00", "2026-10-28T18:00:00+09:00", "2026-10-31T15:00:00+09:00", "2026-11-07T14:00:00+09:00"][index],
+    kickoffAt: ["2026-10-03T14:00:00+09:00", "2026-10-11T12:00:00+09:00", "2026-10-18T14:00:00+09:00", "2026-10-24T12:00:00+09:00", "2026-10-28T18:00:00+09:00", "2026-10-31T15:00:00+09:00", "2026-11-07T14:00:00+09:00", "2026-11-14T15:00:00+09:00", "2026-11-18T14:00:00+09:00", "2026-11-23T15:00:00+09:00"][index],
     kickoffStatus: "confirmed" as const, dateLabel: fixture.dateLabel, venue: fixture.venue, isHome: fixture.isHome, status: "scheduled" as const,
     ...(fixture.id === belezaUrawaCupMatch.id ? {} : { sourceUrl: "https://www.verdy.co.jp/beleza/calendar/" }),
+    ...(weLeagueMatchPages[fixture.id] ? { sourceUrl: weLeagueMatchPages[fixture.id] } : {}),
+    ...(fixture.id === belezaStellaLeagueResult.id ? {
+      kickoffAt: belezaStellaLeagueResult.kickoffAt,
+      status: belezaStellaLeagueResult.status,
+      score: { home: belezaStellaLeagueResult.homeScore, away: belezaStellaLeagueResult.awayScore },
+      sourceUrl: belezaStellaLeagueResult.sourceUrl,
+    } : {}),
     ...(fixture.id === belezaUrawaCupMatch.id ? {
       detailMatchId: fixture.id,
       kickoffAt: belezaUrawaCupMatch.kickoffAt,

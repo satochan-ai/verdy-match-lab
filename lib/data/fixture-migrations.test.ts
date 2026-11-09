@@ -67,7 +67,7 @@ test("two consecutive finishes update NEXT, LAST and HISTORY for both categories
   // として実データに存在するため、LAST/HISTORY直近2件はそちら（より新しい確定結果）になる。
   const cases = [
     { fixtures: u21Fixtures.map(f => ["u21-next-4", "u21-next-5"].includes(f.id) ? { ...f, status: "scheduled" as const, score: undefined } : f), finishedIds: ["u21-next-1", "u21-next-2"], nextId: "u21-next-4", lastId: "u21-next-3", historyTop2: ["u21-next-3", "u21-next-2"] },
-    { fixtures: belezaFixtures, finishedIds: ["beleza-next-3", "beleza-next-4"], nextId: "beleza-next-13", lastId: "beleza-next-12", historyTop2: ["beleza-next-12", "beleza-next-11"] },
+    { fixtures: belezaFixtures, finishedIds: ["beleza-next-3", "beleza-next-4"], nextId: "beleza-next-14", lastId: "beleza-next-13", historyTop2: ["beleza-next-13", "beleza-next-12"] },
   ] as const;
   for (const { fixtures, finishedIds, nextId, lastId, historyTop2 } of cases) {
     const simulated = withStatus(fixtures, finishedIds, "finished");

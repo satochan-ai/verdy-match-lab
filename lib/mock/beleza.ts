@@ -1163,7 +1163,60 @@ export const belezaUpcomingMatches: UpcomingFixture[] = [
     opponentName: "ノジマステラ神奈川相模原",
     venue: "相模原ギオンスタジアム",
   },
+  // 以下はWEリーグ公式試合ページ（2026-11-09確認）の確定日程。
+  // 11/14: https://weleague.jp/matches/2026111411/ ・11/18: https://weleague.jp/matches/2026111804/
+  // 11/23: https://weleague.jp/matches/2026112304/
+  {
+    id: "beleza-next-14",
+    dateLabel: "11.14 SAT",
+    kickoffLabel: "15:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第9節",
+    },
+    isHome: true,
+    opponentName: "アルビレックス新潟レディース",
+    venue: "味の素フィールド西が丘",
+  },
+  {
+    id: "beleza-next-15",
+    dateLabel: "11.18 WED",
+    kickoffLabel: "14:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第10節",
+    },
+    isHome: false,
+    opponentName: "マイナビ仙台",
+    venue: "キューアンドエースタジアムみやぎ",
+  },
+  {
+    id: "beleza-next-16",
+    dateLabel: "11.23 MON",
+    kickoffLabel: "15:00",
+    fixtureMeta: {
+      competition: "2026/27 WEリーグ",
+      roundLabel: "第11節",
+    },
+    isHome: true,
+    opponentName: "INAC神戸レオネッサ",
+    venue: "味の素フィールド西が丘",
+  },
 ];
+
+/**
+ * 11/7 WEリーグ第8節・N相模原戦の公式確定結果（N相模原 1-0 ベレーザ、前半1-0／後半0-0）。
+ * 出典：WEリーグ公式試合ページ https://weleague.jp/matches/2026110725/ （2026-11-09確認、キックオフ14:03）。
+ * 個別の詳細ページは未作成のためdetailMatchIdは持たない（LAST MATCH・HISTORYはリンクなしで表示）。
+ */
+export const belezaStellaLeagueResult = {
+  id: "beleza-next-13",
+  kickoffAt: "2026-11-07T14:03:00+09:00",
+  status: "finished" as const,
+  homeScore: 1,
+  awayScore: 0,
+  sourceUrl: "https://weleague.jp/matches/2026110725/",
+};
 
 /** 10/11 クラシエカップ第6節。クラブ公式の試合経過で81分の対応も確認済み。 */
 export const reginaTeam: Team = { id: "hiroshima-regina", name: "サンフレッチェ広島レジーナ", isVerdy: false };
