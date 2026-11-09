@@ -3,8 +3,9 @@ import { belezaOmiyaLeagueMatch } from "../mock/beleza-omiya-league.ts";
 import { belezaElfenLeagueMatch } from "../mock/beleza-elfen-league.ts";
 import { belezaCerezoLeagueMatch } from "../mock/beleza-cerezo-league.ts";
 import { belezaReginaLeagueMatch } from "../mock/beleza-regina-league.ts";
+import { belezaStellaLeagueMatch } from "../mock/beleza-stella-league.ts";
 import type { CommonFixture } from "../types/fixture";
-import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, belezaMatch5, belezaUrawaCupMatch, belezaReginaMatch, belezaStellaLeagueResult, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
+import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, belezaMatch5, belezaUrawaCupMatch, belezaReginaMatch, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
 
 /** 11/14以降の確定日程の出典（WEリーグ公式試合ページ、2026-11-09確認）。 */
 const weLeagueMatchPages: Record<string, string> = {
@@ -86,11 +87,11 @@ export const belezaFixtures: CommonFixture[] = [
     kickoffStatus: "confirmed" as const, dateLabel: fixture.dateLabel, venue: fixture.venue, isHome: fixture.isHome, status: "scheduled" as const,
     ...(fixture.id === belezaUrawaCupMatch.id ? {} : { sourceUrl: "https://www.verdy.co.jp/beleza/calendar/" }),
     ...(weLeagueMatchPages[fixture.id] ? { sourceUrl: weLeagueMatchPages[fixture.id] } : {}),
-    ...(fixture.id === belezaStellaLeagueResult.id ? {
-      kickoffAt: belezaStellaLeagueResult.kickoffAt,
-      status: belezaStellaLeagueResult.status,
-      score: { home: belezaStellaLeagueResult.homeScore, away: belezaStellaLeagueResult.awayScore },
-      sourceUrl: belezaStellaLeagueResult.sourceUrl,
+    ...(fixture.id === belezaStellaLeagueMatch.id ? {
+      detailMatchId: fixture.id, kickoffAt: belezaStellaLeagueMatch.kickoffAt,
+      status: belezaStellaLeagueMatch.status,
+      score: { home: belezaStellaLeagueMatch.homeScore, away: belezaStellaLeagueMatch.awayScore },
+      sourceUrl: belezaStellaLeagueMatch.sourceUrl,
     } : {}),
     ...(fixture.id === belezaUrawaCupMatch.id ? {
       detailMatchId: fixture.id,

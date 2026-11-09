@@ -70,14 +70,14 @@ test("BELEZA NEXT advances to the official 11.14 新潟L home match after the fi
   assert.equal(new Set(upcoming.map((fixture) => fixture.id)).size, 3);
 });
 
-test("BELEZA 11.07 N相模原 official result is finished as an away 0-1 loss without a fabricated detail link", () => {
+test("BELEZA 11.07 N相模原 official result is finished as an away 0-1 loss linked to its own detail page", () => {
   const fixture = belezaFixtures.find((f) => f.id === "beleza-next-13")!;
   assert.deepEqual(
     [fixture.status, fixture.kickoffAt, fixture.isHome, fixture.venue, fixture.competition.name, fixture.competition.round, fixture.score],
     ["finished", "2026-11-07T14:03:00+09:00", false, "相模原ギオンスタジアム", "2026/27 WEリーグ", "第8節", { home: 1, away: 0 }],
   );
   assert.equal(fixture.sourceUrl, "https://weleague.jp/matches/2026110725/");
-  assert.equal(fixture.detailMatchId, undefined);
+  assert.equal(fixture.detailMatchId, "beleza-next-13");
   const entry = toBelezaSeasonHistoryEntry(fixture);
   assert.deepEqual([entry.homeTeamName, entry.awayTeamName, entry.homeScore, entry.awayScore, entry.result], [
     "ノジマステラ神奈川相模原", "日テレ・東京ヴェルディベレーザ", 1, 0, "loss",

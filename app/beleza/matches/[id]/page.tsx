@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import {
+  belezaStellaLeagueMatch, belezaStellaLeagueHalfScores, belezaStellaLeagueGoals, belezaStellaLeagueCards,
+  belezaStellaLeagueSubstitutions, belezaStellaLeagueOfficialRecord, belezaStellaLeagueStats,
+  belezaStellaLeagueActualLineup, stellaLeagueActualLineup, stellaLeagueTeam, belezaStellaLeagueManagers,
+  stellaPostMatchCommentUrl, belezaStellaLeagueReviewTitle, belezaStellaLeagueReview, belezaStellaLeagueViewerNotes,
+} from "@/lib/mock/beleza-stella-league";
+import {
   belezaOmiyaLeagueMatch, belezaOmiyaLeagueHalfScores, belezaOmiyaLeagueGoals, belezaOmiyaLeagueCards,
   belezaOmiyaLeagueSubstitutions, belezaOmiyaLeagueOfficialRecord, belezaOmiyaLeagueStats,
   belezaOmiyaLeagueActualLineup, omiyaLeagueActualLineup, omiyaLeagueTeam, belezaOmiyaLeagueFormation,
@@ -147,6 +153,7 @@ export default async function BelezaMatchDetailPage({
   const { id } = await params;
   if (!getCategoryDetailHref("beleza", id)) notFound();
 
+  if (id === belezaStellaLeagueMatch.id) return <BelezaStellaLeagueDetail />;
   if (id === belezaOmiyaLeagueMatch.id) return <BelezaOmiyaLeagueDetail />;
   if (id === belezaCerezoLeagueMatch.id) return <BelezaCerezoLeagueDetail />;
   if (id === belezaElfenLeagueMatch.id) return <BelezaElfenLeagueDetail />;
@@ -1153,6 +1160,42 @@ function BelezaCerezoLeagueDetail() {
         <section aria-label="観戦所感" className="space-y-3">
           <SectionHeader title="観戦所感" eyebrow="VIEWER NOTES" />
           {belezaCerezoLeagueViewerNotes.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+        </section>
+      )}
+    </div>
+  );
+}
+
+function BelezaStellaLeagueDetail() {
+  const match = belezaStellaLeagueMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+      <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+      <ArchivedMatchHero competition={match.competition} dateLabel={match.dateLabel} resultLabel="loss"
+        homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        homeScore={match.homeScore} awayScore={match.awayScore} kickoffLabel={match.kickoffLabel}
+        kickoffCaption="実際のKICK OFF" venue={match.venue} halfScores={belezaStellaLeagueHalfScores} goals={belezaStellaLeagueGoals} />
+      <BelezaLiveOfficialLineups belezaTeam={belezaTeam} belezaLineup={belezaStellaLeagueActualLineup}
+        opponentTeam={stellaLeagueTeam} opponentLineup={stellaLeagueActualLineup}
+        caption="公式メンバー表の先発・控えです。ポジションは公式の登録表記で、両チームの開始時フォーメーションは公式に確認できないため図示していません。" />
+      <p className="text-[13px] text-text-secondary">監督：東京NB {belezaStellaLeagueManagers.beleza} ／ N相模原 {belezaStellaLeagueManagers.opponent}</p>
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        goals={belezaStellaLeagueGoals} cards={belezaStellaLeagueCards}
+        substitutions={belezaStellaLeagueSubstitutions} officialRecord={belezaStellaLeagueOfficialRecord}
+        officialSourceLabel="WEリーグ公式 試合ページ" />
+      <p className="text-[12px] text-text-secondary">警告：82分 樋渡 百花（東京NB）。退場：なし。</p>
+      <BelezaMatchStats belezaTeamName={belezaTeam.name} opponentTeamName={stellaLeagueTeam.name} stats={belezaStellaLeagueStats} />
+      <p className="text-[12px] text-text-secondary">シュート・FK・CKは<a className="underline" href={match.sourceUrl} target="_blank" rel="noopener noreferrer">WEリーグ公式試合ページ</a>の記録欄の表記です。</p>
+      <section className="space-y-3">
+        <SectionHeader title={belezaStellaLeagueReviewTitle} eyebrow="MATCH REVIEW" />
+        {belezaStellaLeagueReview.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+        <p className="text-[12px] text-text-secondary">相手側コメントの出典：<a className="underline" href={stellaPostMatchCommentUrl} target="_blank" rel="noopener noreferrer">ノジマステラ神奈川相模原 公式 試合結果および監督・選手コメント</a>（要約）。</p>
+      </section>
+      {belezaStellaLeagueViewerNotes.length > 0 && (
+        <section className="space-y-3">
+          <SectionHeader title="観戦者の所感" eyebrow="VIEWER NOTES" />
+          {belezaStellaLeagueViewerNotes.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
         </section>
       )}
     </div>
