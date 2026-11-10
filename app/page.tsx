@@ -100,7 +100,7 @@ export default async function Home() {
           opponentName: nextBelezaFixture.opponentName,
           dateLabel: toBelezaUpcomingMatch(nextBelezaFixture).dateLabel,
           kickoffLabel: toBelezaUpcomingMatch(nextBelezaFixture).kickoffLabel,
-          homeAway: nextBelezaFixture.isHome ? "HOME" : "AWAY",
+          homeAway: nextBelezaFixture.hideHomeAwayLabel ? undefined : nextBelezaFixture.isHome ? "HOME" : "AWAY",
           fixtureMeta: toBelezaUpcomingMatch(nextBelezaFixture).fixtureMeta,
         }
       : undefined,

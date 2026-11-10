@@ -322,6 +322,7 @@ export interface UpcomingFixture {
   kickoffLabel: string;
   fixtureMeta: FixtureMeta;
   isHome: boolean;
+  hideHomeAwayLabel?: boolean;
   opponentName: string;
   /** 公式サイトで確認できた場合のみ設定する（推測で埋めない）。未設定ならUI側でTBD扱い。 */
   venue?: string;

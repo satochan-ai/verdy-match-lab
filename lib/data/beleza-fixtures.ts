@@ -85,7 +85,7 @@ export const belezaFixtures: CommonFixture[] = [
     id: "beleza-empress-2026-2", category: "beleza", teamName: belezaTeam.name,
     opponentName: "1回戦No.8の勝者", competition: { name: "皇后杯 JFA 第48回全日本女子サッカー選手権大会", round: "2回戦" },
     kickoffAt: "2026-11-28T14:00:00+09:00", kickoffStatus: "confirmed", dateLabel: "11.28 SAT",
-    venue: "Axisバードスタジアム", isHome: true, status: "scheduled",
+    venue: "Axisバードスタジアム", isHome: true, hideHomeAwayLabel: true, status: "scheduled",
     sourceUrl: "https://www.jfa.jp/match/empressscup_2026/match_page/m24.html",
   },
   {
@@ -156,7 +156,7 @@ const toMeta = (fixture: CommonFixture) => ({
 export const toBelezaUpcomingMatch = (fixture: CommonFixture): UpcomingFixture => ({
   id: fixture.id, dateLabel: fixture.dateLabel ?? "TBD",
   kickoffLabel: fixture.kickoffAt ? new Intl.DateTimeFormat("en-GB", { timeZone: "Asia/Tokyo", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(new Date(fixture.kickoffAt)) : "TBD",
-  fixtureMeta: toMeta(fixture), isHome: fixture.isHome, opponentName: fixture.opponentName, venue: fixture.venue,
+  fixtureMeta: toMeta(fixture), isHome: fixture.isHome, hideHomeAwayLabel: fixture.hideHomeAwayLabel, opponentName: fixture.opponentName, venue: fixture.venue,
 });
 
 export type BelezaSeasonHistoryView = {
