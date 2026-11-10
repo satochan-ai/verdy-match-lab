@@ -38,6 +38,6 @@ test("finished record advances selectors and exposes a valid detail route", () =
   assert.deepEqual(fixture.score, { home: 2, away: 3 });
   assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, "beleza-next-13");
   assert.equal(getNextFixture(belezaFixtures, now)?.id, "beleza-next-14");
-  assert.deepEqual(getUpcomingFixtures(belezaFixtures, now, 5).map(f => f.id), ["beleza-next-14", "beleza-next-15", "beleza-next-16"]);
+  assert.deepEqual(getUpcomingFixtures(belezaFixtures, now, 5).map(f => f.id), ["beleza-next-14", "beleza-next-15", "beleza-next-16", "beleza-empress-2026-2", "beleza-league-2026-12"]);
   assert.equal(getCategoryDetailHref("beleza", fixture.detailMatchId), "/beleza/matches/beleza-next-9");
 });

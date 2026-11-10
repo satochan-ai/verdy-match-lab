@@ -80,6 +80,21 @@ export const belezaFixtures: CommonFixture[] = [
     score: { home: belezaMatch5.homeScore, away: belezaMatch5.awayScore },
     detailMatchId: belezaMatch5.id,
   },
+  {
+    // 皇后杯2回戦はベレーザの出場が確定。相手は1回戦No.8の勝者。
+    id: "beleza-empress-2026-2", category: "beleza", teamName: belezaTeam.name,
+    opponentName: "1回戦No.8の勝者", competition: { name: "皇后杯 JFA 第48回全日本女子サッカー選手権大会", round: "2回戦" },
+    kickoffAt: "2026-11-28T14:00:00+09:00", kickoffStatus: "confirmed", dateLabel: "11.28 SAT",
+    venue: "Axisバードスタジアム", isHome: true, status: "scheduled",
+    sourceUrl: "https://www.jfa.jp/match/empressscup_2026/match_page/m24.html",
+  },
+  {
+    // 開催候補日であり、正式な開催日・キックオフ・会場は未定。
+    id: "beleza-league-2026-12", category: "beleza", teamName: belezaTeam.name,
+    opponentName: "ジェフユナイテッド市原・千葉レディース", competition: { name: "2026/27 WEリーグ", round: "第12節" },
+    kickoffStatus: "date_range", dateLabel: "2027.02.06 or 02.07（開催日未定）",
+    isHome: false, status: "scheduled", sourceUrl: "https://www.verdy.co.jp/beleza/news/15003",
+  },
   ...belezaUpcomingMatches.slice(1).map((fixture, index) => ({
     id: fixture.id, category: "beleza" as const, teamName: belezaTeam.name, opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },

@@ -22,7 +22,7 @@ test("10/31 result keeps the registered ID and history after the 11/7 result; NE
   const now = new Date("2026-11-01T10:00:00+09:00");
   const next = getNextFixture(belezaFixtures, now)!;
   assert.deepEqual([next.id, next.kickoffAt, next.opponentName, next.isHome, next.venue], ["beleza-next-14", "2026-11-14T15:00:00+09:00", "アルビレックス新潟レディース", true, "味の素フィールド西が丘"]);
-  assert.deepEqual(getUpcomingFixtures(belezaFixtures, now, 5).map(f => f.id), [next.id, "beleza-next-15", "beleza-next-16"]);
+  assert.deepEqual(getUpcomingFixtures(belezaFixtures, now, 5).map(f => f.id), [next.id, "beleza-next-15", "beleza-next-16", "beleza-empress-2026-2", "beleza-league-2026-12"]);
   const timestamps = belezaFixtures.map(f => Date.parse(f.kickoffAt!));
   assert.deepEqual(timestamps, [...timestamps].sort((a, b) => a - b));
   const history = getSeasonHistory(belezaFixtures);
