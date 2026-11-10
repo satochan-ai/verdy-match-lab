@@ -15,6 +15,8 @@ export type CommonFixture = {
   dateLabel?: string;
   venue?: string;
   isHome: boolean;
+  /** ‘Îí‡‚ÍˆÛ‚µAHOME/AWAY‚Ì•\¦‚¾‚¯‚ğÈ—ª‚·‚éB */
+  hideHomeAwayLabel?: boolean;
   status: FixtureStatus;
   score?: FixtureScore;
   detailMatchId?: string;

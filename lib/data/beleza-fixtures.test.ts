@@ -1,14 +1,14 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "./fixture-selectors.ts";
-import { belezaFixtures, toBelezaSeasonHistoryEntry } from "./beleza-fixtures.ts";
+import { belezaFixtures, toBelezaSeasonHistoryEntry, toBelezaUpcomingMatch } from "./beleza-fixtures.ts";
 import { belezaActualLineup, belezaActualFormation, inacKobeActualLineup, belezaElfenMatch } from "../mock/beleza.ts";
 import { validateFixtures } from "./fixture-validation.ts";
 import { weLeagueStandings } from "../mock/beleza-standings.ts";
 
 test("BELEZA fixture collection is valid", () => {
   assert.equal(validateFixtures(belezaFixtures).length, 0);
-  assert.equal(belezaFixtures.length, 17);
+  assert.equal(belezaFixtures.length, 19);
   // /beleza/matches/[id] now renders beleza-match-1/2/3/4/5 (archived) individually in addition
   // to the current snapshot (beleza-next-4, EL埼玉), so every finished BELEZA match carries a
   // real (non-fabricated) detailMatchId equal to its own id.
@@ -51,23 +51,28 @@ test("BELEZA NEXT advances to the official 11.14 新潟L home match after the fi
   // /beleza/matches/${belezaElfenMatch.id} へのリンクを表示する。
   assert.notEqual(nextFixture?.id, belezaElfenMatch.id);
   const upcoming = getUpcomingFixtures(belezaFixtures, asOf, 5);
-  // WEリーグ公式で確認できた未終了日程は3件。未確認の日程で5件に補完しない。
-  assert.equal(upcoming.length, 3);
+  // 公式に確認できたリーグ戦と皇后杯を統合する。
+  assert.equal(upcoming.length, 5);
   assert.equal(upcoming.every((fixture) => fixture.status === "scheduled" && fixture.score === undefined), true);
   assert.deepEqual(upcoming.map((fixture) => fixture.kickoffAt), [
-    "2026-11-14T15:00:00+09:00", "2026-11-18T14:00:00+09:00", "2026-11-23T15:00:00+09:00",
+    "2026-11-14T15:00:00+09:00", "2026-11-18T14:00:00+09:00", "2026-11-23T15:00:00+09:00", "2026-11-28T14:00:00+09:00", undefined,
   ]);
   assert.deepEqual(upcoming.map((fixture) => `${fixture.opponentName}|${fixture.competition.name}|${fixture.competition.round}|${fixture.isHome ? "H" : "A"}|${fixture.venue}|${fixture.dateLabel}`), [
     "アルビレックス新潟レディース|2026/27 WEリーグ|第9節|H|味の素フィールド西が丘|11.14 SAT",
     "マイナビ仙台|2026/27 WEリーグ|第10節|A|キューアンドエースタジアムみやぎ|11.18 WED",
     "INAC神戸レオネッサ|2026/27 WEリーグ|第11節|H|味の素フィールド西が丘|11.23 MON",
+    "1回戦No.8の勝者|皇后杯 JFA 第48回全日本女子サッカー選手権大会|2回戦|H|Axisバードスタジアム|11.28 SAT",
+    "ジェフユナイテッド市原・千葉レディース|2026/27 WEリーグ|第12節|A|undefined|2027.02.06 or 02.07（開催日未定）",
   ]);
   assert.deepEqual(upcoming.map((fixture) => fixture.sourceUrl), [
-    "https://weleague.jp/matches/2026111411/", "https://weleague.jp/matches/2026111804/", "https://weleague.jp/matches/2026112304/",
+    "https://weleague.jp/matches/2026111411/", "https://weleague.jp/matches/2026111804/", "https://weleague.jp/matches/2026112304/", "https://www.jfa.jp/match/empressscup_2026/match_page/m24.html", "https://www.verdy.co.jp/beleza/news/15003",
   ]);
+  assert.equal(upcoming[4].kickoffStatus, "date_range");
+  assert.equal(toBelezaUpcomingMatch(upcoming[4]).kickoffLabel, "TBD");
+  assert.equal(upcoming.some((fixture) => fixture.id === "beleza-next-13"), false);
   // 詳細ページ未作成の予定試合へはリンクしない。
   assert.equal(upcoming.every((fixture) => fixture.detailMatchId === undefined), true);
-  assert.equal(new Set(upcoming.map((fixture) => fixture.id)).size, 3);
+  assert.equal(new Set(upcoming.map((fixture) => fixture.id)).size, 5);
 });
 
 test("BELEZA 11.07 N相模原 official result is finished as an away 0-1 loss linked to its own detail page", () => {

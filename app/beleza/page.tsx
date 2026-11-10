@@ -92,16 +92,16 @@ export default function BelezaPage() {
             <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">
               {nextHomeName}
             </p>
-            <p className="text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
+            {!nextDisplayFixture.hideHomeAwayLabel && <p className="text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
               HOME
-            </p>
+            </p>}
             <p className="py-1 text-[13px] font-extrabold text-fusion-black lg:text-[16px]">VS</p>
             <p className="text-[16px] font-extrabold leading-snug text-text-primary lg:text-[22px]">
               {nextAwayName}
             </p>
-            <p className="text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
+            {!nextDisplayFixture.hideHomeAwayLabel && <p className="text-[10px] font-bold tracking-wide text-text-secondary lg:text-[11px]">
               AWAY
-            </p>
+            </p>}
           </div>
 
           <div className="mt-4 flex flex-col items-center gap-1 border-t border-border pt-3 text-center lg:mt-6">

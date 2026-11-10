@@ -22,9 +22,9 @@ function FixtureRow({ fixture, emphasize }: { fixture: UpcomingFixture; emphasiz
     >
       <p className="tabular-nums text-[11px] font-bold text-text-secondary">{fixture.dateLabel}</p>
       <div className="mt-1 flex items-center gap-2">
-        <span className="shrink-0 bg-fusion-black px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-white">
+        {!fixture.hideHomeAwayLabel && <span className="shrink-0 bg-fusion-black px-1.5 py-0.5 text-[10px] font-bold tracking-wide text-white">
           {fixture.isHome ? "HOME" : "AWAY"}
-        </span>
+        </span>}
         <span className="min-w-0 flex-1 break-words text-[15px] font-extrabold leading-snug text-text-primary">
           {fixture.opponentName}
         </span>
