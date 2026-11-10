@@ -17,7 +17,7 @@ const topFixtures = currentTopFixtures.map(f => f.id === "sched-shimizu" ? { ...
 
 test("TOP schedule adapter produces valid CommonFixtures", () => {
   assert.equal(validateFixtures(topFixtures).length, 0);
-  assert.equal(topFixtures.length, 19);
+  assert.equal(topFixtures.length, 23);
   assert.deepEqual(topFixtures.find((fixture) => fixture.id === "sched-cerezo")?.score, { home: 0, away: 0 });
   assert.equal(topFixtures.find((fixture) => fixture.id === "sched-cerezo")?.detailMatchId, "match-11");
   assert.deepEqual(topFixtures.find((fixture) => fixture.id === "sched-kashima")?.score, { home: 0, away: 2 });
@@ -109,4 +109,24 @@ test("TOP NEXT5 on 2026-10-10 follows the official schedule (広島 / FC東京 /
   assert.equal(new Set(next5.map((fixture) => fixture.id)).size, 5);
   assert.equal(next5.every((fixture) => fixture.status === "scheduled" && fixture.score === undefined), true);
   assert.equal(getLatestFinishedFixture(topFixtures)?.opponentName, "ガイナーレ鳥取");
+});
+
+
+test("11月10日のNEXT 5はリーグと天皇杯を日時順に統合する", () => {
+  const asOf = new Date("2026-11-10T12:00:00+09:00");
+  const next = getUpcomingFixtures(currentTopFixtures, asOf, 5);
+  assert.deepEqual(next.map(f => [f.id, f.kickoffAt, f.opponentName, f.isHome, f.venue, f.competition.name, f.competition.round]), [
+    ["sched-nagoya", "2026-11-21T14:00:00+09:00", "名古屋グランパス", true, "味の素スタジアム", "2026 J1リーグ", "第15節"],
+    ["sched-mito", "2026-11-25T19:00:00+09:00", "水戸ホーリーホック", false, "水戸信用金庫スタジアム", "2026 J1リーグ", "第16節"],
+    ["sched-machida-j1", "2026-11-29T16:00:00+09:00", "FC町田ゼルビア", false, "町田GIONスタジアム", "2026 J1リーグ", "第17節"],
+    ["sched-kyoto", "2026-12-05T14:00:00+09:00", "京都サンガF.C.", true, "味の素スタジアム", "2026 J1リーグ", "第18節"],
+    ["sched-machida-emperor", "2026-12-09T18:30:00+09:00", "FC町田ゼルビア", false, "町田GIONスタジアム", "天皇杯 JFA 第106回全日本サッカー選手権大会", "ラウンド16"],
+  ]);
+  assert.equal(getNextFixture(currentTopFixtures, asOf)?.id, "sched-nagoya");
+  assert.equal(getLatestFinishedFixture(currentTopFixtures)?.id, "sched-shimizu");
+  assert.ok(next.every(f => f.status === "scheduled" && f.detailMatchId === undefined));
+  const finished = currentTopFixtures.map(f => f.id === "sched-nagoya" ? { ...f, status: "finished" as const, score: { home: 1, away: 0 } } : f);
+  assert.deepEqual(getUpcomingFixtures(finished, new Date("2026-11-21T17:00:00+09:00"), 5).map(f => f.id), ["sched-mito", "sched-machida-j1", "sched-kyoto", "sched-machida-emperor"]);
+  assert.equal(getLatestFinishedFixture(finished)?.id, "sched-nagoya");
+  assert.equal(currentTopFixtures.find(f => f.id === "sched-shimizu")?.detailMatchId, "sched-shimizu");
 });

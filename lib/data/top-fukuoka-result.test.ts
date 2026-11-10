@@ -65,7 +65,7 @@ test("finish makes Fukuoka LAST, NEXT is Nagasaki and Fukuoka PRE content leaves
   assert.equal(resolveMatchStatus(match, now), "finished");
   assert.equal(getLatestFinishedFixture(topFixtures)?.id, "sched-fukuoka");
   assert.equal(getNextFixture(topFixtures, now)?.id, "sched-nagasaki");
-  assert.deepEqual(getUpcomingFixtures(topFixtures, now, 5).map((f) => f.id), ["sched-nagasaki", "sched-shimizu", "sched-nagoya"]);
+  assert.deepEqual(getUpcomingFixtures(topFixtures, now, 5).map((f) => f.id), ["sched-nagasaki", "sched-shimizu", "sched-nagoya", "sched-mito", "sched-machida-j1"]);
   assert.equal(shouldShowFukuokaContent({ id: "sched-fukuoka", status: "finished" }), false);
   assert.equal(verdyFukuokaRows.flat().length + avispaRows.flat().length, 22);
   assert.equal(verdyFukuokaStrategies.length + avispaStrategies.length, 6);
