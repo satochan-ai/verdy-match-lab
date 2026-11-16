@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import {
+  belezaNiigataLeagueMatch, belezaNiigataLeagueHalfScores, belezaNiigataLeagueGoals, belezaNiigataLeagueCards,
+  belezaNiigataLeagueSubstitutions, belezaNiigataLeagueOfficialRecord, belezaNiigataLeagueStats,
+  belezaNiigataLeagueActualLineup, niigataLeagueActualLineup, niigataLeagueTeam, belezaNiigataLeagueManagers,
+  belezaNiigataLeagueFormation, belezaNiigataLeagueReviewTitle, belezaNiigataLeagueReview, belezaNiigataLeagueViewerNotes,
+} from "@/lib/mock/beleza-niigata-league";
+import {
   belezaStellaLeagueMatch, belezaStellaLeagueHalfScores, belezaStellaLeagueGoals, belezaStellaLeagueCards,
   belezaStellaLeagueSubstitutions, belezaStellaLeagueOfficialRecord, belezaStellaLeagueStats,
   belezaStellaLeagueActualLineup, stellaLeagueActualLineup, stellaLeagueTeam, belezaStellaLeagueManagers,
@@ -153,6 +159,7 @@ export default async function BelezaMatchDetailPage({
   const { id } = await params;
   if (!getCategoryDetailHref("beleza", id)) notFound();
 
+  if (id === belezaNiigataLeagueMatch.id) return <BelezaNiigataLeagueDetail />;
   if (id === belezaStellaLeagueMatch.id) return <BelezaStellaLeagueDetail />;
   if (id === belezaOmiyaLeagueMatch.id) return <BelezaOmiyaLeagueDetail />;
   if (id === belezaCerezoLeagueMatch.id) return <BelezaCerezoLeagueDetail />;
@@ -1238,6 +1245,49 @@ function BelezaOmiyaLeagueDetail() {
         <section className="space-y-3">
           <SectionHeader title="観戦者の所感" eyebrow="VIEWER NOTES" />
           {belezaOmiyaLeagueViewerNotes.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+        </section>
+      )}
+    </div>
+  );
+}
+
+function BelezaNiigataLeagueDetail() {
+  const match = belezaNiigataLeagueMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+      <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+      <ArchivedMatchHero competition={match.competition} dateLabel={match.dateLabel} resultLabel="win"
+        homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        homeScore={match.homeScore} awayScore={match.awayScore} kickoffLabel={match.kickoffLabel}
+        kickoffCaption="実際のKICK OFF" venue={match.venue} halfScores={belezaNiigataLeagueHalfScores} goals={belezaNiigataLeagueGoals} />
+      <section>
+        <SectionHeader title="ユーザー提供の配置情報に基づく再現" eyebrow="FORMATION" />
+        <div className="border-y border-border bg-surface px-3 py-4">
+          <FormationPitch team={belezaTeam} lineup={belezaNiigataLeagueFormation} idPrefix="niigata-league-provided" />
+        </div>
+        <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">東京NBの開始時の配置を、ユーザー提供の配置情報に基づき3-4-2-1で再現しています（公式発表のフォーメーションではありません）。各ラインは画面左から右の並びで、公式記録の登録ポジション（下のメンバー表）とは区別しています。試合中の配置変更は反映していません。新潟Lの開始時配置は確認できないため図示していません。</p>
+      </section>
+      <BelezaLiveOfficialLineups belezaTeam={belezaTeam} belezaLineup={belezaNiigataLeagueActualLineup}
+        opponentTeam={niigataLeagueTeam} opponentLineup={niigataLeagueActualLineup}
+        caption="公式記録の先発・控えです。ポジションは公式記録の登録表記です。" />
+      <p className="text-[13px] text-text-secondary">監督：東京NB {belezaNiigataLeagueManagers.beleza} ／ 新潟L {belezaNiigataLeagueManagers.opponent}</p>
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        goals={belezaNiigataLeagueGoals} cards={belezaNiigataLeagueCards}
+        substitutions={belezaNiigataLeagueSubstitutions} officialRecord={belezaNiigataLeagueOfficialRecord}
+        officialSourceLabel="WEリーグ公式 試合記録（PDF）" />
+      <p className="text-[12px] text-text-secondary">警告・退場：両チームとも公式記録に記載なし。HTはハーフタイム中の交代です。</p>
+      <BelezaMatchStats belezaTeamName={belezaTeam.name} opponentTeamName={niigataLeagueTeam.name} stats={belezaNiigataLeagueStats} />
+      <p className="text-[12px] text-text-secondary">シュート・FK・CKは<a className="underline" href={match.sourceUrl} target="_blank" rel="noopener noreferrer">WEリーグ公式試合ページ</a>・<a className="underline" href={match.recordPdfUrl} target="_blank" rel="noopener noreferrer">公式記録PDF</a>の表記です（FKは直接FKと間接FKの合計）。</p>
+      <section className="space-y-3">
+        <SectionHeader title={belezaNiigataLeagueReviewTitle} eyebrow="MATCH REVIEW" />
+        {belezaNiigataLeagueReview.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
+        <p className="text-[12px] text-text-secondary">公式情報：<a className="underline" href={match.sourceUrl} target="_blank" rel="noopener noreferrer">WEリーグ公式 試合ページ</a>・<a className="underline" href={match.recordPdfUrl} target="_blank" rel="noopener noreferrer">公式記録PDF</a>。試合写真は利用条件を確認できないため転載していません。</p>
+      </section>
+      {belezaNiigataLeagueViewerNotes.length > 0 && (
+        <section className="space-y-3">
+          <SectionHeader title="観戦者の所感" eyebrow="VIEWER NOTES" />
+          {belezaNiigataLeagueViewerNotes.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
         </section>
       )}
     </div>
