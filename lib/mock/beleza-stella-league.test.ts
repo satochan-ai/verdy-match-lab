@@ -20,9 +20,10 @@ test("11/7 N相模原 official result keeps the existing ID, away 0-1 loss and b
   const fixture = belezaFixtures.find((f) => f.id === match.id)!;
   assert.deepEqual([fixture.status, fixture.score, fixture.isHome, fixture.detailMatchId], ["finished", { home: 1, away: 0 }, false, "beleza-next-13"]);
   assert.equal(getCategoryDetailHref("beleza", fixture.detailMatchId), "/beleza/matches/beleza-next-13");
-  assert.equal(getLatestFinishedFixture(belezaFixtures)?.detailMatchId, "beleza-next-13");
+  // 11/14 新潟L戦の結果登録後は、LASTは新潟L戦、N相模原戦は履歴の2件目に残る。
+  assert.equal(getLatestFinishedFixture(belezaFixtures)?.detailMatchId, "beleza-next-14");
   const history = getSeasonHistory(belezaFixtures).map(toBelezaSeasonHistoryEntry);
-  assert.deepEqual([history[0].detailMatchId, history[0].result], ["beleza-next-13", "loss"]);
+  assert.deepEqual([history[1].detailMatchId, history[1].result], ["beleza-next-13", "loss"]);
 });
 
 test("official timeline: goal, card and substitutions are attributed to the correct team", () => {
