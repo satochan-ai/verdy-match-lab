@@ -2,28 +2,28 @@ import type { LeagueStandings } from "@/types/standings";
 
 /**
  * 2026/27 WEリーグ 順位表。
- * 出典：WEリーグ公式順位表（2026/11/15 18:56更新、2026-11-17確認）。
+ * 出典：WEリーグ公式順位表（2026/11/18 20:53更新、2026-11-19確認。第10節は11/19にも開催予定のため、同日の結果は未反映）。
  * 公式ページに表示されている列（順位・チーム名・勝点・試合数・勝敗分・得点・失点・得失点差）
  * のみを保持し、存在しない列は追加しない。全12クラブを提供値どおり保持する。
  * 数値は推測・補完しない。同順位は許可する（rankの重複を禁止しない）。
  */
 export const weLeagueStandings: LeagueStandings = {
   competition: "2026/27 WEリーグ",
-  asOfLabel: "2026/11/15 18:56 現在",
+  asOfLabel: "2026/11/18 20:53 現在",
   sourceUrl: "https://weleague.jp/standings/",
   entries: [
-    {"rank":1,"teamName":"三菱重工浦和レッズレディース","played":9,"wins":7,"draws":0,"losses":2,"goalsFor":17,"goalsAgainst":5,"goalDifference":12,"points":21},
-    {"rank":2,"teamName":"日テレ・東京ヴェルディベレーザ","played":9,"wins":6,"draws":0,"losses":3,"goalsFor":19,"goalsAgainst":13,"goalDifference":6,"points":18},
-    {"rank":3,"teamName":"セレッソ大阪ヤンマーレディース","played":9,"wins":4,"draws":4,"losses":1,"goalsFor":17,"goalsAgainst":10,"goalDifference":7,"points":16},
-    {"rank":4,"teamName":"ジェフ千葉レディース","played":9,"wins":5,"draws":1,"losses":3,"goalsFor":11,"goalsAgainst":10,"goalDifference":1,"points":16},
-    {"rank":5,"teamName":"サンフレッチェ広島レジーナ","played":9,"wins":5,"draws":0,"losses":4,"goalsFor":14,"goalsAgainst":11,"goalDifference":3,"points":15},
-    {"rank":6,"teamName":"マイナビ仙台","played":9,"wins":4,"draws":1,"losses":4,"goalsFor":12,"goalsAgainst":13,"goalDifference":-1,"points":13},
-    {"rank":7,"teamName":"ノジマステラ神奈川相模原","played":9,"wins":3,"draws":3,"losses":3,"goalsFor":7,"goalsAgainst":12,"goalDifference":-5,"points":12},
+    {"rank":1,"teamName":"三菱重工浦和レッズレディース","played":10,"wins":7,"draws":1,"losses":2,"goalsFor":19,"goalsAgainst":7,"goalDifference":12,"points":22},
+    {"rank":2,"teamName":"日テレ・東京ヴェルディベレーザ","played":10,"wins":7,"draws":0,"losses":3,"goalsFor":22,"goalsAgainst":15,"goalDifference":7,"points":21},
+    {"rank":3,"teamName":"セレッソ大阪ヤンマーレディース","played":10,"wins":4,"draws":5,"losses":1,"goalsFor":19,"goalsAgainst":12,"goalDifference":7,"points":17},
+    {"rank":4,"teamName":"ジェフ千葉レディース","played":10,"wins":5,"draws":1,"losses":4,"goalsFor":11,"goalsAgainst":11,"goalDifference":0,"points":16},
+    {"rank":5,"teamName":"サンフレッチェ広島レジーナ","played":10,"wins":5,"draws":0,"losses":5,"goalsFor":14,"goalsAgainst":13,"goalDifference":1,"points":15},
+    {"rank":6,"teamName":"ノジマステラ神奈川相模原","played":10,"wins":4,"draws":3,"losses":3,"goalsFor":9,"goalsAgainst":12,"goalDifference":-3,"points":15},
+    {"rank":7,"teamName":"マイナビ仙台","played":10,"wins":4,"draws":1,"losses":5,"goalsFor":14,"goalsAgainst":16,"goalDifference":-2,"points":13},
     {"rank":8,"teamName":"INAC神戸レオネッサ","played":8,"wins":3,"draws":2,"losses":3,"goalsFor":15,"goalsAgainst":14,"goalDifference":1,"points":11},
-    {"rank":9,"teamName":"RB大宮アルディージャWOMEN","played":9,"wins":3,"draws":0,"losses":6,"goalsFor":6,"goalsAgainst":12,"goalDifference":-6,"points":9},
-    {"rank":10,"teamName":"AC長野パルセイロ・レディース","played":9,"wins":1,"draws":4,"losses":4,"goalsFor":7,"goalsAgainst":12,"goalDifference":-5,"points":7},
-    {"rank":11,"teamName":"ちふれASエルフェン埼玉","played":9,"wins":2,"draws":1,"losses":6,"goalsFor":8,"goalsAgainst":16,"goalDifference":-8,"points":7},
-    {"rank":12,"teamName":"アルビレックス新潟レディース","played":8,"wins":1,"draws":2,"losses":5,"goalsFor":6,"goalsAgainst":11,"goalDifference":-5,"points":5},
+    {"rank":9,"teamName":"AC長野パルセイロ・レディース","played":10,"wins":2,"draws":4,"losses":4,"goalsFor":8,"goalsAgainst":12,"goalDifference":-4,"points":10},
+    {"rank":10,"teamName":"RB大宮アルディージャWOMEN","played":9,"wins":3,"draws":0,"losses":6,"goalsFor":6,"goalsAgainst":12,"goalDifference":-6,"points":9},
+    {"rank":11,"teamName":"アルビレックス新潟レディース","played":9,"wins":2,"draws":2,"losses":5,"goalsFor":7,"goalsAgainst":11,"goalDifference":-4,"points":8},
+    {"rank":12,"teamName":"ちふれASエルフェン埼玉","played":10,"wins":2,"draws":1,"losses":7,"goalsFor":8,"goalsAgainst":17,"goalDifference":-9,"points":7},
   ],
 };
 

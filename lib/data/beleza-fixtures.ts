@@ -5,6 +5,7 @@ import { belezaCerezoLeagueMatch } from "../mock/beleza-cerezo-league.ts";
 import { belezaReginaLeagueMatch } from "../mock/beleza-regina-league.ts";
 import { belezaStellaLeagueMatch } from "../mock/beleza-stella-league.ts";
 import { belezaNiigataLeagueMatch } from "../mock/beleza-niigata-league.ts";
+import { belezaSendaiLeagueMatch } from "../mock/beleza-sendai-league.ts";
 import type { CommonFixture } from "../types/fixture";
 import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, belezaMatch5, belezaUrawaCupMatch, belezaReginaMatch, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
 
@@ -82,9 +83,9 @@ export const belezaFixtures: CommonFixture[] = [
     detailMatchId: belezaMatch5.id,
   },
   {
-    // 皇后杯2回戦はベレーザの出場が確定。相手は1回戦No.8の勝者。
+    // 皇后杯2回戦。相手は中京大学（JFA公式 m24・クラブ公式日程、2026-11-19確認）。
     id: "beleza-empress-2026-2", category: "beleza", teamName: belezaTeam.name,
-    opponentName: "1回戦No.8の勝者", competition: { name: "皇后杯 JFA 第48回全日本女子サッカー選手権大会", round: "2回戦" },
+    opponentName: "中京大学", competition: { name: "皇后杯 JFA 第48回全日本女子サッカー選手権大会", round: "2回戦" },
     kickoffAt: "2026-11-28T14:00:00+09:00", kickoffStatus: "confirmed", dateLabel: "11.28 SAT",
     venue: "Axisバードスタジアム", isHome: true, hideHomeAwayLabel: true, status: "scheduled",
     sourceUrl: "https://www.jfa.jp/match/empressscup_2026/match_page/m24.html",
@@ -103,6 +104,12 @@ export const belezaFixtures: CommonFixture[] = [
     kickoffStatus: "confirmed" as const, dateLabel: fixture.dateLabel, venue: fixture.venue, isHome: fixture.isHome, status: "scheduled" as const,
     ...(fixture.id === belezaUrawaCupMatch.id ? {} : { sourceUrl: "https://www.verdy.co.jp/beleza/calendar/" }),
     ...(weLeagueMatchPages[fixture.id] ? { sourceUrl: weLeagueMatchPages[fixture.id] } : {}),
+    ...(fixture.id === belezaSendaiLeagueMatch.id ? {
+      detailMatchId: fixture.id, kickoffAt: belezaSendaiLeagueMatch.kickoffAt,
+      status: belezaSendaiLeagueMatch.status,
+      score: { home: belezaSendaiLeagueMatch.homeScore, away: belezaSendaiLeagueMatch.awayScore },
+      sourceUrl: belezaSendaiLeagueMatch.sourceUrl,
+    } : {}),
     ...(fixture.id === belezaNiigataLeagueMatch.id ? {
       detailMatchId: fixture.id, kickoffAt: belezaNiigataLeagueMatch.kickoffAt,
       status: belezaNiigataLeagueMatch.status,

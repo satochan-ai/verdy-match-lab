@@ -84,19 +84,20 @@ test("review states the verified facts without unsupported verdicts", () => {
   assert.deepEqual(notes, []);
 });
 
-test("LAST MATCH, HISTORY, NEXT MATCH and NEXT 5 advance after the 新潟L win", () => {
+test("新潟L win stays in HISTORY right after the newer 仙台 result; NEXT and NEXT 5 exclude both", () => {
   const fixture = belezaFixtures.find((f) => f.id === match.id)!;
   assert.deepEqual([fixture.status, fixture.score, fixture.isHome, fixture.kickoffAt, fixture.detailMatchId],
     ["finished", { home: 2, away: 1 }, true, "2026-11-14T15:04:00+09:00", "beleza-next-14"]);
   assert.equal(getCategoryDetailHref("beleza", fixture.detailMatchId), "/beleza/matches/beleza-next-14");
-  assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, "beleza-next-14");
+  // 11/18 仙台戦の結果登録後は、LASTが仙台戦になり新潟L戦は履歴の2件目に残る。
+  assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, "beleza-next-15");
   const history = getSeasonHistory(belezaFixtures).map(toBelezaSeasonHistoryEntry);
-  assert.deepEqual([history[0].id, history[0].result, history[0].homeScore, history[0].awayScore, history[0].detailMatchId], ["beleza-next-14", "win", 2, 1, "beleza-next-14"]);
+  assert.deepEqual([history[1].id, history[1].result, history[1].homeScore, history[1].awayScore, history[1].detailMatchId], ["beleza-next-14", "win", 2, 1, "beleza-next-14"]);
   const next = getNextFixture(belezaFixtures, now)!;
-  assert.deepEqual([next.id, next.opponentName, next.kickoffAt, next.isHome, next.venue], ["beleza-next-15", "マイナビ仙台", "2026-11-18T14:00:00+09:00", false, "キューアンドエースタジアムみやぎ"]);
+  assert.deepEqual([next.id, next.opponentName, next.kickoffAt, next.isHome, next.venue], ["beleza-next-16", "INAC神戸レオネッサ", "2026-11-23T15:00:00+09:00", true, "味の素フィールド西が丘"]);
   const upcoming = getUpcomingFixtures(belezaFixtures, now, 5);
-  // 公式に確定している未終了試合は4件のみ。5件にするために未確認試合を創作しない。
-  assert.deepEqual(upcoming.map((f) => f.id), ["beleza-next-15", "beleza-next-16", "beleza-empress-2026-2", "beleza-league-2026-12"]);
+  // 公式に確定している未終了試合のみ。5件にするために未確認試合を創作しない。
+  assert.deepEqual(upcoming.map((f) => f.id), ["beleza-next-16", "beleza-empress-2026-2", "beleza-league-2026-12"]);
   assert.equal(upcoming.some((f) => f.id === match.id), false);
-  assert.deepEqual(upcoming.map((f) => toBelezaUpcomingMatch(f).dateLabel), ["11.18 WED", "11.23 MON", "11.28 SAT", "2027.02.06 or 02.07（開催日未定）"]);
+  assert.deepEqual(upcoming.map((f) => toBelezaUpcomingMatch(f).dateLabel), ["11.23 MON", "11.28 SAT", "2027.02.06 or 02.07（開催日未定）"]);
 });
