@@ -12,17 +12,17 @@ import { getCategoryDetailHref } from "../data/category-match-details.ts";
 import { belezaCerezoLeagueMatch } from "./beleza-cerezo-league.ts";
 import { belezaElfenLeagueMatch } from "./beleza-elfen-league.ts";
 
-test("10/31 result keeps the registered ID and history after the 11/7 and 11/14 results; NEXT is the official 11/18 away match", () => {
+test("10/31 result keeps the registered ID and history after the 11/7, 11/14 and 11/18 results; NEXT is the official 11/23 home match", () => {
   const fixture = belezaFixtures.find(f => f.id === match.id)!;
   assert.deepEqual([fixture.status, fixture.kickoffAt, fixture.score, fixture.competition.round], ["finished", "2026-10-31T15:05:00+09:00", { home: 2, away: 1 }, "第7節"]);
   assert.deepEqual(halves, { firstHalf: "1-0", secondHalf: "1-1" });
   assert.equal(getCategoryDetailHref("beleza", fixture.detailMatchId), "/beleza/matches/beleza-next-12");
-  // 11/14 新潟L戦の結果登録により、LASTは新潟L戦へ進む。
-  assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, "beleza-next-14");
+  // 11/18 仙台戦の結果登録により、LASTは仙台戦へ進む。
+  assert.equal(getLatestFinishedFixture(belezaFixtures)?.id, "beleza-next-15");
   const now = new Date("2026-11-01T10:00:00+09:00");
   const next = getNextFixture(belezaFixtures, now)!;
-  assert.deepEqual([next.id, next.kickoffAt, next.opponentName, next.isHome, next.venue], ["beleza-next-15", "2026-11-18T14:00:00+09:00", "マイナビ仙台", false, "キューアンドエースタジアムみやぎ"]);
-  assert.deepEqual(getUpcomingFixtures(belezaFixtures, now, 5).map(f => f.id), ["beleza-next-15", "beleza-next-16", "beleza-empress-2026-2", "beleza-league-2026-12"]);
+  assert.deepEqual([next.id, next.kickoffAt, next.opponentName, next.isHome, next.venue], ["beleza-next-16", "2026-11-23T15:00:00+09:00", "INAC神戸レオネッサ", true, "味の素フィールド西が丘"]);
+  assert.deepEqual(getUpcomingFixtures(belezaFixtures, now, 5).map(f => f.id), ["beleza-next-16", "beleza-empress-2026-2", "beleza-league-2026-12"]);
   const timestamps = belezaFixtures.map(f => Date.parse(f.kickoffAt!));
   assert.deepEqual(timestamps, [...timestamps].sort((a, b) => a - b));
   const history = getSeasonHistory(belezaFixtures);
