@@ -29,7 +29,7 @@ export const nagoyaVerdyLineup = {
       { number: 18, name: "溝口修平", role: "左SB", reason: "3試合すべて左SBでフル出場。新井との距離を保ちながら左を支える。" },
       { number: 29, name: "佐古真礼", role: "左CB", reason: "3試合とも途中出場。清水戦では18分にチョと交代し、無失点で終えた守備陣の一角を担った。" },
       { number: 4, name: "林尚輝", role: "右CB", reason: "3試合連続で右CBに先発し、長崎・清水でフル出場。隣のCBが替わっても継続起用と予想。" },
-      { number: 22, name: "内田陽介", role: "右SB", reason: "3試合すべて右SBでフル出場。藤本の外を支え、名古屋の左WBにも対応する。" },
+      { number: 22, name: "内田陽介", role: "右SB", reason: "3試合すべて右SBでフル出場。本命案では松橋と右サイドで連係し、名古屋の左WB中山にも対応する。" },
     ],
     [{ number: 1, name: "マテウス", role: "GK", reason: "3試合すべてフル出場し、清水戦は無失点。継続起用を予想。" }],
   ] satisfies Starter[][],
