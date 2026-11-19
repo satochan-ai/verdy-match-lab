@@ -60,7 +60,7 @@ test("BELEZA NEXT advances to the official 11.23 INAC神戸 home match after the
   ]);
   assert.deepEqual(upcoming.map((fixture) => `${fixture.opponentName}|${fixture.competition.name}|${fixture.competition.round}|${fixture.isHome ? "H" : "A"}|${fixture.venue}|${fixture.dateLabel}`), [
     "INAC神戸レオネッサ|2026/27 WEリーグ|第11節|H|味の素フィールド西が丘|11.23 MON",
-    "1回戦No.8の勝者|皇后杯 JFA 第48回全日本女子サッカー選手権大会|2回戦|H|Axisバードスタジアム|11.28 SAT",
+    "中京大学|皇后杯 JFA 第48回全日本女子サッカー選手権大会|2回戦|H|Axisバードスタジアム|11.28 SAT",
     "ジェフユナイテッド市原・千葉レディース|2026/27 WEリーグ|第12節|A|undefined|2027.02.06 or 02.07（開催日未定）",
   ]);
   assert.deepEqual(upcoming.map((fixture) => fixture.sourceUrl), [
