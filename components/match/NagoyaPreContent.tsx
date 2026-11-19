@@ -11,6 +11,7 @@ import {
   nagoyaSources,
   nagoyaStrategies,
   nagoyaVerdyLineup,
+  nagoyaVerdySomenoLineup,
 } from "@/lib/match/nagoya-preview";
 
 export function NagoyaPreContent() {
@@ -32,9 +33,15 @@ export function NagoyaPreContent() {
         <SectionHeader title="名古屋戦 両チーム予想スタメン" eyebrow="PREDICTED LINEUP / 2026.11.21" />
         <p className="text-[13px] font-bold leading-relaxed text-deep-green">Verdy Match Labの独自予想です。攻撃方向を上にそろえ、画面の左右で選手の配置を示します。</p>
         <div className="grid gap-6 lg:grid-cols-2">
-          <Lineup lineup={nagoyaVerdyLineup} tone="verdy" />
+          <Lineup lineup={nagoyaVerdyLineup} tone="verdy" title="東京ヴェルディ 本命案" />
           <Lineup lineup={nagoyaOpponentLineup} tone="nagoya" />
         </div>
+        <details className="border border-border bg-surface p-3">
+          <summary className="cursor-pointer text-[14px] font-extrabold text-deep-green">染野が先発可能な場合の別案</summary>
+          <div className="mt-3 lg:w-1/2">
+            <Lineup lineup={nagoyaVerdySomenoLineup} tone="verdy" title="東京ヴェルディ 染野先発案" />
+          </div>
+        </details>
         <div className="space-y-2 text-[13px] leading-relaxed text-text-secondary">
           <h3 className="font-extrabold text-deep-green">東京Vの先発変更候補</h3>
           <ul className="list-disc space-y-1 pl-5">
@@ -64,17 +71,19 @@ export function NagoyaPreContent() {
 function Lineup({
   lineup,
   tone,
+  title = lineup.team,
 }: {
   lineup: typeof nagoyaVerdyLineup | typeof nagoyaOpponentLineup;
   tone: "verdy" | "nagoya";
+  title?: string;
 }) {
   const starters = lineup.rows.flat();
   const numbers = Object.fromEntries(starters.map(({ name, number }) => [name, number]));
 
   return (
-    <article aria-label={`${lineup.team} ${lineup.formation}`} className="min-w-0 space-y-2">
+    <article aria-label={`${title} ${lineup.formation}`} className="min-w-0 space-y-2">
       <h3 className="flex justify-between gap-3 text-[16px] font-extrabold text-text-primary">
-        <span>{lineup.team}</span><span>{lineup.formation}</span>
+        <span>{title}</span><span>{lineup.formation}</span>
       </h3>
       <PredictionPitch rows={lineup.rows} numbers={numbers} tone={tone} />
       <p className="text-[13px] leading-relaxed text-text-secondary">{lineup.basis}</p>

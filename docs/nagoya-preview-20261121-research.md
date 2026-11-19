@@ -12,14 +12,18 @@
 
 - 交代した先発以外はFootball LAB集計で各90分。長崎戦の新井と齋藤の集計値は89分と44分。記録時刻を基に追加時間を再計算していない。
 - 相馬監督は10月8日就任。リーグ初戦の広島戦からFC東京、横浜FMまでの3試合は2敗1分。その後3連勝し、福岡戦以降はGKと4バック、新井・平川・藤本・一美の計9人が固定。左FWは福岡の熊取谷から長崎・清水の染野へ、右CMは福岡・長崎の齋藤から清水の森田へ替わった。
+- 清水戦の67分は染野から松橋への脳振盪交代。藤本も負傷して59分に交代した。11月11日の練習取材では染野は接触強度の高い一部メニューを回避し、藤本とチョは別メニュー。3人の今節の出場可否は未確認。
+- 公式の交代後配置図では、松橋は福岡・長崎・清水の3試合で右SHに入った（すべて途中出場）。清水戦で熊取谷は59分に右SHで入り、67分に左FWに移って72分に得点。本命案は右SH松橋・左FW熊取谷、染野が先発可能なら右SH熊取谷・左FW染野と予想する。
 - 齋藤は長崎戦で脳振盪交代扱い。清水戦で18分に退いたチョについても、今節の可否や診断は未確認。宮原・森田・寺沼と山見・吉田の過去の負傷はクラブ発表で確認。森田と寺沼は清水戦に出場。予想先発に影響する11月の代表招集は確認できていない。
 - 染野への10月の出場停止処分は長崎・清水の先発以前。11月16日のJリーグ公示には両クラブのJ1第15節該当者の掲載なし。同公示の井上竜太と成瀬楓悟はU-21欄の掲載。
 
 ### 参照先
 
-- Jリーグ公式 [福岡戦](https://www.jleague.jp/match/j1/2026/102408/lineup/)・[長崎戦](https://www.jleague.jp/match/j1/2026/110103/lineup/)・[清水戦](https://www.jleague.jp/match/j1/2026/110706/lineup/)・[長崎戦公式記録](https://data.j-league.or.jp/SFMS02/?match_card_id=34641)・[出場停止公示](https://www.jleague.jp/news/article/35370/)・[染野の10月の処分](https://aboutj.jleague.jp/corporate/news/article/88)
+- Jリーグ公式 [福岡戦](https://www.jleague.jp/match/j1/2026/102408/lineup/)・[長崎戦](https://www.jleague.jp/match/j1/2026/110103/lineup/)・[清水戦](https://www.jleague.jp/match/j1/2026/110706/lineup/)・[清水戦公式記録](https://data.j-league.or.jp/SFMS02/?match_card_id=34647)・[清水戦公式戦評](https://www.jleague.jp/match/j1/2026/110706/review/)・[長崎戦公式記録](https://data.j-league.or.jp/SFMS02/?match_card_id=34641)・[出場停止公示](https://www.jleague.jp/news/article/35370/)・[染野の10月の処分](https://aboutj.jleague.jp/corporate/news/article/88)
 - 東京V公式 [試合日程と結果](https://www.verdy.co.jp/match/schedule/2026)・[相馬監督就任会見](https://www.verdy.co.jp/news/15291)・[宮原／森田／寺沼の負傷](https://www.verdy.co.jp/news/15208)・[山見／吉田の負傷](https://www.verdy.co.jp/news/14892)
 - Football LAB [福岡戦](https://www.football-lab.jp/tk-v/report?date=24&month=10&year=2026)・[長崎戦](https://www.football-lab.jp/tk-v/report?date=01&month=11&year=2026)・[清水戦](https://www.football-lab.jp/tk-v/report?date=07&month=11&year=2026)・[対戦データ](https://www.football-lab.jp/tk-v/preview)
+
+- SempreVerdy [11月11日の練習取材](https://note.com/ardbeg27/n/n281f52acb793)
 
 ## 名古屋グランパス
 
