@@ -61,7 +61,7 @@ test("official squads: 11 starters each, bench and substitutions consistent", ()
   assert.deepEqual(managers, { beleza: "楠瀬 直木", opponent: "池田 太" });
 });
 
-test("observed 3-4-2-1 matches the official starters and keeps the provided left-to-right order", () => {
+test("reference (unofficial) 3-4-2-1 matches the official starters and keeps the provided left-to-right order", () => {
   assert.equal(formation.formation, "3-4-2-1");
   assert.deepEqual(formation.starters.map((p) => `${p.number} ${p.name}`), [
     "21 水口 茉優", "5 松田 紫野", "3 村松 智子", "4 土光 真代",

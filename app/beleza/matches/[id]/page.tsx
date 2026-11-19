@@ -1312,11 +1312,11 @@ function BelezaSendaiLeagueDetail() {
         homeScore={match.homeScore} awayScore={match.awayScore} kickoffLabel={match.kickoffLabel}
         kickoffCaption="実際のKICK OFF" venue={match.venue} halfScores={belezaSendaiLeagueHalfScores} goals={belezaSendaiLeagueGoals} />
       <section>
-        <SectionHeader title="観戦で確認した開始時の配置" eyebrow="FORMATION" />
+        <SectionHeader title="参考フォーメーション（3-4-2-1・非公式）" eyebrow="FORMATION" />
         <div className="border-y border-border bg-surface px-3 py-4">
-          <FormationPitch team={belezaTeam} lineup={belezaSendaiLeagueFormation} idPrefix="sendai-league-observed" />
+          <FormationPitch team={belezaTeam} lineup={belezaSendaiLeagueFormation} idPrefix="sendai-league-reference" />
         </div>
-        <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">東京NBの開始時の配置は、観戦で確認した3-4-2-1です（公式記録・クラブ公式ページには配置図の掲載がありません）。各ラインは画面左から右の並びで、公式記録の登録ポジション（下のメンバー表）とは区別しています。試合中の配置変更は反映していません。仙台の開始時配置は未確認のため図示していません。</p>
+        <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">東京NBの配置を参考として3-4-2-1で示しています。公式発表のフォーメーションではなく、開始時の配置として確定した情報でもありません（公式記録・クラブ公式ページには配置図の掲載がありません）。各ラインは画面左から右の並びで、公式記録の登録ポジション（下のメンバー表）とは区別しています。試合中の配置変更は反映していません。仙台の開始時配置は未確認のため図示していません。</p>
       </section>
       <BelezaLiveOfficialLineups belezaTeam={belezaTeam} belezaLineup={belezaSendaiLeagueActualLineup}
         opponentTeam={sendaiLeagueTeam} opponentLineup={sendaiLeagueActualLineup}
