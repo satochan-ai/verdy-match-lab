@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { getMatchDetail, getRecentFinishedMatchSummary } from "@/lib/data/matches";
+import { getMatchDetail, getRecentFinishedMatchSummary, getTopFixturesAfterResult } from "@/lib/data/matches";
 import { resolveCategoryCardState } from "@/lib/match/category-card-state";
 import { belezaFixtures, toBelezaUpcomingMatch } from "@/lib/data/beleza-fixtures";
 import { u21Fixtures, toU21UpcomingMatch } from "@/lib/data/u21-fixtures";
-import { topFixtures, toTopUpcomingFixture } from "@/lib/data/top-fixtures";
+import { toTopUpcomingFixture } from "@/lib/data/top-fixtures";
 import { getLatestFinishedFixture, getNextFixture } from "@/lib/data/fixture-selectors";
 import { getCategoryLiveFixture } from "@/lib/match/category-live-fixture";
 import { resolveMatchStatus } from "@/lib/match/status";
@@ -25,9 +25,10 @@ export const dynamic = "force-dynamic";
 export default async function Home() {
   const now = new Date();
   const recentTopMatch = await getRecentFinishedMatchSummary();
-  const nextTopFixture = getNextFixture(topFixtures, now);
+  const upcomingTopFixtures = getTopFixturesAfterResult(recentTopMatch);
+  const nextTopFixture = getNextFixture(upcomingTopFixtures, now);
   // NEXT selectorは維持しつつ、キックオフ後も「本日のカード」に同じ試合を表示する。
-  const liveTopFixture = topFixtures.find(
+  const liveTopFixture = upcomingTopFixtures.find(
     (fixture) =>
       fixture.status === "scheduled" &&
       fixture.kickoffAt &&
