@@ -115,6 +115,7 @@ export interface TeamMatchStats {
 }
 
 export interface MatchStats {
+  sourceUrl?: string;
   home: TeamMatchStats;
   away: TeamMatchStats;
 }

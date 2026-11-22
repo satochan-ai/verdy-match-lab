@@ -248,15 +248,16 @@ export const scheduleMatches: ScheduleMatch[] = [
     homeScore: 0, awayScore: 1, detailMatchId: "sched-shimizu",
   },
   {
-    // 東京ヴェルディ公式「2026/27シーズン試合一覧」で2026-10-21に確認した確定日程。
+    // Jリーグ公式試合記録 https://data.j-league.or.jp/SFMS02/?match_card_id=34657
     id: "sched-nagoya",
     competition: "j1",
     round: "第15節",
-    kickoffAt: "2026-11-21T14:00:00+09:00",
+    kickoffAt: "2026-11-21T14:03:00+09:00",
     venue: "味の素スタジアム",
     isVerdyHome: true,
     opponentName: "名古屋グランパス",
-    status: "scheduled",
+    status: "finished",
+    homeScore: 0, awayScore: 0, detailMatchId: "sched-nagoya",
   },
   // Jリーグ公式データ（2026-11-11確認）: https://data.j-league.or.jp/SFMS01/search?competition_years=2026&home_away_select=0&team_ids=4
   { id: "sched-mito", competition: "j1", round: "第16節", kickoffAt: "2026-11-25T19:00:00+09:00", venue: "水戸信用金庫スタジアム", isVerdyHome: false, opponentName: "水戸ホーリーホック", status: "scheduled" },
@@ -264,6 +265,8 @@ export const scheduleMatches: ScheduleMatch[] = [
   { id: "sched-kyoto", competition: "j1", round: "第18節", kickoffAt: "2026-12-05T14:00:00+09:00", venue: "味の素スタジアム", isVerdyHome: true, opponentName: "京都サンガF.C.", status: "scheduled" },
   // JFA公式（2026-11-11確認）: https://www.jfa.jp/match/emperorscup_2026/match_page/m77.html
   { id: "sched-machida-emperor", competition: "emperor_cup", round: "ラウンド16", kickoffAt: "2026-12-09T18:30:00+09:00", venue: "町田GIONスタジアム", isVerdyHome: false, opponentName: "FC町田ゼルビア", status: "scheduled" },
+  // 東京V公式の2026/27シーズン日程 https://www.verdy.co.jp/match/schedule/2026
+  { id: "sched-gamba-j1", competition: "j1", round: "第19節", kickoffAt: "2026-12-12T16:00:00+09:00", venue: "パナソニック スタジアム 吹田", isVerdyHome: false, opponentName: "ガンバ大阪", status: "scheduled" },
 ];
 
 export function getPreviousMatches(limit = 5): ScheduleMatch[] {

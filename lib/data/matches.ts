@@ -1,6 +1,8 @@
 import type { Match } from "@/types/domain";
+import type { CommonFixture } from "@/lib/types/fixture";
 import { isDbConfigured, sql } from "@/lib/db/server";
 import * as mock from "@/lib/mock/matches";
+import { nagoyaResult } from "@/lib/mock/top-nagoya-result";
 import { mapMatch } from "./mappers";
 import { topFixtures } from "./top-fixtures";
 import { enrichMatchFixtureMeta, enrichMatchesFixtureMeta } from "./top-match-fixture-meta";
@@ -81,8 +83,44 @@ async function assembleMatch(matchRow: MatchRow): Promise<Match> {
   return mapMatch(matchRow, profileRows, predictionRows, noteRows);
 }
 
+const uuidPattern = /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i;
+
+// teams.id / matches.id はDBで生成するUUID。公式クラブIDや日程の文字列IDとの対応表はない。
+// 名前の照合には確認済みの別名だけを使う。名古屋の正式名称は https://nagoya-grampus.jp/club/overview/ を参照。
+const clubAliases: ReadonlyMap<string, string> = new Map([
+  ["名古屋", "名古屋グランパス"],
+  ["名古屋グランパスエイト", "名古屋グランパス"],
+  ["水戸", "水戸ホーリーホック"],
+]);
+
+function canonicalClubName(name: string) {
+  const normalized = name.normalize("NFKC").trim();
+  return clubAliases.get(normalized) ?? normalized;
+}
+
+const dayInMs = 86_400_000;
+const jstOffsetInMs = 9 * 60 * 60 * 1_000;
+
+function getJstDay(kickoffAt: string) {
+  const epoch = Date.parse(kickoffAt);
+  if (!Number.isFinite(epoch)) return undefined;
+  const start = Math.floor((epoch + jstOffsetInMs) / dayInMs) * dayInMs - jstOffsetInMs;
+  return { start, end: start + dayInMs };
+}
+
+function isNagoyaResultRow(row: FlatMatchRow) {
+  // 開催日とホーム側を確認し、14:03と14:05のような時刻差を許容する。
+  const matchday = getJstDay(nagoyaResult.kickoffAt)!;
+  const kickoff = Date.parse(row.kickoff_at);
+  return kickoff >= matchday.start && kickoff < matchday.end
+    && row.home_team__is_verdy === true && row.away_team__is_verdy === false
+    && canonicalClubName(row.away_team__name) === nagoyaResult.awayTeam.name;
+}
+
 export async function getMatchDetail(id: string): Promise<Match | undefined> {
-  if (!isDbConfigured()) {
+  if (id === nagoyaResult.id) return nagoyaResult;
+
+  if (!isDbConfigured() || !uuidPattern.test(id)) {
     const match = mock.getMatchById(id);
     return match ? enrichMatchFixtureMeta(match, topFixtures) : undefined;
   }
@@ -91,26 +129,61 @@ export async function getMatchDetail(id: string): Promise<Match | undefined> {
   const rows = (await db`${db.unsafe(MATCH_WITH_TEAMS_SQL)} where m.id = ${id}`) as FlatMatchRow[];
 
   if (rows.length === 0) return undefined;
+  if (isNagoyaResultRow(rows[0])) return nagoyaResult;
   return enrichMatchFixtureMeta(await assembleMatch(toMatchRow(rows[0])), topFixtures);
 }
 
-export async function getNextMatch(): Promise<Match | null> {
+/** 直近の確定結果に対応する日程を、NEXTやLIVEの候補から外す。 */
+export function getTopFixturesAfterResult(result: Match): CommonFixture[] {
+  if (!isDbConfigured() || result.status !== "finished" || result.homeScore == null || result.awayScore == null) return topFixtures;
+  const matchday = getJstDay(result.kickoffAt);
+  if (!matchday) return topFixtures;
+
+  const opponent = result.isVerdyHome ? result.awayTeam : result.homeTeam;
+  const name = canonicalClubName(opponent.name);
+  const scheduled = topFixtures.filter((fixture) => fixture.status === "scheduled");
+  const linkedFixture = scheduled.find((fixture) => fixture.id === result.id || fixture.detailMatchId === result.id);
+  const candidates = scheduled.filter((fixture) => {
+    const kickoff = Date.parse(fixture.kickoffAt ?? "");
+    return fixture.kickoffStatus === "confirmed" && fixture.isHome === result.isVerdyHome
+      && kickoff >= matchday.start && kickoff < matchday.end
+      && canonicalClubName(fixture.opponentName) === name;
+  });
+  const completed = linkedFixture ?? (candidates.length === 1 ? candidates[0] : undefined);
+  return completed ? topFixtures.filter((fixture) => fixture !== completed) : topFixtures;
+}
+
+/** 表示中の日程に対応する試合だけを、戦術表示用に取得する。 */
+export async function getScheduledMatchForFixture(fixture: CommonFixture | undefined): Promise<Match | null> {
+  if (!fixture?.kickoffAt || fixture.kickoffStatus !== "confirmed" || fixture.status !== "scheduled") return null;
+
   if (!isDbConfigured()) {
-    const match = mock.getNextMatch();
-    return match ? enrichMatchFixtureMeta(match, topFixtures) : null;
+    const match = mock.getMatchById(fixture.detailMatchId ?? fixture.id);
+    return match?.status === "scheduled" ? enrichMatchFixtureMeta(match, topFixtures) : null;
   }
 
+  const matchday = getJstDay(fixture.kickoffAt);
+  const opponentName = canonicalClubName(fixture.opponentName);
+  if (!matchday || !opponentName || opponentName === "対戦相手未定") return null;
+
+  const fixtureDbId = [fixture.detailMatchId, fixture.id].find((id) => id && uuidPattern.test(id));
   const db = sql();
+  const dayStart = new Date(matchday.start).toISOString();
+  const dayEnd = new Date(matchday.end).toISOString();
   const rows = (await db`
     ${db.unsafe(MATCH_WITH_TEAMS_SQL)}
     where m.status = 'scheduled'
-    order by m.kickoff_at asc
-    limit 1
+      and m.kickoff_at >= ${dayStart}::timestamptz and m.kickoff_at < ${dayEnd}::timestamptz
+      and ht.is_verdy = ${fixture.isHome} and at.is_verdy = ${!fixture.isHome}
   `) as FlatMatchRow[];
 
-  // scheduledな試合が無い場合はnullを返す（過去試合をNEXT MATCHとして返さない）。
-  if (rows.length === 0) return null;
-  return enrichMatchFixtureMeta(await assembleMatch(toMatchRow(rows[0])), topFixtures);
+  const linkedRow = rows.find((row) => row.id === fixtureDbId);
+  const candidates = rows.filter((row) => canonicalClubName(
+    fixture.isHome ? row.away_team__name : row.home_team__name,
+  ) === opponentName);
+  // 同日に対戦カードが複数ある場合、明示的な試合IDがなければ戦術を出さない。
+  const row = linkedRow ?? (candidates.length === 1 ? candidates[0] : undefined);
+  return row ? enrichMatchFixtureMeta(await assembleMatch(toMatchRow(row)), topFixtures) : null;
 }
 
 /** トップ画面の「直近の試合」表示用。三策・分析は不要なので軽量クエリのみ。 */
@@ -128,6 +201,7 @@ export async function getRecentFinishedMatchSummary(): Promise<Match> {
   `) as FlatMatchRow[];
 
   if (rows.length === 0) return mock.getRecentFinishedMatch();
+  if (isNagoyaResultRow(rows[0]) || Date.parse(rows[0].kickoff_at) <= Date.parse(nagoyaResult.kickoffAt)) return nagoyaResult;
   return enrichMatchFixtureMeta(mapMatch(toMatchRow(rows[0]), [], [], []), topFixtures);
 }
 
@@ -144,5 +218,8 @@ export async function getArchiveMatches(): Promise<Match[]> {
     order by m.kickoff_at desc
   `) as FlatMatchRow[];
 
-  return enrichMatchesFixtureMeta(rows.map((row) => mapMatch(toMatchRow(row), [], [], [])), topFixtures);
+  const matches = rows.filter((row) => !isNagoyaResultRow(row)).map((row) => mapMatch(toMatchRow(row), [], [], []));
+  matches.push(nagoyaResult);
+  matches.sort((a, b) => Date.parse(b.kickoffAt) - Date.parse(a.kickoffAt));
+  return enrichMatchesFixtureMeta(matches, topFixtures);
 }

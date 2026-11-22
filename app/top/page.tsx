@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import somaAnalysis from "@/public/images/soma-naoki-tactical-analysis-20261008.png";
 import { getMatchResult } from "@/lib/match/result";
-import { getMatchDetail, getNextMatch, getRecentFinishedMatchSummary } from "@/lib/data/matches";
+import { getMatchDetail, getRecentFinishedMatchSummary, getScheduledMatchForFixture, getTopFixturesAfterResult } from "@/lib/data/matches";
 import { topFixtures, toTopUpcomingFixture } from "@/lib/data/top-fixtures";
 import { getNextFixture, getUpcomingFixtures } from "@/lib/data/fixture-selectors";
 import { StrategyList } from "@/components/match/StrategyList";
@@ -75,22 +75,23 @@ function formatShortDate(iso: string) {
 export const dynamic = "force-dynamic";
 
 export default async function TopTeamPage() {
-  const [nextMatch, recent] = await Promise.all([
-    getNextMatch(),
-    getRecentFinishedMatchSummary(),
-  ]);
   const now = new Date();
+  const recent = await getRecentFinishedMatchSummary();
+  const upcomingFixtures = getTopFixturesAfterResult(recent);
   // 広島戦専用コンテンツ（データは保持）は、表示中のNEXT/LIVEが広島戦のときだけ次戦エリアに出す。
   const hiroshimaFixture = topFixtures.find((fixture) => fixture.id === "sched-hiroshima");
-  const nextFixture = getNextFixture(topFixtures, now);
-  const liveFixture = topFixtures.find(
+  const nextFixture = getNextFixture(upcomingFixtures, now);
+  const liveFixture = upcomingFixtures.find(
     (fixture) =>
       fixture.status === "scheduled" &&
       fixture.kickoffAt &&
       resolveMatchStatus({ status: "scheduled", kickoffAt: fixture.kickoffAt }, now) === "live",
   );
   const displayFixture = liveFixture ?? nextFixture;
-  const detailMatch = displayFixture?.detailMatchId ? await getMatchDetail(displayFixture.detailMatchId) : undefined;
+  const [fixtureMatch, detailMatch] = await Promise.all([
+    getScheduledMatchForFixture(displayFixture),
+    displayFixture?.detailMatchId ? getMatchDetail(displayFixture.detailMatchId) : undefined,
+  ]);
   const detailHref = getTopDetailHref(displayFixture?.detailMatchId, detailMatch);
   const showHiroshimaPreContent = shouldShowHiroshimaPreContent(displayFixture);
   const showFcTokyoPrediction = shouldShowFcTokyoPrediction(displayFixture);
@@ -98,9 +99,7 @@ export default async function TopTeamPage() {
   const showFukuokaContent = shouldShowFukuokaContent(displayFixture);
   const showNagasakiPrediction = shouldShowNagasakiPrediction(displayFixture);
   const showShimizuPrediction = shouldShowShimizuPrediction(displayFixture);
-  const topUpcoming = getUpcomingFixtures(topFixtures, now, 5).map(toTopUpcomingFixture);
-  // nextMatchがnull（scheduledな試合が未登録）の場合は、過去試合を出さずに
-  // 「次戦情報準備中」の空状態を表示する。LAST MATCH / NEXT 5は独立して表示する。
+  const topUpcoming = getUpcomingFixtures(upcomingFixtures, now, 5).map(toTopUpcomingFixture);
   const opponent = displayFixture
     ? { name: displayFixture.opponentName }
     : null;
@@ -108,8 +107,7 @@ export default async function TopTeamPage() {
   const recentResult = getMatchResult(recent);
 
   const fixture = displayFixture?.kickoffAt ? formatMatchday(displayFixture.kickoffAt) : null;
-  // 表示中のNEXT fixture（topFixtures由来）から直接決める。scheduledなMatch行（nextMatch）が
-  // 無い期間でも、NEXT MATCHの日数表示が空状態にならないようにする。
+  // 日数表示は日程から決め、対応する戦術データがない場合も表示する。
   const dayLabel = liveFixture
     ? { kind: "live" as const }
     : displayFixture?.kickoffAt
@@ -214,7 +212,7 @@ export default async function TopTeamPage() {
                 <OpponentRecentMatches matches={nextFixture.opponentRecentMatches} />
               )}
 
-              {nextMatch && <StrategyList strategies={nextMatch.strategies} />}
+              {fixtureMatch && fixtureMatch.strategies.length > 0 && <StrategyList strategies={fixtureMatch.strategies} />}
             </div>
 
             <div className="space-y-6 border-t border-border pt-6 lg:border-t-0 lg:pt-0">
@@ -228,7 +226,7 @@ export default async function TopTeamPage() {
                     <span className="ml-2 flex shrink-0 items-center gap-2">
                       <span className="tabular-nums font-bold text-text-primary">{recent.homeScore}-{recent.awayScore}</span>
                       {recent.penaltyShootout && <span className="text-[12px]">PK {recent.penaltyShootout.homeScore}-{recent.penaltyShootout.awayScore}</span>}
-                      <StatusBadge variant={recentResult} />
+                      <StatusBadge variant={recentResult} label={recentResult === "draw" ? "DRAW" : undefined} />
                     </span>
                   </div>
                   {recent.fixtureMeta && <div className="mt-1"><FixtureMetaLine meta={recent.fixtureMeta} compact /></div>}

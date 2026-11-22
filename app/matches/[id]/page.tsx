@@ -19,6 +19,7 @@ import { MatchRecord } from "@/components/match/MatchRecord";
 import { ViewerReview, YokohamaFmPredictionCheck, YokohamaFmViewerReview } from "@/components/match/YokohamaFmResultExtras";
 import { fukuokaViewerReview } from "@/lib/match/fukuoka-review";
 import { NagasakiResultExtras } from "@/components/match/NagasakiResultExtras";
+import { NagoyaResultExtras } from "@/components/match/NagoyaResultExtras";
 import { ShimizuResultExtras } from "@/components/match/ShimizuResultExtras";
 import { AiGuidePanel } from "@/features/ai-guide/ui/AiGuidePanel";
 import { LiveGuidePanel } from "@/features/ai-guide/ui/LiveGuidePanel";
@@ -312,6 +313,8 @@ export default async function MatchDetailPage({
           {match.id === "sched-nagasaki" && (
             <div className="mt-8 lg:col-start-1 lg:mt-6"><NagasakiResultExtras /></div>
           )}
+
+          {match.id === "sched-nagoya" && <div className="mt-8 lg:col-start-1 lg:mt-6"><NagoyaResultExtras /></div>}
 
           {match.id === "sched-shimizu" && <div className="mt-8 lg:col-start-1 lg:mt-6"><ShimizuResultExtras /></div>}
 
