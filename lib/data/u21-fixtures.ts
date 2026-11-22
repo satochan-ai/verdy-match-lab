@@ -4,6 +4,8 @@ import { u21Match, u21Match1, u21ShimizuMatch, u21KawasakiMatch, u21UpcomingMatc
 import { u21IwataMatch, u21IwataOfficialRecord } from "../mock/u21-iwata-result.ts";
 import { u21NagoyaMatch, u21NagoyaOfficialRecord } from "../mock/u21-nagoya-result.ts";
 
+import { u21GambaMatch, u21GambaOfficialRecord } from "../mock/u21-gamba-result.ts";
+
 const TEAM_NAME = "東京ヴェルディU-21";
 const competition = "2026/27 U-21 Jリーグ";
 
@@ -52,7 +54,7 @@ export const u21Fixtures: CommonFixture[] = [
     teamName: TEAM_NAME,
     opponentName: fixture.opponentName,
     competition: { name: fixture.fixtureMeta.competition, round: fixture.fixtureMeta.roundLabel },
-    kickoffAt: ["2026-09-20T14:03:00+09:00", u21KawasakiMatch.kickoffAt, "2026-10-17T15:00:00+09:00", "2026-11-01T13:00:00+09:00", "2026-11-22T14:00:00+09:00", "2026-11-29T13:00:00+09:00", "2026-12-06T13:00:00+09:00", "2026-12-12T13:00:00+09:00"][index],
+    kickoffAt: ["2026-09-20T14:03:00+09:00", u21KawasakiMatch.kickoffAt, "2026-10-17T15:00:00+09:00", "2026-11-01T13:00:00+09:00", u21GambaMatch.kickoffAt, "2026-11-29T13:00:00+09:00", "2026-12-06T13:00:00+09:00", "2026-12-12T13:00:00+09:00"][index],
     kickoffStatus: "confirmed" as const,
     dateLabel: fixture.dateLabel,
     isHome: fixture.isHome,
@@ -74,6 +76,12 @@ export const u21Fixtures: CommonFixture[] = [
       status: u21IwataMatch.status,
       score: { home: u21IwataMatch.homeScore, away: u21IwataMatch.awayScore },
       sourceUrl: u21IwataOfficialRecord.sourceUrl,
+    } : {}),
+    ...(fixture.id === u21GambaMatch.id ? {
+      detailMatchId: u21GambaMatch.id,
+      status: u21GambaMatch.status,
+      score: { home: u21GambaMatch.homeScore, away: u21GambaMatch.awayScore },
+      sourceUrl: u21GambaOfficialRecord.sourceUrl,
     } : {}),
     ...(fixture.id === u21NagoyaMatch.id ? {
       detailMatchId: u21NagoyaMatch.id,

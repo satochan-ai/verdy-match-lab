@@ -34,13 +34,16 @@ test("cards match official minutes, counts and verified stats", () => {
 
 test("Nagoya LAST, G Osaka NEXT and all six historical results retain IDs", () => {
   const now = new Date("2026-11-01T17:00:00+09:00");
-  assert.equal(getLatestFinishedFixture(u21Fixtures)?.id,match.id);
-  const next = getNextFixture(u21Fixtures,now)!;
+  const afterNagoya = u21Fixtures.map(f => f.id === "u21-next-6"
+    ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined }
+    : f);
+  assert.equal(getLatestFinishedFixture(afterNagoya)?.id,match.id);
+  const next = getNextFixture(afterNagoya,now)!;
   assert.equal(next.id,"u21-next-6");
   assert.equal(next.kickoffAt,"2026-11-22T14:00:00+09:00");
   assert.equal(next.venue,"パナソニック スタジアム 吹田");
-  assert.equal(getSeasonHistory(u21Fixtures).length,6);
-  assert.deepEqual(getUpcomingFixtures(u21Fixtures,now,5).map(f => f.id),["u21-next-6","u21-next-7","u21-next-8","u21-next-9"]);
+  assert.equal(getSeasonHistory(afterNagoya).length,6);
+  assert.deepEqual(getUpcomingFixtures(afterNagoya,now,5).map(f => f.id),["u21-next-6","u21-next-7","u21-next-8","u21-next-9"]);
   assert.equal(u21Fixtures.filter(f => f.id === match.id).length,1);
   assert.equal(u21Fixtures.find(f => f.id === match.id)?.detailMatchId,match.id);
 });

@@ -12,7 +12,7 @@ import { getCategoryLiveFixture } from "@/lib/match/category-live-fixture";
 import { getCategoryDetailHref } from "@/lib/data/category-match-details";
 import { LiveMatchPanel } from "@/components/match/LiveMatchPanel";
 import { LeagueStandingsTable } from "@/components/match/LeagueStandingsTable";
-import { u21EastStandings, u21WestStandings } from "@/lib/mock/u21-standings";
+import { u21EastStandings, u21StandingsUpdatedAt, u21WestStandings } from "@/lib/mock/u21-standings";
 
 /**
  * /u21 は U-21 カテゴリーのトップページ。TOP TEAM（/top）・BELEZA（/beleza）と同じ情報設計で、
@@ -93,7 +93,7 @@ export default function U21Page() {
         </Link>
       </div>
 
-      <p className="text-[12px] leading-relaxed text-text-secondary">順位表は東西リーグラウンドと交流戦ラウンドの合算をEAST／WEST別に掲載。<a href="https://www.jleague.jp/u-21/standings/" target="_blank" rel="noopener noreferrer" className="underline">公式順位表</a>の2026/11/1 15:57更新分を同日照合。表示値を採用し、他会場の結果による独自補正は行っていません。</p>
+      <p className="text-[12px] leading-relaxed text-text-secondary">順位表は東西リーグラウンドと交流戦ラウンドの合算をEAST／WEST別に掲載。<a href="https://www.jleague.jp/u-21/standings/" target="_blank" rel="noopener noreferrer" className="underline">公式順位表</a>の{u21StandingsUpdatedAt}更新分を掲載。</p>
 
       {liveFixture && <LiveMatchPanel fixture={liveFixture} detailHref={getCategoryDetailHref("u21", liveFixture.detailMatchId)} teamName={U21_TEAM_NAME} />}
 

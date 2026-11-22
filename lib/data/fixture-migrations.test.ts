@@ -66,7 +66,7 @@ test("two consecutive finishes update NEXT, LAST and HISTORY for both categories
   // BELEZA: finishedIds（INAC神戸戦・EL埼玉戦）より後に浦和カップ戦・C大阪戦がすでにfinished
   // として実データに存在するため、LAST/HISTORY直近2件はそちら（より新しい確定結果）になる。
   const cases = [
-    { fixtures: u21Fixtures.map(f => ["u21-next-4", "u21-next-5"].includes(f.id) ? { ...f, status: "scheduled" as const, score: undefined } : f), finishedIds: ["u21-next-1", "u21-next-2"], nextId: "u21-next-4", lastId: "u21-next-3", historyTop2: ["u21-next-3", "u21-next-2"] },
+    { fixtures: u21Fixtures.map(f => ["u21-next-4", "u21-next-5", "u21-next-6"].includes(f.id) ? { ...f, status: "scheduled" as const, score: undefined } : f), finishedIds: ["u21-next-1", "u21-next-2"], nextId: "u21-next-4", lastId: "u21-next-3", historyTop2: ["u21-next-3", "u21-next-2"] },
     { fixtures: belezaFixtures, finishedIds: ["beleza-next-3", "beleza-next-4"], nextId: "beleza-next-16", lastId: "beleza-next-15", historyTop2: ["beleza-next-15", "beleza-next-14"] },
   ] as const;
   for (const { fixtures, finishedIds, nextId, lastId, historyTop2 } of cases) {
