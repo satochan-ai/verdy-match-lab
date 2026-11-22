@@ -38,6 +38,8 @@ import { ShimizuPredictions } from "@/components/match/ShimizuPredictions";
 import { ShimizuMatchPreview, ShimizuStrategies } from "@/components/match/ShimizuPreContent";
 import { NagoyaPreContent } from "@/components/match/NagoyaPreContent";
 import { shouldShowNagoyaPreview } from "@/lib/match/nagoya-preview";
+import { MitoPreContent } from "@/components/match/MitoPreContent";
+import { shouldShowMitoPreview } from "@/lib/match/mito-preview";
 import { shouldShowShimizuPrediction } from "@/lib/match/shimizu-prediction";
 
 export const metadata: Metadata = {
@@ -272,6 +274,8 @@ export default async function TopTeamPage() {
               <a href="https://www.football-lab.jp/kufc/formation?year=2025" target="_blank" rel="noopener noreferrer" className="font-bold text-deep-green underline">Football LAB：鹿児島2025年フォーメーション</a>
             </div>
           </section>
+
+          {shouldShowMitoPreview(displayFixture) && <MitoPreContent />}
 
           {shouldShowNagoyaPreview(displayFixture) && <NagoyaPreContent />}
 
