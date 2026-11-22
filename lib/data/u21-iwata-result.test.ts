@@ -39,7 +39,7 @@ test("Iwata goals, squads, yellow cards and six HOME substitutions match officia
 test("Iwata finished: no LIVE, LAST is Iwata, NEXT is Nagoya, Next5 excludes all finished matches", () => {
   const now = new Date("2026-10-18T12:00:00+09:00");
   assert.equal(resolveMatchStatus(match, now), "finished");
-  const atIwata = u21Fixtures.map(f => f.id === "u21-next-5" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined } : f);
+  const atIwata = u21Fixtures.map(f => ["u21-next-5", "u21-next-6"].includes(f.id) ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined } : f);
   assert.equal(getLatestFinishedFixture(atIwata)?.id, match.id);
   assert.equal(getNextFixture(atIwata, now)?.id, "u21-next-5");
   assert.deepEqual(getUpcomingFixtures(atIwata, now, 5).map(f => f.id), ["u21-next-5", "u21-next-6", "u21-next-7", "u21-next-8", "u21-next-9"]);
