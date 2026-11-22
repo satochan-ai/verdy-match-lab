@@ -1,6 +1,7 @@
 import type { Match } from "@/types/domain";
 import { isDbConfigured, sql } from "@/lib/db/server";
 import * as mock from "@/lib/mock/matches";
+import { nagoyaResult } from "@/lib/mock/top-nagoya-result";
 import { mapMatch } from "./mappers";
 import { topFixtures } from "./top-fixtures";
 import { enrichMatchFixtureMeta, enrichMatchesFixtureMeta } from "./top-match-fixture-meta";
@@ -81,7 +82,17 @@ async function assembleMatch(matchRow: MatchRow): Promise<Match> {
   return mapMatch(matchRow, profileRows, predictionRows, noteRows);
 }
 
+// 公式明細を同梱する名古屋戦は既存日程IDで公開する。DBに同日のホーム対戦があれば一覧でまとめる。
+const nagoyaMatchdayStart = Date.parse("2026-11-21T00:00:00+09:00");
+function isNagoyaResultRow(row: FlatMatchRow) {
+  const kickoff = Date.parse(row.kickoff_at);
+  return row.home_team__is_verdy && row.away_team__name === nagoyaResult.awayTeam.name
+    && kickoff >= nagoyaMatchdayStart && kickoff < nagoyaMatchdayStart + 86_400_000;
+}
+
 export async function getMatchDetail(id: string): Promise<Match | undefined> {
+  if (id === nagoyaResult.id) return nagoyaResult;
+
   if (!isDbConfigured()) {
     const match = mock.getMatchById(id);
     return match ? enrichMatchFixtureMeta(match, topFixtures) : undefined;
@@ -91,6 +102,7 @@ export async function getMatchDetail(id: string): Promise<Match | undefined> {
   const rows = (await db`${db.unsafe(MATCH_WITH_TEAMS_SQL)} where m.id = ${id}`) as FlatMatchRow[];
 
   if (rows.length === 0) return undefined;
+  if (isNagoyaResultRow(rows[0])) return nagoyaResult;
   return enrichMatchFixtureMeta(await assembleMatch(toMatchRow(rows[0])), topFixtures);
 }
 
@@ -128,6 +140,7 @@ export async function getRecentFinishedMatchSummary(): Promise<Match> {
   `) as FlatMatchRow[];
 
   if (rows.length === 0) return mock.getRecentFinishedMatch();
+  if (isNagoyaResultRow(rows[0]) || Date.parse(rows[0].kickoff_at) <= Date.parse(nagoyaResult.kickoffAt)) return nagoyaResult;
   return enrichMatchFixtureMeta(mapMatch(toMatchRow(rows[0]), [], [], []), topFixtures);
 }
 
@@ -144,5 +157,8 @@ export async function getArchiveMatches(): Promise<Match[]> {
     order by m.kickoff_at desc
   `) as FlatMatchRow[];
 
-  return enrichMatchesFixtureMeta(rows.map((row) => mapMatch(toMatchRow(row), [], [], [])), topFixtures);
+  const matches = rows.filter((row) => !isNagoyaResultRow(row)).map((row) => mapMatch(toMatchRow(row), [], [], []));
+  matches.push(nagoyaResult);
+  matches.sort((a, b) => Date.parse(b.kickoffAt) - Date.parse(a.kickoffAt));
+  return enrichMatchesFixtureMeta(matches, topFixtures);
 }

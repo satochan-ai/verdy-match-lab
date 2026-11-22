@@ -228,7 +228,7 @@ export default async function TopTeamPage() {
                     <span className="ml-2 flex shrink-0 items-center gap-2">
                       <span className="tabular-nums font-bold text-text-primary">{recent.homeScore}-{recent.awayScore}</span>
                       {recent.penaltyShootout && <span className="text-[12px]">PK {recent.penaltyShootout.homeScore}-{recent.penaltyShootout.awayScore}</span>}
-                      <StatusBadge variant={recentResult} />
+                      <StatusBadge variant={recentResult} label={recentResult === "draw" ? "DRAW" : undefined} />
                     </span>
                   </div>
                   {recent.fixtureMeta && <div className="mt-1"><FixtureMetaLine meta={recent.fixtureMeta} compact /></div>}

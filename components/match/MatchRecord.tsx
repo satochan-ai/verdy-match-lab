@@ -116,6 +116,7 @@ function MatchStatsSection({
   return (
     <div className="border-b border-border py-3">
       <p className="mb-1.5 text-[11px] font-bold tracking-[0.08em] text-text-secondary">MATCH STATS</p>
+      {stats.sourceUrl && <a href={stats.sourceUrl} className="mb-2 inline-block text-xs text-deep-green underline">Jリーグ公式 試合終了スタッツ</a>}
       <div className="mb-1 hidden grid-cols-[minmax(0,1fr)_8rem_minmax(0,1fr)] text-[10px] font-bold text-text-secondary md:grid">
         <span className="text-right">{homeTeamName}</span>
         <span />

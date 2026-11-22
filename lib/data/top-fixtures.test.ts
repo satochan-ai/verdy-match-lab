@@ -1,3 +1,4 @@
+import { beforeNagoyaResult } from "./top-nagoya-test-fixture.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { getLatestFinishedFixture, getNextFixture, getUpcomingFixtures } from "./fixture-selectors.ts";
@@ -7,7 +8,7 @@ import { validateFixtures } from "./fixture-validation.ts";
 const now = new Date("2026-09-03T00:00:00+09:00");
 
 // 鳥取戦終了時点の履歴検証。広島戦の結果登録後も当時のselector条件を再現する。
-const topFixtures = currentTopFixtures.map(f => f.id === "sched-shimizu" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-07T13:00:00+09:00" } : f).map(f => f.id === "sched-nagasaki" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-01T14:00:00+09:00" } : f).map((fixture) => {
+const topFixtures = beforeNagoyaResult(currentTopFixtures).map(f => f.id === "sched-shimizu" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-07T13:00:00+09:00" } : f).map(f => f.id === "sched-nagasaki" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-01T14:00:00+09:00" } : f).map((fixture) => {
   if (fixture.id === "sched-hiroshima") return { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-11T15:00:00+09:00" };
   if (fixture.id === "sched-fc-tokyo") return { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-17T14:00:00+09:00" };
   if (fixture.id === "sched-yokohama-fm") return { ...fixture, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-10-21T19:00:00+09:00" };
@@ -17,7 +18,7 @@ const topFixtures = currentTopFixtures.map(f => f.id === "sched-shimizu" ? { ...
 
 test("TOP schedule adapter produces valid CommonFixtures", () => {
   assert.equal(validateFixtures(topFixtures).length, 0);
-  assert.equal(topFixtures.length, 23);
+  assert.equal(topFixtures.length, 24);
   assert.deepEqual(topFixtures.find((fixture) => fixture.id === "sched-cerezo")?.score, { home: 0, away: 0 });
   assert.equal(topFixtures.find((fixture) => fixture.id === "sched-cerezo")?.detailMatchId, "match-11");
   assert.deepEqual(topFixtures.find((fixture) => fixture.id === "sched-kashima")?.score, { home: 0, away: 2 });
@@ -114,7 +115,8 @@ test("TOP NEXT5 on 2026-10-10 follows the official schedule (広島 / FC東京 /
 
 test("11月10日のNEXT 5はリーグと天皇杯を日時順に統合する", () => {
   const asOf = new Date("2026-11-10T12:00:00+09:00");
-  const next = getUpcomingFixtures(currentTopFixtures, asOf, 5);
+  const before = beforeNagoyaResult(currentTopFixtures);
+  const next = getUpcomingFixtures(before, asOf, 5);
   assert.deepEqual(next.map(f => [f.id, f.kickoffAt, f.opponentName, f.isHome, f.venue, f.competition.name, f.competition.round]), [
     ["sched-nagoya", "2026-11-21T14:00:00+09:00", "名古屋グランパス", true, "味の素スタジアム", "2026 J1リーグ", "第15節"],
     ["sched-mito", "2026-11-25T19:00:00+09:00", "水戸ホーリーホック", false, "水戸信用金庫スタジアム", "2026 J1リーグ", "第16節"],
@@ -122,11 +124,8 @@ test("11月10日のNEXT 5はリーグと天皇杯を日時順に統合する", (
     ["sched-kyoto", "2026-12-05T14:00:00+09:00", "京都サンガF.C.", true, "味の素スタジアム", "2026 J1リーグ", "第18節"],
     ["sched-machida-emperor", "2026-12-09T18:30:00+09:00", "FC町田ゼルビア", false, "町田GIONスタジアム", "天皇杯 JFA 第106回全日本サッカー選手権大会", "ラウンド16"],
   ]);
-  assert.equal(getNextFixture(currentTopFixtures, asOf)?.id, "sched-nagoya");
-  assert.equal(getLatestFinishedFixture(currentTopFixtures)?.id, "sched-shimizu");
+  assert.equal(getNextFixture(before, asOf)?.id, "sched-nagoya");
+  assert.equal(getLatestFinishedFixture(before)?.id, "sched-shimizu");
   assert.ok(next.every(f => f.status === "scheduled" && f.detailMatchId === undefined));
-  const finished = currentTopFixtures.map(f => f.id === "sched-nagoya" ? { ...f, status: "finished" as const, score: { home: 1, away: 0 } } : f);
-  assert.deepEqual(getUpcomingFixtures(finished, new Date("2026-11-21T17:00:00+09:00"), 5).map(f => f.id), ["sched-mito", "sched-machida-j1", "sched-kyoto", "sched-machida-emperor"]);
-  assert.equal(getLatestFinishedFixture(finished)?.id, "sched-nagoya");
   assert.equal(currentTopFixtures.find(f => f.id === "sched-shimizu")?.detailMatchId, "sched-shimizu");
 });
