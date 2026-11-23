@@ -2,23 +2,23 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { weLeagueStandings, kracieCupStandings } from "./beleza-standings.ts";
 
-test("WE League standings match all 12 official records as of 2026/11/18 20:53", () => {
+test("WE League standings match all 12 official records as of 2026/11/23 16:55", () => {
   assert.equal(weLeagueStandings.entries.length, 12);
   assert.equal(new Set(weLeagueStandings.entries.map((entry) => entry.teamName)).size, 12);
   // 公式列順：順位・クラブ・勝点・試合・勝・分・敗・得点・失点・得失。
   assert.deepEqual(weLeagueStandings.entries.map(e => [e.rank, e.teamName, e.points, e.played, e.wins, e.draws, e.losses, e.goalsFor, e.goalsAgainst, e.goalDifference]), [
-    [1, "三菱重工浦和レッズレディース", 22, 10, 7, 1, 2, 19, 7, 12],
-    [2, "日テレ・東京ヴェルディベレーザ", 21, 10, 7, 0, 3, 22, 15, 7],
-    [3, "セレッソ大阪ヤンマーレディース", 17, 10, 4, 5, 1, 19, 12, 7],
-    [4, "ジェフ千葉レディース", 16, 10, 5, 1, 4, 11, 11, 0],
-    [5, "サンフレッチェ広島レジーナ", 15, 10, 5, 0, 5, 14, 13, 1],
-    [6, "ノジマステラ神奈川相模原", 15, 10, 4, 3, 3, 9, 12, -3],
-    [7, "マイナビ仙台", 13, 10, 4, 1, 5, 14, 16, -2],
-    [8, "INAC神戸レオネッサ", 11, 8, 3, 2, 3, 15, 14, 1],
-    [9, "AC長野パルセイロ・レディース", 10, 10, 2, 4, 4, 8, 12, -4],
-    [10, "RB大宮アルディージャWOMEN", 9, 9, 3, 0, 6, 6, 12, -6],
-    [11, "アルビレックス新潟レディース", 8, 9, 2, 2, 5, 7, 11, -4],
-    [12, "ちふれASエルフェン埼玉", 7, 10, 2, 1, 7, 8, 17, -9],
+    [1, "三菱重工浦和レッズレディース", 25, 11, 8, 1, 2, 21, 7, 14],
+    [2, "日テレ・東京ヴェルディベレーザ", 24, 11, 8, 0, 3, 28, 15, 13],
+    [3, "セレッソ大阪ヤンマーレディース", 20, 11, 5, 5, 1, 22, 13, 9],
+    [4, "サンフレッチェ広島レジーナ", 18, 11, 6, 0, 5, 15, 13, 2],
+    [5, "ジェフ千葉レディース", 16, 11, 5, 1, 5, 11, 12, -1],
+    [6, "ノジマステラ神奈川相模原", 16, 11, 4, 4, 3, 10, 13, -3],
+    [7, "RB大宮アルディージャWOMEN", 13, 11, 4, 1, 6, 12, 13, -1],
+    [8, "マイナビ仙台", 13, 11, 4, 1, 6, 15, 19, -4],
+    [9, "INAC神戸レオネッサ", 11, 10, 3, 2, 5, 15, 25, -10],
+    [10, "AC長野パルセイロ・レディース", 10, 11, 2, 4, 5, 8, 14, -6],
+    [11, "ちふれASエルフェン埼玉", 10, 11, 3, 1, 7, 9, 17, -8],
+    [12, "アルビレックス新潟レディース", 8, 10, 2, 2, 6, 7, 12, -5],
   ]);
 });
 
@@ -28,14 +28,14 @@ test("WE League standings register 日テレ・東京ヴェルディベレーザ
   assert.deepEqual(belezaEntries[0], {
     rank: 2,
     teamName: "日テレ・東京ヴェルディベレーザ",
-    played: 10,
-    wins: 7,
+    played: 11,
+    wins: 8,
     draws: 0,
     losses: 3,
-    goalsFor: 22,
+    goalsFor: 28,
     goalsAgainst: 15,
-    goalDifference: 7,
-    points: 21,
+    goalDifference: 13,
+    points: 24,
   });
 });
 
@@ -49,7 +49,7 @@ test("WE League standings entries are internally consistent (played/points/goal 
 });
 
 test("WE League standings expose the as-of label", () => {
-  assert.equal(weLeagueStandings.asOfLabel, "2026/11/18 20:53 現在");
+  assert.equal(weLeagueStandings.asOfLabel, "2026/11/23 16:55 現在");
 });
 
 test("Kracie Cup standings hold exactly 12 clubs with unique ranks (no ties this matchday)", () => {

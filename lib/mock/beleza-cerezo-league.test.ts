@@ -6,10 +6,13 @@ import {
   cerezoLeagueActualLineup as opponentLineup, belezaCerezoLeagueOfficialRecord as record,
   belezaCerezoLeagueReview as review, belezaCerezoLeagueViewerNotes as notes,
 } from "./beleza-cerezo-league.ts";
-import { belezaFixtures } from "../data/beleza-fixtures.ts";
+import { belezaFixtures as currentFixtures } from "../data/beleza-fixtures.ts";
+import { beforeBelezaInacResult } from "../data/beleza-inac-test-fixture.ts";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory } from "../data/fixture-selectors.ts";
 import { getCategoryDetailHref } from "../data/category-match-details.ts";
 import { belezaTeam } from "./beleza.ts";
+
+const belezaFixtures = beforeBelezaInacResult(currentFixtures);
 
 test("10/28 C大阪 result preserves its existing ID and detail after the 大宮, N相模原, 新潟L and 仙台 results", () => {
   const fixture = belezaFixtures.find((f) => f.id === match.id)!;

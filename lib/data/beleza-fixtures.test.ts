@@ -3,6 +3,7 @@ import test from "node:test";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "./fixture-selectors.ts";
 import { belezaFixtures, toBelezaSeasonHistoryEntry, toBelezaUpcomingMatch } from "./beleza-fixtures.ts";
 import { belezaActualLineup, belezaActualFormation, inacKobeActualLineup, belezaElfenMatch } from "../mock/beleza.ts";
+import { beforeBelezaInacResult } from "./beleza-inac-test-fixture.ts";
 import { validateFixtures } from "./fixture-validation.ts";
 import { weLeagueStandings } from "../mock/beleza-standings.ts";
 
@@ -38,19 +39,20 @@ test("BELEZA actual formation preserves the confirmed DF and MF horizontal order
 
 test("BELEZA season history entries carry detailMatchId through for mobile/desktop history links", () => {
   const history = getSeasonHistory(belezaFixtures).map(toBelezaSeasonHistoryEntry);
-  assert.equal(history.length, 16);
+  assert.equal(history.length, 17);
 });
 
 test("BELEZA NEXT advances to the official 11.23 INAC神戸 home match after the finished 11.18 仙台 match", () => {
+  const fixtures = beforeBelezaInacResult(belezaFixtures);
   const asOf = new Date("2026-11-19T12:00:00+09:00");
-  const nextFixture = getNextFixture(belezaFixtures, asOf);
+  const nextFixture = getNextFixture(fixtures, asOf);
   assert.equal(nextFixture?.id, "beleza-next-16");
   assert.equal(nextFixture?.opponentName, "INAC神戸レオネッサ");
   assert.equal(nextFixture?.kickoffAt, "2026-11-23T15:00:00+09:00");
   // /beleza のNEXT MATCH詳細CTA（app/beleza/page.tsx）は、この一致を条件に
   // /beleza/matches/${belezaElfenMatch.id} へのリンクを表示する。
   assert.notEqual(nextFixture?.id, belezaElfenMatch.id);
-  const upcoming = getUpcomingFixtures(belezaFixtures, asOf, 5);
+  const upcoming = getUpcomingFixtures(fixtures, asOf, 5);
   // 公式に確定している未終了試合は3件。5件にするために未確認試合を追加しない
   // （第12節以降の開催日・キックオフ・会場は公式に未確定、2026-11-19確認）。
   assert.equal(upcoming.length, 3);
@@ -93,7 +95,7 @@ test("BELEZA WE League and Kracie Cup fixtures stay separated and the league rec
   const league = finished.filter((f) => f.competition.name === "2026/27 WEリーグ");
   const cup = finished.filter((f) => f.competition.name.includes("クラシエカップ"));
   assert.equal(league.length + cup.length, finished.length);
-  assert.deepEqual(league.map((f) => f.competition.round).sort(), ["第1節", "第2節", "第3節", "第4節", "第5節", "第6節", "第7節", "第8節", "第9節", "第10節"].sort());
+  assert.deepEqual(league.map((f) => f.competition.round).sort(), ["第1節", "第2節", "第3節", "第4節", "第5節", "第6節", "第7節", "第8節", "第9節", "第10節", "第11節"].sort());
   assert.equal(cup.length, 6);
   const tally = league.map(toBelezaSeasonHistoryEntry).reduce((acc, e) => {
     const own = e.homeTeamName === "日テレ・東京ヴェルディベレーザ" ? e.homeScore : e.awayScore;
@@ -107,13 +109,13 @@ test("BELEZA WE League and Kracie Cup fixtures stay separated and the league rec
 
 test("BELEZA LAST, HISTORY and 10.03 浦和 result are derived", () => {
   const last = getLatestFinishedFixture(belezaFixtures)!;
-  assert.equal(last.opponentName, "マイナビ仙台");
-  assert.deepEqual(last.score, { home: 2, away: 3 });
+  assert.equal(last.opponentName, "INAC神戸レオネッサ");
+  assert.deepEqual(last.score, { home: 6, away: 0 });
   assert.equal(toBelezaSeasonHistoryEntry(last).result, "win");
   const history = getSeasonHistory(belezaFixtures);
-  assert.equal(history.length, 16);
+  assert.equal(history.length, 17);
   assert.deepEqual(history.map((fixture) => fixture.opponentName), [
-    "マイナビ仙台", "アルビレックス新潟レディース", "ノジマステラ神奈川相模原", "RB大宮アルディージャWOMEN", "セレッソ大阪ヤンマーレディース", "ちふれASエルフェン埼玉", "サンフレッチェ広島レジーナ", "サンフレッチェ広島レジーナ", "三菱重工浦和レッズレディース", "セレッソ大阪ヤンマーレディース", "アルビレックス新潟レディース", "ちふれASエルフェン埼玉", "INAC神戸レオネッサ",
+    "INAC神戸レオネッサ", "マイナビ仙台", "アルビレックス新潟レディース", "ノジマステラ神奈川相模原", "RB大宮アルディージャWOMEN", "セレッソ大阪ヤンマーレディース", "ちふれASエルフェン埼玉", "サンフレッチェ広島レジーナ", "サンフレッチェ広島レジーナ", "三菱重工浦和レッズレディース", "セレッソ大阪ヤンマーレディース", "アルビレックス新潟レディース", "ちふれASエルフェン埼玉", "INAC神戸レオネッサ",
     "三菱重工浦和レッズレディース", "AC長野パルセイロ・レディース", "ジェフユナイテッド市原・千葉レディース",
   ]);
   assert.equal(history.filter((fixture) => fixture.id === "beleza-match-3").length, 1);

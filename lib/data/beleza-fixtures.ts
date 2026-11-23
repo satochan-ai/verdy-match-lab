@@ -6,6 +6,7 @@ import { belezaReginaLeagueMatch } from "../mock/beleza-regina-league.ts";
 import { belezaStellaLeagueMatch } from "../mock/beleza-stella-league.ts";
 import { belezaNiigataLeagueMatch } from "../mock/beleza-niigata-league.ts";
 import { belezaSendaiLeagueMatch } from "../mock/beleza-sendai-league.ts";
+import { belezaInacLeagueMatch } from "../mock/beleza-inac-league.ts";
 import type { CommonFixture } from "../types/fixture";
 import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, belezaMatch5, belezaUrawaCupMatch, belezaReginaMatch, belezaTeam, belezaUpcomingMatches } from "../mock/beleza.ts";
 
@@ -13,7 +14,6 @@ import { belezaMatch, belezaMatch1, belezaMatch2, belezaMatch3, belezaMatch4, be
 const weLeagueMatchPages: Record<string, string> = {
   "beleza-next-14": "https://weleague.jp/matches/2026111411/",
   "beleza-next-15": "https://weleague.jp/matches/2026111804/",
-  "beleza-next-16": "https://weleague.jp/matches/2026112304/",
 };
 
 export const belezaFixtures: CommonFixture[] = [
@@ -104,6 +104,12 @@ export const belezaFixtures: CommonFixture[] = [
     kickoffStatus: "confirmed" as const, dateLabel: fixture.dateLabel, venue: fixture.venue, isHome: fixture.isHome, status: "scheduled" as const,
     ...(fixture.id === belezaUrawaCupMatch.id ? {} : { sourceUrl: "https://www.verdy.co.jp/beleza/calendar/" }),
     ...(weLeagueMatchPages[fixture.id] ? { sourceUrl: weLeagueMatchPages[fixture.id] } : {}),
+    ...(fixture.id === belezaInacLeagueMatch.id ? {
+      detailMatchId: fixture.id, kickoffAt: belezaInacLeagueMatch.kickoffAt,
+      status: belezaInacLeagueMatch.status,
+      score: { home: belezaInacLeagueMatch.homeScore, away: belezaInacLeagueMatch.awayScore },
+      sourceUrl: belezaInacLeagueMatch.sourceUrl,
+    } : {}),
     ...(fixture.id === belezaSendaiLeagueMatch.id ? {
       detailMatchId: fixture.id, kickoffAt: belezaSendaiLeagueMatch.kickoffAt,
       status: belezaSendaiLeagueMatch.status,

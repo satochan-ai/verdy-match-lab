@@ -8,9 +8,12 @@ import {
   belezaNiigataLeagueViewerNotes as notes, belezaNiigataLeagueManagers as managers,
 } from "./beleza-niigata-league.ts";
 import { belezaTeam, belezaUpcomingMatches } from "./beleza.ts";
-import { belezaFixtures, toBelezaSeasonHistoryEntry, toBelezaUpcomingMatch } from "../data/beleza-fixtures.ts";
+import { belezaFixtures as currentFixtures, toBelezaSeasonHistoryEntry, toBelezaUpcomingMatch } from "../data/beleza-fixtures.ts";
+import { beforeBelezaInacResult } from "../data/beleza-inac-test-fixture.ts";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "../data/fixture-selectors.ts";
 import { getCategoryDetailHref } from "../data/category-match-details.ts";
+
+const belezaFixtures = beforeBelezaInacResult(currentFixtures);
 
 const now = new Date("2026-11-17T12:00:00+09:00");
 
