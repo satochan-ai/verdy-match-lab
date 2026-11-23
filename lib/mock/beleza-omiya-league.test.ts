@@ -6,11 +6,14 @@ import {
   belezaOmiyaLeagueFormation as formation, belezaOmiyaLeagueStats as stats, belezaOmiyaLeagueCards as cards,
   belezaOmiyaLeagueOfficialRecord as record, belezaOmiyaLeagueViewerNotes as notes,
 } from "./beleza-omiya-league.ts";
-import { belezaFixtures } from "../data/beleza-fixtures.ts";
+import { belezaFixtures as currentFixtures } from "../data/beleza-fixtures.ts";
+import { beforeBelezaInacResult } from "../data/beleza-inac-test-fixture.ts";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "../data/fixture-selectors.ts";
 import { getCategoryDetailHref } from "../data/category-match-details.ts";
 import { belezaCerezoLeagueMatch } from "./beleza-cerezo-league.ts";
 import { belezaElfenLeagueMatch } from "./beleza-elfen-league.ts";
+
+const belezaFixtures = beforeBelezaInacResult(currentFixtures);
 
 test("10/31 result keeps the registered ID and history after the 11/7, 11/14 and 11/18 results; NEXT is the official 11/23 home match", () => {
   const fixture = belezaFixtures.find(f => f.id === match.id)!;

@@ -2,9 +2,12 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { belezaReginaLeagueMatch as match, belezaReginaLeagueGoals as goals, belezaReginaLeagueActualLineup as own, reginaLeagueActualLineup as opponent, belezaReginaLeagueSubstitutions as subs, belezaReginaLeagueHalfScores as halves, belezaReginaLeagueCards as cards } from "./beleza-regina-league.ts";
 import { belezaReginaMatch } from "./beleza.ts";
-import { belezaFixtures } from "../data/beleza-fixtures.ts";
+import { belezaFixtures as currentFixtures } from "../data/beleza-fixtures.ts";
+import { beforeBelezaInacResult } from "../data/beleza-inac-test-fixture.ts";
 import { getLatestFinishedFixture, getNextFixture, getUpcomingFixtures } from "../data/fixture-selectors.ts";
 import { getCategoryDetailHref } from "../data/category-match-details.ts";
+
+const belezaFixtures = beforeBelezaInacResult(currentFixtures);
 
 test("10/18 official result preserves 75 minute equalizer and separate 10/11 cup result", () => {
   assert.deepEqual([match.homeScore, match.awayScore], [2, 3]);

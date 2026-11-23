@@ -7,9 +7,12 @@ import {
   stellaLeagueTeam, belezaStellaLeagueReview as review, belezaStellaLeagueViewerNotes as notes,
 } from "./beleza-stella-league.ts";
 import { belezaTeam } from "./beleza.ts";
-import { belezaFixtures, toBelezaSeasonHistoryEntry } from "../data/beleza-fixtures.ts";
+import { belezaFixtures as currentFixtures, toBelezaSeasonHistoryEntry } from "../data/beleza-fixtures.ts";
+import { beforeBelezaInacResult } from "../data/beleza-inac-test-fixture.ts";
 import { getLatestFinishedFixture, getSeasonHistory } from "../data/fixture-selectors.ts";
 import { getCategoryDetailHref } from "../data/category-match-details.ts";
+
+const belezaFixtures = beforeBelezaInacResult(currentFixtures);
 
 test("11/7 N相模原 official result keeps the existing ID, away 0-1 loss and becomes linkable from LAST/HISTORY", () => {
   assert.deepEqual(

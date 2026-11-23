@@ -8,9 +8,12 @@ import {
   belezaSendaiLeagueViewerNotes as notes, belezaSendaiLeagueManagers as managers,
 } from "./beleza-sendai-league.ts";
 import { belezaTeam, belezaUpcomingMatches } from "./beleza.ts";
-import { belezaFixtures, toBelezaSeasonHistoryEntry, toBelezaUpcomingMatch } from "../data/beleza-fixtures.ts";
+import { belezaFixtures as currentFixtures, toBelezaSeasonHistoryEntry, toBelezaUpcomingMatch } from "../data/beleza-fixtures.ts";
+import { beforeBelezaInacResult } from "../data/beleza-inac-test-fixture.ts";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "../data/fixture-selectors.ts";
 import { getCategoryDetailHref } from "../data/category-match-details.ts";
+
+const belezaFixtures = beforeBelezaInacResult(currentFixtures);
 
 const now = new Date("2026-11-19T12:00:00+09:00");
 

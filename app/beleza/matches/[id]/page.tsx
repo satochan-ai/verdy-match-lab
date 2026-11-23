@@ -1,4 +1,10 @@
 import type { Metadata } from "next";
+import { FormationPhasePicker } from "@/components/match/FormationPhasePicker";
+import {
+  belezaInacLeagueMatch, belezaInacOfficialRecord, belezaInacRecordPdfUrl, belezaInacHalfScores, belezaInacGoals,
+  belezaInacCards, belezaInacSubstitutions, belezaInacStats, belezaInacActualLineup, inacLeagueActualLineup,
+  belezaInacFormationPhases, inacFormationPhases, belezaInacReviewTitle, belezaInacGoalNotes, belezaInacTacticalNotes,
+} from "@/lib/mock/beleza-inac-league";
 import {
   belezaSendaiLeagueMatch, belezaSendaiLeagueHalfScores, belezaSendaiLeagueGoals, belezaSendaiLeagueCards,
   belezaSendaiLeagueSubstitutions, belezaSendaiLeagueOfficialRecord, belezaSendaiLeagueStats,
@@ -165,6 +171,7 @@ export default async function BelezaMatchDetailPage({
   const { id } = await params;
   if (!getCategoryDetailHref("beleza", id)) notFound();
 
+  if (id === belezaInacLeagueMatch.id) return <BelezaInacLeagueDetail />;
   if (id === belezaSendaiLeagueMatch.id) return <BelezaSendaiLeagueDetail />;
   if (id === belezaNiigataLeagueMatch.id) return <BelezaNiigataLeagueDetail />;
   if (id === belezaStellaLeagueMatch.id) return <BelezaStellaLeagueDetail />;
@@ -1297,6 +1304,74 @@ function BelezaNiigataLeagueDetail() {
           {belezaNiigataLeagueViewerNotes.map((paragraph) => <p key={paragraph} className="text-[14px] leading-relaxed text-text-primary">{paragraph}</p>)}
         </section>
       )}
+    </div>
+  );
+}
+
+function BelezaInacLeagueDetail() {
+  const match = belezaInacLeagueMatch;
+  return (
+    <div className="space-y-8 pb-4">
+      <Link href="/beleza" className="text-[13px] font-bold text-deep-green">← 戻る</Link>
+      <h1 className="text-[15px] font-bold text-text-primary">試合終了</h1>
+      <ArchivedMatchHero competition={match.competition} dateLabel={match.dateLabel} resultLabel="win"
+        homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        homeScore={match.homeScore} awayScore={match.awayScore} kickoffLabel={belezaInacOfficialRecord.kickoff}
+        kickoffCaption="実際のKICK OFF" venue={match.venue} halfScores={belezaInacHalfScores} goals={belezaInacGoals} />
+      <p className="text-[12px] text-text-secondary">予定キックオフ {match.scheduledKickoff}</p>
+
+      <section>
+        <SectionHeader title="フォーメーション" eyebrow="FORMATION" />
+        <p className="mb-3 text-[12px] leading-relaxed text-text-secondary">
+          現地観戦に基づく配置。ピッチ上端が攻撃方向（↑）です。左右は各チームの攻撃方向から見た並びです。
+        </p>
+        <div className="grid gap-6 border-y border-border bg-surface px-3 py-4 sm:grid-cols-2">
+          <FormationPhasePicker team={belezaTeam} phases={belezaInacFormationPhases} />
+          <FormationPhasePicker team={inacKobeTeam} phases={inacFormationPhases} />
+        </div>
+      </section>
+
+      <BelezaLiveOfficialLineups belezaTeam={belezaTeam} belezaLineup={belezaInacActualLineup}
+        opponentTeam={inacKobeTeam} opponentLineup={inacLeagueActualLineup}
+        caption="公式記録の先発・控えです。ポジションは公式記録の登録表記です。" />
+      <p className="text-[13px] text-text-secondary">監督：ベレーザ 楠瀬 直木 ／ INAC神戸 宮本 ともみ</p>
+      <MatchRecord homeTeamName={match.homeTeamName} awayTeamName={match.awayTeamName}
+        goals={belezaInacGoals} cards={belezaInacCards}
+        substitutions={belezaInacSubstitutions} officialRecord={belezaInacOfficialRecord}
+        officialSourceLabel="WE LEAGUE Data Site 公式記録" />
+      <p className="text-[12px] text-text-secondary">両チームとも警告・退場なし。46分の * はハーフタイムの交代を示します。</p>
+      <BelezaMatchStats belezaTeamName={match.homeTeamName} opponentTeamName={match.awayTeamName} stats={belezaInacStats} />
+
+      <section className="space-y-3">
+        <SectionHeader title={belezaInacReviewTitle} eyebrow="MATCH REVIEW" />
+        <p className="text-[14px] leading-relaxed text-text-primary">
+          日テレ・東京ヴェルディベレーザは11月23日、味の素フィールド西が丘でINAC神戸レオネッサに6–0で勝利した。前半に樋渡百花が2点を挙げ、後半に樋渡がさらに3点、塩越柚歩が1点を加えた。
+        </p>
+        <p className="text-[12px] leading-relaxed text-text-secondary">
+          得点者と時刻はWEリーグ公式記録に基づきます。プレーの経過とアシストの記載は現地観戦メモに基づきます。
+        </p>
+        <ol className="space-y-3">
+          {belezaInacGoalNotes.map(({ minute, play, assist, recordNote }, index) => (
+            <li key={minute} className="border-b border-border pb-3">
+              <h3 className="text-[14px] font-extrabold text-text-primary">
+                {Number.parseInt(minute, 10)}分｜{belezaInacGoals[index].scorer}（{index + 1}–0）
+              </h3>
+              <p className="text-[14px] leading-relaxed text-text-primary">{play}</p>
+              {assist && <p className="text-[12px] text-text-secondary">アシスト（現地観戦メモ） {assist}</p>}
+              {recordNote && <p className="text-[12px] text-text-secondary">{recordNote}</p>}
+            </li>
+          ))}
+        </ol>
+        <p className="text-[12px] leading-relaxed text-text-secondary">
+          <a className="underline" href={belezaInacRecordPdfUrl}>WEリーグ公式記録PDF</a> ／{" "}
+          <a className="underline" href={match.sourceUrl}>WEリーグ公式試合詳細</a> ／{" "}
+          <a className="underline" href={match.clubUrl}>ベレーザ公式試合結果</a>
+        </p>
+      </section>
+      <section className="space-y-3">
+        <SectionHeader title="現地観戦による戦術メモ" eyebrow="TACTICAL NOTES" />
+        {belezaInacTacticalNotes.map((note) => <p key={note} className="text-[14px] leading-relaxed text-text-primary">{note}</p>)}
+      </section>
     </div>
   );
 }

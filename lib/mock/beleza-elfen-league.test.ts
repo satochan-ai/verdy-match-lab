@@ -1,9 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { belezaElfenLeagueMatch as match, belezaElfenLeagueGoals as goals, belezaElfenLeagueFormation as formation, belezaElfenLeagueSubstitutions as subs, belezaElfenLeagueReview as review } from "./beleza-elfen-league.ts";
-import { belezaFixtures } from "../data/beleza-fixtures.ts";
+import { belezaFixtures as currentFixtures } from "../data/beleza-fixtures.ts";
+import { beforeBelezaInacResult } from "../data/beleza-inac-test-fixture.ts";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory } from "../data/fixture-selectors.ts";
 import { getCategoryDetailHref } from "../data/category-match-details.ts";
+
+const belezaFixtures = beforeBelezaInacResult(currentFixtures);
 
 test("10/24 result registers the existing ID, advances LAST/NEXT and preserves both previous results", () => {
   const fixture = belezaFixtures.find(f => f.id === match.id)!;

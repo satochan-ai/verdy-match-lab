@@ -1,11 +1,9 @@
 import { SectionHeader } from "@/components/ui/SectionHeader";
 
-type TeamStats = { shots: number; freeKicks: number; corners: number };
+type TeamStats = { shots: number; freeKicks: number; corners: number; offsides?: number };
 
 /**
- * 公式記録で確認できたスタッツ（シュート・FK・CK）のみを表示する最小コンポーネント。
- * 支配率・パス成功率等の未確認項目を持つ共通のMatchStats型は使わず、
- * 確認済みの3項目だけに絞った独立表示とする（推測値を混入させないため）。
+ * 公式記録で確認できたスタッツを表示する。オフサイドは両チーム分がある場合に掲載する。
  */
 export function BelezaMatchStats({
   belezaTeamName,
@@ -21,6 +19,10 @@ export function BelezaMatchStats({
     { key: "freeKicks", label: "FK" },
     { key: "corners", label: "CK" },
   ];
+
+  if (stats.beleza.offsides !== undefined && stats.opponent.offsides !== undefined) {
+    rows.push({ key: "offsides", label: "オフサイド" });
+  }
 
   return (
     <section>
@@ -60,7 +62,7 @@ export function BelezaMatchStats({
         </div>
       </div>
       <p className="mt-2 text-[11px] leading-relaxed text-text-secondary">
-        公式記録で確認できたシュート・FK・CKのみ掲載しています。
+        公式記録で確認できた項目を掲載しています。
       </p>
     </section>
   );
