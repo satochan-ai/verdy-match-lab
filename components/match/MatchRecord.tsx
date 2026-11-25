@@ -30,6 +30,7 @@ function TeamActualLineup({ teamLabel, lineup }: { teamLabel: string; lineup: Ac
   return (
     <div>
       <p className="text-[12px] font-bold text-text-primary">{teamLabel}</p>
+      {lineup.manager && <p className="mt-1 text-xs text-text-secondary">監督 {lineup.manager}</p>}
       <div className="mt-1.5">
         <PlayerGroups groups={lineup.starters} />
       </div>
@@ -155,6 +156,8 @@ function OfficialInfo({
     record.referee && `主審 ${record.referee}`,
     record.assistantReferees?.length && `副審 ${record.assistantReferees.join("・")}`,
     record.fourthOfficial && `第4の審判 ${record.fourthOfficial}`,
+    record.varReferee && `VAR ${record.varReferee}`,
+    record.assistantVarReferee && `AVAR ${record.assistantVarReferee}`,
   ].filter(Boolean);
 
   if (items.length === 0 && !record.sourceUrl) return null;

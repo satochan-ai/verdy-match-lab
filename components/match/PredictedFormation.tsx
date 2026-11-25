@@ -7,6 +7,7 @@ const formationRows: Record<string, number[]> = {
   "3-4-1-2": [3, 4, 1, 2],
   "3-1-4-2": [3, 1, 4, 2],
   "4-2-3-1": [4, 2, 3, 1],
+  "4-2-2-1": [4, 2, 2, 1],
   "4-1-2-3": [4, 1, 2, 3],
   "3-4-3": [3, 4, 3],
   "4-1-4-1": [4, 1, 4, 1],
@@ -67,11 +68,20 @@ export function FormationPitch({
 
         <div className="relative z-10 flex min-h-56 flex-col justify-between gap-2 lg:min-h-[25rem] lg:gap-3">
           {[...outfieldRows].reverse().map((players, rowIndex) => {
+            const wideMidfield = lineup.formation === "4-2-2-1" && rowIndex === 1;
+            const centralMidfield = lineup.formation === "4-2-2-1" && rowIndex === 2;
+            const columns = wideMidfield || centralMidfield ? 4 : players.length;
             return (
-              <div key={`${lineup.formation}-${rowIndex}`} className="grid" style={{ gridTemplateColumns: `repeat(${players.length}, minmax(0, 1fr))` }}>
-                {players.map((player) => (
-                  <PlayerMarker key={`${player.number ?? "tbd"}-${player.name}`} player={player} team={team} />
-                ))}
+              <div key={`${lineup.formation}-${rowIndex}`} className="grid" style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
+                {players.map((player, playerIndex) => {
+                  const columnStart = wideMidfield && playerIndex === 1 ? 4
+                    : centralMidfield ? playerIndex + 2 : undefined;
+                  return (
+                    <div key={`${player.number ?? "tbd"}-${player.name}`} className="min-w-0" style={{ gridColumnStart: columnStart }}>
+                      <PlayerMarker player={player} team={team} />
+                    </div>
+                  );
+                })}
               </div>
             );
           })}

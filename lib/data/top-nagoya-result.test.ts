@@ -1,14 +1,16 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { getArchiveMatches, getRecentFinishedMatch, matches } from "../mock/matches.ts";
+import { getArchiveMatches, matches } from "../mock/matches.ts";
 import { scheduleMatches } from "../mock/schedule.ts";
 import { nagoyaResult } from "../mock/top-nagoya-result.ts";
 import { getMatchResult } from "../match/result.ts";
 import { getLatestFinishedFixture, getNextFixture, getSeasonHistory, getUpcomingFixtures } from "./fixture-selectors.ts";
-import { topFixtures } from "./top-fixtures.ts";
+import { topFixtures as currentTopFixtures } from "./top-fixtures.ts";
+import { beforeMitoResult } from "./top-nagoya-test-fixture.ts";
 import { validateTopFixtureConsistency } from "./top-fixture-consistency.ts";
 
 test("名古屋戦の0–0を既存IDで1回だけ公開し、LASTとNEXT 5を更新する", () => {
+  const topFixtures = beforeMitoResult(currentTopFixtures);
   const now = new Date("2026-11-22T12:00:00+09:00");
   const id = "sched-nagoya";
   const scheduled = scheduleMatches.filter((fixture) => fixture.id === id);
@@ -19,7 +21,6 @@ test("名古屋戦の0–0を既存IDで1回だけ公開し、LASTとNEXT 5を�
     [fixture.kickoffAt, fixture.isHome, fixture.score, fixture.detailMatchId]
   )), [["2026-11-21T14:03:00+09:00", true, { home: 0, away: 0 }, id]]);
   assert.equal(getArchiveMatches().filter((match) => match.id === id).length, 1);
-  assert.equal(getRecentFinishedMatch().id, id);
   assert.equal(getMatchResult(nagoyaResult), "draw");
   assert.equal(getLatestFinishedFixture(topFixtures)?.id, id);
   assert.equal(getNextFixture(topFixtures, now)?.id, "sched-mito");
