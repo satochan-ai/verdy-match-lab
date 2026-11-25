@@ -19,6 +19,8 @@ import { MatchRecord } from "@/components/match/MatchRecord";
 import { ViewerReview, YokohamaFmPredictionCheck, YokohamaFmViewerReview } from "@/components/match/YokohamaFmResultExtras";
 import { fukuokaViewerReview } from "@/lib/match/fukuoka-review";
 import { NagasakiResultExtras } from "@/components/match/NagasakiResultExtras";
+import { MitoFormationReview, MitoResultReview } from "@/components/match/MitoResultExtras";
+import { MitoPreContent } from "@/components/match/MitoPreContent";
 import { NagoyaResultExtras } from "@/components/match/NagoyaResultExtras";
 import { ShimizuResultExtras } from "@/components/match/ShimizuResultExtras";
 import { AiGuidePanel } from "@/features/ai-guide/ui/AiGuidePanel";
@@ -41,6 +43,7 @@ export default async function MatchDetailPage({
     notFound();
   }
 
+  const isMitoResult = match.id === "sched-mito";
   const displayStatus = resolveMatchStatus(match, new Date());
   const displayMatch = displayStatus === match.status ? match : { ...match, status: displayStatus };
 
@@ -286,6 +289,7 @@ export default async function MatchDetailPage({
             )}
             <MatchScoreboard match={displayMatch} />
             <PenaltyShootoutDetail match={displayMatch} />
+            {isMitoResult && <p className="mt-2 text-center text-xs tabular-nums text-text-secondary">前半 0–0 ／ 後半 1–0</p>}
           </div>
 
           <div className="mt-8 lg:col-start-1 lg:mt-6">
@@ -294,7 +298,7 @@ export default async function MatchDetailPage({
           </div>
 
           <div className="mt-8 lg:col-start-1 lg:mt-6">
-            {officialLineupsBlock}
+            {isMitoResult ? <MitoFormationReview /> : officialLineupsBlock}
           </div>
 
           {match.id === "sched-yokohama-fm" && (
@@ -330,12 +334,12 @@ export default async function MatchDetailPage({
           )}
 
           <div className="mt-10 lg:col-start-2 lg:mt-0">
-            <section className="section-reveal">
+            {isMitoResult ? <MitoResultReview /> : <section className="section-reveal">
               <SectionHeader title="戦術軍師 β 試合総括" eyebrow="MATCH REVIEW" />
               <div className="border-y border-border bg-surface p-4">
                 <AnalysisReportView state="ready" report={getPostMatchAnalysis(match)} />
               </div>
-            </section>
+            </section>}
           </div>
 
           <div className="mt-8 lg:col-start-1 lg:mt-8">
@@ -349,7 +353,19 @@ export default async function MatchDetailPage({
               officialRecord={match.officialRecord}
               actualLineups={match.actualLineups}
             />
+            {isMitoResult && (
+              <p className="mt-2 text-xs text-text-secondary">
+                Jリーグデータサイトの公式記録ではキックオフ19:03、SHは水戸11・東京V2。試合サマリーは19:04、J STATSのシュートは15・6。
+              </p>
+            )}
           </div>
+
+          {isMitoResult && (
+            <details className="mt-8 border border-border bg-surface p-4 lg:col-span-2">
+              <summary className="cursor-pointer text-sm font-bold">公開時の水戸戦プレビュー・予想・三策を見る</summary>
+              <div className="mt-4"><MitoPreContent /></div>
+            </details>
+          )}
 
           <div className="mt-8 lg:col-start-2 lg:mt-8">
             <details className="border border-border bg-surface p-4">

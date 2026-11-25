@@ -133,11 +133,14 @@ export interface OfficialMatchRecord {
   assistantReferees?: string[];
   /** 第4の審判。公式記録で確認できた場合のみ設定する。 */
   fourthOfficial?: string;
+  varReferee?: string;
+  assistantVarReferee?: string;
   sourceUrl?: string;
 }
 
 /** 公式発表された実際のStarting XI / Bench。予想（PredictedLineup）とは別物として扱う。 */
 export interface ActualLineup {
+  manager?: string;
   /** 公式発表画面で確認できた場合のみ設定する。 */
   formation?: string;
   /**

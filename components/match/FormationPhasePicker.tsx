@@ -7,7 +7,9 @@ import type { PredictedLineup, Team } from "@/types/domain";
 export function FormationPhasePicker({
   team,
   phases,
+  showPlayerCount = false,
 }: {
+  showPlayerCount?: boolean;
   team: Team;
   phases: { label: string; lineup: PredictedLineup }[];
 }) {
@@ -29,6 +31,7 @@ export function FormationPhasePicker({
           </button>
         ))}
       </div>
+      {showPlayerCount && <p role="status" className="text-xs font-bold text-text-secondary">{phase.lineup.starters.length}人</p>}
       <FormationPitch team={team} lineup={phase.lineup} idPrefix="observed-formation" />
     </div>
   );

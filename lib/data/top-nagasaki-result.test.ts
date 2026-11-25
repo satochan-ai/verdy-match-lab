@@ -2,7 +2,7 @@ import { beforeNagoyaResult } from "./top-nagoya-test-fixture.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { nagasakiResult as match } from "../mock/top-nagasaki-result.ts";
-import { matches, getRecentFinishedMatch } from "../mock/matches.ts";
+import { matches } from "../mock/matches.ts";
 import { scheduleMatches } from "../mock/schedule.ts";
 import { topFixtures as currentTopFixtures } from "./top-fixtures.ts";
 const topFixtures = beforeNagoyaResult(currentTopFixtures).map(f => f.id === "sched-shimizu" ? { ...f, status: "scheduled" as const, score: undefined, detailMatchId: undefined, kickoffAt: "2026-11-07T13:00:00+09:00" } : f);
@@ -17,7 +17,6 @@ test("Nagasaki AWAY win is unique, consistent and advances LAST/NEXT without los
   assert.deepEqual([match.homeScore,match.awayScore,match.isVerdyHome],[1,2,false]);
   assert.equal(getMatchResult(match),"win");
   assert.equal(matches.filter(m => m.id === match.id).length,1);
-  assert.equal(getRecentFinishedMatch().id,"sched-nagoya");
   assert.deepEqual(validateTopFixtureConsistency(scheduleMatches,matches),[]);
   assert.equal(getLatestFinishedFixture(topFixtures)?.id,match.id);
   const next=getNextFixture(topFixtures,new Date("2026-11-01T19:00:00+09:00"))!;

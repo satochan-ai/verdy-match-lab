@@ -4,6 +4,7 @@ import { fcTokyoResult } from "./top-fc-tokyo-result.ts";
 import { yokohamaFmResult } from "./top-yokohama-fm-result.ts";
 import { fukuokaResult } from "./top-fukuoka-result.ts";
 import { nagasakiResult } from "./top-nagasaki-result.ts";
+import { mitoResult } from "./top-mito-result.ts";
 import { nagoyaResult } from "./top-nagoya-result.ts";
 import { shimizuResult } from "./top-shimizu-result.ts";
 
@@ -14,6 +15,7 @@ function opponent(id: string, name: string) {
 }
 
 export const matches: Match[] = [
+  mitoResult,
   nagoyaResult,
   shimizuResult,
   nagasakiResult,
