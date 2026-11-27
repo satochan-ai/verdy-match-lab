@@ -38,6 +38,8 @@ import { ShimizuPredictions } from "@/components/match/ShimizuPredictions";
 import { ShimizuMatchPreview, ShimizuStrategies } from "@/components/match/ShimizuPreContent";
 import { NagoyaPreContent } from "@/components/match/NagoyaPreContent";
 import { shouldShowNagoyaPreview } from "@/lib/match/nagoya-preview";
+import { MachidaPreContent } from "@/components/match/MachidaPreContent";
+import { shouldShowMachidaPreview } from "@/lib/match/machida-preview";
 import { MitoPreContent } from "@/components/match/MitoPreContent";
 import { shouldShowMitoPreview } from "@/lib/match/mito-preview";
 import { shouldShowShimizuPrediction } from "@/lib/match/shimizu-prediction";
@@ -276,6 +278,7 @@ export default async function TopTeamPage() {
           </section>
 
           {shouldShowMitoPreview(displayFixture) && <MitoPreContent />}
+          {shouldShowMachidaPreview(displayFixture) && <MachidaPreContent />}
 
           {shouldShowNagoyaPreview(displayFixture) && <NagoyaPreContent />}
 
